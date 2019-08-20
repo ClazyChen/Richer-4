@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System;
-using System.Linq;
 
 public abstract class PMode : PObject {
 
@@ -29,25 +28,11 @@ public abstract class PMode : PObject {
             PlayerNumber = 2;
         }
         Seats = new Seat[PlayerNumber];
-        int PartyNumber = 1;
-        List<int> PartyMarks = new List<int> { UnknownParty };
         for (int i = 0; i < PlayerNumber; ++ i) {
-            int PartyTemp = PlayerNumber;
-            if (i < PlayerParties.Length) {
-                if (PartyMarks.Exists((int x) => x == PlayerParties[i])) {
-                    PartyTemp = PartyMarks.FindIndex((int x) => x == PlayerParties[i]);
-                } else {
-                    PartyMarks.Add(PlayerParties[i]);
-                    PartyNumber++;
-                }
-            } else {
-                PartyMarks.Add(UnknownParty);
-                PartyNumber++;
-            }
             Seats[i] = new Seat() {
                 DefaultType = PPlayerType.Waiting,
                 Locked = false,
-                Party = PartyTemp
+                Party = PlayerParties[i]
             };
         }
     }

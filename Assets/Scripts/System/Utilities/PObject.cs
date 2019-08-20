@@ -10,7 +10,7 @@ public class PObject {
     }
 
     public static List<T> ListInstance<T>() where T : PObject {
-        return new List<FieldInfo>(typeof(T).GetFields(BindingFlags.Static))
+        return new List<FieldInfo>(typeof(T).GetFields())
             .FindAll((FieldInfo Field) => Field.FieldType.Equals(typeof(T)))
             .ConvertAll((FieldInfo Field) => (T)Field.GetValue(null));
     }

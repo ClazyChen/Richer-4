@@ -21,8 +21,8 @@ public class PRoom {
         }
     }
 
-    public PRoom(PMode Mode):this(Mode.PlayerNumber) {
-        for (int i = 0; i < Capacity; ++ i) {
+    public PRoom(PMode Mode) : this(Mode.PlayerNumber) {
+        for (int i = 0; i < Mode.PlayerNumber; ++i) {
             PlayerList[i].PlayerType = Mode.Seats[i].DefaultType;
         }
     }

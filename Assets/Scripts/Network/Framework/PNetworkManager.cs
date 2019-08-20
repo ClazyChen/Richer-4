@@ -83,7 +83,7 @@ public class PNetworkManager {
     public static void CreateServer(PMap GameMap, PMode GameMode) {
         AbortClient();
         CurrentHostType = PHostType.Server;
-        (new Thread(() => {
+        PThread.Async(() => {
             _NetworkServer = new PServer() {
                 maxConnectionNumber = GameMode.PlayerNumber,
                 Game = new PGame(GameMap, GameMode)
@@ -95,9 +95,7 @@ public class PNetworkManager {
                 PLogger.Log("服务器客户端创建错误");
             }
             CurrentNickname = PNetworkConfig.DefaultNickname;
-        }) {
-            IsBackground = true
-        }).Start();
+        });
     }
 
     /// <summary>

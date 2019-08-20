@@ -23,6 +23,7 @@ public class PGame : PGameStatus {
     /// <param name="_GameMode">游戏模式</param>
     public PGame(PMap _Map, PMode _GameMode) : base(_Map, _GameMode) {
         Room = new PRoom(GameMode);
+        PLogger.Log("新建游戏，模式：" + GameMode.Name);
         GameMode.Open(this);
         Logic = new PGameLogic();
         //GlobalMarks = new PMarkManager();

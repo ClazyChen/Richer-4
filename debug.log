@@ -1,34 +1,24 @@
-﻿日志 @当前时间：2019/8/20 15:30:56
-..\Data\Maps\ARCHIPELAGO.xml
-..\Data\Maps\CLASSIC.xml
-..\Data\Maps\IMMIGRATION.xml
-..\Data\Maps\TEST MAP.xml
-..\Data\Maps\THE DEVINED COMEDY.xml
-..\Data\Maps\TREASURE LAND.xml
-..\Data\Maps\UNIVERSE.xml
-..\Data\Maps\VIRGIN LAND.xml
+﻿日志 @当前时间：2019/8/20 16:27:02
+读入地图：Data\Maps\ARCHIPELAGO.xml
+读入地图：Data\Maps\CLASSIC.xml
+读入地图：Data\Maps\IMMIGRATION.xml
+读入地图：Data\Maps\TEST MAP.xml
+读入地图：Data\Maps\THE DEVINED COMEDY.xml
+读入地图：Data\Maps\TREASURE LAND.xml
+读入地图：Data\Maps\UNIVERSE.xml
+读入地图：Data\Maps\VIRGIN LAND.xml
 创建操作 创建游戏：转到CMUI #0
 执行操作 创建游戏：转到CMUI #0
-收到连接请求：192.168.8.169:54102
+新建游戏，模式：1v1
+收到连接请求：192.168.8.169:55810
 接收信息 :accept 
-接收信息 (192.168.8.169:54102):hello 聪明的傻子
-新的连接：聪明的傻子 @192.168.8.169:54102
+接收信息 (192.168.8.169:55810):hello 聪明的傻子
+新的连接：聪明的傻子 @192.168.8.169:55810
 接收信息 :mode 1v1
 接收信息 :room 2 玩家 聪明的傻子 等待中
+玩家
+等待中
 创建操作 RoomData-更新RUI数据 #1
 执行操作 RoomData-更新RUI数据 #1
-接收信息 (192.168.8.169:54102):switch_seat 1
-接收信息 :room 2 玩家 聪明的傻子 AI
-创建操作 RoomData-更新RUI数据 #2
-执行操作 RoomData-更新RUI数据 #2
-接收信息 (192.168.8.169:54102):switch_seat 0
-接收信息 (192.168.8.169:54102):move_seat 1
-接收信息 :room 2 AI 玩家 聪明的傻子
-创建操作 RoomData-更新RUI数据 #3
-执行操作 RoomData-更新RUI数据 #3
-接收信息 (192.168.8.169:54102):move_seat 0
-接收信息 :room 2 玩家 聪明的傻子 AI
-创建操作 RoomData-更新RUI数据 #4
-执行操作 RoomData-更新RUI数据 #4
-创建操作 返回：转到IUI #5
-执行操作 返回：转到IUI #5
+创建操作 返回：转到IUI #2
+执行操作 返回：转到IUI #2

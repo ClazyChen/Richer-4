@@ -10,15 +10,12 @@ public class PRoomDataOrder : POrder {
         (string[] args) => {
             try {
                 int Capacity = int.Parse(args[1]);
-                #region 如果房间没有创建就创建
-                if (PSystem.CurrentRoom == null) {
-                    PSystem.CurrentRoom = new PRoom(PSystem.CurrentMode.PlayerNumber);
-                }
-                #endregion
+                PSystem.CurrentRoom = new PRoom(Capacity);
                 #region 分析房间的属性
                 int Index = 2;
                 for (int i = 0; i < Capacity; ++i) {
                     PPlayerType playerType = FindInstance<PPlayerType>(args[Index++]);
+                    PLogger.Log(args[Index-1]);
                     if (playerType != null) {
                         PSystem.CurrentRoom.PlayerList[i].PlayerType = playerType;
                         if (playerType.Equals(PPlayerType.Player)) {
