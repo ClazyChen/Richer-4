@@ -23,4 +23,17 @@ public class PObject {
     public static IEnumerable<Type> ListSubTypes<T>() {
         return typeof(T).Assembly.GetTypes().Where((Type TempType) => TempType.IsSubclassOf(typeof(T)));
     }
+
+    public static List<T> ListSubTypeInstances<T>() {
+        List<T> TempList = new List<T>();
+        foreach (Type SubType in ListSubTypes<T>()) {
+            try {
+                T Instance = (T)Activator.CreateInstance(SubType);
+                TempList.Add(Instance);
+            } catch {
+                continue;
+            }
+        }
+        return TempList;
+    }
 }

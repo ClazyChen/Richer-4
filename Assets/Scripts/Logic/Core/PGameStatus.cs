@@ -12,7 +12,8 @@ public class PGameStatus {
     }
 
     public List<PPlayer> PlayerList;
-    public PPlayer NowPlayer { get; protected set; }
+    public PPlayer NowPlayer;
+    public PPeriod NowPeriod;
 
     public int NowPlayerIndex {
         get {
@@ -23,6 +24,22 @@ public class PGameStatus {
                 NowPlayer = PlayerList[value];
             }
         }
+    }
+
+    public PPlayer GetNextPlayer(PPlayer Player) {
+        int Index = Player.Index + 1;
+        if (Index >= PlayerNumber) {
+            Index = 0;
+        }
+        while (!PlayerList[Index].IsAlive) {
+            ++Index;
+            if (Index == Player.Index + 1) {
+                return Player;
+            } else if (Index >= PlayerNumber) {
+                Index = 0;
+            }
+        }
+        return PlayerList[Index];
     }
 
     /// <summary>
@@ -57,5 +74,6 @@ public class PGameStatus {
         }
         #endregion
         NowPlayer = null;
+        NowPeriod = null;
     }
 }

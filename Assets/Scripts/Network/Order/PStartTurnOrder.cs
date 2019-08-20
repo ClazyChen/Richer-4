@@ -2,8 +2,8 @@
 /// 开始回合命令+开始回合的玩家编号
 /// </summary>
 /// 
-public class PStartMainOrder : POrder {
-    public PStartMainOrder() : base("start_main",
+public class PStartTurnOrder : POrder {
+    public PStartTurnOrder() : base("start_turn",
         null,
         (string[] args) => {
             int NowPlayerIndex = int.Parse(args[1]);
@@ -14,7 +14,7 @@ public class PStartMainOrder : POrder {
         }) {
     }
 
-    public PStartMainOrder(string _NowPlayerIndex) : this() {
+    public PStartTurnOrder(string _NowPlayerIndex) : this() {
         args = new string[] { _NowPlayerIndex };
     }
 }

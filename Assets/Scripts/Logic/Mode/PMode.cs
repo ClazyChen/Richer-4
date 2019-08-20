@@ -43,15 +43,6 @@ public abstract class PMode : PObject {
     }
 
     public static List<PMode> ListModes() {
-        List<PMode> TempList = new List<PMode>();
-        foreach (Type SubType in ListSubTypes<PMode>()) {
-            try {
-                PMode ModeInstance = (PMode)Activator.CreateInstance(SubType);
-                TempList.Add(ModeInstance);
-            } catch {
-                continue;
-            }
-        }
-        return TempList;
+        return ListSubTypeInstances<PMode>();
     }
 }
