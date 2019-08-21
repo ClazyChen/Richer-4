@@ -4,7 +4,7 @@ public class PTransportTag : PTag {
     public static string TagName = "移动位置";
     public static string PlayerFieldName = "玩家";
     public static string SourceFieldName = "起点";
-    public static string DestinationFieldName = "起点";
+    public static string DestinationFieldName = "终点";
     public PTransportTag(PPlayer Player, PBlock Source, PBlock Destination): base(TagName) {
         AppendField(PlayerFieldName, Player);
         AppendField(SourceFieldName, Source);
