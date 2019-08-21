@@ -19,11 +19,11 @@ public class PGameLogic {
         public PSettle Settle;
         public Thread ActionThread;
         public bool Finished;
-        public SettleThread(PSettle _Settle) {
+        public SettleThread(PSettle _Settle, PGame _Game) {
             Settle = _Settle;
             Finished = false;
             ActionThread = new Thread(() => {
-                Settle.SettleAction();
+                Settle.SettleAction(_Game);
                 Finished = true;
             }) {
                 IsBackground = true
@@ -31,6 +31,7 @@ public class PGameLogic {
         }
     }
 
+    private readonly PGame Game;
     private Stack<SettleThread> SettleThreadStack;
 
     /// <summary>
@@ -39,7 +40,7 @@ public class PGameLogic {
     /// <param name="Name">添加的操作名</param>
     /// <param name="action">添加的操作方法</param>
     public void StartSettle(PSettle Settle) {
-        SettleThread NewSettleThread = new SettleThread(Settle);
+        SettleThread NewSettleThread = new SettleThread(Settle, Game);
         SettleThreadStack.Push(NewSettleThread);
         PLogger.Log("开始结算 " + Settle.Name);
         NewSettleThread.ActionThread.Start();
@@ -53,7 +54,8 @@ public class PGameLogic {
         }
     }
 
-    public PGameLogic() {
+    public PGameLogic(PGame _Game) {
+        Game = _Game;
         SettleThreadStack = new Stack<SettleThread>();
     }
 
@@ -67,5 +69,9 @@ public class PGameLogic {
                 SettleThreadStack.Pop();
             }
         }
+    }
+
+    public bool SingleSettle() {
+        return SettleThreadStack.Count == 1;
     }
 }

@@ -18,6 +18,12 @@ public class PTriggerManager {
         return TriggerList.Remove(Trigger);
     }
 
+    public PTag CallTime(PTime Time, PTag OriginalTag) {
+        Game.TagManager.CreateTag(OriginalTag);
+        CallTime(Time);
+        return Game.TagManager.PopTag<PTag>(OriginalTag.Name);
+    }
+
     // 宣布一个时机的到来
     public void CallTime(PTime Time) {
         PLogger.Log("时机到来：" + Time.Name);
@@ -58,7 +64,7 @@ public class PTriggerManager {
                 }
                 #endregion
                 if (ChosenTrigger != null) {
-                    Game.Logic.StartSettle(new PSettle("于[" + Time.Name + "]触发[" + ChosenTrigger.Name + "]", () => {
+                    Game.Logic.StartSettle(new PSettle("于[" + Time.Name + "]触发[" + ChosenTrigger.Name + "]", (PGame Game) => {
                         ChosenTrigger.Effect(Game);
                     }));
                     CurrentTriggerList.Remove(ChosenTrigger);

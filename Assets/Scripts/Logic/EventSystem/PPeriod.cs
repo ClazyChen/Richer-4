@@ -17,15 +17,14 @@ public class PPeriod : PObject {
         Next = new PTime(Name + "的下一个时期");
     }
 
-    public PSettle Execute(PGame Game) {
-        PTriggerManager Monitor = Game.Monitor;
-        return new PSettle(Name + "结算", () => {
-            Monitor.CallTime(Before);
-            Monitor.CallTime(Start);
-            Monitor.CallTime(During);
-            Monitor.CallTime(End);
-            Monitor.CallTime(After);
-            Monitor.CallTime(Next);
+    public PSettle Execute() {
+        return new PSettle(Name + "结算", (PGame Game) => {
+            Game.Monitor.CallTime(Before);
+            Game.Monitor.CallTime(Start);
+            Game.Monitor.CallTime(During);
+            Game.Monitor.CallTime(End);
+            Game.Monitor.CallTime(After);
+            Game.Monitor.CallTime(Next);
         });
     }
 

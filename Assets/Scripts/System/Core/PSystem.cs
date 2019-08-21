@@ -18,4 +18,12 @@ public class PSystem: MonoBehaviour {
         }
         #endregion
     }
+
+    void Update() {
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            if (PUIManager.IsCurrentUI<PMapUI>()) {
+                PUIManager.GetUI<PMapUI>().Space();
+            }
+        }
+    }
 }

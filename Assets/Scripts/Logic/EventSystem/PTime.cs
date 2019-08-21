@@ -8,4 +8,6 @@ public class PTime : PObject {
     }
 
     public static PTime StartGameTime = new PTime("游戏开始时");
+    public static PTime PassBlockTime = new PTime("经过格子时");
+    public static PTime MovePositionTime = new PTime("移动位置时");
 }

@@ -31,11 +31,11 @@ public class PPeriodTriggerInstaller : PSystemTriggerInstaller {
                 }
             }
             Game.Logic.ShutDown();
-            Game.Logic.StartSettle(NextPeroid.Execute(Game));
+            Game.Logic.StartSettle(NextPeroid.Execute());
         });
     };
 
-    public PPeriodTriggerInstaller(): base() {
+    public PPeriodTriggerInstaller(): base("阶段切换") {
         foreach (PPeriod Period in TurnFlow) {
             TriggerList.Add(new PTrigger(Period.Name + "结束，进入下一阶段") {
                 IsLocked = true,

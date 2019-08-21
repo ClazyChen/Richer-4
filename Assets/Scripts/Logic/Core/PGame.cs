@@ -8,6 +8,7 @@ public class PGame : PGameStatus {
     public PRoom Room;
     public PGameLogic Logic { get; private set; }
     public PTriggerManager Monitor { get; private set; }
+    public readonly PTagManager TagManager;
 
     public bool StartGameFlag { get; private set; }
     public bool EndGameFlag { get; private set; }
@@ -21,8 +22,9 @@ public class PGame : PGameStatus {
         Room = new PRoom(GameMode);
         PLogger.Log("新建游戏，模式：" + GameMode.Name);
         GameMode.Open(this);
-        Logic = new PGameLogic();
+        Logic = new PGameLogic(this);
         Monitor = new PTriggerManager(this);
+        TagManager = new PTagManager();
         StartGameFlag = false;
         EndGameFlag = false;
     }
@@ -55,6 +57,7 @@ public class PGame : PGameStatus {
             NowPlayer = null;
             NowPeriod = null;
             StartGameFlag = true;
+            PLogger.Log("开始进行规则装载");
             PObject.ListSubTypeInstances<PSystemTriggerInstaller>().ForEach((PSystemTriggerInstaller Installer) => {
                 Installer.Install(Monitor);
             });
@@ -63,12 +66,13 @@ public class PGame : PGameStatus {
             NowPlayer = PlayerList[0];
             NowPeriod = PPeriod.StartTurn;
             PNetworkManager.NetworkServer.TellClients(new PStartTurnOrder(NowPlayerIndex.ToString()));
-            Logic.StartSettle(PPeriod.StartTurn.Execute(this));
+            Logic.StartSettle(PPeriod.StartTurn.Execute());
         }
     }
 
     public void ShutDown() {
         Logic.ShutDown();
+        TagManager.RemoveAll();
         PNetworkManager.NetworkServer.TellClients(new PShutDownOrder());
     }
 }
