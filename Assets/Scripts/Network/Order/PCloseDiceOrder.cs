@@ -7,7 +7,9 @@ public class PCloseDiceOrder : POrder {
         null,
         (string[] args) => {
             PUIManager.AddNewUIAction("关闭骰子", () => {
-                PUIManager.GetUI<PMapUI>().DiceImage.gameObject.SetActive(false);
+                PAnimation.AddAnimation("关闭骰子", () => {
+                    PUIManager.GetUI<PMapUI>().DiceImage.gameObject.SetActive(false);
+                });
             });
         }) {
     }

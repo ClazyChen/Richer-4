@@ -9,7 +9,7 @@ public abstract class PAbstractClient {
     /// 被封装的TCP客户端
     /// </summary>
     public TcpClient Client { get; private set; }
-    private NetworkStream stream;
+    private volatile NetworkStream stream;
     private Queue<string> recvQueue = new Queue<string>();
     private Queue<string> sendQueue = new Queue<string>();
     /// <summary>
@@ -99,9 +99,7 @@ public abstract class PAbstractClient {
                 #endregion
                 Thread.Sleep(PNetworkConfig.ListenerInterval);
             }
-        }) {
-            IsBackground = true
-        };
+        });
         Listener.Start();
         #endregion
     }

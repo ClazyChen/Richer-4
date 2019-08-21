@@ -17,7 +17,7 @@ public class PAnimation {
     public static PAnimation MovePlayerAnimation = new PAnimation(0.4f, 20);
     public static PAnimation PushInformationAnimation = new PAnimation(0.5f, 25);
 
-    public static void AddAnimation(string Name, Action Animation, int FrameNumber, float TotalTime, Action Callback = null) {
+    public static void AddAnimation(string Name, Action Animation, int FrameNumber = 1, float TotalTime = 0.0f, Action Callback = null) {
         PThread.Async(() => {
             int ID = IDCount++;
             PUIManager.RegisterAnimation(ID);
