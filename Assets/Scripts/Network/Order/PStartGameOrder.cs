@@ -19,7 +19,6 @@ public class PStartGameOrder : POrder {
                 PNetworkManager.NetworkClient.GameStatus = new PGameStatus(Map, PSystem.CurrentMode);
                 PNetworkManager.NetworkClient.GameStatus.StartGame();
                 PUIManager.AddNewUIAction("StartGame[Client]-初始化地图切换到MUI", () => {
-                    PUIManager.GetUI<PMapUI>().InitializeMap(PNetworkManager.NetworkClient.GameStatus);
                     PUIManager.ChangeUI<PMapUI>();
                 });
             }

@@ -66,7 +66,9 @@ public class PGame : PGameStatus {
             NowPlayer = PlayerList[0];
             NowPeriod = PPeriod.StartTurn;
             PNetworkManager.NetworkServer.TellClients(new PStartTurnOrder(NowPlayerIndex.ToString()));
-            Logic.StartSettle(PPeriod.StartTurn.Execute());
+            PThread.Async(() => {
+                Logic.StartSettle(PPeriod.StartTurn.Execute());
+            });
         }
     }
 

@@ -56,4 +56,9 @@ public class PAbstractGroupUI<T> : PAbstractUI where T : PAbstractUI {
         PrototypeUI.Close();
         base.Close();
     }
+
+    //public override void Open() {
+    //    base.Open();
+    //    GroupUIList.ForEach((T SubUI) => SubUI.Open());
+    //}
 }

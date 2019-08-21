@@ -71,7 +71,7 @@ public class PGameLogic {
         }
     }
 
-    public bool SingleSettle() {
-        return SettleThreadStack.Count == 1;
+    public bool WaitingForEndFreeTime() {
+        return SettleThreadStack.Peek().Settle.Name.Contains("触发[玩家的空闲时间点]");
     }
 }

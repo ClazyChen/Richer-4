@@ -36,6 +36,7 @@ public class PMapUI : PAbstractUI {
     }
 
     public override void Open() {
+        InitializeMap(PNetworkManager.NetworkClient.GameStatus);
         base.Open();
         Scene.Open();
         CameraController.Open();

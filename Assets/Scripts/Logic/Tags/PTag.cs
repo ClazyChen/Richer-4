@@ -18,6 +18,7 @@ public class PTag : PObject {
 
     public List<PTagField> FieldList;
     public PTag(string _Name) {
+        Name = _Name;
         FieldList = new List<PTagField>();
     }
 
