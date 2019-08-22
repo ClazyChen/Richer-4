@@ -77,4 +77,13 @@ public class PGame : PGameStatus {
         TagManager.RemoveAll();
         PNetworkManager.NetworkServer.TellClients(new PShutDownOrder());
     }
+
+    public void GetMoney(PPlayer Player, int Money) {
+        PGetMoneyTag GetMoneyTag = Monitor.CallTime(PTime.GetMoneyTime, new PGetMoneyTag(Player, Money));
+        PPlayer GetMoneyPlayer = GetMoneyTag.Player;
+        int MoneyCount = GetMoneyTag.Money;
+        if (GetMoneyPlayer != null && MoneyCount > 0) {
+            GetMoneyPlayer.Money += MoneyCount;
+        }
+    }
 }

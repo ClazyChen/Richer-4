@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PPlayerInformationBoxGroup : PAbstractGroupUI<PPlayerInformationBox> {
     public PPlayerInformationBoxGroup(Transform _Background) : base(_Background) {
@@ -12,7 +10,9 @@ public class PPlayerInformationBoxGroup : PAbstractGroupUI<PPlayerInformationBox
     /// </summary>
     public void InitializeBoxes(PGameStatus Game) {
         foreach (PPlayer Player in Game.PlayerList) {
-            AddSubUI().Initialize(Player);
+            RectTransform SubUI = AddSubUI().Initialize(Player).UIBackgroundImage.GetComponent<RectTransform>();
+            PLogger.Log(PrototypeUI.UIBackgroundImage.GetComponent<RectTransform>().localPosition.ToString());
+            SubUI.localPosition = PrototypeUI.UIBackgroundImage.GetComponent<RectTransform>().localPosition + new Vector3(0, -70.0f* Player.Index, 0);
         }
     }
 

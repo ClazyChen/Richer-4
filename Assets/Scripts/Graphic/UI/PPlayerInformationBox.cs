@@ -19,9 +19,10 @@ public class PPlayerInformationBox : PAbstractUI {
         Close();
     }
 
-    public void Initialize(PPlayer _Player) {
+    public PPlayerInformationBox Initialize(PPlayer _Player) {
         AttachedPlayer = _Player;
         UpdateInformation();
+        return this;
     }
 
     public void UpdateInformation() {

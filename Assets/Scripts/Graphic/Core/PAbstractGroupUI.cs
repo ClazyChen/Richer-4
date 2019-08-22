@@ -39,8 +39,7 @@ public class PAbstractGroupUI<T> : PAbstractUI where T : PAbstractUI {
     /// </summary>
     /// <returns>新建的UI</returns>
     protected T AddSubUI() {
-        GameObject NewObject = UnityEngine.Object.Instantiate(PrototypeUI.UIBackgroundImage.gameObject);
-        NewObject.transform.SetParent(UIBackgroundImage);
+        GameObject NewObject = UnityEngine.Object.Instantiate(PrototypeUI.UIBackgroundImage.gameObject, UIBackgroundImage);
         T NewUI = (T)Activator.CreateInstance(typeof(T), BindingFlags.Default, null, new object[] { NewObject.transform }, null);
         NewUI.Open();
         GroupUIList.Add(NewUI);

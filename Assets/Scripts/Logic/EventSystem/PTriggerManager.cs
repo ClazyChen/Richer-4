@@ -18,10 +18,10 @@ public class PTriggerManager {
         return TriggerList.Remove(Trigger);
     }
 
-    public PTag CallTime(PTime Time, PTag OriginalTag) {
+    public T CallTime<T>(PTime Time, T OriginalTag) where T : PTag{
         Game.TagManager.CreateTag(OriginalTag);
         CallTime(Time);
-        return Game.TagManager.PopTag<PTag>(OriginalTag.Name);
+        return Game.TagManager.PopTag<T>(OriginalTag.Name);
     }
 
     // 宣布一个时机的到来
