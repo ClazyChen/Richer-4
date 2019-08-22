@@ -8,7 +8,7 @@ public class PCameraController {
     private volatile bool IsChangingPerspective;
     private Thread CameraThread = null;
 
-    private class Config {
+    public class Config {
         public static string MainCameraName = "Main Camera";
 
         public static readonly Vector3 CameraLockedDistance = new Vector3(20.0f, 30.0f, 0.0f);
@@ -47,22 +47,6 @@ public class PCameraController {
         IsChangingPerspective = false;
     }
 
-    /// <summary>
-    /// 瞬间移动到目标
-    /// </summary>
-    /// <param name="Destination">移动到的目标（照相机中心坐标）</param>
-    public void MoveTo(Vector3 Destination) {
-        ChangePerspective(Destination, true);
-    }
-
-    /// <summary>
-    /// 瞬间移动一个delta
-    /// </summary>
-    /// <param name="Direction">照相机移动的向量</param>
-    public void Move(Vector3 Direction) {
-        ChangePerspective(Camera.position + Direction, true);
-    }
-
     private void Track() {
         if (Tracking != null) {
             Camera.position = Tracking.position + Config.CameraLockedDistance;
@@ -91,17 +75,13 @@ public class PCameraController {
     /// </summary>
     /// <param name="Destination">移动到的目标（照相机中心目标）</param>
     /// <param name="Immediately">是否立即移动</param>
-    public void ChangePerspective(Vector3 Destination, bool Immediately = false) {
+    public void ChangePerspective(Vector3 Destination) {
         if (!IsChangingPerspective) {
             IsChangingPerspective = true;
-            if (Immediately) {
-                StopTracking();
-            }
-            int FrameNumber = Immediately ? 1 : Config.ChangePerspectiveFrameNumber;
-            float TotalTime = Immediately ? 0.0f : Config.ChangePerspectiveTime;
-            PAnimation.MoveAnimation(Camera, Destination, FrameNumber, TotalTime, () => {
+            PUIManager.AddNewUIAction("切换照相机视角", () => {
+                Camera.position = Destination;
                 IsChangingPerspective = false;
-            }, "照相机视角");
+            });
         }
     }
 }

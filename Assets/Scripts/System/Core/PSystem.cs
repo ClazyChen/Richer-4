@@ -6,6 +6,7 @@ public class PSystem: MonoBehaviour {
     public static List<PMap> MapList { get; private set; }
     public static PRoom CurrentRoom = null;
     public static PMode CurrentMode = null;
+    public static int PlayerIndex = 0;
 
     void Start() {
         PLogger.StartLogging(true);

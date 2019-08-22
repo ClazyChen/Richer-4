@@ -11,7 +11,6 @@ public class PPlayerInformationBoxGroup : PAbstractGroupUI<PPlayerInformationBox
     public void InitializeBoxes(PGameStatus Game) {
         foreach (PPlayer Player in Game.PlayerList) {
             RectTransform SubUI = AddSubUI().Initialize(Player).UIBackgroundImage.GetComponent<RectTransform>();
-            PLogger.Log(PrototypeUI.UIBackgroundImage.GetComponent<RectTransform>().localPosition.ToString());
             SubUI.localPosition = PrototypeUI.UIBackgroundImage.GetComponent<RectTransform>().localPosition + new Vector3(0, -70.0f* Player.Index, 0);
         }
     }

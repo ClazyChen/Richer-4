@@ -28,6 +28,10 @@ public class PPeriod : PObject {
         });
     }
 
+    public bool IsFreeTime() {
+        return Equals(FirstFreeTime) || Equals(SecondFreeTime);
+    }
+
     public static PPeriod StartTurn = new PPeriod("回合开始时");
     public static PPeriod PreparationStage = new PPeriod("准备阶段");
     public static PPeriod JudgeStage = new PPeriod("判定阶段");

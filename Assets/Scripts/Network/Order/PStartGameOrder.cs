@@ -1,5 +1,7 @@
-﻿/// <summary>
-/// 开始游戏命令[+地图名]
+﻿using System;
+
+/// <summary>
+/// 开始游戏命令[+地图名+玩家Index]
 /// </summary>
 /// SR：如果游戏没有开始则开始游戏
 /// CR：初始化游戏状态数据，切换到MUI
@@ -14,8 +16,10 @@ public class PStartGameOrder : POrder {
         },
         (string[] args) => {
             string MapName = args[1];
+            int PlayerIndex = Convert.ToInt32(args[2]);
             PMap Map = PSystem.MapList.Find((PMap TempMap) => TempMap.Name.Equals(MapName));
             if (Map != null) {
+                PSystem.PlayerIndex = PlayerIndex;
                 PNetworkManager.NetworkClient.GameStatus = new PGameStatus(Map, PSystem.CurrentMode);
                 PNetworkManager.NetworkClient.GameStatus.StartGame();
                 PUIManager.AddNewUIAction("StartGame[Client]-初始化地图切换到MUI", () => {
@@ -25,7 +29,7 @@ public class PStartGameOrder : POrder {
         }) {
     }
 
-    public PStartGameOrder(string _MapName) : this() {
-        args = new string[] { _MapName };
+    public PStartGameOrder(string _MapName, string _PlayerIndexString) : this() {
+        args = new string[] { _MapName, _PlayerIndexString };
     }
 }

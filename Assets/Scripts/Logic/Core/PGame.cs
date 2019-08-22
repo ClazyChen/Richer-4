@@ -61,7 +61,9 @@ public class PGame : PGameStatus {
             PObject.ListSubTypeInstances<PSystemTriggerInstaller>().ForEach((PSystemTriggerInstaller Installer) => {
                 Installer.Install(Monitor);
             });
-            PNetworkManager.NetworkServer.TellClients(new PStartGameOrder(Map.Name));
+            PNetworkManager.NetworkServer.Game.PlayerList.ForEach((PPlayer Player) => {
+                PNetworkManager.NetworkServer.TellClient(Player, new PStartGameOrder(Map.Name, Player.Index.ToString()));
+            });
             Monitor.CallTime(PTime.StartGameTime);
             NowPlayer = PlayerList[0];
             NowPeriod = PPeriod.StartTurn;

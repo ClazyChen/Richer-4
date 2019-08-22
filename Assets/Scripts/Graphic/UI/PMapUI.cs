@@ -45,6 +45,7 @@ public class PMapUI : PAbstractUI {
         EndFreeTimeButton.onClick.AddListener(() => {
             PNetworkManager.NetworkClient.Send(new PEndFreeTimeOrder());
         });
+        CameraController.ChangePerspective(Scene.PlayerGroup.GroupUIList[0].UIBackgroundImage.position + PCameraController.Config.CameraLockedDistance);
     }
 
     public override void Close() {

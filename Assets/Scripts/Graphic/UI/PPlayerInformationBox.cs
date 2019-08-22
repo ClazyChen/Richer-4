@@ -8,6 +8,7 @@ public class PPlayerInformationBox : PAbstractUI {
     public readonly Text EquipText;
     public readonly Text JudgeText;
     public readonly Text FlagText;
+    public readonly Text PeriodText;
     public readonly Image GeneralImageBackground;
     public readonly Image GeneralImage;
 
