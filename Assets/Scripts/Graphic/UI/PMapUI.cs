@@ -8,9 +8,9 @@ using UnityEngine.UI;
 /// PMapUI类本身并不负责管理3D地图的部分
 public class PMapUI : PAbstractUI {
 
-    private class Config {
-        public static readonly Vector3 DiceLockedDistance = new Vector3(0.0f, 80.0f, 0.0f);
-    }
+    //private class Config {
+    //    public static readonly Vector3 DiceLockedDistance = new Vector3(0.0f, 80.0f, 0.0f);
+    //}
 
     public readonly Button EndFreeTimeButton;
     public readonly Image DiceImage;
@@ -83,8 +83,6 @@ public class PMapUI : PAbstractUI {
     /// </summary>
     /// <param name="DiceResult">掷骰子的结果</param>
     public void Dice(int DiceResult) {
-        DiceImage.rectTransform.position = PPlayerScene.GetScreenPosition(PNetworkManager.NetworkClient.GameStatus.NowPlayer) + Config.DiceLockedDistance;
-        DiceImage.gameObject.SetActive(true);
         PAnimation.AddAnimation("掷骰子", () => {
             int DiceMiddleResult = PRandom.RandInt(1, 6);
             DiceImage.sprite = DiceSpriteList[DiceMiddleResult - 1];
@@ -92,6 +90,8 @@ public class PMapUI : PAbstractUI {
             PUIManager.AddNewUIAction("掷骰子-显示最终结果", () => {
                 DiceImage.sprite = DiceSpriteList[DiceResult - 1];
             });
+        }, () => {
+            DiceImage.gameObject.SetActive(true);
         });
     }
 }

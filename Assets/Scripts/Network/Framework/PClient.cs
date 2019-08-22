@@ -27,7 +27,7 @@ public class PClient : PAbstractClient {
     }
 
     private void ProcessMessage(string message) {
-        PLogger.Log("接收信息 :" + message);
+        PLogger.Log("接收信息：" + message);
         List<string> messages = new List<string>(message.Split(' '));
         messages.RemoveAll((string x) => x.Equals(string.Empty));
         string[] MessageList = messages.ToArray();

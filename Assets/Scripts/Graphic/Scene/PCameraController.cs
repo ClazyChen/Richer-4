@@ -78,12 +78,12 @@ public class PCameraController {
     /// </summary>
     /// <param name="Player"></param>
     public void SetTracking(PPlayer Player) {
-        if (PUIManager.GetUI<PMapUI>().Scene.HasInitialized && !IsChangingPerspective) {
+        PAnimation.AddAnimation("转换跟踪目标", () => {
             IsTracking = false;
             Tracking = PUIManager.GetUI<PMapUI>().Scene.PlayerGroup.GroupUIList[Player.Index].UIBackgroundImage;
             ChangePerspective(Tracking.position + Config.CameraLockedDistance);
             IsTracking = true;
-        }
+        });
     }
 
     /// <summary>
@@ -101,7 +101,7 @@ public class PCameraController {
             float TotalTime = Immediately ? 0.0f : Config.ChangePerspectiveTime;
             PAnimation.MoveAnimation(Camera, Destination, FrameNumber, TotalTime, () => {
                 IsChangingPerspective = false;
-            });
+            }, "照相机视角");
         }
     }
 }
