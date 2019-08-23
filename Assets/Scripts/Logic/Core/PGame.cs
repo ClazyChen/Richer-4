@@ -86,6 +86,7 @@ public class PGame : PGameStatus {
         int MoneyCount = GetMoneyTag.Money;
         if (GetMoneyPlayer != null && MoneyCount > 0) {
             GetMoneyPlayer.Money += MoneyCount;
+            
         }
     }
 }

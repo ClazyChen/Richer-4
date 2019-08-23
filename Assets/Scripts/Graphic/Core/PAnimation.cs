@@ -1,3 +1,4 @@
+using UnityEngine.UI;
 using UnityEngine;
 using System;
 
@@ -52,5 +53,35 @@ public class PAnimation {
                 transform.position = NextPosition;
             }
         }, FrameNumber, TotalTime, Callback);
+    }
+
+    /// <summary>
+    /// 创建一个推送动画
+    /// </summary>
+    /// <param name="StartPoint"></param>
+    public static void PushAnimation(PPlayer Player, string PushText, PPushType PushType) {
+        const int FrameNumber = 25;
+        const float TotalTime = 0.5f;
+        const float Offset = 100.0f;
+        Vector3 Speed = new Vector3(0.0f, Offset / FrameNumber, 0.0f);
+        Text NewPush = null;
+        Color PushColor = PushType.PushColor;
+        AddAnimation("推送[" + PushText + "]", () => {
+            PushColor.a -= 1.0f / FrameNumber;
+            NewPush.color = PushColor;
+            NewPush.rectTransform.position = PPlayerScene.GetScreenPosition(Player);
+            NewPush.rectTransform.Translate(Speed);
+        }, FrameNumber, TotalTime, () => {
+            PUIManager.AddNewUIAction("删除推送[" + PushText + "]", () => {
+                UnityEngine.Object.Destroy(NewPush.gameObject);
+            });
+        }, () => {
+            NewPush = UnityEngine.Object.Instantiate(PUIManager.GetUI<PMapUI>().PushText);
+            NewPush.transform.SetParent(PUIManager.GetUI<PMapUI>().UIBackgroundImage);
+            NewPush.color = PushColor;
+            NewPush.text = PushText;
+            NewPush.rectTransform.position = PPlayerScene.GetScreenPosition(Player);
+            NewPush.gameObject.SetActive(true);
+        });
     }
 }

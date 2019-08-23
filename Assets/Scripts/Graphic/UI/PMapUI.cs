@@ -18,12 +18,15 @@ public class PMapUI : PAbstractUI {
     public readonly PMessageBox MessageBox;
     public readonly PPlayerInformationBoxGroup PlayerInformationGroup;
     public readonly PCameraController CameraController;
+    public readonly Text InformationText;
+    public readonly Text PushText;
 
     private readonly Sprite[] DiceSpriteList;
 
     public PMapUI(Transform _Background) : base(_Background) {
         InitializeControls<Button>();
         InitializeControls<Image>();
+        InitializeControls<Text>();
         Scene = new PMapScene(GameObject.Find("Map").transform);
         MessageBox = new PMessageBox(UIBackgroundImage.Find("MessageBox"));
         PlayerInformationGroup = new PPlayerInformationBoxGroup(UIBackgroundImage.Find("PlayerInformationBoxes"));
@@ -41,6 +44,7 @@ public class PMapUI : PAbstractUI {
         Scene.Open();
         CameraController.Open();
         PlayerInformationGroup.Open();
+        InformationText.text = string.Empty;
         DiceImage.gameObject.SetActive(false);
         EndFreeTimeButton.onClick.AddListener(() => {
             PNetworkManager.NetworkClient.Send(new PEndFreeTimeOrder());
