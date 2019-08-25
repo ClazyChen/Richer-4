@@ -171,6 +171,10 @@ public class PMap : PObject, ICloneable {
             return BlockList[Index];
         }
     }
+
+    public PBlock FindBlockByCoordinate(int x, int y) {
+        return BlockList.Find((PBlock Block) => Block.X == x && Block.Y == y);
+    }
     public object Clone() {
         #region 复制一个地图
         PMap Copy = new PMap() {

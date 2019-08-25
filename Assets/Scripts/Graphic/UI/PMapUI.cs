@@ -89,7 +89,7 @@ public class PMapUI : PAbstractUI {
     /// <param name="DiceResult">掷骰子的结果</param>
     public void Dice(int DiceResult) {
         PAnimation.AddAnimation("掷骰子", () => {
-            int DiceMiddleResult = PRandom.RandInt(1, 6);
+            int DiceMiddleResult = PMath.RandInt(1, 6);
             DiceImage.sprite = DiceSpriteList[DiceMiddleResult - 1];
         }, PAnimation.DiceAnimation.FrameNumber, PAnimation.DiceAnimation.TotalTime, () => {
             PUIManager.AddNewUIAction("掷骰子-显示最终结果", () => {

@@ -44,4 +44,17 @@ public class PPlayer: PObject {
         }
     }
 
+    /// <summary>
+    /// 牌堆期望收益，仅服务器可获取
+    /// </summary>
+    public int AiCardExpectation {
+        get {
+            if (PNetworkManager.CurrentHostType.Equals(PHostType.Server)) {
+                return PAiCardExpectation.Expect(PNetworkManager.NetworkServer.Game, this);
+            } else {
+                return 0;
+            }
+        }
+    }
+
 }

@@ -21,6 +21,7 @@ public class PTrigger : PObject{
     public Predicate<PGame> Condition = DefaultCondition;
     public Predicate<PGame> AICondition = DefaultCondition;
     public float AIPriority = 1; // 权重大的效果AI优先发动
+    public bool CanRepeat = false; // 是否可以被重复发动
 
     public PTrigger(string _Name) {
         Name = _Name;

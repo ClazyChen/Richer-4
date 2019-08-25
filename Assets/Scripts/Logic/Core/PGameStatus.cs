@@ -11,6 +11,14 @@ public class PGameStatus {
         }
     }
 
+    public List<PPlayer> Teammates(PPlayer Player, bool ContainSelf = true) {
+        return PlayerList.FindAll((PPlayer TestPlayer) => TestPlayer.TeamIndex == Player.TeamIndex && (ContainSelf || TestPlayer.Index == Player.Index) && TestPlayer.IsAlive);
+    }
+
+    public List<PPlayer> Enemies(PPlayer Player) {
+        return PlayerList.FindAll((PPlayer TestPlayer) => TestPlayer.TeamIndex != Player.TeamIndex && TestPlayer.IsAlive);
+    }
+
     public List<PPlayer> PlayerList;
     public PPlayer NowPlayer;
     public PPeriod NowPeriod;
@@ -52,6 +60,19 @@ public class PGameStatus {
         GameMode = _GameMode;
     }
 
+    /// <summary>
+    /// 安全地查找一个玩家
+    /// </summary>
+    /// <param name="Index"></param>
+    /// <returns></returns>
+    public PPlayer FindPlayer(int Index) {
+        if (Index < 0 || Index >= PlayerList.Count) {
+            return null;
+        } else {
+            return PlayerList[Index];
+        }
+    }
+
     // 这个是Client端的StartGame
     // Server的StartGame在PGame里
     public void StartGame() {
@@ -75,5 +96,36 @@ public class PGameStatus {
         #endregion
         NowPlayer = null;
         NowPeriod = null;
+    }
+
+    /// <summary>
+    /// 建造城堡可以获得的赠送房屋数量
+    /// </summary>
+    /// <param name="Player"></param>
+    /// <param name="Block"></param>
+    /// <returns></returns>
+    public int GetBonusHouseNumberOfCastle(PPlayer Player, PBlock Block) {
+        int[] dx = { 1, -1, 0, 0 };
+        int[] dy = { 0, 0, 1, -1 };
+        int OriginalX = Block.X;
+        int OriginalY = Block.Y;
+        int sum = 0, x, y;
+        for (int i = 0; i < 4; ++i) {
+            x = OriginalX;
+            y = OriginalY;
+            do {
+                x += dx[i];
+                y += dy[i];
+                PBlock TempBlock = Map.FindBlockByCoordinate(x, y);
+                if (TempBlock != null) {
+                    if (TempBlock.Lord != null && !TempBlock.Lord.Equals(Player)) {
+                        sum += TempBlock.HouseNumber;
+                    }
+                } else {
+                    break;
+                }
+            } while (true);
+        }
+        return sum;
     }
 }

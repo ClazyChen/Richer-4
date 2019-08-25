@@ -13,8 +13,8 @@ public class PTagManager {
         TagList.Add(Tag);
     }
 
-    public PTag FindPeekTag(string Name) {
-        return TagList.FindLast((PTag Tag) => Tag.Name.Equals(Name));
+    public T FindPeekTag<T>(string Name) where T:PTag {
+        return (T)TagList.FindLast((PTag Tag) => Tag.Name.Equals(Name));
     }
 
     public bool ExistTag(string Name) {
@@ -22,11 +22,11 @@ public class PTagManager {
     }
 
     public T PopTag<T>(string Name)where T:PTag {
-        PTag Tag = FindPeekTag(Name);
+        T Tag = FindPeekTag<T>(Name);
         if (Tag != null) {
             TagList.Remove(Tag);
         }
-        return (T)Tag;
+        return Tag;
     }
 
     public void RemoveAll() {

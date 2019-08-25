@@ -31,4 +31,14 @@ public class PBlock : PObject {
             }
         }
     }
+
+    public int HousePrice {
+        get {
+            if (BusinessType.Equals(PBusinessType.Park)) {
+                return 0;
+            } else {
+                return PMath.Percent(Price, 50);
+            }
+        }
+    }
 }

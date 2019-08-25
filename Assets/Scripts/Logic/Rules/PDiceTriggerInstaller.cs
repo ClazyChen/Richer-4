@@ -4,7 +4,7 @@
             IsLocked = true,
             Time = PPeriod.DiceStage.During,
             Effect = (PGame Game) => {
-                int DiceResult = PRandom.RandInt(1, 6);
+                int DiceResult = PMath.RandInt(1, 6);
                 PNetworkManager.NetworkServer.TellClients(new PDiceResultOrder(DiceResult.ToString()));
                 Game.TagManager.CreateTag(new PDiceResultTag(DiceResult));
             }

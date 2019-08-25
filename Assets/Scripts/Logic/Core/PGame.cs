@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// PGame类：
@@ -7,7 +8,7 @@
 public class PGame : PGameStatus {
     public PRoom Room;
     public PGameLogic Logic { get; private set; }
-    public PTriggerManager Monitor { get; private set; }
+    public PMonitor Monitor { get; private set; }
     public readonly PTagManager TagManager;
 
     public bool StartGameFlag { get; private set; }
@@ -23,7 +24,7 @@ public class PGame : PGameStatus {
         PLogger.Log("新建游戏，模式：" + GameMode.Name);
         GameMode.Open(this);
         Logic = new PGameLogic(this);
-        Monitor = new PTriggerManager(this);
+        Monitor = new PMonitor(this);
         TagManager = new PTagManager();
         StartGameFlag = false;
         EndGameFlag = false;
@@ -86,7 +87,73 @@ public class PGame : PGameStatus {
         int MoneyCount = GetMoneyTag.Money;
         if (GetMoneyPlayer != null && MoneyCount > 0) {
             GetMoneyPlayer.Money += MoneyCount;
-            
+            PNetworkManager.NetworkServer.TellClients(new PPushTextOrder(GetMoneyPlayer.Index.ToString(), "+" + MoneyCount.ToString(), PPushType.Heal.Name));
+            PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(GetMoneyPlayer.Name + " 获得金钱 " + MoneyCount.ToString()));
+        }
+    }
+
+    public void LoseMoney(PPlayer Player, int Money, bool IsInjure = false) {
+        PLoseMoneyTag LoseMoneyTag = Monitor.CallTime(PTime.LoseMoneyTime, new PLoseMoneyTag(Player, Money, IsInjure));
+        PPlayer LoseMoneyPlayer = LoseMoneyTag.Player;
+        int MoneyCount = LoseMoneyTag.Money;
+        if (LoseMoneyPlayer != null && MoneyCount > 0) {
+            LoseMoneyPlayer.Money -= MoneyCount;
+            PNetworkManager.NetworkServer.TellClients(new PPushTextOrder(LoseMoneyPlayer.Index.ToString(), "+" + MoneyCount.ToString(), LoseMoneyTag.IsInjure ? PPushType.Injure.Name : PPushType.Throw.Name));
+            PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(LoseMoneyPlayer.Name + " 失去金钱 " + MoneyCount.ToString()));
+        }
+    }
+
+    public void GetHouse(PBlock Block, int HouseCount) {
+        PGetHouseTag GetHouseTag = Monitor.CallTime(PTime.GetHouseTime, new PGetHouseTag(Block, HouseCount));
+        PBlock GetHouseBlock = GetHouseTag.Block;
+        int GetHouseCount = GetHouseTag.House;
+        if (GetHouseBlock != null && GetHouseCount > 0) {
+            GetHouseBlock.HouseNumber += GetHouseCount;
+            PNetworkManager.NetworkServer.TellClients(new PRefreshBlockBasicOrder(Block));
+        }
+    }
+
+    public void PurchaseHouse(PPlayer Player, PBlock Block) {
+        PPurchaseHouseTag PurchaseHouseTag = Monitor.CallTime(PTime.PurchaseHouseTime, new PPurchaseHouseTag(Player, Block));
+        Player = PurchaseHouseTag.Player;
+        Block = PurchaseHouseTag.Block;
+        if (Player != null && Block != null) {
+            if (Block.Price > 0) {
+                LoseMoney(Player, Block.Price);
+            }
+            GetHouse(Block, 1);
+            PNetworkManager.NetworkServer.TellClients(new PRefreshBlockBasicOrder(Block));
+        }
+    }
+
+    public void PurchaseLand(PPlayer Player, PBlock Block) {
+        PPurchaseLandTag PurchaseLandTag = Monitor.CallTime(PTime.PurchaseLandTime, new PPurchaseLandTag(Player, Block));
+        Player = PurchaseLandTag.Player;
+        Block = PurchaseLandTag.Block;
+        if (Player != null && Block != null) {
+            LoseMoney(Player, Block.Price);
+            Block.Lord = Player;
+            GetHouse(Block, 1);
+            PNetworkManager.NetworkServer.TellClients(new PRefreshBlockBasicOrder(Block));
+            if (Block.IsBusinessLand && Block.BusinessType.Equals(PBusinessType.NoType)) {
+                PBusinessType ChosenType = PBusinessType.NoType;
+                List<PBusinessType> Types = new List<PBusinessType>() { PBusinessType.ShoppingCenter, PBusinessType.Institute,
+                            PBusinessType.Pawnshop, PBusinessType.Castle, PBusinessType.Park};
+                if (Player.IsUser) {
+                    ChosenType = Types[PNetworkManager.NetworkServer.ChooseManager.Ask(Player, "选择商业用地的发展方向", Types.ConvertAll((PBusinessType BusinessType) => BusinessType.Name).ToArray())];
+                } else {
+                    ChosenType = PAiBusinessChooser.ChooseDirection(this, Player, Block);
+                }
+                Block.BusinessType = ChosenType;
+                if (ChosenType.Equals(PBusinessType.Park)) {
+                    GetMoney(Player, PMath.Percent(Block.Price, 50));
+                } else if (ChosenType.Equals(PBusinessType.Castle)) {
+                    GetHouse(Block, GetBonusHouseNumberOfCastle(Player, Block));
+                }
+                PNetworkManager.NetworkServer.TellClients(new PRefreshBlockBasicOrder(Block));
+            } else {
+                Block.BusinessType = PBusinessType.NoType;
+            }
         }
     }
 }

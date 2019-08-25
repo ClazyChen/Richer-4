@@ -12,15 +12,17 @@ public class PBlockScene : PAbstractUI{
     public readonly TextMesh BlockName;
     public readonly TextMesh BlockType;
     public readonly TextMesh BlockNumber;
+    public readonly Transform BlockImage;
 
     public PBlockScene(Transform _Background) : base(_Background) {
         InitializeControls<TextMesh>();
+        BlockImage = UIBackgroundImage.Find("BlockImage");
         Close();
     }
 
     public override void Open() {
         base.Open();
-        SetColor(Config.DefaultBlockColor);
+        BlockImage.gameObject.GetComponent<MeshRenderer>().material.color = Config.DefaultBlockColor;
     }
 
     public void InitializeBlock(PBlock Block) {
@@ -28,6 +30,7 @@ public class PBlockScene : PAbstractUI{
         BlockNumber.text = Block.CanPurchase && Block.Lord != null ? Block.HouseNumber.ToString() : string.Empty;
         BlockType.text = Block.BusinessType.Equals(PBusinessType.NoType) ? string.Empty : Block.BusinessType.Name;
         UIBackgroundImage.position = GetSpacePosition(Block);
+        SetColor(Block.Lord == null ? Config.DefaultBlockColor : PPlayerScene.Config.PlayerColors[Block.Lord.Index]);
     }
 
     /// <summary>
