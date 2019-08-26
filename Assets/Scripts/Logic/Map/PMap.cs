@@ -122,7 +122,7 @@ public class PMap : PObject, ICloneable {
         });
         #endregion
         Reader.CloseNode();
-        Reader.OpenNode("Portal");
+        Reader.OpenNode("BRIDGE");
         #region 扫描所有传送门
         Reader.Process((XmlNode PortalNode) => {
             PPortal TempPortal = new PPortal {
