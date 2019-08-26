@@ -48,7 +48,7 @@ public class PGameLogic {
         if (NewSettleThread.ActionThread.IsAlive) {
             NewSettleThread.ActionThread.Abort();
         }
-        if (NewSettleThread.Equals(SettleThreadStack.Peek())) {
+        if (SettleThreadStack.Count > 0 && NewSettleThread.Equals(SettleThreadStack.Peek())) {
             SettleThreadStack.Pop();
         }
     }

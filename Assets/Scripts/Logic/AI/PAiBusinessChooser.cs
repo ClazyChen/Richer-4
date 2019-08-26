@@ -30,11 +30,8 @@ public class PAiBusinessChooser {
             PawnshopExpectation
         };
 
-        int MinExpectation = Math.Max(1, PMath.Min(ExpectationList));
         PLogger.Log("AI-商业用地方向决策权重:" + string.Join(" ", ExpectationList.ConvertAll((int x) => x.ToString())));
-        ExpectationList = ExpectationList.ConvertAll((int Raw) => Raw / MinExpectation);
-        PLogger.Log("AI-商业用地方向决策权重:" + string.Join(" ", ExpectationList.ConvertAll((int x) => x.ToString())));
-        ExpectationList = ExpectationList.ConvertAll((int Raw) => Raw * Raw * Raw);
+        ExpectationList = ExpectationList.ConvertAll((int Raw) => (int)Math.Round(Math.Pow(Math.E, (double)Raw / 1000)));
         PLogger.Log("AI-商业用地方向决策权重:" + string.Join(" ", ExpectationList.ConvertAll((int x) => x.ToString())));
         if (PMath.RandTest((double)ShoppingCenterExpectation / PMath.Sum(ExpectationList))) {
             return PBusinessType.ShoppingCenter;
