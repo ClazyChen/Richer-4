@@ -15,4 +15,13 @@ public class PTime : PObject {
     public static PTime GetHouseTime = new PTime("获得房屋时");
     public static PTime LoseMoneyTime = new PTime("失去金钱时");
     public static PTime PurchaseHouseTime = new PTime("购买房屋时");
+
+    public class Toll {
+        public static PTime AfterEmitTarget = new PTime("指定过路费的目标后");
+        public static PTime AfterAcceptTarget = new PTime("成为过路费的目标后");
+    }
+
+    public class Injure {
+
+    }
 }

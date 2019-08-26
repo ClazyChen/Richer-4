@@ -81,6 +81,13 @@ public class PGame : PGameStatus {
         PNetworkManager.NetworkServer.TellClients(new PShutDownOrder());
     }
 
+    public void Toll(PPlayer FromPlayer, PPlayer ToPlayer, PBlock Block) {
+
+    }
+
+    public void Injure(PPlayer FromPlayer, PPlayer ToPlayer, int Count) {
+    }
+
     public void GetMoney(PPlayer Player, int Money) {
         PGetMoneyTag GetMoneyTag = Monitor.CallTime(PTime.GetMoneyTime, new PGetMoneyTag(Player, Money));
         PPlayer GetMoneyPlayer = GetMoneyTag.Player;
