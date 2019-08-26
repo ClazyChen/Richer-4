@@ -32,7 +32,7 @@ public class PServer {
 
     private TcpListener Listener = null;
     private Thread ServerThread = null;
-    private List<PClientCommander> CommanderList = new List<PClientCommander>();
+    private volatile List<PClientCommander> CommanderList = new List<PClientCommander>();
     private Thread MessageProcessor = null;
     private Thread ProtectorThread = null;
 
@@ -52,7 +52,9 @@ public class PServer {
                     #region 发送接受命令，建立和该客户端通信的命令器
                     PClientCommander commander = new PClientCommander(client);
                     commander.Send(new PAcceptOrder());
-                    CommanderList.Add(commander);
+                    lock (CommanderList) {
+                        CommanderList.Add(commander);
+                    }
                     #endregion
                 } else {
                     #region 建立一个临时的命令器发送拒绝命令

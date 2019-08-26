@@ -11,7 +11,7 @@ public class PRefreshMoneyOrder : POrder {
             if (0 <= PlayerIndex && PlayerIndex < PNetworkManager.NetworkClient.GameStatus.PlayerNumber) {
                 PNetworkManager.NetworkClient.GameStatus.PlayerList[PlayerIndex].Money = Money;
             }
-            PUIManager.AddNewUIAction("RefreshMoney-刷新信息栏", () => {
+            PAnimation.AddAnimation("RefreshMoney-刷新信息栏", () => {
                 PUIManager.GetUI<PMapUI>().PlayerInformationGroup.Update(PlayerIndex);
             });
         }) {
@@ -19,5 +19,9 @@ public class PRefreshMoneyOrder : POrder {
 
     public PRefreshMoneyOrder(string _PlayerIndex, string _Money) : this() {
         args = new string[] { _PlayerIndex, _Money };
+    }
+
+    public PRefreshMoneyOrder(PPlayer Player) : this(Player.Index.ToString(), Player.Money.ToString()) {
+
     }
 }
