@@ -82,10 +82,41 @@ public class PGame : PGameStatus {
     }
 
     public void Toll(PPlayer FromPlayer, PPlayer ToPlayer, PBlock Block) {
-
+        PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(FromPlayer.Name + "向" + ToPlayer.Name + "收取过路费"));
+        PTollTag TollTag = Monitor.CallTime(PTime.Toll.AfterEmitTarget, new PTollTag(FromPlayer, ToPlayer, Block.Toll));
+        if (TollTag.ToPlayer != null && TollTag.ToPlayer.IsAlive && TollTag.Toll > 0) {
+            TollTag = Monitor.CallTime(PTime.Toll.AfterAcceptTarget, TollTag);
+            if (TollTag.ToPlayer != null && TollTag.ToPlayer.IsAlive && TollTag.Toll > 0) {
+                Injure(TollTag.FromPlayer, TollTag.ToPlayer, TollTag.Toll);
+            }
+        }
     }
 
     public void Injure(PPlayer FromPlayer, PPlayer ToPlayer, int Count) {
+        PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(FromPlayer.Name + "对" + ToPlayer.Name + "造成" + Count.ToString() + "点伤害"));
+        PInjureTag InjureTag = Monitor.CallTime(PTime.Injure.StartSettle, new PInjureTag(FromPlayer, ToPlayer, Count));
+        foreach (PTime InjureTime in new PTime[] {
+            PTime.Injure.BeforeEmitInjure,
+            PTime.Injure.BeforeAcceptInjure,
+            PTime.Injure.EmitInjure,
+            PTime.Injure.AcceptInjure,
+            PTime.Injure.AfterEmitInjure,
+            PTime.Injure.AfterAcceptInjure
+        }) {
+            if (InjureTag.ToPlayer != null && InjureTag.ToPlayer.IsAlive && InjureTag.Injure > 0) {
+                if (InjureTime.Equals(PTime.Injure.AfterEmitInjure)) {
+                    if (InjureTag.FromPlayer != null && InjureTag.FromPlayer.IsAlive) {
+                        GetMoney(InjureTag.FromPlayer, InjureTag.Injure);
+                    }
+                } else if (InjureTime.Equals(PTime.Injure.AfterAcceptInjure)) {
+                    LoseMoney(InjureTag.ToPlayer, InjureTag.Injure, true);
+                }
+                InjureTag = Monitor.CallTime(InjureTime, InjureTag);
+            } else {
+                break;
+            }
+        }
+        Monitor.CallTime(PTime.Injure.EndSettle, InjureTag);
     }
 
     public void GetMoney(PPlayer Player, int Money) {

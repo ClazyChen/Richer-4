@@ -34,6 +34,26 @@
                 Game.GetMoney(Game.NowPlayer, PMath.Percent(Game.NowPlayer.Money, Game.NowPlayer.Position.GetMoneyStopPercent));
             }
         });
+        TriggerList.Add(new PTrigger("天灾（固定数额）") {
+            IsLocked = true,
+            Time = PPeriod.SettleStage.During,
+            Condition = (PGame Game) => {
+                return Game.NowPlayer.Position.GetMoneyStopSolid < 0;
+            },
+            Effect = (PGame Game) => {
+                Game.Injure(null, Game.NowPlayer, -Game.NowPlayer.Position.GetMoneyStopSolid);
+            }
+        });
+        TriggerList.Add(new PTrigger("天灾（百分比）") {
+            IsLocked = true,
+            Time = PPeriod.SettleStage.During,
+            Condition = (PGame Game) => {
+                return Game.NowPlayer.Position.GetMoneyStopPercent < 0;
+            },
+            Effect = (PGame Game) => {
+                Game.Injure(null, Game.NowPlayer, -PMath.Percent(Game.NowPlayer.Money, Game.NowPlayer.Position.GetMoneyStopPercent));
+            }
+        });
         MultiPlayerTriggerList.Add((PPlayer Player) => new PTrigger("购买土地") {
             IsLocked = true,
             Player = Player,
@@ -68,7 +88,7 @@
                 }
             }
         });
-        TriggerList.Add(new PTrigger("公园[门票分成]") {
+        TriggerList.Add(new PTrigger("公园[扩建政府补助]") {
             IsLocked = true,
             Time = PTime.PurchaseHouseTime,
             Condition = (PGame Game) => {
@@ -79,15 +99,17 @@
                 Game.GetMoney(PurchaseHouseTag.Player, PMath.Percent(PurchaseHouseTag.Block.Price, 10));
             }
         });
-        MultiPlayerTriggerList.Add((PPlayer Player) => new PTrigger("过路费") {
-            IsLocked = true,
+        MultiPlayerTriggerList.Add((PPlayer Player) => new PTrigger("收取过路费") {
             Player = Player,
             Time = PPeriod.SettleStage.During,
             Condition = (PGame Game) => {
                 return !Game.NowPlayer.Equals(Player) && Player.Equals(Game.NowPlayer.Position.Lord);
             },
+            AICondition = (PGame Game) => {
+                return Game.NowPlayer.TeamIndex != Player.TeamIndex;
+            },
             Effect = (PGame Game) => {
-
+                Game.Toll(Player, Game.NowPlayer, Game.NowPlayer.Position);
             }
         });
     }

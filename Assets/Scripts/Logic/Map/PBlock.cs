@@ -41,4 +41,17 @@ public class PBlock : PObject {
             }
         }
     }
+    public int Toll {
+        get {
+            if (Lord != null) {
+                int TempToll = PMath.Percent(Price, 20 + 40 * HouseNumber);
+                if (BusinessType.Equals(PBusinessType.ShoppingCenter)) {
+                    TempToll *= 2;
+                }
+                return TempToll;
+            } else {
+                return 0;
+            }
+        }
+    }
 }

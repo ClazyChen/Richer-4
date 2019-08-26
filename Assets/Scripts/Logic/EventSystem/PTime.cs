@@ -22,6 +22,13 @@ public class PTime : PObject {
     }
 
     public class Injure {
-
+        public static PTime StartSettle = new PTime("伤害结算开始时");
+        public static PTime BeforeEmitInjure = new PTime("即将造成伤害时");
+        public static PTime BeforeAcceptInjure = new PTime("即将受到伤害时");
+        public static PTime EmitInjure = new PTime("造成伤害时");
+        public static PTime AcceptInjure = new PTime("受到伤害时");
+        public static PTime AfterEmitInjure = new PTime("造成伤害后");
+        public static PTime AfterAcceptInjure = new PTime("受到伤害后");
+        public static PTime EndSettle = new PTime("伤害结算结束时");
     }
 }
