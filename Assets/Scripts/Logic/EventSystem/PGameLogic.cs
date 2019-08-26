@@ -31,7 +31,7 @@ public class PGameLogic {
     }
 
     private readonly PGame Game;
-    private Stack<SettleThread> SettleThreadStack;
+    private volatile Stack<SettleThread> SettleThreadStack;
 
     /// <summary>
     /// 启动结算
@@ -40,7 +40,9 @@ public class PGameLogic {
     /// <param name="action">添加的操作方法</param>
     public void StartSettle(PSettle Settle) {
         SettleThread NewSettleThread = new SettleThread(Settle, Game);
-        SettleThreadStack.Push(NewSettleThread);
+        lock (SettleThreadStack) {
+            SettleThreadStack.Push(NewSettleThread);
+        }
         PLogger.Log("开始结算 " + Settle.Name);
         NewSettleThread.ActionThread.Start();
         PThread.WaitUntil(() => NewSettleThread.Finished);
@@ -48,8 +50,10 @@ public class PGameLogic {
         if (NewSettleThread.ActionThread.IsAlive) {
             NewSettleThread.ActionThread.Abort();
         }
-        if (SettleThreadStack.Count > 0 && NewSettleThread.Equals(SettleThreadStack.Peek())) {
-            SettleThreadStack.Pop();
+        lock (SettleThreadStack) {
+            if (SettleThreadStack.Count > 0 && NewSettleThread.Equals(SettleThreadStack.Peek())) {
+                SettleThreadStack.Pop();
+            }
         }
     }
 
@@ -59,13 +63,15 @@ public class PGameLogic {
     }
 
     public void ShutDown() {
-        if (SettleThreadStack != null) {
-            while (SettleThreadStack.Count > 0) {
-                Thread Top = SettleThreadStack.Peek().ActionThread;
-                if (Top != null && Top.IsAlive) {
-                    Top.Abort();
+        lock (SettleThreadStack) {
+            if (SettleThreadStack != null) {
+                while (SettleThreadStack.Count > 0) {
+                    Thread Top = SettleThreadStack.Peek().ActionThread;
+                    if (Top != null && Top.IsAlive) {
+                        Top.Abort();
+                    }
+                    SettleThreadStack.Pop();
                 }
-                SettleThreadStack.Pop();
             }
         }
     }

@@ -11,6 +11,9 @@ using System;
  */
 
 public class PServer {
+    public class Config {
+        public static float SendDelay = 0.1f;
+    }
     public int maxConnectionNumber = 8;
     public PGame Game = null;
     public PChooseManager ChooseManager = null;
@@ -159,6 +162,7 @@ public class PServer {
         foreach (PClientCommander commander in CommanderList) {
             commander.Send(order);
         }
+        PThread.Delay(Config.SendDelay);
     }
     /// <summary>
     /// 向客户端发送命令
@@ -172,6 +176,7 @@ public class PServer {
                 break;
             }
         }
+        PThread.Delay(Config.SendDelay);
     }
     /// <summary>
     /// 向客户端发送命令

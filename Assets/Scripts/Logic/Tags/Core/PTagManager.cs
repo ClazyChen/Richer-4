@@ -9,7 +9,7 @@ public class PTagManager {
 
     public void CreateTag(PTag Tag) {
         PLogger.Log("创建标签：" + Tag.Name);
-        Tag.FieldList.ForEach((PTag.PTagField Field) => PLogger.Log("  域 " + Field.Name + " = " + Field.Field.ToString()));
+        Tag.FieldList.ForEach((PTag.PTagField Field) => PLogger.Log("  域 " + Field + " = " + (Field.Field != null ? Field.Field.ToString() : "null")));
         TagList.Add(Tag);
     }
 

@@ -16,7 +16,7 @@ public class PStartPeriodOrder : POrder {
             PPeriod Peroid = FindInstance<PPeriod>(args[2]);
             if (Peroid != null) {
                 PNetworkManager.NetworkClient.GameStatus.NowPeriod = Peroid;
-                PAnimation.AddAnimation("切换阶段", () => {
+                PAnimation.AddAnimation("切换阶段为[" + Peroid + "]", () => {
                     PUIManager.GetUI<PMapUI>().PlayerInformationGroup.GroupUIList.ForEach((PPlayerInformationBox Box) => {
                         Box.PeriodText.gameObject.SetActive(false);
                     });
@@ -24,7 +24,7 @@ public class PStartPeriodOrder : POrder {
                     CurrentPeriodText.text = Peroid.IsFreeTime() ? "空闲时间点" : Peroid.Name;
                     CurrentPeriodText.gameObject.SetActive(true);
                     PUIManager.GetUI<PMapUI>().EndFreeTimeButton.interactable = Peroid.IsFreeTime() && NowPlayerIndex == PSystem.PlayerIndex;
-                }, 2, Config.ChangePeriodTime);
+                }, 1, Config.ChangePeriodTime);
             }
         }) {
     }

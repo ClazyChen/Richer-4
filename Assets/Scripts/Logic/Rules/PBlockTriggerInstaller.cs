@@ -51,7 +51,7 @@
                 return Game.NowPlayer.Position.GetMoneyStopPercent < 0;
             },
             Effect = (PGame Game) => {
-                Game.Injure(null, Game.NowPlayer, -PMath.Percent(Game.NowPlayer.Money, Game.NowPlayer.Position.GetMoneyStopPercent));
+                Game.Injure(null, Game.NowPlayer, PMath.Percent(Game.NowPlayer.Money, -Game.NowPlayer.Position.GetMoneyStopPercent));
             }
         });
         MultiPlayerTriggerList.Add((PPlayer Player) => new PTrigger("购买土地") {

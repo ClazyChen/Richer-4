@@ -93,7 +93,7 @@ public class PGame : PGameStatus {
     }
 
     public void Injure(PPlayer FromPlayer, PPlayer ToPlayer, int Count) {
-        PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(FromPlayer.Name + "对" + ToPlayer.Name + "造成" + Count.ToString() + "点伤害"));
+        PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder((FromPlayer == null ? "null" : FromPlayer.Name) + "对" + ToPlayer.Name + "造成" + Count + "点伤害"));
         PInjureTag InjureTag = Monitor.CallTime(PTime.Injure.StartSettle, new PInjureTag(FromPlayer, ToPlayer, Count));
         foreach (PTime InjureTime in new PTime[] {
             PTime.Injure.BeforeEmitInjure,
