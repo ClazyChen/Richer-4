@@ -25,7 +25,9 @@ public class PMessageBox : PAbstractGroupUI<PMessage>{
             PThread.WaitUntil(() => (ChosenMessage = GroupUIList.Find((PMessage Message) => Message.IsChosen)) != null);
             PThread.Async(() => {
                 PNetworkManager.NetworkClient.Send(new PChooseResultOrder(ChosenMessage.Index.ToString()));
-                Close();
+                PUIManager.AddNewUIAction("关闭选项框", () => {
+                    Close();
+                });
             });
         }) {
             IsBackground = true

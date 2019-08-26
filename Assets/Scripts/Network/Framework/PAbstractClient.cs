@@ -11,7 +11,7 @@ public abstract class PAbstractClient {
     public TcpClient Client { get; private set; }
     private volatile NetworkStream stream;
     private Queue<string> recvQueue = new Queue<string>();
-    private Queue<string> sendQueue = new Queue<string>();
+    private volatile Queue<string> sendQueue = new Queue<string>();
     /// <summary>
     /// 上一条未完成发送的字符串
     /// </summary>
@@ -110,7 +110,9 @@ public abstract class PAbstractClient {
     /// <param name="message">发送的字符串信息</param>
     protected virtual void Send(string message) {
         PLogger.Log("发送消息：" + message);
-        sendQueue.Enqueue( PNetworkConfig.MessageStartFlag + message +  PNetworkConfig.MessageEndFlag);
+        lock(sendQueue) {
+            sendQueue.Enqueue(PNetworkConfig.MessageStartFlag + message + PNetworkConfig.MessageEndFlag);
+        }
     }
 
     /// <summary>

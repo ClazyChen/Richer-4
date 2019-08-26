@@ -88,7 +88,7 @@ public class PGame : PGameStatus {
         if (GetMoneyPlayer != null && MoneyCount > 0) {
             GetMoneyPlayer.Money += MoneyCount;
             PNetworkManager.NetworkServer.TellClients(new PPushTextOrder(GetMoneyPlayer.Index.ToString(), "+" + MoneyCount.ToString(), PPushType.Heal.Name));
-            PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(GetMoneyPlayer.Name + " 获得金钱 " + MoneyCount.ToString()));
+            PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(GetMoneyPlayer.Name + "获得金钱" + MoneyCount.ToString()));
         }
     }
 
@@ -98,8 +98,8 @@ public class PGame : PGameStatus {
         int MoneyCount = LoseMoneyTag.Money;
         if (LoseMoneyPlayer != null && MoneyCount > 0) {
             LoseMoneyPlayer.Money -= MoneyCount;
-            PNetworkManager.NetworkServer.TellClients(new PPushTextOrder(LoseMoneyPlayer.Index.ToString(), "+" + MoneyCount.ToString(), LoseMoneyTag.IsInjure ? PPushType.Injure.Name : PPushType.Throw.Name));
-            PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(LoseMoneyPlayer.Name + " 失去金钱 " + MoneyCount.ToString()));
+            PNetworkManager.NetworkServer.TellClients(new PPushTextOrder(LoseMoneyPlayer.Index.ToString(), "-" + MoneyCount.ToString(), LoseMoneyTag.IsInjure ? PPushType.Injure.Name : PPushType.Throw.Name));
+            PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(LoseMoneyPlayer.Name + "失去金钱" + MoneyCount.ToString()));
         }
     }
 
@@ -154,6 +154,7 @@ public class PGame : PGameStatus {
             } else {
                 Block.BusinessType = PBusinessType.NoType;
             }
+            PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "购买了" + Block.Name));
         }
     }
 }

@@ -15,7 +15,7 @@ public class PAskOrder : POrder {
             for (int i = 0; i < OptionNumber; ++i) {
                 Options[i] = args[i + 3];
             }
-            PUIManager.AddNewUIAction("Ask-打开选择框", () => {
+            PAnimation.AddAnimation("Ask-打开选择框", () => {
                 PUIManager.GetUI<PMapUI>().Ask(Title, Options);
             });
         }) {
