@@ -197,4 +197,8 @@ public class PGame : PGameStatus {
             PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "购买了" + Block.Name));
         }
     }
+
+    public void MovePosition(PPlayer Player, PBlock Source, PBlock Destination) {
+        Monitor.CallTime(PTime.MovePositionTime, new PTransportTag(Player, Source, Destination));
+    }
 }

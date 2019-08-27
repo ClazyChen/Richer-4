@@ -1,6 +1,13 @@
 ﻿using System;
 
 public class PPeriodTriggerInstaller : PSystemTriggerInstaller {
+    private class PInPortalTag : PTag {
+        public static string TagName = "位于传送门内";
+        public PInPortalTag() : base(TagName) {
+
+        }
+    }
+
     private static readonly PPeriod[] TurnFlow = {
         PPeriod.StartTurn,
         PPeriod.PreparationStage,
@@ -20,6 +27,29 @@ public class PPeriodTriggerInstaller : PSystemTriggerInstaller {
             PPeriod NextPeroid = NowPeriod;
             for (int i = 0; i < TurnFlow.Length; ++i) {
                 if (NowPeriod.Equals(TurnFlow[i])) {
+                    #region 传送门结算
+                    if (NowPeriod.Equals(PPeriod.SettleStage)) {
+                        if (Game.TagManager.ExistTag(PInPortalTag.TagName)) {
+                            Game.TagManager.PopTag<PInPortalTag>(PInPortalTag.TagName);
+                        } else if (Game.NowPlayer.Position.PortalBlockList.Count > 0) {
+                            Game.TagManager.CreateTag(new PInPortalTag());
+                            PBlock ChosenTarget = Game.NowPlayer.Position.PortalBlockList[0];
+                            if (Game.NowPlayer.Position.PortalBlockList.Count > 1) {
+                                if (Game.NowPlayer.IsUser) {
+                                    ChosenTarget = Game.NowPlayer.Position.PortalBlockList[PNetworkManager.NetworkServer.ChooseManager.Ask(Game.NowPlayer, "选择传送门目标", Game.NowPlayer.Position.PortalBlockList.ConvertAll((PBlock Block) => Block.Name).ToArray())];
+                                } else {
+                                    ChosenTarget = PMath.Max(Game.NowPlayer.Position.PortalBlockList, (PBlock Block) => {
+                                        return PAiMapAnalyzer.StartFromExpect(Game, Game.NowPlayer, Block);
+                                    });
+                                }
+                            }
+                            if (ChosenTarget != null) {
+                                Game.MovePosition(Game.NowPlayer, Game.NowPlayer.Position, ChosenTarget);
+                                break;
+                            }
+                        }
+                    }
+                    #endregion
                     if (i < TurnFlow.Length - 1) {
                         Game.NowPeriod = NextPeroid = TurnFlow[i + 1];
                     } else {

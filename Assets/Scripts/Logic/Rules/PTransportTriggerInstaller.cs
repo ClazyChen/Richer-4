@@ -6,7 +6,7 @@ public class PTransportTriggerInstaller : PSystemTriggerInstaller {
             IsLocked = true,
             Time = PTime.MovePositionTime,
             Effect = (PGame Game) => {
-                PTransportTag Tag = Game.TagManager.PopTag<PTransportTag>(PTransportTag.TagName);
+                PTransportTag Tag = Game.TagManager.FindPeekTag<PTransportTag>(PTransportTag.TagName);
                 if (Tag.Player != null && Tag.Destination != null) {
                     Tag.Player.Position = Tag.Destination;
                     PNetworkManager.NetworkServer.TellClients(new PMovePositionOrder(Tag.Player.Index.ToString(), Tag.Destination.Index.ToString()));

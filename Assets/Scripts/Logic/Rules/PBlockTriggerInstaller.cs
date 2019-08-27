@@ -1,4 +1,5 @@
 ﻿public class PBlockTriggerInstaller : PSystemTriggerInstaller { 
+
     public PBlockTriggerInstaller() : base("格子的停留结算") {
         TriggerList.Add(new PTrigger("初始化结算阶段购买土地或房屋的次数") {
             IsLocked = true,

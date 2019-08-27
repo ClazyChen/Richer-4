@@ -11,10 +11,34 @@ public class PMath {
         Samples.ForEach((int Sample) => Max = Math.Max(Max, Sample));
         return Max;
     }
+    public static T Max<T>(List<T> Samples, Converter<T, int> Measure) where T: PObject {
+        int Max = int.MinValue;
+        T MaxSample = null;
+        Samples.ForEach((T Sample) => {
+            int Test = Measure(Sample);
+            if (Test >= Max) {
+                Max = Test;
+                MaxSample = Sample;
+            }
+        });
+        return MaxSample;
+    }
     public static int Min(List<int> Samples) {
         int Min = int.MaxValue;
         Samples.ForEach((int Sample) => Min = Math.Min(Min, Sample));
         return Min;
+    }
+    public static T Min<T>(List<T> Samples, Converter<T, int> Measure) where T : PObject {
+        int Min = int.MaxValue;
+        T MinSample = null;
+        Samples.ForEach((T Sample) => {
+            int Test = Measure(Sample);
+            if (Test >= Min) {
+                Min = Test;
+                MinSample = Sample;
+            }
+        });
+        return MinSample;
     }
     public static int Sum(List<int> Samples) {
         int Sum = 0;
