@@ -158,8 +158,8 @@ public class PGame : PGameStatus {
         Player = PurchaseHouseTag.Player;
         Block = PurchaseHouseTag.Block;
         if (Player != null && Block != null) {
-            if (Block.Price > 0) {
-                LoseMoney(Player, Block.Price);
+            if (Block.HousePrice > 0) {
+                LoseMoney(Player, Block.HousePrice);
             }
             GetHouse(Block, 1);
             PNetworkManager.NetworkServer.TellClients(new PRefreshBlockBasicOrder(Block));
