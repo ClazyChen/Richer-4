@@ -1,6 +1,6 @@
 public class PPlayer: PObject {
     public class Config {
-        public static int DefaultMoney = 30000;
+        public static int DefaultMoney = 100;
     }
 
     public int Index;

@@ -7,6 +7,15 @@ public class PTime : PObject {
         Name = _Name;
     }
 
+    public bool IsPeroidTime() {
+        foreach (PPeriod Peroid in PPeriodTriggerInstaller.TurnFlow) {
+            if (Equals(Peroid.Before) || Equals(Peroid.During) || Equals(Peroid.End) || Equals(Peroid.After) || Equals(Peroid.Start)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static PTime StartGameTime = new PTime("游戏开始时");
     public static PTime PassBlockTime = new PTime("经过格子时");
     public static PTime MovePositionTime = new PTime("移动位置时");
@@ -15,6 +24,11 @@ public class PTime : PObject {
     public static PTime GetHouseTime = new PTime("获得房屋时");
     public static PTime LoseMoneyTime = new PTime("失去金钱时");
     public static PTime PurchaseHouseTime = new PTime("购买房屋时");
+
+    public static PTime EnterDyingTime = new PTime("进入濒死状态时");
+    public static PTime LeaveDyingTime = new PTime("离开濒死状态时");
+    public static PTime DieTime = new PTime("死亡时");
+    public static PTime AfterDieTime = new PTime("死亡后");
 
     public class Toll {
         public static PTime AfterEmitTarget = new PTime("指定过路费的目标后");

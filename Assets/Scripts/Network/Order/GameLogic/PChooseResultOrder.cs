@@ -7,7 +7,11 @@
 public class PChooseResultOrder : POrder {
     public PChooseResultOrder() : base("choose_result",
         (string[] args, string IPAddress) => {
-            PNetworkManager.NetworkServer.ChooseManager.ChosenAnswer = Convert.ToInt32(args[1]);
+            if (PNetworkManager.NetworkServer.Game.EndGameFlag) {
+                PNetworkManager.NetworkServer.Game.Prepared(IPAddress);
+            } else {
+                PNetworkManager.NetworkServer.ChooseManager.ChosenAnswer = Convert.ToInt32(args[1]);
+            }
         },
         null) {
     }

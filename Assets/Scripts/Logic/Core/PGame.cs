@@ -13,6 +13,9 @@ public class PGame : PGameStatus {
 
     public bool StartGameFlag { get; private set; }
     public bool EndGameFlag { get; private set; }
+    public bool ReadyToStartGameFlag { get; private set; }
+
+    public List<bool> PreparedList;
 
     /// <summary>
     /// 新建一个游戏
@@ -28,6 +31,8 @@ public class PGame : PGameStatus {
         TagManager = new PTagManager();
         StartGameFlag = false;
         EndGameFlag = false;
+        ReadyToStartGameFlag = true;
+        PreparedList = new List<bool>();
     }
 
     /// <summary>
@@ -58,6 +63,7 @@ public class PGame : PGameStatus {
             NowPlayer = null;
             NowPeriod = null;
             StartGameFlag = true;
+            ReadyToStartGameFlag = false;
             PLogger.Log("开始进行规则装载");
             PObject.ListSubTypeInstances<PSystemTriggerInstaller>().ForEach((PSystemTriggerInstaller Installer) => {
                 Installer.Install(Monitor);
@@ -77,7 +83,11 @@ public class PGame : PGameStatus {
 
     public void ShutDown() {
         Logic.ShutDown();
+        Monitor.RemoveAll();
         TagManager.RemoveAll();
+        StartGameFlag = false;
+        EndGameFlag = false;
+        ReadyToStartGameFlag = false;
         PNetworkManager.NetworkServer.TellClients(new PShutDownOrder());
     }
 
@@ -127,7 +137,7 @@ public class PGame : PGameStatus {
             GetMoneyPlayer.Money += MoneyCount;
             PNetworkManager.NetworkServer.TellClients(new PPushTextOrder(GetMoneyPlayer.Index.ToString(), "+" + MoneyCount.ToString(), PPushType.Heal.Name));
             PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(GetMoneyPlayer.Name + "获得金钱" + MoneyCount.ToString()));
-            PNetworkManager.NetworkServer.TellClients(new PRefreshMoneyOrder(Player));
+            PNetworkManager.NetworkServer.TellClients(new PRefreshMoneyOrder(GetMoneyPlayer));
         }
     }
 
@@ -139,7 +149,86 @@ public class PGame : PGameStatus {
             LoseMoneyPlayer.Money -= MoneyCount;
             PNetworkManager.NetworkServer.TellClients(new PPushTextOrder(LoseMoneyPlayer.Index.ToString(), "-" + MoneyCount.ToString(), LoseMoneyTag.IsInjure ? PPushType.Injure.Name : PPushType.Throw.Name));
             PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(LoseMoneyPlayer.Name + "失去金钱" + MoneyCount.ToString()));
-            PNetworkManager.NetworkServer.TellClients(new PRefreshMoneyOrder(Player));
+            PNetworkManager.NetworkServer.TellClients(new PRefreshMoneyOrder(LoseMoneyPlayer));
+            if (LoseMoneyPlayer.Money <= 0) {
+                Dying(LoseMoneyPlayer);
+            }
+        }
+    }
+
+    public void Dying(PPlayer Player) {
+        PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "进入濒死状态"));
+        Monitor.CallTime(PTime.EnterDyingTime, new PDyingTag(Player));
+        if (Player.Money <= 0) {
+            Die(Player);
+        }
+    }
+
+    public void Die(PPlayer Player) {
+        PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "死亡！"));
+        Map.BlockList.ForEach((PBlock Block) => {
+            if (Player.Equals(Block.Lord)) {
+                Block.Lord = null;
+                Block.HouseNumber = 0;
+                Block.BusinessType = PBusinessType.NoType;
+                PNetworkManager.NetworkServer.TellClients(new PRefreshBlockBasicOrder(Block));
+            }
+        });
+        // 弃置所有区域内的牌
+        Player.IsAlive = false;
+        PNetworkManager.NetworkServer.TellClients(new PDieOrder(Player.Index.ToString()));
+        if (GameOver()) {
+            PLogger.Log("游戏结束");
+            EndGame();
+        } else if (!NowPlayer.IsAlive) {
+            PLogger.Log("因为当前玩家死亡，回合中止");
+            TagManager.PopTag<PStepCountTag>(PStepCountTag.TagName);
+            TagManager.PopTag<PDiceResultTag>(PDiceResultTag.TagName);
+            Monitor.EndTurnDirectly = true;
+        }
+    }
+
+    private bool GameOver() {
+        List<int> LivingTeam = new List<int>();
+        PlayerList.ForEach((PPlayer Player) => {
+            if (Player.IsAlive && LivingTeam.Contains(Player.TeamIndex)) {
+                LivingTeam.Add(Player.TeamIndex);
+            }
+        });
+        return LivingTeam.Count <= 1;
+    }
+
+    private void EndGame() {
+        if (EndGameFlag) {
+            return;
+        }
+        EndGameFlag = true;
+        ReadyToStartGameFlag = false;
+        PreparedList = new List<bool>();
+        PlayerList.ForEach((PPlayer Player) => {
+            PreparedList.Add(Player.IsAI);
+        });
+        PThread.Async(() => {
+            Logic.ShutDown();
+            Monitor.RemoveAll();
+            TagManager.RemoveAll();
+            PNetworkManager.NetworkServer.TellClients(new PGameOverOrder("null"));
+            ReadyToStartGameFlag = true;
+        });
+    }
+
+    public void Prepared(string IPAddress) {
+        PPlayer TargetPlayer = PNetworkManager.NetworkServer.Game.PlayerList.Find((PPlayer Player) => Player.IPAddress.Equals(IPAddress));
+        if (TargetPlayer != null) {
+            lock (PreparedList) {
+                PreparedList[TargetPlayer.Index] = true;
+            }
+            if (PreparedList.TrueForAll((bool x)=>x)) {
+                PThread.Async(() => {
+                    PThread.WaitUntil(() => ReadyToStartGameFlag);
+                    StartGame();
+                });
+            }
         }
     }
 
@@ -149,7 +238,7 @@ public class PGame : PGameStatus {
         int GetHouseCount = GetHouseTag.House;
         if (GetHouseBlock != null && GetHouseCount > 0) {
             GetHouseBlock.HouseNumber += GetHouseCount;
-            PNetworkManager.NetworkServer.TellClients(new PRefreshBlockBasicOrder(Block));
+            PNetworkManager.NetworkServer.TellClients(new PRefreshBlockBasicOrder(GetHouseBlock));
         }
     }
 

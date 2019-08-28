@@ -53,9 +53,9 @@ public class PServer {
                 #region 判断列表是否已满，发送接受或拒绝命令给请求连接的客户端
                 if (CommanderList.Count < maxConnectionNumber) {
                     #region 发送接受命令，建立和该客户端通信的命令器
-                    PClientCommander commander = new PClientCommander(client);
-                    commander.Send(new PAcceptOrder());
                     lock (CommanderList) {
+                        PClientCommander commander = new PClientCommander(client);
+                        commander.Send(new PAcceptOrder());
                         CommanderList.Add(commander);
                     }
                     #endregion

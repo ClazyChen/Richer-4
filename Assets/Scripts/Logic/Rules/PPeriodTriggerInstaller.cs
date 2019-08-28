@@ -8,7 +8,7 @@ public class PPeriodTriggerInstaller : PSystemTriggerInstaller {
         }
     }
 
-    private static readonly PPeriod[] TurnFlow = {
+    public static readonly PPeriod[] TurnFlow = {
         PPeriod.StartTurn,
         PPeriod.PreparationStage,
         PPeriod.JudgeStage,
@@ -55,6 +55,7 @@ public class PPeriodTriggerInstaller : PSystemTriggerInstaller {
                     } else {
                         Game.NowPeriod = NextPeroid = TurnFlow[0];
                         Game.NowPlayer = Game.GetNextPlayer(Game.NowPlayer);
+                        Game.Monitor.EndTurnDirectly = false;
                         PNetworkManager.NetworkServer.TellClients(new PStartTurnOrder(Game.NowPlayerIndex.ToString()));
                     }
                     break;

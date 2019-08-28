@@ -3,15 +3,22 @@ using System.Linq;
 
 public class PMonitor {
     public readonly PGame Game;
+    public bool EndTurnDirectly;
     private readonly List<PTrigger> TriggerList;
 
     public PMonitor(PGame _Game) {
         Game = _Game;
+        EndTurnDirectly = false;
         TriggerList = new List<PTrigger>();
     }
 
     public void AddTrigger(PTrigger Trigger) {
         TriggerList.Add(Trigger);
+    }
+
+    public void RemoveAll() {
+        EndTurnDirectly = false;
+        TriggerList.Clear();
     }
 
     public bool RemoveTrigger(PTrigger Trigger) {
@@ -27,6 +34,9 @@ public class PMonitor {
     // 宣布一个时机的到来
     public void CallTime(PTime Time) {
         PLogger.Log("时机到来：" + Time.Name);
+        if (Time.IsPeroidTime() && EndTurnDirectly) {
+            return;
+        }
         List<PTrigger> AvailableTriggerList = TriggerList.FindAll((PTrigger Trigger) => Trigger.Time.Equals(Time));
         AvailableTriggerList.Sort((PTrigger x, PTrigger y) => PTrigger.ComparePriority(Game, x, y));
         for (int i = 0; i < AvailableTriggerList.Count;) {
@@ -69,6 +79,10 @@ public class PMonitor {
                     }));
                     if (!ChosenTrigger.CanRepeat) {
                         CurrentTriggerList.Remove(ChosenTrigger);
+                    }
+                    if (Time.IsPeroidTime() && EndTurnDirectly) {
+                        PLogger.Log("阶段立刻结束");
+                        return;
                     }
                 } else {
                     break;

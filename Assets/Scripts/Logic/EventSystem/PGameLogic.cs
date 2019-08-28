@@ -77,6 +77,6 @@ public class PGameLogic {
     }
 
     public bool WaitingForEndFreeTime() {
-        return SettleThreadStack.Peek().Settle.Name.Contains("触发[玩家的空闲时间点]");
+        return SettleThreadStack.Count > 0 && SettleThreadStack.Peek().Settle.Name.Contains("触发[玩家的空闲时间点]");
     }
 }
