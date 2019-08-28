@@ -47,6 +47,5 @@ public class PPlayerScene : PAbstractUI {
 
     public static Vector3 GetScreenPosition(PPlayer Player) {
         return PUIManager.GetUI<PMapUI>().CameraController.Camera.GetComponent<Camera>().WorldToScreenPoint(PUIManager.GetUI<PMapUI>().Scene.PlayerGroup.GroupUIList[Player.Index].UIBackgroundImage.position);
-        //return PUIManager.GetUI<PMapUI>().CameraController.Camera.GetComponent<Camera>().WorldToScreenPoint(GetSpacePosition(Player));
     }
 }

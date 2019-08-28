@@ -14,11 +14,7 @@ public class PMessageBox : PAbstractGroupUI<PMessage>{
 
     public void CreateMessages(string Title, string[] ButtonTexts) {
         int ButtonNumber = ButtonTexts.Length;
-        PLogger.Log("rect:" + PrototypeUI.UIBackgroundImage.GetComponent<RectTransform>().rect);
-        PLogger.Log("localScale:" + PrototypeUI.UIBackgroundImage.GetComponent<RectTransform>().localScale);
-        PLogger.Log("lossyScale:" + PrototypeUI.UIBackgroundImage.GetComponent<RectTransform>().lossyScale);
         float DeltaHeight = PrototypeUI.UIBackgroundImage.GetComponent<RectTransform>().rect.height * PrototypeUI.UIBackgroundImage.GetComponent<RectTransform>().lossyScale.y;
-        PLogger.Log("DeltaHeight:" + DeltaHeight);
         Vector3 CenterPoint = PrototypeUI.UIBackgroundImage.GetComponent<RectTransform>().position;
         TitleText.text = Title;
         TitleText.rectTransform.position = CenterPoint + new Vector3(0, DeltaHeight * ButtonNumber /2);
