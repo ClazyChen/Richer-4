@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 /// <summary>
 /// PMapUI类：
@@ -27,13 +28,14 @@ public class PMapUI : PAbstractUI {
         InitializeControls<Button>();
         InitializeControls<Image>();
         InitializeControls<Text>();
+        InformationList = new List<string>();
         Scene = new PMapScene(GameObject.Find("Map").transform);
         MessageBox = new PMessageBox(UIBackgroundImage.Find("MessageBox"));
         PlayerInformationGroup = new PPlayerInformationBoxGroup(UIBackgroundImage.Find("PlayerInformationBoxes"));
         CameraController = new PCameraController();
         DiceSpriteList = new Sprite[6];
-        for (int i = 0; i < 6; ++ i) {
-            DiceSpriteList[i] = Resources.Load<Sprite>("Images/Dice/" + (i+1).ToString());
+        for (int i = 0; i < 6; ++i) {
+            DiceSpriteList[i] = Resources.Load<Sprite>("Images/Dice/" + (i + 1).ToString());
         }
         Close();
     }
@@ -53,6 +55,7 @@ public class PMapUI : PAbstractUI {
     }
 
     public override void Close() {
+        InformationList.Clear();
         CameraController.Close();
         Scene.Close();
         MessageBox.Close();
@@ -69,7 +72,7 @@ public class PMapUI : PAbstractUI {
         MessageBox.Open();
         MessageBox.CreateMessages(Title, Options);
     }
-    
+
     /// <summary>
     /// 被按下空格时的操作
     /// </summary>
@@ -98,5 +101,36 @@ public class PMapUI : PAbstractUI {
         }, () => {
             DiceImage.gameObject.SetActive(true);
         });
+    }
+
+    private List<string> InformationList;
+    private int InformationPointer = -1;
+
+    private void RefreshInformation() {
+        if (InformationPointer >= 0 && InformationPointer < InformationList.Count) {
+            InformationText.text = InformationList[InformationPointer];
+        } else {
+            InformationText.text = string.Empty;
+        }
+    }
+
+    public void AddNewInformation(string Information) {
+        InformationList.Add(Information);
+        InformationPointer = InformationList.Count - 1;
+        RefreshInformation();
+    }
+
+    public void LastInformation() {
+        if (InformationPointer > 0) {
+            InformationPointer--;
+        }
+        RefreshInformation();
+    }
+
+    public void NextInformation() {
+        if (InformationPointer < InformationList.Count - 1) {
+            InformationPointer++;
+        }
+        RefreshInformation();
     }
 }

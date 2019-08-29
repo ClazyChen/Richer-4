@@ -11,8 +11,8 @@ public class PCameraController {
     public class Config {
         public static string MainCameraName = "Main Camera";
 
-        public static readonly Vector3 CameraLockedDistance = new Vector3(20.0f, 30.0f, 0.0f);
-        public static readonly Vector3 CameraZoomDistance = new Vector3(2.0f, 3.0f, 0.0f);
+        public static Vector3 CameraLockedDistance = new Vector3(20.0f, 30.0f, 0.0f);
+        public static Vector3 CameraZoomDistance = new Vector3(2.0f, 3.0f, 0.0f);
         public static int ChangePerspectiveFrameNumber = 20;
         public static float ChangePerspectiveTime = 0.2f;
         public static float CameraInterval = 0.01f;
