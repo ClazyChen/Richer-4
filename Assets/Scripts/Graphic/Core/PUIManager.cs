@@ -127,7 +127,16 @@ public class PUIManager: MonoBehaviour {
                         if (!CurrentAction.Name.Equals(string.Empty)) {
                             PLogger.Log("执行操作 " + CurrentAction.ToString());
                         }
+                        bool ActionCompleted = false;
+                        PThread.Async(() => {
+                            PThread.Delay(0.5f);
+                            if (!ActionCompleted) {
+                                PLogger.Log("操作异常：" + CurrentAction.ToString());
+                                throw new TimeoutException("UI操作超时");
+                            }
+                        });
                         CurrentAction.Action();
+                        ActionCompleted = true;
                     }
                 } catch (Exception e) {
                     PLogger.Log("操作 " + CurrentAction.ToString() + " 发生错误");
