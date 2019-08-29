@@ -12,6 +12,7 @@ public class PDieOrder : POrder {
             PNetworkManager.NetworkClient.GameStatus.FindPlayer(DiePlayerIndex).IsAlive = false;
             PAnimation.AddAnimation("玩家死亡", () => {
                 PUIManager.GetUI<PMapUI>().PlayerInformationGroup.GroupUIList[DiePlayerIndex].Initialize(PNetworkManager.NetworkClient.GameStatus.FindPlayer(DiePlayerIndex));
+                PUIManager.GetUI<PMapUI>().Scene.PlayerGroup.GroupUIList[DiePlayerIndex].Close();
             });
             
         }) {

@@ -191,11 +191,36 @@ public class PGame : PGameStatus {
     private bool GameOver() {
         List<int> LivingTeam = new List<int>();
         PlayerList.ForEach((PPlayer Player) => {
-            if (Player.IsAlive && LivingTeam.Contains(Player.TeamIndex)) {
+            if (Player.IsAlive && !LivingTeam.Contains(Player.TeamIndex)) {
                 LivingTeam.Add(Player.TeamIndex);
             }
         });
         return LivingTeam.Count <= 1;
+    }
+
+    private string Winners() {
+        List<int> LivingTeam = new List<int>();
+        PlayerList.ForEach((PPlayer Player) => {
+            if (Player.IsAlive && !LivingTeam.Contains(Player.TeamIndex)) {
+                LivingTeam.Add(Player.TeamIndex);
+            }
+        });
+        if (LivingTeam.Count < 1) {
+            return "null";
+        } else {
+            int WinnerTeam = LivingTeam[0];
+            string WinnerNames = string.Empty;
+            PlayerList.ForEach((PPlayer Player) => {
+                if (Player.TeamIndex == WinnerTeam) {
+                    WinnerNames += "," + Player.Name;
+                }
+            });
+            if (WinnerNames.Length > 0) {
+                return WinnerNames.Substring(1);
+            } else {
+                return "null";
+            }
+        }
     }
 
     private void EndGame() {
@@ -212,7 +237,7 @@ public class PGame : PGameStatus {
             Logic.ShutDown();
             Monitor.RemoveAll();
             TagManager.RemoveAll();
-            PNetworkManager.NetworkServer.TellClients(new PGameOverOrder("null"));
+            PNetworkManager.NetworkServer.TellClients(new PGameOverOrder(Winners()));
             ReadyToStartGameFlag = true;
         });
     }

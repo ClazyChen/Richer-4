@@ -8,10 +8,10 @@ public class PRefreshMoneyOrder : POrder {
         (string[] args) => {
             int PlayerIndex = int.Parse(args[1]);
             int Money = int.Parse(args[2]);
-            if (0 <= PlayerIndex && PlayerIndex < PNetworkManager.NetworkClient.GameStatus.PlayerNumber) {
-                PNetworkManager.NetworkClient.GameStatus.PlayerList[PlayerIndex].Money = Money;
-            }
             PAnimation.AddAnimation("RefreshMoney-刷新信息栏", () => {
+                if (0 <= PlayerIndex && PlayerIndex < PNetworkManager.NetworkClient.GameStatus.PlayerNumber) {
+                    PNetworkManager.NetworkClient.GameStatus.PlayerList[PlayerIndex].Money = Money;
+                }
                 PUIManager.GetUI<PMapUI>().PlayerInformationGroup.Update(PlayerIndex);
             });
         }) {

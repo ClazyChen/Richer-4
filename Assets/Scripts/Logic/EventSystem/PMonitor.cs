@@ -53,7 +53,7 @@ public class PMonitor {
                 continue;
             }
             List<PTrigger> ValidTriggerList;
-            while ((ValidTriggerList = CurrentTriggerList.FindAll((PTrigger Trigger) => Trigger.Condition(Game) && (Judger == null || Judger.IsUser || Trigger.AICondition(Game)))).Count > 0) {
+            while ((ValidTriggerList = CurrentTriggerList.FindAll((PTrigger Trigger) => Trigger.Condition(Game) && (Judger == null || Judger.IsAlive) && (Judger == null || Judger.IsUser || Trigger.AICondition(Game)))).Count > 0) {
                 PTrigger ChosenTrigger = null;
                 #region 系统和AI直接选择，玩家利用选择管理器选择
                 if (Judger == null || Judger.IsAI) {

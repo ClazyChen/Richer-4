@@ -31,7 +31,7 @@ public class PPeriodTriggerInstaller : PSystemTriggerInstaller {
                     if (NowPeriod.Equals(PPeriod.SettleStage)) {
                         if (Game.TagManager.ExistTag(PInPortalTag.TagName)) {
                             Game.TagManager.PopTag<PInPortalTag>(PInPortalTag.TagName);
-                        } else if (Game.NowPlayer.Position.PortalBlockList.Count > 0) {
+                        } else if (Game.NowPlayer.Position.PortalBlockList.Count > 0 && Game.NowPlayer.IsAlive) {
                             Game.TagManager.CreateTag(new PInPortalTag());
                             PBlock ChosenTarget = Game.NowPlayer.Position.PortalBlockList[0];
                             if (Game.NowPlayer.Position.PortalBlockList.Count > 1) {
