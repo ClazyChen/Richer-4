@@ -8,6 +8,12 @@ public class PSystem: MonoBehaviour {
     public static PMode CurrentMode = null;
     public static int PlayerIndex = 0;
 
+    public static Vector3 LastMousePosition;
+    public static bool MouseRightButtonDown = false;
+    public class Config {
+        public static float MouseSensitivity = 0.1f;
+    }
+
     void Start() {
         PLogger.StartLogging(true);
         #region 初始化地图库
@@ -27,7 +33,30 @@ public class PSystem: MonoBehaviour {
             }
         }
 
-        // 鼠标滚动
+        if (Input.GetMouseButtonDown(1)) {
+            MouseRightButtonDown = true;
+            if (PUIManager.CurrentUI.Equals(PUIManager.GetUI<PMapUI>())) {
+                PUIManager.AddNewUIAction("启动右键拖拽", () => {
+                    PUIManager.GetUI<PMapUI>().CameraController.StopTracking();
+                    LastMousePosition = Input.mousePosition;
+                });
+            }
+        }
+        if (Input.GetMouseButtonUp(1)) {
+            MouseRightButtonDown = false;
+        }
+        if (MouseRightButtonDown) {
+            if (PUIManager.CurrentUI.Equals(PUIManager.GetUI<PMapUI>())) {
+                PUIManager.AddNewUIAction(string.Empty, () => {
+                    Vector3 MouseDirection = Input.mousePosition - LastMousePosition;
+                    LastMousePosition = Input.mousePosition;
+                    Vector3 MoveDirection = new Vector3(MouseDirection.y, 0, -MouseDirection.x) * Config.MouseSensitivity;
+                    PUIManager.GetUI<PMapUI>().CameraController.ChangePerspective(PUIManager.GetUI<PMapUI>().CameraController.Camera.position + MoveDirection);
+                });
+            }
+        }
+
+        #region 鼠标滚动
         if (Input.GetAxis("Mouse ScrollWheel") < 0) {
             if (PUIManager.CurrentUI.Equals(PUIManager.GetUI<PMapUI>()) && PUIManager.GetUI<PMapUI>().CameraController != null) {
                 if (PMath.InRect(Input.mousePosition, PUIManager.GetUI<PMapUI>().InformationText.rectTransform)) {
@@ -59,5 +88,6 @@ public class PSystem: MonoBehaviour {
                 }
             }
         }
+        #endregion
     }
 }
