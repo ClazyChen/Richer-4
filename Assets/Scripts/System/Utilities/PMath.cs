@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class PMath {
-    static Random random = new Random();
+    static System.Random random = new System.Random();
     public static int RandInt(int l, int r) {
         return random.Next(l, r + 1);
     }
@@ -59,5 +60,9 @@ public class PMath {
         float temp = (float)Base / 1000;
         int TenCents = (int)(temp + 0.99) * 100;
         return TenCents * (Percentage / 10);
+    }
+
+    public static bool InRect(Vector3 Point, RectTransform Rect) {
+        return (Math.Abs(Point.x - Rect.position.x) < Rect.rect.width * Rect.lossyScale.x / 2) && (Math.Abs(Point.y - Rect.position.y) < Rect.rect.height * Rect.lossyScale.y / 2);
     }
 }

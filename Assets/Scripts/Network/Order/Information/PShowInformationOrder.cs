@@ -11,7 +11,7 @@ public class PShowInformationOrder : POrder {
             string Information = args[1];
             PAnimation.AddAnimation("显示消息[" + Information + "]", () => {
                 PUIManager.GetUI<PMapUI>().AddNewInformation(Information);
-            }, 2, 0.2f);
+            }, 1, 0.2f);
         }) {
     }
 

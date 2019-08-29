@@ -30,27 +30,33 @@ public class PSystem: MonoBehaviour {
         // 鼠标滚动
         if (Input.GetAxis("Mouse ScrollWheel") < 0) {
             if (PUIManager.CurrentUI.Equals(PUIManager.GetUI<PMapUI>()) && PUIManager.GetUI<PMapUI>().CameraController != null) {
-                Vector3 MousePosition = Input.mousePosition;
-                PLogger.Log(MousePosition.ToString());
-                PUIManager.AddNewUIAction("缩放[zoom+]", () => {
-                    //PUIManager.GetUI<PMapUI>().CameraController.StopTracking();
-                    if (PCameraController.Config.CameraLockedDistance.magnitude < 60.0f) {
-                        PCameraController.Config.CameraLockedDistance += PCameraController.Config.CameraZoomDistance;
-                        PUIManager.GetUI<PMapUI>().CameraController.ChangePerspective(PUIManager.GetUI<PMapUI>().CameraController.Camera.position + PCameraController.Config.CameraZoomDistance);
-                    }
-                });
+                if (PMath.InRect(Input.mousePosition, PUIManager.GetUI<PMapUI>().InformationText.rectTransform)) {
+                    PUIManager.AddNewUIAction("查看下一条信息", () => {
+                        PUIManager.GetUI<PMapUI>().NextInformation();
+                    });
+                } else {
+                    PUIManager.AddNewUIAction("缩放[zoom+]", () => {
+                        if (PCameraController.Config.CameraLockedDistance.magnitude < 60.0f) {
+                            PCameraController.Config.CameraLockedDistance += PCameraController.Config.CameraZoomDistance;
+                            PUIManager.GetUI<PMapUI>().CameraController.ChangePerspective(PUIManager.GetUI<PMapUI>().CameraController.Camera.position + PCameraController.Config.CameraZoomDistance);
+                        }
+                    });
+                }
             }
         } else if (Input.GetAxis("Mouse ScrollWheel") > 0) {
             if (PUIManager.CurrentUI.Equals(PUIManager.GetUI<PMapUI>()) && PUIManager.GetUI<PMapUI>().CameraController != null) {
-                Vector3 MousePosition = Input.mousePosition;
-                PLogger.Log(MousePosition.ToString());
-                PUIManager.AddNewUIAction("缩放[zoom-]", () => {
-                    //PUIManager.GetUI<PMapUI>().CameraController.StopTracking();
-                    if (PCameraController.Config.CameraLockedDistance.magnitude > 20.0f) {
-                        PCameraController.Config.CameraLockedDistance -= PCameraController.Config.CameraZoomDistance;
-                        PUIManager.GetUI<PMapUI>().CameraController.ChangePerspective(PUIManager.GetUI<PMapUI>().CameraController.Camera.position - PCameraController.Config.CameraZoomDistance);
-                    }
-                });
+                if (PMath.InRect(Input.mousePosition, PUIManager.GetUI<PMapUI>().InformationText.rectTransform)) {
+                    PUIManager.AddNewUIAction("查看上一条信息", () => {
+                        PUIManager.GetUI<PMapUI>().LastInformation();
+                    });
+                } else {
+                    PUIManager.AddNewUIAction("缩放[zoom-]", () => {
+                        if (PCameraController.Config.CameraLockedDistance.magnitude > 20.0f) {
+                            PCameraController.Config.CameraLockedDistance -= PCameraController.Config.CameraZoomDistance;
+                            PUIManager.GetUI<PMapUI>().CameraController.ChangePerspective(PUIManager.GetUI<PMapUI>().CameraController.Camera.position - PCameraController.Config.CameraZoomDistance);
+                        }
+                    });
+                }
             }
         }
     }

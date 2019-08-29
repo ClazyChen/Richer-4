@@ -116,6 +116,9 @@ public class PMapUI : PAbstractUI {
 
     public void AddNewInformation(string Information) {
         InformationList.Add(Information);
+        InformationList.ForEach((string Info) => {
+            PLogger.Log("    历史消息：" + Info);
+        });
         InformationPointer = InformationList.Count - 1;
         RefreshInformation();
     }
