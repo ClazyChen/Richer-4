@@ -27,6 +27,10 @@ public abstract class PCardModel: PObject {
     protected delegate List<PPlayer> TargetChooser(PGame Game, PPlayer Player);
     protected delegate void EffectFunc(PGame Game, PPlayer User, PPlayer Target);
 
+    public virtual int AIInHandExpectation(PGame Game, PPlayer Player) {
+        return 0;
+    }
+
     public PCardModel(string _Name) {
         Name = _Name;
         MoveInHandTriggerList = new List<Func<PPlayer, PCard, PTrigger>>();

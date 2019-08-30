@@ -52,8 +52,8 @@ public abstract class PAbstractClient {
                         StringToSend += sendQueue.Dequeue();
                     }
                     byte[] buffer = Encoding.UTF8.GetBytes(StringToSend);
-                    stream.Write(buffer, 0, buffer.Length);
-                    stream.Flush();
+                    stream?.Write(buffer, 0, buffer.Length);
+                    stream?.Flush();
                 }
                 #endregion
                 #region 检查接收的消息

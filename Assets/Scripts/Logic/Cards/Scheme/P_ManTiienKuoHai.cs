@@ -11,6 +11,15 @@ public class P_ManTiienKuoHai: PSchemeCardModel {
         return new List<PPlayer>() { Target };
     }
 
+    public override int AIInHandExpectation(PGame Game, PPlayer Player) {
+        int Basic = 1400;
+        int MinEnemyMoney = PMath.Min(Game.Enemies(Player), (PPlayer Test) => Test.Money).Money;
+        if (MinEnemyMoney <= 1200 ) {
+            Basic += 5000 * (7 - MinEnemyMoney / 200);
+        }
+        return Basic;
+    }
+
     public readonly static string CardName = "瞒天过海";
 
     public P_ManTiienKuoHai():base(CardName) {
@@ -35,7 +44,7 @@ public class P_ManTiienKuoHai: PSchemeCardModel {
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets,
                         PTrigger.Except(Player),
                         (PGame Game, PPlayer User, PPlayer Target) => {
-                            Game.Injure(User, Target, Game.Judge(User));
+                            Game.Injure(User, Target, Game.Judge(User) * 200);
                         })
                 };
             });

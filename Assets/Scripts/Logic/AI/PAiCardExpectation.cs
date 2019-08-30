@@ -7,6 +7,18 @@ public class PAiCardExpectation {
     /// <param name="Player"></param>
     /// <returns></returns>
     public static int Expect(PGame Game, PPlayer Player) {
-        return 0;
+        double Sum = PMath.Sum(Game.CardManager.CardHeap.CardList.ConvertAll((PCard Card) => (double)Card.Model.AIInHandExpectation(Game, Player)));
+        int Count = Game.CardManager.CardHeap.CardNumber;
+        
+        if (Count <= 10) {
+            Sum += PMath.Sum(Game.CardManager.ThrownCardHeap.CardList.ConvertAll((PCard Card) => (double)Card.Model.AIInHandExpectation(Game, Player)));
+            Count += Game.CardManager.ThrownCardHeap.CardNumber;
+        }
+
+        if (Count == 0) {
+            return 0;
+        } else {
+            return (int)Sum / Count;
+        }
     }
 }

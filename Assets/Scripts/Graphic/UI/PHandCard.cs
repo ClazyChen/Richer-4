@@ -17,7 +17,7 @@ public class PHandCard : PAbstractUI {
         if (Interval * Count > AllLength && Count > 1) {
             Interval = (AllLength - 105.0f) / (Count - 1);
         }
-        Sprite Image = Resources.Load<Sprite>("Images/Cards/" + CardName + ".png");
+        Sprite Image = Resources.Load<Sprite>("Images/Cards/" + CardName);
         if (Image != null) {
             UIBackgroundImage.GetComponent<Image>().sprite = Image;
             UIBackgroundImage.localScale = new Vector3(1, 1, 1);

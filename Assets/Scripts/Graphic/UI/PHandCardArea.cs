@@ -18,8 +18,8 @@ public class PHandCardArea : PAbstractGroupUI<PHandCard>{
             Object.Destroy(SubUI.UIBackgroundImage.gameObject);
         });
         GroupUIList.Clear();
-        for (int i = 0; i < HandCardNames.Length; ++ i) {
-            AddSubUI().Initialize(HandCardNames[i+1], PrototypeUI.UIBackgroundImage.localPosition, i, HandCardNames.Length).Open();
+        for (int i = 0; i < HandCardNames.Length-1; ++ i) {
+            AddSubUI().Initialize(HandCardNames[i+1], PrototypeUI.UIBackgroundImage.localPosition, i, HandCardNames.Length-1).Open();
         }
     }
 }

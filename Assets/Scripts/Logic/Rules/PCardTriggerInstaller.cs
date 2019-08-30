@@ -2,16 +2,29 @@
 using System.Collections.Generic;
 
 public class PCardTriggerInstaller : PSystemTriggerInstaller {
+    public class Config {
+        public static int StartGameCardCount = 3;
+    }
+
     public PCardTriggerInstaller() : base("卡牌移入移出手牌") {
+        TriggerList.Add(new PTrigger("游戏开始时摸牌") {
+            IsLocked = true,
+            Time = PTime.StartGameTime,
+            Effect = (PGame Game) => {
+                Game.PlayerList.ForEach((PPlayer Player) => {
+                    Game.GetCard(Player, Config.StartGameCardCount);
+                });
+            }
+        });
         TriggerList.Add(new PTrigger("卡牌移入手牌装载触发器") {
             IsLocked = true,
             Time = PTime.Card.EnterAreaTime,
             Condition = (PGame Game) => {
-                PMoveCardTag MoveTagFlag = Game.TagManager.PopTag<PMoveCardTag>(PMoveCardTag.TagName);
+                PMoveCardTag MoveTagFlag = Game.TagManager.FindPeekTag<PMoveCardTag>(PMoveCardTag.TagName);
                 return MoveTagFlag.Destination.IsHandCardArea();
             },
             Effect = (PGame Game) => {
-                PMoveCardTag MoveTagFlag = Game.TagManager.PopTag<PMoveCardTag>(PMoveCardTag.TagName);
+                PMoveCardTag MoveTagFlag = Game.TagManager.FindPeekTag<PMoveCardTag>(PMoveCardTag.TagName);
                 PPlayer Accepter = MoveTagFlag.Destination.Owner;
                 MoveTagFlag.Card.MoveInHandTriggerList = MoveTagFlag.Card.Model.MoveInHandTriggerList.ConvertAll((Func<PPlayer, PCard, PTrigger> Trigger) => Trigger(Accepter, MoveTagFlag.Card));
                 MoveTagFlag.Card.MoveInHandTriggerList.ForEach((PTrigger Trigger) => {

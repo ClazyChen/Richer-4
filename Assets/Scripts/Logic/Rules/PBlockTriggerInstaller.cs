@@ -99,6 +99,27 @@
                 }
             }
         });
+        MultiPlayerTriggerList.Add((PPlayer Player) => new PTrigger("研究所[视察研究成果]") {
+            IsLocked = true,
+            Player = Player,
+            Time = PPeriod.SettleStage.During,
+            Condition = (PGame Game) => {
+                PBlock NowBlock = Game.NowPlayer.Position;
+                return Player.Equals(NowBlock.Lord) && NowBlock.BusinessType.Equals(PBusinessType.Institute);
+            },
+            Effect = (PGame Game) => {
+                bool GiveCard = false;
+                if (Player.IsAI) {
+                    GiveCard = (Player.TeamIndex == Game.NowPlayer.TeamIndex);
+                } else {
+                    GiveCard = PNetworkManager.NetworkServer.ChooseManager.AskYesOrNo(Player, "是否令"+Game.NowPlayer.Name+"摸牌？"); 
+                }
+                if (GiveCard) {
+                    int Number = PMath.RandInt(1, 6) / 2 + 1;
+                    Game.GetCard(Game.NowPlayer, Number);
+                }
+            }
+        });
         TriggerList.Add(new PTrigger("公园[扩建政府补助]") {
             IsLocked = true,
             Time = PTime.PurchaseHouseTime,

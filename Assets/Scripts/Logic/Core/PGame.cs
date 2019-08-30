@@ -330,6 +330,12 @@ public class PGame : PGameStatus {
     }
 
     public void GetCard(PPlayer Player, int Count) {
+        for (int i = 0; i < Count;++i) {
+            GetCard(Player);
+        }
+    }
+
+    public void GetCard(PPlayer Player) {
         if (Player == null || !Player.IsAlive) {
             return;
         }
