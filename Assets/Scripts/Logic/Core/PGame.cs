@@ -329,6 +329,24 @@ public class PGame : PGameStatus {
         return Result;
     }
 
+    /// <summary>
+    /// 拼点
+    /// </summary>
+    /// <param name="FromPlayer">发起拼点的玩家</param>
+    /// <param name="ToPlayer">接受拼点的玩家</param>
+    /// <returns>拼点获胜1，失败-1，平均0</returns>
+    public int PkPoint(PPlayer FromPlayer, PPlayer ToPlayer) {
+        int FromPoint = Judge(FromPlayer);
+        int ToPoint = Judge(ToPlayer);
+        if (FromPoint > ToPoint) {
+            return 1;
+        } else if (FromPoint < ToPoint) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+
     public void GetCard(PPlayer Player, int Count) {
         for (int i = 0; i < Count;++i) {
             GetCard(Player);

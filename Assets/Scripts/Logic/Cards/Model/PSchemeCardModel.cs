@@ -11,9 +11,9 @@ public abstract class PSchemeCardModel: PCardModel {
         Type = PCardType.SchemeCard;
     }
 
-    protected Action<PGame> MakeNormalEffect(PPlayer Player, PCard Card, TargetChooser AITargetChooser, PTrigger.PlayerCondition TargetCondition, EffectFunc Effect) {
+    protected Action<PGame> MakeNormalEffect(PPlayer Player, PCard Card, TargetChooser AITargetChooser, TargetChooser PlayerTargetChooser, EffectFunc Effect) {
         return (PGame Game) => {
-            List<PPlayer> Targets = Player.IsAI ? AITargetChooser(Game, Player) : new List<PPlayer> { PNetworkManager.NetworkServer.ChooseManager.AskForTargetPlayer(Player, TargetCondition, Card.Name) };
+            List<PPlayer> Targets = Player.IsAI ? AITargetChooser(Game, Player) : PlayerTargetChooser(Game,Player) ;
             Targets.RemoveAll((PPlayer _Player) => _Player == null);
             if (Targets.Count == 0) { return; }
             Game.Monitor.CallTime(PTime.Card.AfterEmitTargetTime, new PUseCardTag(Card, Player, Targets));
@@ -28,5 +28,11 @@ public abstract class PSchemeCardModel: PCardModel {
             Game.CardManager.MoveCard(Card, Game.CardManager.SettlingArea, Game.CardManager.ThrownCardHeap);
             Game.Monitor.CallTime(PTime.Card.EndSettleTime, new PUseCardTag(Card, Player, Targets));
         };
+    }
+
+    protected Action<PGame> MakeNormalEffect(PPlayer Player, PCard Card, TargetChooser AITargetChooser, PTrigger.PlayerCondition TargetCondition, EffectFunc Effect) {
+        return MakeNormalEffect(Player, Card, AITargetChooser, (PGame Game, PPlayer _Player) => {
+            return new List<PPlayer> { PNetworkManager.NetworkServer.ChooseManager.AskForTargetPlayer(_Player, TargetCondition, Card.Name) };
+        }, Effect);
     }
 }
