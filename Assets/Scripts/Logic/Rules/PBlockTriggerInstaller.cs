@@ -55,6 +55,16 @@
                 Game.Injure(null, Game.NowPlayer, PMath.Percent(Game.NowPlayer.Money, -Game.NowPlayer.Position.GetMoneyStopPercent));
             }
         });
+        TriggerList.Add(new PTrigger("牌库") {
+            IsLocked = true,
+            Time = PPeriod.SettleStage.During,
+            Condition = (PGame Game) => {
+                return Game.NowPlayer.Position.GetCardStop > 0;
+            },
+            Effect = (PGame Game) => {
+                Game.GetCard(Game.NowPlayer, Game.NowPlayer.Position.GetCardStop);
+            }
+        });
         MultiPlayerTriggerList.Add((PPlayer Player) => new PTrigger("购买土地") {
             IsLocked = true,
             Player = Player,

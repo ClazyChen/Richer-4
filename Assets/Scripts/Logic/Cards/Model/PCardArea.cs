@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System;
 
 /// <summary>
 /// PCardArea：牌的管理类
@@ -11,6 +12,10 @@ public class PCardArea : PObject {
         Name = _Name;
         Owner = _Owner;
         CardList = new List<PCard>();
+    }
+
+    public bool IsHandCardArea() {
+        return Owner != null && Equals(Owner.Area.HandCardArea);
     }
 
     /// <summary>
@@ -65,4 +70,16 @@ public class PCardArea : PObject {
         });
     }
 
+    /// <summary>
+    /// 安全地获取一张牌
+    /// </summary>
+    /// <param name="Index"></param>
+    /// <returns></returns>
+    public PCard GetCard(int Index) {
+        if (Index < 0 || Index >= CardList.Count) {
+            return null; 
+        } else {
+            return CardList[Index];
+        }
+    }
 }

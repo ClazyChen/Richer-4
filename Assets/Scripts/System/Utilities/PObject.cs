@@ -36,4 +36,10 @@ public class PObject {
         }
         return TempList;
     }
+
+    public static List<T> CloneList<T>(List<T> Source) where T:PObject {
+        List<T> ans = new List<T>();
+        Source.ForEach((T x) => ans.Add(x));
+        return ans;
+    }
 }

@@ -33,7 +33,7 @@ public class PPlayerInformationBox : PAbstractUI {
         NameText.text = AttachedPlayer.Name; // + 武将名
         if (AttachedPlayer.IsAlive) {
             MoneyText.text = "￥" + AttachedPlayer.Money.ToString();
-            CardText.text = "□";
+            CardText.text = "□" + AttachedPlayer.HandCardNumber.ToString();
             EquipText.text = "❀";
             JudgeText.text = "✪";
             FlagText.text = "";

@@ -42,5 +42,4 @@ public class PPeriod : PObject {
     public static PPeriod SecondFreeTime = new PPeriod("第二个空闲时间点");
     public static PPeriod EndTurnStage = new PPeriod("回合结束阶段");
     public static PPeriod EndTurn = new PPeriod("回合结束时");
-
 }

@@ -10,6 +10,7 @@ public class PGame : PGameStatus {
     public PGameLogic Logic { get; private set; }
     public PMonitor Monitor { get; private set; }
     public readonly PTagManager TagManager;
+    public readonly PCardManager CardManager;
 
     public bool StartGameFlag { get; private set; }
     public bool EndGameFlag { get; private set; }
@@ -29,6 +30,7 @@ public class PGame : PGameStatus {
         Logic = new PGameLogic(this);
         Monitor = new PMonitor(this);
         TagManager = new PTagManager();
+        CardManager = new PCardManager(this);
         StartGameFlag = false;
         EndGameFlag = false;
         ReadyToStartGameFlag = true;
@@ -64,6 +66,7 @@ public class PGame : PGameStatus {
             NowPeriod = null;
             StartGameFlag = true;
             ReadyToStartGameFlag = false;
+            CardManager.InitializeCardHeap();
             PLogger.Log("开始进行规则装载");
             PObject.ListSubTypeInstances<PSystemTriggerInstaller>().ForEach((PSystemTriggerInstaller Installer) => {
                 Installer.Install(Monitor);
@@ -85,6 +88,7 @@ public class PGame : PGameStatus {
         Logic.ShutDown();
         Monitor.RemoveAll();
         TagManager.RemoveAll();
+        CardManager.Clear();
         StartGameFlag = false;
         EndGameFlag = false;
         ReadyToStartGameFlag = false;
@@ -113,13 +117,15 @@ public class PGame : PGameStatus {
             PTime.Injure.AfterEmitInjure,
             PTime.Injure.AfterAcceptInjure
         }) {
-            if (InjureTag.ToPlayer != null && InjureTag.ToPlayer.IsAlive && InjureTag.Injure > 0) {
+            if (InjureTag.ToPlayer != null && InjureTag.Injure > 0) {
                 if (InjureTime.Equals(PTime.Injure.AfterEmitInjure)) {
                     if (InjureTag.FromPlayer != null && InjureTag.FromPlayer.IsAlive) {
                         GetMoney(InjureTag.FromPlayer, InjureTag.Injure);
                     }
                 } else if (InjureTime.Equals(PTime.Injure.AfterAcceptInjure)) {
-                    LoseMoney(InjureTag.ToPlayer, InjureTag.Injure, true);
+                    if (InjureTag.ToPlayer.IsAlive) {
+                        LoseMoney(InjureTag.ToPlayer, InjureTag.Injure, true);
+                    }
                 }
                 InjureTag = Monitor.CallTime(InjureTime, InjureTag);
             } else {
@@ -314,5 +320,26 @@ public class PGame : PGameStatus {
 
     public void MovePosition(PPlayer Player, PBlock Source, PBlock Destination) {
         Monitor.CallTime(PTime.MovePositionTime, new PTransportTag(Player, Source, Destination));
+    }
+
+    public int Judge(PPlayer Player) {
+        int Result = PMath.RandInt(1, 6);
+        PNetworkManager.NetworkServer.TellClients(new PDiceResultOrder( Result.ToString()));
+        PNetworkManager.NetworkServer.TellClients(new PCloseDiceOrder());
+        return Result;
+    }
+
+    public void GetCard(PPlayer Player, int Count) {
+        if (Player == null || !Player.IsAlive) {
+            return;
+        }
+        if (CardManager.CardHeap.CardNumber == 0 && CardManager.ThrownCardHeap.CardNumber > 0) {
+            CardManager.CardHeap.CardList.AddRange(CardManager.ThrownCardHeap.CardList);
+            CardManager.ThrownCardHeap.CardList.Clear();
+            CardManager.CardHeap.Wash();
+        }
+        if (CardManager.CardHeap.CardNumber > 0) {
+            CardManager.MoveCard(CardManager.CardHeap.TopCard, CardManager.CardHeap, Player.Area.HandCardArea);
+        }
     }
 }

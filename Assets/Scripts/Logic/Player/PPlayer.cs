@@ -57,4 +57,30 @@ public class PPlayer: PObject {
         }
     }
 
+    public PPlayerCardArea Area {
+        get {
+            if (PNetworkManager.CurrentHostType.Equals(PHostType.Server)) {
+                return PNetworkManager.NetworkServer.Game.CardManager.PlayerAreaList[Index];
+            } else {
+                return null;
+            }
+        }
+    }
+
+    private int _HandCardNumber = 0;
+    public int HandCardNumber {
+        get {
+            if (PNetworkManager.CurrentHostType.Equals(PHostType.Client)) {
+                return _HandCardNumber;
+            } else {
+                return Area.HandCardArea.CardNumber;
+            }
+        }
+        set {
+            if (PNetworkManager.CurrentHostType.Equals(PHostType.Client)) {
+                _HandCardNumber = value;
+            }
+        }
+    }
+
 }

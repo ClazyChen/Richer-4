@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
 /// <summary>
 /// PCardModel类：卡牌的模型
 /// </summary>
@@ -20,4 +21,17 @@ public abstract class PCardModel: PObject {
     public PCardType Type;
     public int Point;
     public int Index;
+
+    public List<Func<PPlayer, PCard, PTrigger>> MoveInHandTriggerList;
+
+    protected delegate List<PPlayer> TargetChooser(PGame Game, PPlayer Player);
+    protected delegate void EffectFunc(PGame Game, PPlayer User, PPlayer Target);
+
+    public PCardModel(string _Name) {
+        Name = _Name;
+        MoveInHandTriggerList = new List<Func<PPlayer, PCard, PTrigger>>();
+    }
+    public PCard Instantiate() {
+        return new PCard(this);
+    }
 }

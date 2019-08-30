@@ -37,7 +37,17 @@
                 return Game.TagManager.FindPeekTag<PPassBlockTag>(PPassBlockTag.TagName).Block.GetMoneyPassPercent < 0;
             },
             Effect = (PGame Game) => {
-                Game.Injure(null, Game.NowPlayer, PMath.Percent(Game.TagManager.FindPeekTag<PPassBlockTag>(PPassBlockTag.TagName).Player.Money, -Game.TagManager.FindPeekTag<PPassBlockTag>(PPassBlockTag.TagName).Block.GetMoneyPassPercent));
+                Game.Injure(null, Game.TagManager.FindPeekTag<PPassBlockTag>(PPassBlockTag.TagName).Player, PMath.Percent(Game.TagManager.FindPeekTag<PPassBlockTag>(PPassBlockTag.TagName).Player.Money, -Game.TagManager.FindPeekTag<PPassBlockTag>(PPassBlockTag.TagName).Block.GetMoneyPassPercent));
+            }
+        });
+        TriggerList.Add(new PTrigger("牌库") {
+            IsLocked = true,
+            Time = PTime.PassBlockTime,
+            Condition = (PGame Game) => {
+                return Game.TagManager.FindPeekTag<PPassBlockTag>(PPassBlockTag.TagName).Block.GetCardPass > 0;
+            },
+            Effect = (PGame Game) => {
+                Game.GetCard(Game.TagManager.FindPeekTag<PPassBlockTag>(PPassBlockTag.TagName).Player, Game.TagManager.FindPeekTag<PPassBlockTag>(PPassBlockTag.TagName).Block.GetCardPass);
             }
         });
     }

@@ -34,21 +34,13 @@ public class PAiBusinessChooser {
 
     public static PBusinessType ChooseDirection(PGame Game, PPlayer Player, PBlock Block) {
         List<int> ExpectationList = DirectionExpectations(Game, Player, Block);
-        PLogger.Log("AI-商业用地方向决策权重:" + string.Join(" ", ExpectationList.ConvertAll((int x) => x.ToString())));
-        ExpectationList = ExpectationList.ConvertAll((int Raw) => (int)Math.Round(Math.Pow(Math.E, (double)Raw / 1000)));
-        PLogger.Log("AI-商业用地方向决策权重:" + string.Join(" ", ExpectationList.ConvertAll((int x) => x.ToString())));
-        if (PMath.RandTest((double)ExpectationList[0] / PMath.Sum(ExpectationList))) {
-            return PBusinessType.ShoppingCenter;
-        }
-        if (PMath.RandTest((double)ExpectationList[1] / PMath.Sum(ExpectationList.GetRange(1,4)))) {
-            return PBusinessType.Institute;
-        }
-        if (PMath.RandTest((double)ExpectationList[2] / PMath.Sum(ExpectationList.GetRange(2,3)))) {
-            return PBusinessType.Park;
-        }
-        if (PMath.RandTest((double)ExpectationList[3] / PMath.Sum(ExpectationList.GetRange(3,2)))) {
-            return PBusinessType.Castle;
-        }
-        return PBusinessType.Pawnshop;
+        List<double> Weights = ExpectationList.ConvertAll((int Raw) => Math.Pow(Math.E, (double)Raw / 1000));
+        return new PBusinessType[] {
+            PBusinessType.ShoppingCenter,
+            PBusinessType.Institute,
+            PBusinessType.Park,
+            PBusinessType.Castle,
+            PBusinessType.Pawnshop
+        }[PMath.RandomIndex(Weights)];
     }
 }

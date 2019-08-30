@@ -19,6 +19,7 @@ public class PMapUI : PAbstractUI {
     public readonly PMessageBox MessageBox;
     public readonly PPlayerInformationBoxGroup PlayerInformationGroup;
     public readonly PCameraController CameraController;
+    public readonly PHandCardArea HandCardArea;
     public readonly Text InformationText;
     public readonly Text PushText;
 
@@ -32,6 +33,7 @@ public class PMapUI : PAbstractUI {
         Scene = new PMapScene(GameObject.Find("Map").transform);
         MessageBox = new PMessageBox(UIBackgroundImage.Find("MessageBox"));
         PlayerInformationGroup = new PPlayerInformationBoxGroup(UIBackgroundImage.Find("PlayerInformationBoxes"));
+        HandCardArea = new PHandCardArea(UIBackgroundImage.Find("HandCardArea"));
         CameraController = new PCameraController();
         DiceSpriteList = new Sprite[6];
         for (int i = 0; i < 6; ++i) {
@@ -46,6 +48,7 @@ public class PMapUI : PAbstractUI {
         Scene.Open();
         CameraController.Open();
         PlayerInformationGroup.Open();
+        HandCardArea.Open();
         InformationText.text = string.Empty;
         DiceImage.gameObject.SetActive(false);
         EndFreeTimeButton.onClick.AddListener(() => {
@@ -59,6 +62,7 @@ public class PMapUI : PAbstractUI {
         CameraController.Close();
         Scene.Close();
         MessageBox.Close();
+        HandCardArea.Close();
         PlayerInformationGroup.Close();
         base.Close();
     }

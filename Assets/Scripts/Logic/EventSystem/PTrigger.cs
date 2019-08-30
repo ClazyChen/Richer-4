@@ -23,6 +23,8 @@ public class PTrigger : PObject{
     public float AIPriority = 1; // 权重大的效果AI优先发动
     public bool CanRepeat = false; // 是否可以被重复发动
 
+    public delegate bool PlayerCondition(PGame Game, PPlayer Player);
+
     public PTrigger(string _Name) {
         Name = _Name;
     }
@@ -56,4 +58,9 @@ public class PTrigger : PObject{
             return 0;
         }
     }
+
+
+    public static readonly Converter<PPlayer, PlayerCondition> Except = (PPlayer Player) => {
+        return (PGame _Game, PPlayer _Player) => !Player.Equals(_Player);
+    };
 }

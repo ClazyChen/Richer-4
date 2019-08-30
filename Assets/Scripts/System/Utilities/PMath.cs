@@ -12,7 +12,7 @@ public class PMath {
         Samples.ForEach((int Sample) => Max = Math.Max(Max, Sample));
         return Max;
     }
-    public static T Max<T>(List<T> Samples, Converter<T, int> Measure) where T: PObject {
+    public static T Max<T>(List<T> Samples, Converter<T, int> Measure, bool MustPositive = false) where T: PObject {
         int Max = int.MinValue;
         T MaxSample = null;
         Samples.ForEach((T Sample) => {
@@ -22,6 +22,9 @@ public class PMath {
                 MaxSample = Sample;
             }
         });
+        if (MustPositive && Max <= 0) {
+            return null;
+        }
         return MaxSample;
     }
     public static int Min(List<int> Samples) {
@@ -41,9 +44,9 @@ public class PMath {
         });
         return MinSample;
     }
-    public static int Sum(List<int> Samples) {
-        int Sum = 0;
-        Samples.ForEach((int Sample) =>Sum += Sample);
+    public static double Sum(List<double> Samples) {
+        double Sum = 0;
+        Samples.ForEach((double Sample) =>Sum += Sample);
         return Sum;
     }
 
@@ -64,5 +67,14 @@ public class PMath {
 
     public static bool InRect(Vector3 Point, RectTransform Rect) {
         return (Math.Abs(Point.x - Rect.position.x) < Rect.rect.width * Rect.lossyScale.x / 2) && (Math.Abs(Point.y - Rect.position.y) < Rect.rect.height * Rect.lossyScale.y / 2);
+    }
+
+    public static int RandomIndex(List<double> Weight) {
+        for (int i = 0; i < Weight.Count - 1; ++i) {
+            if (RandTest(Weight[i] / Sum(Weight.GetRange(i, Weight.Count - i)))) {
+                return i;
+            }
+        }
+        return Weight.Count - 1;
     }
 }

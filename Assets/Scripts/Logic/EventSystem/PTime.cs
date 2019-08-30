@@ -30,6 +30,15 @@ public class PTime : PObject {
     public static PTime DieTime = new PTime("死亡时");
     public static PTime AfterDieTime = new PTime("死亡后");
 
+    public class Card {
+        public static PTime LeaveAreaTime = new PTime("卡牌离开区域时");
+        public static PTime EnterAreaTime = new PTime("卡牌进入区域时");
+
+        public static PTime AfterEmitTargetTime = new PTime("指定卡牌的目标后");
+        public static PTime StartSettleTime = new PTime("卡牌结算开始时");
+        public static PTime EndSettleTime = new PTime("卡牌结算结束时");
+    }
+
     public class Toll {
         public static PTime AfterEmitTarget = new PTime("指定过路费的目标后");
         public static PTime AfterAcceptTarget = new PTime("成为过路费的目标后");
