@@ -13,7 +13,7 @@ public class P_ManTiienKuoHai: PSchemeCardModel {
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
         int Basic = 1400;
-        int MinEnemyMoney = PMath.Min(Game.Enemies(Player), (PPlayer Test) => Test.Money).Money;
+        int MinEnemyMoney = PMath.Min(Game.Enemies(Player), (PPlayer Test) =>  Test.Money).Money;
         if (MinEnemyMoney <= 1200 ) {
             Basic += 5000 * (7 - MinEnemyMoney / 200);
         }
@@ -36,7 +36,7 @@ public class P_ManTiienKuoHai: PSchemeCardModel {
                     Time = Time,
                     AIPriority = 100,
                     Condition = (PGame Game) => {
-                        return Player.IsAI || Game.Logic.WaitingForEndFreeTime();
+                        return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime());
                     },
                     AICondition = (PGame Game) => {
                         return AIEmitTargets(Game, Player)[0] != null;

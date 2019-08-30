@@ -37,7 +37,7 @@ public class PMath {
         T MinSample = null;
         Samples.ForEach((T Sample) => {
             int Test = Measure(Sample);
-            if (Test >= Min) {
+            if (Test <= Min) {
                 Min = Test;
                 MinSample = Sample;
             }
