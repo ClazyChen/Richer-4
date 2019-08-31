@@ -14,24 +14,19 @@ public class PGameLogic {
     /// <summary>
     /// 用于处理一个结算的线程
     /// </summary>
-    public class SettleThread {
+    public class SettleRecord {
         public PSettle Settle;
-        public Thread ActionThread;
+        //public Thread ActionThread;
         public bool Finished;
-        public SettleThread(PSettle _Settle, PGame _Game) {
+        public SettleRecord(PSettle _Settle) {
             Settle = _Settle;
             Finished = false;
-            ActionThread = new Thread(() => {
-                Settle.SettleAction(_Game);
-                Finished = true;
-            }) {
-                IsBackground = true
-            };
         }
     }
 
     private readonly PGame Game;
-    private volatile Stack<SettleThread> SettleThreadStack;
+    private volatile Stack<SettleRecord> SettleRecordStack;
+    public Thread LogicThread;
 
     /// <summary>
     /// 启动结算
@@ -39,44 +34,48 @@ public class PGameLogic {
     /// <param name="Name">添加的操作名</param>
     /// <param name="action">添加的操作方法</param>
     public void StartSettle(PSettle Settle) {
-        SettleThread NewSettleThread = new SettleThread(Settle, Game);
-        lock (SettleThreadStack) {
-            SettleThreadStack.Push(NewSettleThread);
+        SettleRecord NewSettleRecord = new SettleRecord(Settle);
+        lock (SettleRecordStack) {
+            SettleRecordStack.Push(NewSettleRecord);
         }
         PLogger.Log("开始结算 " + Settle.Name);
-        NewSettleThread.ActionThread.Start();
-        PThread.WaitUntil(() => NewSettleThread.Finished);
+        NewSettleRecord.Settle.SettleAction(Game);
+        //NewSettleRecord.ActionThread.Start();
+        //PThread.WaitUntil(() => NewSettleRecord.Finished);
         PLogger.Log("终止结算 " + Settle.Name);
-        if (NewSettleThread.ActionThread.IsAlive) {
-            NewSettleThread.ActionThread.Abort();
-        }
-        lock (SettleThreadStack) {
-            if (SettleThreadStack.Count > 0 && NewSettleThread.Equals(SettleThreadStack.Peek())) {
-                SettleThreadStack.Pop();
+        //if (NewSettleRecord.ActionThread.IsAlive) {
+        //    NewSettleRecord.ActionThread.Abort();
+        //}
+        lock (SettleRecordStack) {
+            if (SettleRecordStack.Count > 0 && NewSettleRecord.Equals(SettleRecordStack.Peek())) {
+                SettleRecordStack.Pop();
             }
         }
+    }
+
+    public void StartLogic(PSettle Settle) {
+        (LogicThread = new Thread(() => {
+            StartSettle(Settle);
+        })).Start();
     }
 
     public PGameLogic(PGame _Game) {
         Game = _Game;
-        SettleThreadStack = new Stack<SettleThread>();
+        SettleRecordStack = new Stack<SettleRecord>();
+        LogicThread = null;
     }
 
     public void ShutDown() {
-        lock (SettleThreadStack) {
-            if (SettleThreadStack != null) {
-                while (SettleThreadStack.Count > 0) {
-                    Thread Top = SettleThreadStack.Peek().ActionThread;
-                    if (Top != null && Top.IsAlive) {
-                        Top.Abort();
-                    }
-                    SettleThreadStack.Pop();
-                }
-            }
+        lock (SettleRecordStack) {
+            SettleRecordStack.Clear();
         }
+        if (LogicThread != null && LogicThread.IsAlive) {
+            LogicThread.Abort();
+        }
+        LogicThread = null;
     }
 
     public bool WaitingForEndFreeTime() {
-        return SettleThreadStack.Count > 0 && SettleThreadStack.Peek().Settle.Name.Contains("触发[玩家的空闲时间点]");
+        return SettleRecordStack.Count > 0 && SettleRecordStack.Peek().Settle.Name.Contains("触发[玩家的空闲时间点]");
     }
 }

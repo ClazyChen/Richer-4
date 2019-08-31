@@ -63,7 +63,7 @@ public class PPeriodTriggerInstaller : PSystemTriggerInstaller {
             }
             PNetworkManager.NetworkServer.TellClients(new PStartPeriodOrder(Game.NowPlayerIndex.ToString(), Game.NowPeriod.Name));
             Game.Logic.ShutDown();
-            Game.Logic.StartSettle(NextPeroid.Execute());
+            Game.Logic.StartLogic(NextPeroid.Execute());
         });
     };
 

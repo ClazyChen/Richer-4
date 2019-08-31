@@ -27,6 +27,7 @@ public class PCardManager {
     }
 
     public void MoveCard(PCard Card, PCardArea Source, PCardArea Destination) {
+        PLogger.Log("["+Card.Name + "]将要从[" + Source.Name + "]移动到[" + Destination.Name + "]");
         if (Source.CardList.Contains(Card)) {
             PMoveCardTag MoveCardTag = Game.Monitor.CallTime(PTime.Card.LeaveAreaTime, new PMoveCardTag(Card, Source, Destination));
             MoveCardTag.Source.CardList.Remove(Card);
