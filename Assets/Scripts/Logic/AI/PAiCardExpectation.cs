@@ -1,4 +1,6 @@
 ﻿
+using System.Collections.Generic;
+
 public class PAiCardExpectation {
     /// <summary>
     /// 牌堆里的牌（未进入弃牌堆或可见区域）的平均收益
@@ -42,5 +44,9 @@ public class PAiCardExpectation {
                 return 1500 + PMath.RandInt(-10, 10);
             }
         });
+    }
+
+    public static PPlayer MostValuableCardUser(PGame Game, List<PPlayer> PlayerList) {
+        return PMath.Max(PlayerList, (PPlayer Player) => Expect(Game, Player) + PMath.RandInt(-10,10));
     }
 }

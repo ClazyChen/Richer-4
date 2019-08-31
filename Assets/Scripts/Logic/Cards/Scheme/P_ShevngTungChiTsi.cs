@@ -38,6 +38,9 @@ public class P_ShevngTungChiHsi: PSchemeCardModel {
                             UseCardTag.Card.Name.Equals(P_CheevnHuoTaChieh.CardName)) {
                             return UseCardTag.TargetList[0].TeamIndex == Player.TeamIndex && UseCardTag.User.TeamIndex != Player.TeamIndex;
                         }
+                        if (UseCardTag.Card.Name.Equals(P_WuChungShevngYou.CardName)) {
+                            return UseCardTag.TargetList[0].TeamIndex != Player.TeamIndex;
+                        }
                         return false;
                     },
                     Effect = (PGame Game) => {
@@ -61,6 +64,9 @@ public class P_ShevngTungChiHsi: PSchemeCardModel {
                         } else {
                             if (UseCardTag.Card.Name.Equals(P_ManTiienKuoHai.CardName)) {
                                 Target = ((P_ManTiienKuoHai)(UseCardTag.Card.Model)).AIEmitTargets(Game, Player)[0];
+                            }
+                            if (UseCardTag.Card.Name.Equals(P_WuChungShevngYou.CardName)) {
+                                Target = PAiCardExpectation.MostValuableCardUser(Game, Game.Teammates(Player));
                             }
                         }
                         if (Target == null || Target == UseCardTag.TargetList[0]) {

@@ -32,7 +32,7 @@ public class P_CheevnHuoTaChieh: PSchemeCardModel {
                     AIPriority = 10,
                     Condition = (PGame Game) => {
                         PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
-                        return !Player.Equals(InjureTag.ToPlayer) && InjureTag.Injure > 0 && InjureTag.ToPlayer.HandCardNumber + InjureTag.ToPlayer.EquipCardNumber > 0;
+                        return !Player.Equals(InjureTag.ToPlayer) && InjureTag.Injure > 0 && InjureTag.ToPlayer.Area.HandCardArea.CardNumber + InjureTag.ToPlayer.Area.EquipmentCardArea.CardNumber > 0;
                     },
                     AICondition = (PGame Game) => {
                         PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);

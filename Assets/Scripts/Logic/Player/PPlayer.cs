@@ -66,22 +66,12 @@ public class PPlayer: PObject {
             }
         }
     }
+    
+    /// <summary>
+    /// 客户端专用，用于更新手牌数量
+    /// </summary>
+    public int HandCardNumber = 0;
 
-    private int _HandCardNumber = 0;
-    public int HandCardNumber {
-        get {
-            if (PNetworkManager.CurrentHostType.Equals(PHostType.Client)) {
-                return _HandCardNumber;
-            } else {
-                return Area.HandCardArea.CardNumber;
-            }
-        }
-        set {
-            if (PNetworkManager.CurrentHostType.Equals(PHostType.Client)) {
-                _HandCardNumber = value;
-            }
-        }
-    }
 
     private string _EquipCards = string.Empty;
     public int EquipCardNumber {
