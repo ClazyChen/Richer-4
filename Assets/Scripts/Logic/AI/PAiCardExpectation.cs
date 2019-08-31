@@ -21,4 +21,10 @@ public class PAiCardExpectation {
             return (int)Sum / Count;
         }
     }
+
+    public static PCard FindLeastValuable(PGame Game, PPlayer Player) {
+        return PMath.Min(Player.Area.HandCardArea.CardList, (PCard Card) => {
+            return Card.Model.AIInHandExpectation(Game, Player);
+        });
+    }
 }

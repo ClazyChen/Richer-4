@@ -9,7 +9,10 @@ public class PUseCardOrder : POrder {
         (string[] args, string IPAddress) => {
             int CardIndex = Convert.ToInt32(args[1]);
             PGame Game = PNetworkManager.Game;
-            if (Game.Logic.WaitingForEndFreeTime() && Game.NowPlayer.IPAddress.Equals(IPAddress) && Game.TagManager.ExistTag(PTag.FreeTimeOperationTag.Name) && Game.NowPlayer.IsAlive) {
+            PChooseCardTag ChooseCardTag = Game.TagManager.FindPeekTag<PChooseCardTag>(PChooseCardTag.TagName);
+            if (ChooseCardTag != null && ChooseCardTag.Player.IPAddress.Equals(IPAddress)) {
+                ChooseCardTag.Card = ChooseCardTag.Player.Area.GetCard(CardIndex);
+            } else if (Game.Logic.WaitingForEndFreeTime() && Game.NowPlayer.IPAddress.Equals(IPAddress) && Game.TagManager.ExistTag(PTag.FreeTimeOperationTag.Name) && Game.NowPlayer.IsAlive) {
                 PCard Card = Game.NowPlayer.Area.HandCardArea.GetCard(CardIndex);
                 if (Card != null) {
                     PTrigger Trigger = Card.FindTrigger(PPeriod.FirstFreeTime.During);

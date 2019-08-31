@@ -42,7 +42,7 @@ public class PMonitor {
         for (int i = 0; i < AvailableTriggerList.Count;) {
             int Count = 0;
             for (++Count; i + Count < AvailableTriggerList.Count; ++Count) {
-                if (AvailableTriggerList[i].Player != AvailableTriggerList[i+Count].Player || (AvailableTriggerList[i].Player == null && AvailableTriggerList[i].AIPriority != AvailableTriggerList[i+Count].AIPriority)) { // 优先级不同
+                if (AvailableTriggerList[i].Player != AvailableTriggerList[i+Count].Player) { // 优先级不同
                     break;
                 }
             }
@@ -55,6 +55,15 @@ public class PMonitor {
             List<PTrigger> ValidTriggerList;
             while ((ValidTriggerList = CurrentTriggerList.FindAll((PTrigger Trigger) => Trigger.Condition(Game) && (Judger == null || Judger.IsAlive) && (Judger == null || Judger.IsUser || Trigger.AICondition(Game)))).Count > 0) {
                 PTrigger ChosenTrigger = null;
+                ValidTriggerList.Sort((PTrigger x, PTrigger y) => {
+                    if (y.AIPriority < x.AIPriority ) {
+                        return -1;
+                    } else if (y.AIPriority > x.AIPriority) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
                 #region 系统和AI直接选择，玩家利用选择管理器选择
                 if (Judger == null || Judger.IsAI) {
                     ChosenTrigger = ValidTriggerList[0];

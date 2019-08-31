@@ -45,6 +45,9 @@ public class PBlockScene : PAbstractUI{
         if (Block.Name.Equals("COMMERCIAL LAND") || Block.Name.Equals("LAND")) {
             ret += "\n" + Block.Price.ToString();
         }
+        if (Block.GetCardStop > 0) {
+            ret += "\n摸" + Block.GetCardStop + "牌";
+        }
         if (Block.Name.Equals("BONUS")) {
             if (Block.GetMoneyStopSolid != 0) {
                 ret += "\n+" + Block.GetMoneyStopSolid.ToString();

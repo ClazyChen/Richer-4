@@ -45,4 +45,25 @@ public class PChooseManager {
         int ChosenResult = Ask(Chooser, "为" + Title + "选择目标", SatisfiedPlayerList.ConvertAll((PPlayer Player) => Player == null ? "取消" : Player.Name).ToArray());
         return SatisfiedPlayerList[ChosenResult];
     }
+
+    public List<PPlayer> AskForTargetPlayers(PPlayer Chooser, PTrigger.PlayerCondition Condition, string Title) {
+        List<PPlayer> PlayerList = new List<PPlayer>();
+        for (PPlayer _Player = null; _Player == null && PlayerList.Count > 0; ) {
+            _Player = AskForTargetPlayer(Chooser, (PGame Game, PPlayer Player) => {
+                return Condition(Game, Player) && !PlayerList.Contains(Player);
+            }, Title, PlayerList.Count > 0);
+            if (_Player != null) {
+                PlayerList.Add(_Player);
+            }
+        }
+        return PlayerList;
+    }
+
+    public PCard AskToChooseCard(PPlayer Player, string Title) {
+        PGame Game = PNetworkManager.NetworkServer.Game;
+        Game.TagManager.CreateTag(new PChooseCardTag(Player, null));
+        PNetworkManager.NetworkServer.TellClient(Player, new PShowInformationOrder(Title));
+        PThread.WaitUntil(() => Game.TagManager.FindPeekTag<PChooseCardTag>(PChooseCardTag.TagName).Card != null);
+        return Game.TagManager.PopTag<PChooseCardTag>(PChooseCardTag.TagName).Card;
+    }
 }

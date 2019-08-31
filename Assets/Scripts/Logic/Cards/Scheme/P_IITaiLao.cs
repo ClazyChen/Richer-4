@@ -1,28 +1,21 @@
 ﻿
 using System.Collections.Generic;
 /// <summary>
-/// 瞒天过海
+/// 以逸待劳
 /// </summary>
-public class P_ManTiienKuoHai: PSchemeCardModel {
+public class P_IITaiLao: PSchemeCardModel {
 
     private List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
-        int ExpectedMoney = 700;
-        PPlayer Target = PAiTargetChooser.InjureTarget(Game, Player, PTrigger.Except(Player), ExpectedMoney);
-        return new List<PPlayer>() { Target };
+        return Game.Teammates(Player);
     }
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
-        int Basic = 1400;
-        int MinEnemyMoney = PMath.Min(Game.Enemies(Player), (PPlayer Test) =>  Test.Money).Money;
-        if (MinEnemyMoney <= 1200 ) {
-            Basic += 5000 * (7 - MinEnemyMoney / 200);
-        }
-        return Basic;
+        return 0;
     }
 
-    public readonly static string CardName = "瞒天过海";
+    public readonly static string CardName = "以逸待劳";
 
-    public P_ManTiienKuoHai():base(CardName) {
+    public P_IITaiLao():base(CardName) {
         Point = 1;
         Index = 1;
         foreach (PTime Time in new PTime[] {
@@ -34,17 +27,18 @@ public class P_ManTiienKuoHai: PSchemeCardModel {
                     IsLocked = false,
                     Player = Player,
                     Time = Time,
-                    AIPriority = 170,
+                    AIPriority = 21,
                     Condition = (PGame Game) => {
                         return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime());
                     },
                     AICondition = (PGame Game) => {
-                        return AIEmitTargets(Game, Player)[0] != null;
+                        return PMath.Min(Player.Area.HandCardArea.CardList.FindAll((PCard _Card) => !_Card.Equals(Card)).ConvertAll((PCard _Card) => _Card.AIInHandExpectation(Game, Player))) <= 1000;
                     },
-                    Effect = MakeNormalEffect(Player, Card, AIEmitTargets,
-                        PTrigger.Except(Player),
+                    Effect = MakeMultiTargetNormalEffect(Player, Card, AIEmitTargets,
+                        PTrigger.NoCondition,
                         (PGame Game, PPlayer User, PPlayer Target) => {
-                            Game.Injure(User, Target, Game.Judge(User) * 200);
+                            Game.GetCard(Target);
+                            Game.ThrowCard(Target, Target);
                         })
                 };
             });

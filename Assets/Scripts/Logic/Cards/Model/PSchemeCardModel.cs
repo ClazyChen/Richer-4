@@ -35,4 +35,10 @@ public abstract class PSchemeCardModel: PCardModel {
             return new List<PPlayer> { PNetworkManager.NetworkServer.ChooseManager.AskForTargetPlayer(_Player, TargetCondition, Card.Name) };
         }, Effect);
     }
+
+    protected Action<PGame> MakeMultiTargetNormalEffect(PPlayer Player, PCard Card, TargetChooser AITargetChooser, PTrigger.PlayerCondition TargetCondition, EffectFunc Effect) {
+        return MakeNormalEffect(Player, Card, AITargetChooser, (PGame Game, PPlayer _Player) => {
+            return PNetworkManager.NetworkServer.ChooseManager.AskForTargetPlayers(_Player, TargetCondition, Card.Name) ;
+        }, Effect);
+    }
 }

@@ -63,4 +63,6 @@ public class PTrigger : PObject{
     public static readonly Converter<PPlayer, PlayerCondition> Except = (PPlayer Player) => {
         return (PGame _Game, PPlayer _Player) => !Player.Equals(_Player);
     };
+
+    public static readonly PlayerCondition NoCondition = (PGame _Game, PPlayer _Player) => true;
 }
