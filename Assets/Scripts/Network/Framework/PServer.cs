@@ -12,7 +12,7 @@ using System;
 
 public class PServer {
     public class Config {
-        public static float SendDelay = 0.1f;
+        public static float SendDelay = 0.01f;
     }
     public int maxConnectionNumber = 8;
     public PGame Game = null;

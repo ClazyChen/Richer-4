@@ -17,7 +17,7 @@ public class P_IITaiLao: PSchemeCardModel {
 
     public P_IITaiLao():base(CardName) {
         Point = 1;
-        Index = 1;
+        Index = 4;
         foreach (PTime Time in new PTime[] {
             PPeriod.FirstFreeTime.During,
             PPeriod.SecondFreeTime.During
