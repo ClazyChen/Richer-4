@@ -47,6 +47,7 @@ public class P_WeiWeiChiuChao: PSchemeCardModel {
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets, AIEmitTargets,
                         (PGame Game, PPlayer User, PPlayer Target) => {
                             if (Game.PkPoint(User, Target) == 1) {
+                                PNetworkManager.NetworkServer.TellClients(new PPushTextOrder(User.Index.ToString(), "围魏救赵：防止伤害", PPushType.Information.Name));
                                 Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName).Injure = 0;
                             }
                         })

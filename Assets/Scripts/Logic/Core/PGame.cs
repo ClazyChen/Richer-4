@@ -322,8 +322,8 @@ public class PGame : PGameStatus {
 
     public int Judge(PPlayer Player) {
         int Result = PMath.RandInt(1, 6);
-        PNetworkManager.NetworkServer.TellClients(new PDiceResultOrder( Result.ToString()));
-        PNetworkManager.NetworkServer.TellClients(new PCloseDiceOrder());
+        PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "的判定结果：" + Result));
+        PNetworkManager.NetworkServer.TellClients(new PPushTextOrder(Player.Index.ToString(), "判定结果：" + Result, PPushType.Information.Name));
         return Result;
     }
 
@@ -336,13 +336,15 @@ public class PGame : PGameStatus {
     public int PkPoint(PPlayer FromPlayer, PPlayer ToPlayer) {
         int FromPoint = Judge(FromPlayer);
         int ToPoint = Judge(ToPlayer);
+        int Result = 0;
         if (FromPoint > ToPoint) {
-            return 1;
+            Result = 1;
         } else if (FromPoint < ToPoint) {
-            return -1;
-        } else {
-            return 0;
+            Result = -1;
         }
+        PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(FromPlayer.Name + FromPoint.ToString() + ":" + ToPoint + ToPlayer.Name));
+        PNetworkManager.NetworkServer.TellClients(new PPushTextOrder(FromPlayer.Index.ToString(), Result > 0 ? "赢" : "没赢", Result > 0 ? PPushType.Heal.Name : PPushType.Injure.Name));
+        return Result;
     }
 
     public void GetCard(PPlayer Player, int Count) {

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 /// </summary>
 public class P_ManTiienKuoHai: PSchemeCardModel {
 
-    private List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
+    public List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
         int ExpectedMoney = 700;
         PPlayer Target = PAiTargetChooser.InjureTarget(Game, Player, PTrigger.Except(Player), ExpectedMoney);
         return new List<PPlayer>() { Target };
