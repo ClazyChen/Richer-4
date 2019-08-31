@@ -35,7 +35,7 @@ public class PChooseManager {
     /// <returns></returns>
     public PPlayer AskForTargetPlayer(PPlayer Chooser, PTrigger.PlayerCondition Condition, string Title, bool Cancel = false) {
         PGame Game = PNetworkManager.NetworkServer.Game;
-        List<PPlayer> SatisfiedPlayerList = Game.PlayerList.FindAll((PPlayer Player) => Condition(Game, Player));
+        List<PPlayer> SatisfiedPlayerList = Game.PlayerList.FindAll((PPlayer Player) => Player.IsAlive && Condition(Game, Player));
         if (SatisfiedPlayerList.Count == 0) {
             return null;
         }
