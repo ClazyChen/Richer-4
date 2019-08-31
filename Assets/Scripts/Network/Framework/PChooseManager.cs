@@ -48,7 +48,7 @@ public class PChooseManager {
 
     public List<PPlayer> AskForTargetPlayers(PPlayer Chooser, PTrigger.PlayerCondition Condition, string Title) {
         List<PPlayer> PlayerList = new List<PPlayer>();
-        for (PPlayer _Player = null; _Player == null && PlayerList.Count > 0; ) {
+        for (PPlayer _Player = null; _Player != null || PlayerList.Count == 0; ) {
             _Player = AskForTargetPlayer(Chooser, (PGame Game, PPlayer Player) => {
                 return Condition(Game, Player) && !PlayerList.Contains(Player);
             }, Title, PlayerList.Count > 0);

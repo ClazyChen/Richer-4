@@ -18,10 +18,10 @@ public class PChooseCardTag : PTag {
     }
     public PCard Card {
         get {
-            return GetField<PCard>(TagName, null);
+            return GetField<PCard>(CardFieldName, null);
         }
         set {
-            SetField(TagName, value);
+            SetField(CardFieldName, value);
         }
     }
 }

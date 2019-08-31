@@ -382,5 +382,9 @@ public class PGame : PGameStatus {
                 TargetCard = PAiCardExpectation.FindLeastValuable(this, Player);
             }
         }
+        if (TargetCard != null) {
+            PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "弃置了" + TargetPlayer.Name + "的" + TargetCard.Name));
+            CardManager.MoveCard(TargetCard, TargetPlayer.Area.HandCardArea, CardManager.ThrownCardHeap);
+        }
     }
 }
