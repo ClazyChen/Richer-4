@@ -367,24 +367,53 @@ public class PGame : PGameStatus {
         }
     }
 
+    private PCard ChooseCard(PPlayer Player, PPlayer TargetPlayer, string Title, bool AllowEquipment = true, bool AllowJudge = false) {
+        PCard TargetCard = null;
+        if (Player.IsUser) {
+            if (Player.Equals(TargetPlayer)) {
+                TargetCard = PNetworkManager.NetworkServer.ChooseManager.AskToChooseOwnCard(Player, Title, AllowEquipment, AllowJudge);
+            } else {
+                if (!AllowEquipment) {
+                    TargetCard = TargetPlayer.Area.HandCardArea.RandomCard();
+                } else {
+                    TargetCard = PNetworkManager.NetworkServer.ChooseManager.AskToChooseOthersCard(Player, TargetPlayer, Title, AllowJudge);
+                }
+            }
+        } else {
+            if (Player.TeamIndex == TargetPlayer.TeamIndex) {
+                TargetCard = PAiCardExpectation.FindLeastValuable(this, Player, TargetPlayer, AllowEquipment, AllowJudge);
+            } else {
+                TargetCard = PAiCardExpectation.FindMostValuable(this, Player, TargetPlayer, AllowEquipment, AllowJudge);
+            }
+        }
+        return TargetCard;
+    }
+
     /// <summary>
     /// 弃牌行为；当前只有弃自己的牌
     /// </summary>
     /// <param name="Player">发起弃牌方</param>
     /// <param name="TargetPlayer">被弃牌方</param>
-    public void ThrowCard(PPlayer Player, PPlayer TargetPlayer) {
-        PCard TargetCard = null;
-        if (Player.Equals(TargetPlayer)) {
-            // 弃自己的牌
-            if (Player.IsUser) {
-                TargetCard = PNetworkManager.NetworkServer.ChooseManager.AskToChooseCard(Player, "请选择弃置一张手牌");
-            } else {
-                TargetCard = PAiCardExpectation.FindLeastValuable(this, Player);
-            }
-        }
+    public void ThrowCard(PPlayer Player, PPlayer TargetPlayer, bool AllowEquipment = true, bool AllowJudge = false) {
+        string Title = "请选择弃置一张手牌" + (AllowEquipment ? "或装备" : string.Empty) + (AllowJudge ? "或伏兵" : string.Empty);
+        PCard TargetCard = ChooseCard(Player, TargetPlayer, Title, AllowEquipment, AllowJudge);
         if (TargetCard != null) {
             PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "弃置了" + TargetPlayer.Name + "的" + TargetCard.Name));
             CardManager.MoveCard(TargetCard, TargetPlayer.Area.HandCardArea, CardManager.ThrownCardHeap);
+        }
+    }
+
+    /// <summary>
+    /// 获得牌行为
+    /// </summary>
+    /// <param name="Player">获得牌的玩家</param>
+    /// <param name="TargetPlayer">被获得牌的玩家</param>
+    public void GetCardFrom(PPlayer Player, PPlayer TargetPlayer, bool AllowEquipment = true, bool AllowJudge = false) {
+        string Title = "请选择获得一张手牌" + (AllowEquipment ? "或装备" : string.Empty) + (AllowJudge ? "或伏兵" : string.Empty);
+        PCard TargetCard = ChooseCard(Player, TargetPlayer, Title, AllowEquipment, AllowJudge);
+        if (TargetCard != null) {
+            PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "获得了" + TargetPlayer.Name + "的" + (TargetPlayer.Area.HandCardArea.CardList.Contains(TargetCard) ? "1张手牌" : TargetCard.Name)));
+            CardManager.MoveCard(TargetCard, TargetPlayer.Area.HandCardArea, Player.Area.HandCardArea);
         }
     }
 }

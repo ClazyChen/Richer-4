@@ -22,14 +22,15 @@ public class PPlayerCardArea : PObject {
     /// </summary>
     /// <param name="Index"></param>
     /// <returns></returns>
-    public PCard GetCard(int Index) {
+    public PCard GetCard(int Index, bool AllowEquipment = true, bool AllowJudge = false) {
         if (Index < 1000) {
             return HandCardArea.GetCard(Index);
-        } else if (Index < 2000) {
+        } else if (Index < 2000 && AllowEquipment) {
             return EquipmentCardArea.GetCard(Index - 1000);
-        } else {
+        } else if (AllowJudge) {
             return JudgeCardArea.GetCard(Index - 2000);
         }
+        return null;
     }
 
     public void Clear() {

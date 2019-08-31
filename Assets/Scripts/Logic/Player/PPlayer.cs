@@ -83,4 +83,15 @@ public class PPlayer: PObject {
         }
     }
 
+    private string _EquipCards = string.Empty;
+    public int EquipCardNumber {
+        get {
+            if (PNetworkManager.CurrentHostType.Equals(PHostType.Client)) {
+                return _EquipCards.Length;
+            } else {
+                return Area.EquipmentCardArea.CardNumber;
+            }
+        }
+    }
+
 }

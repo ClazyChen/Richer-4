@@ -34,6 +34,9 @@ public class PCardArea : PObject {
     }
 
     public PCard RandomCard() {
+        if (CardNumber < 1) {
+            return null;
+        }
         return CardList[PMath.RandInt(0, CardList.Count - 1)];
     }
 

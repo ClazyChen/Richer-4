@@ -4,9 +4,13 @@ public class PChooseCardTag : PTag {
     public static string TagName = "等待选择卡牌";
     public static string PlayerFieldName = "选择卡牌的玩家";
     public static string CardFieldName = "被选择的卡牌";
-    public PChooseCardTag(PPlayer Player, PCard Card): base(TagName) {
+    public static string AllowEquipmentName = "是否允许选择装备";
+    public static string AllowJudgeName = "是否允许选择伏兵";
+    public PChooseCardTag(PPlayer Player, PCard Card, bool AllowEquipment = true, bool AllowJudge = false): base(TagName) {
         AppendField(PlayerFieldName, Player);
         AppendField(CardFieldName, Card);
+        AppendField(AllowEquipmentName, AllowEquipment);
+        AppendField(AllowJudgeName, AllowJudge);
     }
     public PPlayer Player {
         get {
@@ -22,6 +26,16 @@ public class PChooseCardTag : PTag {
         }
         set {
             SetField(CardFieldName, value);
+        }
+    }
+    public bool AllowEquipment {
+        get {
+            return GetField(AllowEquipmentName, false);
+        }
+    }
+    public bool AllowJudge {
+        get {
+            return GetField(AllowJudgeName, false);
         }
     }
 }

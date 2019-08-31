@@ -22,9 +22,25 @@ public class PAiCardExpectation {
         }
     }
 
-    public static PCard FindLeastValuable(PGame Game, PPlayer Player) {
+    public static PCard FindLeastValuable(PGame Game, PPlayer Player, PPlayer TargetPlayer, bool AllowEquipment = true, bool AllowJudge = false) {
+        // 装备和伏兵另外计算
         return PMath.Min(Player.Area.HandCardArea.CardList, (PCard Card) => {
-            return Card.Model.AIInHandExpectation(Game, Player);
+            if (Player.Equals(TargetPlayer)) {
+                return Card.Model.AIInHandExpectation(Game, Player);
+            } else {
+                return 1500 + PMath.RandInt(-10,10);
+            }
+        });
+    }
+
+    public static PCard FindMostValuable(PGame Game, PPlayer Player, PPlayer TargetPlayer, bool AllowEquipment = true, bool AllowJudge = false) {
+        // 装备和伏兵另外计算
+        return PMath.Max(Player.Area.HandCardArea.CardList, (PCard Card) => {
+            if (Player.Equals(TargetPlayer)) {
+                return Card.Model.AIInHandExpectation(Game, Player);
+            } else {
+                return 1500 + PMath.RandInt(-10, 10);
+            }
         });
     }
 }

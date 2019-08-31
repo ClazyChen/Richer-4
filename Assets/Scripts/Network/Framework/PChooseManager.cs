@@ -59,11 +59,34 @@ public class PChooseManager {
         return PlayerList;
     }
 
-    public PCard AskToChooseCard(PPlayer Player, string Title) {
+    public PCard AskToChooseOwnCard(PPlayer Player, string Title, bool AllowEquipment = true, bool AllowJudge = false) {
         PGame Game = PNetworkManager.NetworkServer.Game;
-        Game.TagManager.CreateTag(new PChooseCardTag(Player, null));
+        Game.TagManager.CreateTag(new PChooseCardTag(Player, null, AllowEquipment, AllowJudge));
         PNetworkManager.NetworkServer.TellClient(Player, new PShowInformationOrder(Title));
         PThread.WaitUntil(() => Game.TagManager.FindPeekTag<PChooseCardTag>(PChooseCardTag.TagName).Card != null);
         return Game.TagManager.PopTag<PChooseCardTag>(PChooseCardTag.TagName).Card;
+    }
+
+    public PCard AskToChooseOthersCard(PPlayer Player, PPlayer TargetPlayer, string Title, bool AllowJudge = false) {
+        PGame Game = PNetworkManager.NetworkServer.Game;
+        List<string> Names = new List<string>();
+        List<PCard> CardList = new List<PCard>();
+        if (TargetPlayer.Area.HandCardArea.CardNumber > 0) {
+            Names.Add("手牌");
+            CardList.Add(null);
+        }
+        TargetPlayer.Area.EquipmentCardArea.CardList.ForEach((PCard Card) => {
+            Names.Add(Card.Name);
+            CardList.Add(Card);
+        });
+        if (Names.Count < 1) {
+            return null;
+        }
+        int ChosenResult = Ask(Player, Title, Names.ToArray());
+        if (CardList[ChosenResult] == null) {
+            return TargetPlayer.Area.HandCardArea.RandomCard();
+        } else {
+            return CardList[ChosenResult];
+        }
     }
 }

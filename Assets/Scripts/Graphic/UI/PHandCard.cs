@@ -24,7 +24,7 @@ public class PHandCard : PAbstractUI {
             UIBackgroundImage.localPosition = new Vector3(Interval * _Index + PrototypePosition.x, 0.0f, 0.0f);
             Index = _Index;
             HandCardButton.onClick.AddListener(() => {
-                PNetworkManager.NetworkClient.Send(new PUseCardOrder(Index.ToString()));
+                PNetworkManager.NetworkClient.Send(new PClickOnCardOrder(Index.ToString()));
             });
         }
         return this;
