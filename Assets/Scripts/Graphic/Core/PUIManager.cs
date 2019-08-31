@@ -62,9 +62,15 @@ public class PUIManager: MonoBehaviour {
                 ID = ActionIDCount++,
                 AnimationID = AnimationID,
                 Action = () => {
+                    if (AnimationID > 0) {
+                        CurrentAnimationID = AnimationID;
+                    }
                     UIAction();
                     if (AnimationID == CurrentAnimationID && AnimationEnding) {
-                        CurrentAnimationID = 0;
+                        //PLogger.Log("结束动画(真) " + ActionName + " #" + AnimationID);
+                        //PLogger.Log("Waiting List:");
+                        //WaitingAnimation.ForEach((int x) => PLogger.Log(x.ToString()));
+                        CurrentAnimationID ++;
                     }
                 }
             });
@@ -72,14 +78,15 @@ public class PUIManager: MonoBehaviour {
     }
 
     public static void RegisterAnimation(int ID) {
-        lock (WaitingAnimation) {
-            WaitingAnimation.Add(ID);
-            WaitingAnimation.Sort();
-        }
+        //lock (WaitingAnimation) {
+        //    WaitingAnimation.Add(ID);
+        //    WaitingAnimation.Sort();
+        //}
     }
 
     public static bool IsAvailable(int ID) {
-        return CurrentAnimationID == 0 && WaitingAnimation.Count > 0 && WaitingAnimation[0] == ID;
+        return CurrentAnimationID == ID || CurrentAnimationID == 0;
+       // return CurrentAnimationID == 0 && WaitingAnimation.Count > 0 && WaitingAnimation[0] == ID; 
     }
 
     void Start() {
@@ -117,12 +124,13 @@ public class PUIManager: MonoBehaviour {
                             if (CurrentAnimationID > 0 && CurrentAnimationID != CurrentAction.AnimationID) {
                                 TempQueue.Enqueue(CurrentAction);
                                 continue;
-                            } else {
-                                if (CurrentAnimationID == 0) {
-                                    WaitingAnimation.Remove(CurrentAction.AnimationID);
-                                }
-                                CurrentAnimationID = CurrentAction.AnimationID;
                             }
+                            //} else {
+                            //    if (CurrentAnimationID == 0) {
+                            //        WaitingAnimation.Remove(CurrentAction.AnimationID);
+                            //    }
+                            //    CurrentAnimationID = CurrentAction.AnimationID;
+                            //}
                         }
                         if (!CurrentAction.Name.Equals(string.Empty)) {
                             PLogger.Log("执行操作 " + CurrentAction.ToString());
