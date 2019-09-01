@@ -45,7 +45,7 @@ public class P_TaTsaaoChingShev: PSchemeCardModel {
                         return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime());
                     },
                     AICondition = (PGame Game) => {
-                        return AIInHandExpectation(Game, Player) > 500;
+                        return AIInHandExpectation(Game, Player) > 900;
                     },
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets, AIEmitTargets,
                         (PGame Game, PPlayer User, PPlayer Target) => {
