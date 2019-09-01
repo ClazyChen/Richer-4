@@ -66,6 +66,7 @@ public class PGame : PGameStatus {
             NowPlayer = null;
             NowPeriod = null;
             StartGameFlag = true;
+            EndGameFlag = false;
             ReadyToStartGameFlag = false;
             CardManager.InitializeCardHeap();
             PLogger.Log("开始进行规则装载");

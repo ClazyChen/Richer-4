@@ -5,6 +5,9 @@ using UnityEngine;
 public class PMath {
     static System.Random random = new System.Random();
     public static int RandInt(int l, int r) {
+        if (l == r) {
+            return l;
+        }
         return random.Next(l, r + 1);
     }
     public static int Max(List<int> Samples) {

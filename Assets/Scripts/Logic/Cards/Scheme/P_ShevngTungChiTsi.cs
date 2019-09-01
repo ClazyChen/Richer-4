@@ -1,4 +1,4 @@
-﻿
+﻿using System;
 using System.Collections.Generic;
 /// <summary>
 /// 声东击西
@@ -33,11 +33,13 @@ public class P_ShevngTungChiHsi: PSchemeCardModel {
                             UseCardTag.Card.Name.Equals(P_WeiWeiChiuChao.CardName) ||
                             UseCardTag.Card.Name.Equals(P_CheevnHuoTaChieh.CardName) ||
                             UseCardTag.Card.Name.Equals(P_LiTaiTaaoChiang.CardName) ||
-                            UseCardTag.Card.Name.Equals(P_ShunShouChiienYang.CardName)) {
+                            UseCardTag.Card.Name.Equals(P_ShunShouChiienYang.CardName) ||
+                            UseCardTag.Card.Name.Equals(P_TaTsaaoChingShev.CardName)) {
                             return UseCardTag.TargetList[0].TeamIndex == Player.TeamIndex && UseCardTag.User.TeamIndex != Player.TeamIndex;
                         }
                         if (UseCardTag.Card.Name.Equals(P_WuChungShevngYou.CardName) ||
-                            UseCardTag.Card.Name.Equals(P_AnTuCheevnTsaang.CardName)) {
+                            UseCardTag.Card.Name.Equals(P_AnTuCheevnTsaang.CardName) ||
+                            UseCardTag.Card.Name.Equals(P_ChiehShihHuanHun.CardName)) {
                             return UseCardTag.TargetList[0].TeamIndex != Player.TeamIndex;
                         }
                         return false;
@@ -63,6 +65,26 @@ public class P_ShevngTungChiHsi: PSchemeCardModel {
                         } else {
                             if (UseCardTag.Card.Name.Equals(P_ManTiienKuoHai.CardName)) {
                                 Target = ((P_ManTiienKuoHai)(UseCardTag.Card.Model)).AIEmitTargets(Game, Player)[0];
+                            }
+                            if (UseCardTag.Card.Name.Equals(P_TaTsaaoChingShev.CardName)) {
+                                List<PPlayer> PossibleEnemies = Game.Enemies(Player).FindAll((PPlayer _Player) => Player.HasHouse);
+                                if (PossibleEnemies.Count > 0) {
+                                    Target = PossibleEnemies[PMath.RandInt(0, PossibleEnemies.Count - 1)];
+                                }
+                            }
+                            if (UseCardTag.Card.Name.Equals(P_ChiehShihHuanHun.CardName)) {
+                                int MaxMoney = PMath.Max(Game.PlayerList, (PPlayer _Player) => {
+                                    return _Player.Money;
+                                }).Value;
+                                Target = PMath.Max(Game.PlayerList, (PPlayer _Player) => {
+                                    int Delta = Math.Min(10000, MaxMoney - _Player.Money) - 2000 * _Player.Area.HandCardArea.CardNumber;
+                                    // 装备待定
+                                    if (_Player.TeamIndex == Player.TeamIndex) {
+                                        return Delta;
+                                    } else {
+                                        return -Delta;
+                                    }
+                                }).Key;
                             }
                             if (UseCardTag.Card.Name.Equals(P_WuChungShevngYou.CardName) ||
                                 UseCardTag.Card.Name.Equals(P_AnTuCheevnTsaang.CardName)) {

@@ -1,27 +1,20 @@
-﻿
+﻿using System;
 using System.Collections.Generic;
 
 public class PAiMapAnalyzer {
 
-    public static PBlock MaxValueHouse(PGame Game, PPlayer Player) {
+    public static KeyValuePair< PBlock, int> MaxValueHouse(PGame Game, PPlayer Player) {
         int EnemyCount = Game.Enemies(Player).Count;
         return PMath.Max(Game.Map.BlockList.FindAll((PBlock Block) => Player.Equals(Block.Lord) && Block.HouseNumber > 0), (PBlock Block) => {
             return PMath.Percent(Block.Price, 50 + 20 * EnemyCount * (Block.BusinessType.Equals(PBusinessType.ShoppingCenter) ? 2 : 1));
-        }).Key;
+        });
     }
 
-    public static int MaxHouseValue(PGame Game, PPlayer Player) {
-        int MaxValue = int.MinValue;
+    public static KeyValuePair<PBlock, int> MinValueHouse(PGame Game, PPlayer Player) {
         int EnemyCount = Game.Enemies(Player).Count;
-        Game.Map.BlockList.ForEach((PBlock Block) => {
-            if (Player.Equals(Block.Lord) && Block.HouseNumber > 0) {
-                int Value = PMath.Percent(Block.Price, 50 + 20 * EnemyCount * (Block.BusinessType.Equals(PBusinessType.ShoppingCenter) ? 2 : 1));
-                if (Value > MaxValue) {
-                    MaxValue = Value;
-                }
-            }
+        return PMath.Min(Game.Map.BlockList.FindAll((PBlock Block) => Player.Equals(Block.Lord) && Block.HouseNumber > 0), (PBlock Block) => {
+            return PMath.Percent(Block.Price, 50 + 20 * EnemyCount * (Block.BusinessType.Equals(PBusinessType.ShoppingCenter) ? 2 : 1));
         });
-        return MaxValue;
     }
 
     public static int StartFromExpect(PGame Game, PPlayer Player, PBlock Block) {

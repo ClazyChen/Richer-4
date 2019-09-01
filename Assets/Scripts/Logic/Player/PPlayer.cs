@@ -66,6 +66,16 @@ public class PPlayer: PObject {
             }
         }
     }
+
+    public bool HasHouse {
+        get {
+            if (PNetworkManager.CurrentHostType.Equals(PHostType.Server)) {
+                return PNetworkManager.Game.Map.BlockList.Exists((PBlock Block ) => Equals(Block.Lord) && Block.HouseNumber > 0);
+            } else {
+                return false;
+            }
+        }
+    }
     
     /// <summary>
     /// 客户端专用，用于更新手牌数量
