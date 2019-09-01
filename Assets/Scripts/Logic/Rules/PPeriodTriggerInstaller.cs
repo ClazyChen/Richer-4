@@ -40,7 +40,7 @@ public class PPeriodTriggerInstaller : PSystemTriggerInstaller {
                                 } else {
                                     ChosenTarget = PMath.Max(Game.NowPlayer.Position.PortalBlockList, (PBlock Block) => {
                                         return PAiMapAnalyzer.StartFromExpect(Game, Game.NowPlayer, Block);
-                                    });
+                                    }).Key;
                                 }
                             }
                             if (ChosenTarget != null) {

@@ -7,7 +7,7 @@ public class PAiMapAnalyzer {
         int EnemyCount = Game.Enemies(Player).Count;
         return PMath.Max(Game.Map.BlockList.FindAll((PBlock Block) => Player.Equals(Block.Lord) && Block.HouseNumber > 0), (PBlock Block) => {
             return PMath.Percent(Block.Price, 50 + 20 * EnemyCount * (Block.BusinessType.Equals(PBusinessType.ShoppingCenter) ? 2 : 1));
-        });
+        }).Key;
     }
 
     public static int MaxHouseValue(PGame Game, PPlayer Player) {

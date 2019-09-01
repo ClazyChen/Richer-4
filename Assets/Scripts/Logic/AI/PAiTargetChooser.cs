@@ -23,6 +23,6 @@ public class PAiTargetChooser {
             }
             // 加上受到、造成伤害触发技能的增益
             return Profit;
-        }, true);
+        }, true).Key;
     }
 }

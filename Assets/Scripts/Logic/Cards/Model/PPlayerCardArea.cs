@@ -17,6 +17,12 @@ public class PPlayerCardArea : PObject {
         JudgeCardArea = new PCardArea(Owner.Name + "的判定区", Owner);
     }
 
+    public int CardNumber {
+        get {
+            return HandCardArea.CardNumber + EquipmentCardArea.CardNumber + JudgeCardArea.CardNumber;
+        }
+    }
+
     /// <summary>
     /// 0~999为手牌，1000起装备区，2000起判定区
     /// </summary>

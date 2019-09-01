@@ -13,7 +13,7 @@ public class P_ManTiienKuoHai: PSchemeCardModel {
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
         int Basic = 1400;
-        int MinEnemyMoney = PMath.Min(Game.Enemies(Player), (PPlayer Test) =>  Test.Money).Money;
+        int MinEnemyMoney = PMath.Min(Game.Enemies(Player), (PPlayer Test) =>  Test.Money).Value;
         if (MinEnemyMoney <= 1200 ) {
             Basic += 5000 * (7 - MinEnemyMoney / 200);
         }

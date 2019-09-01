@@ -63,7 +63,7 @@ public class PMonitor {
             })).Count > 0) {
                 PTrigger ChosenTrigger = null;
                 if (Judger == null || Judger.IsAI) {
-                    ChosenTrigger = PMath.Max(ValidTriggerList, (PTrigger Trigger) => Trigger.AIPriority);
+                    ChosenTrigger = PMath.Max(ValidTriggerList, (PTrigger Trigger) => Trigger.AIPriority).Key;
                 } else {
                     if (ValidTriggerList.Count == 1 && ValidTriggerList[0].IsLocked) {
                         ChosenTrigger = ValidTriggerList[0];

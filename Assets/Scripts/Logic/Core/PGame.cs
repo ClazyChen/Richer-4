@@ -396,9 +396,9 @@ public class PGame : PGameStatus {
             }
         } else {
             if (Player.TeamIndex == TargetPlayer.TeamIndex) {
-                TargetCard = PAiCardExpectation.FindLeastValuable(this, Player, TargetPlayer, AllowEquipment, AllowJudge);
+                TargetCard = PAiCardExpectation.FindLeastValuable(this, Player, TargetPlayer, AllowEquipment, AllowJudge, Player.Equals(TargetPlayer)).Key;
             } else {
-                TargetCard = PAiCardExpectation.FindMostValuable(this, Player, TargetPlayer, AllowEquipment, AllowJudge);
+                TargetCard = PAiCardExpectation.FindMostValuable(this, Player, TargetPlayer, AllowEquipment, AllowJudge).Key;
             }
         }
         return TargetCard;
@@ -437,9 +437,9 @@ public class PGame : PGameStatus {
         PCard Card = null;
         if (Player.IsAI) {
             if (Player.TeamIndex == TargetPlayer.TeamIndex) {
-                Card = PAiCardExpectation.FindMostValuable(this, TargetPlayer, Player, AllowEquipment, AllowJudge, true);
+                Card = PAiCardExpectation.FindMostValuable(this, TargetPlayer, Player, AllowEquipment, AllowJudge, true).Key;
             } else {
-                Card = PAiCardExpectation.FindLeastValuable(this, TargetPlayer, Player, AllowEquipment, AllowJudge, true);
+                Card = PAiCardExpectation.FindLeastValuable(this, TargetPlayer, Player, AllowEquipment, AllowJudge, true).Key;
             }
         } else {
             Card = PNetworkManager.NetworkServer.ChooseManager.AskToChooseOwnCard(Player, Title, AllowEquipment, AllowJudge);

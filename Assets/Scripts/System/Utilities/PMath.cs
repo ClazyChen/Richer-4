@@ -12,7 +12,7 @@ public class PMath {
         Samples.ForEach((int Sample) => Max = Math.Max(Max, Sample));
         return Max;
     }
-    public static T Max<T>(List<T> Samples, Converter<T, int> Measure, bool MustPositive = false) where T: PObject {
+    public static KeyValuePair<T, int> Max<T>(List<T> Samples, Converter<T, int> Measure, bool MustPositive = false) where T: PObject {
         int Max = int.MinValue;
         T MaxSample = null;
         Samples.ForEach((T Sample) => {
@@ -23,16 +23,16 @@ public class PMath {
             }
         });
         if (MustPositive && Max <= 0) {
-            return null;
+            return new KeyValuePair<T, int> (null, Max);
         }
-        return MaxSample;
+        return new KeyValuePair<T, int>(MaxSample, Max);
     }
     public static int Min(List<int> Samples) {
         int Min = int.MaxValue;
         Samples.ForEach((int Sample) => Min = Math.Min(Min, Sample));
         return Min;
     }
-    public static T Min<T>(List<T> Samples, Converter<T, int> Measure) where T : PObject {
+    public static KeyValuePair<T,int> Min<T>(List<T> Samples, Converter<T, int> Measure) where T : PObject {
         int Min = int.MaxValue;
         T MinSample = null;
         Samples.ForEach((T Sample) => {
@@ -42,7 +42,7 @@ public class PMath {
                 MinSample = Sample;
             }
         });
-        return MinSample;
+        return new KeyValuePair<T, int>(MinSample, Min);
     }
     public static double Sum(List<double> Samples) {
         double Sum = 0;

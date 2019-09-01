@@ -11,7 +11,7 @@ public class P_AnTuCheevnTsaang: PSchemeCardModel {
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
         int Basic = 2000;
-        Basic = Math.Max(Basic, PAiMapAnalyzer.StartFromExpect(Game, Player, PMath.Max(Game.Map.BlockList, (PBlock Block) => PAiMapAnalyzer.StartFromExpect(Game, Player, Block))) - PAiMapAnalyzer.StartFromExpect(Game, Player, Player.Position));
+        Basic = Math.Max(Basic, PMath.Max(Game.Map.BlockList, (PBlock Block) => PAiMapAnalyzer.StartFromExpect(Game, Player, Block)).Value - PAiMapAnalyzer.StartFromExpect(Game, Player, Player.Position));
         return Basic;
     }
 
@@ -33,8 +33,7 @@ public class P_AnTuCheevnTsaang: PSchemeCardModel {
                         return Game.NowPlayer.Equals(Player);
                     },
                     AICondition = (PGame Game) => {
-                        PBlock IdealBlock = PMath.Max(Game.Map.BlockList, (PBlock Block) => PAiMapAnalyzer.StartFromExpect(Game, Player, Block));
-                        int Ideal = PAiMapAnalyzer.StartFromExpect(Game, Player, IdealBlock);
+                        int Ideal = PMath.Max(Game.Map.BlockList, (PBlock Block) => PAiMapAnalyzer.StartFromExpect(Game, Player, Block)).Value;
                         int Current = PAiMapAnalyzer.StartFromExpect(Game, Player, Player.Position);
                         return (Ideal - Current >= 2000) || (-Current >= Player.Money && -Ideal < Player.Money);
                     },
@@ -42,7 +41,7 @@ public class P_AnTuCheevnTsaang: PSchemeCardModel {
                         (PGame Game, PPlayer User, PPlayer Target) => {
                             PBlock TargetBlock = Target.Position;
                             if (Target.IsAI) {
-                                TargetBlock = PMath.Max(Game.Map.BlockList, (PBlock Block) => PAiMapAnalyzer.StartFromExpect(Game, Player, Block));
+                                TargetBlock = PMath.Max(Game.Map.BlockList, (PBlock Block) => PAiMapAnalyzer.StartFromExpect(Game, Player, Block)).Key;
                             } else {
                                 TargetBlock = PNetworkManager.NetworkServer.ChooseManager.AskToChooseBlock(Target, "[暗度陈仓]选择目标格子");
                             }

@@ -24,10 +24,11 @@ public class PAiCardExpectation {
         }
     }
 
-    public static PCard FindLeastValuable(PGame Game, PPlayer Player, PPlayer TargetPlayer, bool AllowEquipment = true, bool AllowJudge = false, bool CanSee = false) {
+
+    public static KeyValuePair< PCard, int> FindLeastValuable(PGame Game, PPlayer Player, PPlayer TargetPlayer, bool AllowEquipment = true, bool AllowJudge = false, bool CanSee = false) {
         // 装备和伏兵另外计算
         return PMath.Min(TargetPlayer.Area.HandCardArea.CardList, (PCard Card) => {
-            if (Player.Equals(TargetPlayer) || CanSee) {
+            if (CanSee) {
                 return Card.Model.AIInHandExpectation(Game, Player);
             } else {
                 return 1500 + PMath.RandInt(-10,10);
@@ -35,10 +36,10 @@ public class PAiCardExpectation {
         });
     }
 
-    public static PCard FindMostValuable(PGame Game, PPlayer Player, PPlayer TargetPlayer, bool AllowEquipment = true, bool AllowJudge = false, bool CanSee = false) {
+    public static KeyValuePair<PCard, int> FindMostValuable(PGame Game, PPlayer Player, PPlayer TargetPlayer, bool AllowEquipment = true, bool AllowJudge = false, bool CanSee = false) {
         // 装备和伏兵另外计算
         return PMath.Max(TargetPlayer.Area.HandCardArea.CardList, (PCard Card) => {
-            if (Player.Equals(TargetPlayer) || CanSee) {
+            if (CanSee) {
                 return Card.Model.AIInHandExpectation(Game, Player);
             } else {
                 return 1500 + PMath.RandInt(-10, 10);
@@ -47,6 +48,6 @@ public class PAiCardExpectation {
     }
 
     public static PPlayer MostValuableCardUser(PGame Game, List<PPlayer> PlayerList) {
-        return PMath.Max(PlayerList, (PPlayer Player) => Expect(Game, Player) + PMath.RandInt(-10,10));
+        return PMath.Max(PlayerList, (PPlayer Player) => Expect(Game, Player) + PMath.RandInt(-10,10)).Key;
     }
 }
