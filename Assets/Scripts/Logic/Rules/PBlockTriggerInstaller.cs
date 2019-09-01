@@ -100,24 +100,32 @@
             }
         });
         MultiPlayerTriggerList.Add((PPlayer Player) => new PTrigger("研究所[视察研究成果]") {
-            IsLocked = true,
             Player = Player,
             Time = PPeriod.SettleStage.During,
             Condition = (PGame Game) => {
                 PBlock NowBlock = Game.NowPlayer.Position;
                 return Player.Equals(NowBlock.Lord) && NowBlock.BusinessType.Equals(PBusinessType.Institute);
             },
+            AICondition = (PGame Game) => {
+                return Player.TeamIndex == Game.NowPlayer.TeamIndex;
+            },
             Effect = (PGame Game) => {
-                bool GiveCard = false;
-                if (Player.IsAI) {
-                    GiveCard = (Player.TeamIndex == Game.NowPlayer.TeamIndex);
-                } else {
-                    GiveCard = PNetworkManager.NetworkServer.ChooseManager.AskYesOrNo(Player, "是否令"+Game.NowPlayer.Name+"摸牌？"); 
-                }
-                if (GiveCard) {
-                    int Number = PMath.RandInt(1, 6) / 2 + 1;
-                    Game.GetCard(Game.NowPlayer, Number);
-                }
+                int Number = PMath.RandInt(1, 6) / 2 + 1;
+                Game.GetCard(Game.NowPlayer, Number);
+            }
+        });
+        MultiPlayerTriggerList.Add((PPlayer Player) => new PTrigger("当铺[典当手牌]") {
+            Player = Player,
+            Time = PPeriod.SettleStage.During,
+            Condition = (PGame Game) => {
+                PBlock NowBlock = Game.NowPlayer.Position;
+                return Game.NowPlayer.Equals(Player) && NowBlock.Lord != null && Player.Area.HandCardArea.CardNumber > 0 && NowBlock.BusinessType.Equals(PBusinessType.Pawnshop);
+            },
+            AICondition = (PGame Game) => {
+                return Game.NowPlayer.TeamIndex == Game.NowPlayer.Position.Lord.TeamIndex;
+            },
+            Effect = (PGame Game) => {
+                PCard Card = null;
             }
         });
         TriggerList.Add(new PTrigger("公园[扩建政府补助]") {

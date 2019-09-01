@@ -31,42 +31,39 @@ public class PMonitor {
         return Game.TagManager.PopTag<T>(OriginalTag.Name);
     }
 
+    private List<PPlayer> SettleSequence() {
+        List<PPlayer> Sequence = new List<PPlayer>() { null };
+        for (int i = Game.NowPlayerIndex; ; ++ i) {
+            PPlayer Player = Game.PlayerList[i % Game.PlayerNumber];
+            if (Player.IsAlive) {
+                if (Sequence.Contains(Player)) {
+                    break;
+                } else {
+                    Sequence.Add(Player);
+                }
+            }
+        }
+        return Sequence;
+    }
+
     // 宣布一个时机的到来
     public void CallTime(PTime Time) {
         PLogger.Log("时机到来：" + Time.Name);
         if (Time.IsPeroidTime() && EndTurnDirectly) {
+            PLogger.Log("阶段立刻结束");
             return;
         }
-        List<PTrigger> AvailableTriggerList = TriggerList.FindAll((PTrigger Trigger) => Trigger.Time.Equals(Time));
-        AvailableTriggerList.Sort((PTrigger x, PTrigger y) => PTrigger.ComparePriority(Game, x, y));
-        for (int i = 0; i < AvailableTriggerList.Count;) {
-            int Count = 0;
-            for (++Count; i + Count < AvailableTriggerList.Count; ++Count) {
-                if (AvailableTriggerList[i].Player != AvailableTriggerList[i+Count].Player) { // 优先级不同
-                    break;
-                }
-            }
-            List<PTrigger> CurrentTriggerList = AvailableTriggerList.GetRange(i, Count);
-            i += Count;
-            PPlayer Judger = CurrentTriggerList[0].Player;
-            if (Judger != null && !Judger.IsAlive) {
-                continue;
-            }
-            List<PTrigger> ValidTriggerList;
-            while ((ValidTriggerList = CurrentTriggerList.FindAll((PTrigger Trigger) => Trigger.Condition(Game) && (Judger == null || Judger.IsAlive) && (Judger == null || Judger.IsUser || Trigger.AICondition(Game)))).Count > 0) {
+        List<PPlayer> Sequence = SettleSequence();
+        List<PTrigger> ValidTriggerList;
+        List<PTrigger> AlreadyTriggerList = new List<PTrigger>();
+        foreach (PPlayer Judger in Sequence) {
+            AlreadyTriggerList.Clear();
+            while ((ValidTriggerList = TriggerList.FindAll((PTrigger Trigger) => {
+                return Trigger.Time.Equals(Time) && Trigger.Player == Judger && !AlreadyTriggerList.Contains(Trigger) && Trigger.Condition(Game) && (Judger == null || Judger.IsAlive) && (Judger == null || Judger.IsUser || Trigger.AICondition(Game));
+            })).Count > 0) {
                 PTrigger ChosenTrigger = null;
-                ValidTriggerList.Sort((PTrigger x, PTrigger y) => {
-                    if (y.AIPriority < x.AIPriority ) {
-                        return -1;
-                    } else if (y.AIPriority > x.AIPriority) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
-                });
-                #region 系统和AI直接选择，玩家利用选择管理器选择
                 if (Judger == null || Judger.IsAI) {
-                    ChosenTrigger = ValidTriggerList[0];
+                    ChosenTrigger = PMath.Max(ValidTriggerList, (PTrigger Trigger) => Trigger.AIPriority);
                 } else {
                     if (ValidTriggerList.Count == 1 && ValidTriggerList[0].IsLocked) {
                         ChosenTrigger = ValidTriggerList[0];
@@ -81,13 +78,12 @@ public class PMonitor {
                         }
                     }
                 }
-                #endregion
                 if (ChosenTrigger != null) {
                     Game.Logic.StartSettle(new PSettle("于[" + Time.Name + "]触发[" + ChosenTrigger.Name + "]", (PGame Game) => {
                         ChosenTrigger.Effect(Game);
                     }));
                     if (!ChosenTrigger.CanRepeat) {
-                        CurrentTriggerList.Remove(ChosenTrigger);
+                        AlreadyTriggerList.Add(ChosenTrigger);
                     }
                     if (Time.IsPeroidTime() && EndTurnDirectly) {
                         PLogger.Log("阶段立刻结束");

@@ -35,7 +35,7 @@ public class PAiCardExpectation {
         });
     }
 
-    public static PCard FindMostValuable(PGame Game, PPlayer Player, PPlayer TargetPlayer, bool AllowEquipment = true, bool AllowJudge = false) {
+    public static PCard FindMostValuable(PGame Game, PPlayer Player, PPlayer TargetPlayer, bool AllowEquipment = true, bool AllowJudge = false, bool CanSee = false) {
         // 装备和伏兵另外计算
         return PMath.Max(TargetPlayer.Area.HandCardArea.CardList, (PCard Card) => {
             if (Player.Equals(TargetPlayer)) {
