@@ -5,10 +5,6 @@ using System.Collections.Generic;
 /// </summary>
 public class P_ShevngTungChiHsi: PSchemeCardModel {
 
-    private List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
-        return new List<PPlayer>() {  };
-    }
-
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
         return 3000;
     }
@@ -29,7 +25,7 @@ public class P_ShevngTungChiHsi: PSchemeCardModel {
                     AIPriority = 100,
                     Condition = (PGame Game) => {
                         PUseCardTag UseCardTag = Game.TagManager.FindPeekTag<PUseCardTag>(PUseCardTag.TagName);
-                        return UseCardTag.TargetList.Count == 1;
+                        return UseCardTag.TargetList.Count == 1 && UseCardTag.Card.Type.Equals(PCardType.SchemeCard);
                     },
                     AICondition = (PGame Game) => {
                         PUseCardTag UseCardTag = Game.TagManager.FindPeekTag<PUseCardTag>(PUseCardTag.TagName);
@@ -48,7 +44,7 @@ public class P_ShevngTungChiHsi: PSchemeCardModel {
                         List<PPlayer> Targets = new List<PPlayer>();
                         Game.Monitor.CallTime(PTime.Card.AfterEmitTargetTime, new PUseCardTag(Card, Player, Targets));
                         Game.CardManager.MoveCard(Card, Player.Area.HandCardArea, Game.CardManager.SettlingArea);
-                        Game.Monitor.CallTime(PTime.Card.StartSettleTime, new PUseCardTag(Card, Player, Targets));
+                        Game.Monitor.CallTime(PTime.Card.AfterBecomeTargetTime, new PUseCardTag(Card, Player, Targets));
                         PUseCardTag UseCardTag = Game.TagManager.FindPeekTag<PUseCardTag>(PUseCardTag.TagName);
                         PPlayer Target = null;
                         if (Player.IsUser) {

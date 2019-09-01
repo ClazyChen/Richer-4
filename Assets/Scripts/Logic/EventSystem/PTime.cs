@@ -35,7 +35,7 @@ public class PTime : PObject {
         public static PTime EnterAreaTime = new PTime("卡牌进入区域时");
 
         public static PTime AfterEmitTargetTime = new PTime("指定卡牌的目标后");
-        public static PTime StartSettleTime = new PTime("卡牌结算开始时");
+        public static PTime AfterBecomeTargetTime = new PTime("成为卡牌的目标后");
         public static PTime EndSettleTime = new PTime("卡牌结算结束时");
     }
 
