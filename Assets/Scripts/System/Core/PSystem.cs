@@ -65,7 +65,7 @@ public class PSystem: MonoBehaviour {
                     });
                 } else {
                     PUIManager.AddNewUIAction("Ëõ·Å[zoom+]", () => {
-                        if (PCameraController.Config.CameraLockedDistance.magnitude < 60.0f) {
+                        if (PCameraController.Config.CameraLockedDistance.magnitude < 80.0f) {
                             PCameraController.Config.CameraLockedDistance += PCameraController.Config.CameraZoomDistance;
                             PUIManager.GetUI<PMapUI>().CameraController.ChangePerspective(PUIManager.GetUI<PMapUI>().CameraController.Camera.position + PCameraController.Config.CameraZoomDistance);
                         }

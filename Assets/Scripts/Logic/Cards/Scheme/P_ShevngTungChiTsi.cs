@@ -32,7 +32,8 @@ public class P_ShevngTungChiHsi: PSchemeCardModel {
                         if (UseCardTag.Card.Name.Equals(P_ManTiienKuoHai.CardName) ||
                             UseCardTag.Card.Name.Equals(P_WeiWeiChiuChao.CardName) ||
                             UseCardTag.Card.Name.Equals(P_CheevnHuoTaChieh.CardName) ||
-                            UseCardTag.Card.Name.Equals(P_LiTaiTaaoChiang.CardName)) {
+                            UseCardTag.Card.Name.Equals(P_LiTaiTaaoChiang.CardName) ||
+                            UseCardTag.Card.Name.Equals(P_ShunShouChiienYang.CardName)) {
                             return UseCardTag.TargetList[0].TeamIndex == Player.TeamIndex && UseCardTag.User.TeamIndex != Player.TeamIndex;
                         }
                         if (UseCardTag.Card.Name.Equals(P_WuChungShevngYou.CardName) ||
