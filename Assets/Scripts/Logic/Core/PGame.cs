@@ -178,7 +178,7 @@ public class PGame : PGameStatus {
                 PNetworkManager.NetworkServer.TellClients(new PRefreshBlockBasicOrder(Block));
             }
         });
-        // 弃置所有区域内的牌
+        CardManager.ThrowAll(Player.Area);
         Player.IsAlive = false;
         PNetworkManager.NetworkServer.TellClients(new PDieOrder(Player.Index.ToString()));
         if (GameOver()) {

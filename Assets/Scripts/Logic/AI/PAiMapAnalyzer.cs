@@ -48,6 +48,8 @@ public class PAiMapAnalyzer {
         if (Block.Lord != null && Block.Lord.TeamIndex == Player.TeamIndex) {
             if (Block.BusinessType.Equals(PBusinessType.Institute)) {
                 LandValue += 5 * PAiCardExpectation.Expect(Game, Player) / 2;
+            } else if (Block.BusinessType.Equals(PBusinessType.Pawnshop)) {
+                LandValue += 1500;
             }
         }
         // 注：现在不进行关于当铺收益的计算
