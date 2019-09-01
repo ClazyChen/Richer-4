@@ -365,6 +365,9 @@ public class PGame : PGameStatus {
         if (CardManager.CardHeap.CardNumber > 0) {
             CardManager.MoveCard(CardManager.CardHeap.TopCard, CardManager.CardHeap, Player.Area.HandCardArea);
         }
+        if (NowPeriod != null) {
+            PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "摸了1张牌"));
+        }
     }
 
     private PCard ChooseCard(PPlayer Player, PPlayer TargetPlayer, string Title, bool AllowEquipment = true, bool AllowJudge = false) {
@@ -414,6 +417,24 @@ public class PGame : PGameStatus {
         if (TargetCard != null) {
             PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "获得了" + TargetPlayer.Name + "的" + (TargetPlayer.Area.HandCardArea.CardList.Contains(TargetCard) ? "1张手牌" : TargetCard.Name)));
             CardManager.MoveCard(TargetCard, TargetPlayer.Area.HandCardArea, Player.Area.HandCardArea);
+        }
+    }
+
+    public void GiveCardTo(PPlayer Player, PPlayer TargetPlayer, bool AllowEquipment = true, bool AllowJudge = false) {
+        string Title = "请选择给出一张手牌" + (AllowEquipment ? "或装备" : string.Empty) + (AllowJudge ? "或伏兵" : string.Empty);
+        PCard Card = null;
+        if (Player.IsAI) {
+            if (Player.TeamIndex == TargetPlayer.TeamIndex) {
+                Card = PAiCardExpectation.FindMostValuable(this, TargetPlayer, Player, AllowEquipment, AllowJudge, true);
+            } else {
+                Card = PAiCardExpectation.FindLeastValuable(this, TargetPlayer, Player, AllowEquipment, AllowJudge, true);
+            }
+        } else {
+            Card = PNetworkManager.NetworkServer.ChooseManager.AskToChooseOwnCard(Player, Title, AllowEquipment, AllowJudge);
+        }
+        if (Card != null) {
+            PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "交给了" + TargetPlayer.Name + (Player.Area.HandCardArea.CardList.Contains(Card) ? "1张手牌" : Card.Name)));
+            CardManager.MoveCard(Card, Player.Area.HandCardArea, TargetPlayer.Area.HandCardArea);
         }
     }
 }

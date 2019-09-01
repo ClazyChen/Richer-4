@@ -24,11 +24,11 @@ public class PAiCardExpectation {
         }
     }
 
-    public static PCard FindLeastValuable(PGame Game, PPlayer Player, PPlayer TargetPlayer, bool AllowEquipment = true, bool AllowJudge = false) {
+    public static PCard FindLeastValuable(PGame Game, PPlayer Player, PPlayer TargetPlayer, bool AllowEquipment = true, bool AllowJudge = false, bool CanSee = false) {
         // 装备和伏兵另外计算
         return PMath.Min(TargetPlayer.Area.HandCardArea.CardList, (PCard Card) => {
-            if (Player.Equals(TargetPlayer)) {
-                return Card.Model.AIInHandExpectation(Game, TargetPlayer);
+            if (Player.Equals(TargetPlayer) || CanSee) {
+                return Card.Model.AIInHandExpectation(Game, Player);
             } else {
                 return 1500 + PMath.RandInt(-10,10);
             }
@@ -38,8 +38,8 @@ public class PAiCardExpectation {
     public static PCard FindMostValuable(PGame Game, PPlayer Player, PPlayer TargetPlayer, bool AllowEquipment = true, bool AllowJudge = false, bool CanSee = false) {
         // 装备和伏兵另外计算
         return PMath.Max(TargetPlayer.Area.HandCardArea.CardList, (PCard Card) => {
-            if (Player.Equals(TargetPlayer)) {
-                return Card.Model.AIInHandExpectation(Game, TargetPlayer);
+            if (Player.Equals(TargetPlayer) || CanSee) {
+                return Card.Model.AIInHandExpectation(Game, Player);
             } else {
                 return 1500 + PMath.RandInt(-10, 10);
             }
