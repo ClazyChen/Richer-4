@@ -288,6 +288,8 @@ public class PGame : PGameStatus {
         Player = PurchaseHouseTag.Player;
         Block = PurchaseHouseTag.Block;
         if (Player != null && Block != null) {
+            PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "购买了1座房屋"));
+            PNetworkManager.NetworkServer.TellClients(new PHighlightBlockOrder(Block.Index.ToString()));
             if (Block.HousePrice > 0) {
                 LoseMoney(Player, Block.HousePrice);
             }

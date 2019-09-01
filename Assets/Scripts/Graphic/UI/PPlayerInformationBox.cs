@@ -9,6 +9,7 @@ public class PPlayerInformationBox : PAbstractUI {
     public readonly Text JudgeText;
     public readonly Text FlagText;
     public readonly Text PeriodText;
+    public readonly Text LandCountText;
     public readonly Image GeneralImageBackground;
     public readonly Image GeneralImage;
 
@@ -40,5 +41,6 @@ public class PPlayerInformationBox : PAbstractUI {
         } else {
             MoneyText.text = "已阵亡";
         }
+        LandCountText.text = AttachedPlayer.NormalLandNumber + "/" + AttachedPlayer.BusinessLandNumber;
     }
 }

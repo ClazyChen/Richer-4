@@ -71,6 +71,14 @@ public class PPlayer: PObject {
     /// 客户端专用，用于更新手牌数量
     /// </summary>
     public int HandCardNumber = 0;
+    /// <summary>
+    /// 客户端专用，用于更新领地数量
+    /// </summary>
+    public int NormalLandNumber = 0;
+    /// <summary>
+    /// 客户端专用，用于更新商业用地数量
+    /// </summary>
+    public int BusinessLandNumber = 0;
 
 
     private string _EquipCards = string.Empty;
