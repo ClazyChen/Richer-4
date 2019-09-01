@@ -42,7 +42,7 @@ public class P_WeiWeiChiuChao: PSchemeCardModel {
                     },
                     AICondition = (PGame Game) => {
                         PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
-                        return Player.Money <= InjureTag.Injure || (InjureTag.Injure >= 3000 && InjureTag.FromPlayer.TeamIndex == Player.TeamIndex);
+                        return Player.Money <= InjureTag.Injure || (InjureTag.Injure >= 3000 && InjureTag.FromPlayer.TeamIndex != Player.TeamIndex);
                     },
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets, AIEmitTargets,
                         (PGame Game, PPlayer User, PPlayer Target) => {

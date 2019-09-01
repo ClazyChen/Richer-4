@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System;
 
 /// <summary>
 /// PGame类：
@@ -268,6 +269,17 @@ public class PGame : PGameStatus {
         if (GetHouseBlock != null && GetHouseCount > 0) {
             GetHouseBlock.HouseNumber += GetHouseCount;
             PNetworkManager.NetworkServer.TellClients(new PRefreshBlockBasicOrder(GetHouseBlock));
+        }
+    }
+
+    public void LoseHouse(PBlock Block, int HouseCount) {
+        PLoseHouseTag LoseHouseTag = Monitor.CallTime(PTime.LoseHouseTime, new PLoseHouseTag(Block, HouseCount));
+        PBlock LoseHouseBlock = LoseHouseTag.Block;
+        int LoseHouseCount = LoseHouseTag.House;
+        if (LoseHouseBlock != null && LoseHouseCount > 0) {
+            LoseHouseBlock.HouseNumber -= LoseHouseCount;
+            LoseHouseBlock.HouseNumber = Math.Max(0, LoseHouseBlock.HouseNumber);
+            PNetworkManager.NetworkServer.TellClients(new PRefreshBlockBasicOrder(LoseHouseBlock));
         }
     }
 

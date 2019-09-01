@@ -3,6 +3,27 @@ using System.Collections.Generic;
 
 public class PAiMapAnalyzer {
 
+    public static PBlock MaxValueHouse(PGame Game, PPlayer Player) {
+        int EnemyCount = Game.Enemies(Player).Count;
+        return PMath.Max(Game.Map.BlockList.FindAll((PBlock Block) => Player.Equals(Block.Lord) && Block.HouseNumber > 0), (PBlock Block) => {
+            return PMath.Percent(Block.Price, 50 + 20 * EnemyCount * (Block.BusinessType.Equals(PBusinessType.ShoppingCenter) ? 2 : 1));
+        });
+    }
+
+    public static int MaxHouseValue(PGame Game, PPlayer Player) {
+        int MaxValue = int.MinValue;
+        int EnemyCount = Game.Enemies(Player).Count;
+        Game.Map.BlockList.ForEach((PBlock Block) => {
+            if (Player.Equals(Block.Lord) && Block.HouseNumber > 0) {
+                int Value = PMath.Percent(Block.Price, 50 + 20 * EnemyCount * (Block.BusinessType.Equals(PBusinessType.ShoppingCenter) ? 2 : 1));
+                if (Value > MaxValue) {
+                    MaxValue = Value;
+                }
+            }
+        });
+        return MaxValue;
+    }
+
     public static int StartFromExpect(PGame Game, PPlayer Player, PBlock Block) {
         PBlock CurrentBlock = Block.NextBlock;
         int Expectation = 0;
@@ -37,16 +58,16 @@ public class PAiMapAnalyzer {
         DeltaMoney += 2000 * Block.GetCardStop;
         int LandValue = 0;
         if (Block.Lord == null && Block.Price < Player.Money) {
-            LandValue = PMath.Percent(Block.Price, 60);
+            LandValue = PMath.Percent(Block.Price, 10) * Game.Enemies(Player).Count;
             if (Block.IsBusinessLand) {
                 LandValue += PMath.Max(PAiBusinessChooser.DirectionExpectations(Game, Player, Block));
             }
         } else if (Player.Equals(Block.Lord)) {
-            LandValue += PMath.Percent(Block.Price, 40);
+            LandValue += PMath.Percent(Block.Price, 20) * Game.Enemies(Player).Count;
             if (Block.BusinessType.Equals(PBusinessType.Park)) {
                 LandValue += PMath.Percent(Block.Price, 60);
             } else if (Block.BusinessType.Equals(PBusinessType.ShoppingCenter)) {
-                LandValue += PMath.Percent(Block.Price, 40);
+                LandValue += PMath.Percent(Block.Price, 20) * Game.Enemies(Player).Count;
             }
         }
         if (Block.Lord != null && Block.Lord.TeamIndex == Player.TeamIndex) {

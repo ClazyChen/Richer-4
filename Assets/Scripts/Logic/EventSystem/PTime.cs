@@ -22,6 +22,7 @@ public class PTime : PObject {
     public static PTime GetMoneyTime = new PTime("获得金钱时");
     public static PTime PurchaseLandTime = new PTime("购买土地时");
     public static PTime GetHouseTime = new PTime("获得房屋时");
+    public static PTime LoseHouseTime = new PTime("失去房屋时");
     public static PTime LoseMoneyTime = new PTime("失去金钱时");
     public static PTime PurchaseHouseTime = new PTime("购买房屋时");
 
