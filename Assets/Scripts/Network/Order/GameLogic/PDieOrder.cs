@@ -9,8 +9,8 @@ public class PDieOrder : POrder {
         null,
         (string[] args) => {
             int DiePlayerIndex = Convert.ToInt32(args[1]);
-            PNetworkManager.NetworkClient.GameStatus.FindPlayer(DiePlayerIndex).IsAlive = false;
             PAnimation.AddAnimation("玩家死亡", () => {
+                PNetworkManager.NetworkClient.GameStatus.FindPlayer(DiePlayerIndex).IsAlive = false;
                 PUIManager.GetUI<PMapUI>().PlayerInformationGroup.GroupUIList[DiePlayerIndex].Initialize(PNetworkManager.NetworkClient.GameStatus.FindPlayer(DiePlayerIndex));
                 PUIManager.GetUI<PMapUI>().Scene.PlayerGroup.GroupUIList[DiePlayerIndex].Close();
             });

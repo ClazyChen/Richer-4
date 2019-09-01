@@ -17,4 +17,14 @@ public class PBlockGroupScene : PAbstractGroupUI<PBlockScene> {
             AddSubUI().InitializeBlock(Block);
         }
     }
+
+    public int FindBlockSceneIndex(Vector3 WorldPosition) {
+        for (int i = 0; i < GroupUIList.Count; ++ i) {
+            Vector3 BlockSpacePosition = GroupUIList[i].UIBackgroundImage.position;
+            if (Mathf.Abs(WorldPosition.x - BlockSpacePosition.x) < 0.9f && Mathf.Abs(WorldPosition.z - BlockSpacePosition.z) < 0.9f) {
+                return i;
+            }
+        }
+        return -1;
+    }
 }

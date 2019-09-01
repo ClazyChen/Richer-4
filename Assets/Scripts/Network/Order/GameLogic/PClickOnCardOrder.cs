@@ -4,6 +4,7 @@
 /// 试图使用卡牌命令
 /// </summary>
 /// SR：当发出者为当前回合的角色且正在进行空闲时间点且空闲时，且卡牌的使用condition满足时，使用对应的卡牌
+///     或者当其正在选择一张自己的牌时，返回对应的卡牌
 public class PClickOnCardOrder : POrder {
     public PClickOnCardOrder() : base("click_on_card",
         (string[] args, string IPAddress) => {

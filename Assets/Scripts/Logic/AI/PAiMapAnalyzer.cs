@@ -6,13 +6,16 @@ public class PAiMapAnalyzer {
     public static int StartFromExpect(PGame Game, PPlayer Player, PBlock Block) {
         PBlock CurrentBlock = Block.NextBlock;
         int Expectation = 0;
-        for (int i = 5; i >= 0; -- i) {
-            Expectation += Expect(Game, Player, Block);
+        for (int i = 6; i >= 1; -- i) {
+            Expectation += Expect(Game, Player, CurrentBlock);
             if (CurrentBlock.GetMoneyPassSolid != 0) {
                 Expectation += i * CurrentBlock.GetMoneyPassSolid;
             }
             if (CurrentBlock.GetMoneyPassPercent != 0) {
                 Expectation += i * PMath.Percent(Player.Money, CurrentBlock.GetMoneyPassPercent);
+            }
+            if (CurrentBlock.GetCardPass != 0) {
+                Expectation += i * 2000 * CurrentBlock.GetCardPass;
             }
             CurrentBlock = Block.NextBlock;
         }
@@ -31,6 +34,7 @@ public class PAiMapAnalyzer {
         } else if (Player.Money <= 3000) {
             DeltaMoney *= 2;
         }
+        DeltaMoney += 2000 * Block.GetCardStop;
         int LandValue = 0;
         if (Block.Lord == null && Block.Price < Player.Money) {
             LandValue = PMath.Percent(Block.Price, 60);
@@ -47,12 +51,11 @@ public class PAiMapAnalyzer {
         }
         if (Block.Lord != null && Block.Lord.TeamIndex == Player.TeamIndex) {
             if (Block.BusinessType.Equals(PBusinessType.Institute)) {
-                LandValue += 2 * PAiCardExpectation.Expect(Game, Player);
+                LandValue += 2 * 2000;
             } else if (Block.BusinessType.Equals(PBusinessType.Pawnshop)) {
                 LandValue += 2000;
             }
         }
-        // 注：现在不进行关于当铺收益的计算
         return DeltaMoney + LandValue * 20 / GetRingLength(Game, Block);
     }
 

@@ -75,8 +75,6 @@ public class PCardManager {
             new P_ManTiienKuoHai().Instantiate(),
             new P_ManTiienKuoHai().Instantiate(),
             new P_ManTiienKuoHai().Instantiate(),
-            new P_ManTiienKuoHai().Instantiate(),
-            new P_WeiWeiChiuChao().Instantiate(),
             new P_WeiWeiChiuChao().Instantiate(),
             new P_WeiWeiChiuChao().Instantiate(),
             new P_WeiWeiChiuChao().Instantiate(),
@@ -87,14 +85,11 @@ public class PCardManager {
             new P_IITaiLao().Instantiate(),
             new P_IITaiLao().Instantiate(),
             new P_IITaiLao().Instantiate(),
-            new P_IITaiLao().Instantiate(),
             new P_CheevnHuoTaChieh().Instantiate(),
             new P_CheevnHuoTaChieh().Instantiate(),
             new P_CheevnHuoTaChieh().Instantiate(),
             new P_CheevnHuoTaChieh().Instantiate(),
             new P_CheevnHuoTaChieh().Instantiate(),
-            new P_CheevnHuoTaChieh().Instantiate(),
-            new P_ShevngTungChiHsi().Instantiate(),
             new P_ShevngTungChiHsi().Instantiate(),
             new P_ShevngTungChiHsi().Instantiate(),
             new P_ShevngTungChiHsi().Instantiate(),
@@ -105,7 +100,11 @@ public class PCardManager {
             new P_WuChungShevngYou().Instantiate(),
             new P_WuChungShevngYou().Instantiate(),
             new P_WuChungShevngYou().Instantiate(),
-            new P_WuChungShevngYou().Instantiate()
+            new P_AnTuCheevnTsaang().Instantiate(),
+            new P_AnTuCheevnTsaang().Instantiate(),
+            new P_AnTuCheevnTsaang().Instantiate(),
+            new P_AnTuCheevnTsaang().Instantiate(),
+            new P_AnTuCheevnTsaang().Instantiate()
 
         }).ForEach((PCard Card) => {
             CardHeap.CardList.Add(Card);

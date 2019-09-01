@@ -89,5 +89,19 @@ public class PSystem: MonoBehaviour {
             }
         }
         #endregion
+
+        #region Ñ¡Ôñ¸ñ×Ó
+        if (Input.GetMouseButtonUp(0)) {
+            if (PUIManager.CurrentUI.Equals(PUIManager.GetUI<PMapUI>()) && !PUIManager.GetUI<PMapUI>().MessageBox.IsActive) {
+                Vector3 WorldPosition1 = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 20.0f));
+                Vector3 WorldPosition2 = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 30.0f));
+                Vector3 WorldPosition = new Vector3((WorldPosition1.x - WorldPosition2.x) / (WorldPosition1.y - WorldPosition2.y) * (-WorldPosition1.y) + WorldPosition1.x, 0, (WorldPosition1.z - WorldPosition2.z) / (WorldPosition1.y - WorldPosition2.y) * (-WorldPosition1.y) + WorldPosition1.z);
+                PBlock FindBlockResult = PNetworkManager.NetworkClient.GameStatus.Map.FindBlock(PUIManager.GetUI<PMapUI>().Scene.BlockGroup.FindBlockSceneIndex(WorldPosition));
+                if (FindBlockResult != null) {
+                    PNetworkManager.NetworkClient.Send(new PClickOnBlockOrder(FindBlockResult.Index.ToString()));
+                }
+            }
+        }
+        #endregion
     }
 }

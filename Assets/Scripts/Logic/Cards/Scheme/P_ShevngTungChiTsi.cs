@@ -38,7 +38,8 @@ public class P_ShevngTungChiHsi: PSchemeCardModel {
                             UseCardTag.Card.Name.Equals(P_CheevnHuoTaChieh.CardName)) {
                             return UseCardTag.TargetList[0].TeamIndex == Player.TeamIndex && UseCardTag.User.TeamIndex != Player.TeamIndex;
                         }
-                        if (UseCardTag.Card.Name.Equals(P_WuChungShevngYou.CardName)) {
+                        if (UseCardTag.Card.Name.Equals(P_WuChungShevngYou.CardName) ||
+                            UseCardTag.Card.Name.Equals(P_AnTuCheevnTsaang.CardName)) {
                             return UseCardTag.TargetList[0].TeamIndex != Player.TeamIndex;
                         }
                         return false;
@@ -65,7 +66,8 @@ public class P_ShevngTungChiHsi: PSchemeCardModel {
                             if (UseCardTag.Card.Name.Equals(P_ManTiienKuoHai.CardName)) {
                                 Target = ((P_ManTiienKuoHai)(UseCardTag.Card.Model)).AIEmitTargets(Game, Player)[0];
                             }
-                            if (UseCardTag.Card.Name.Equals(P_WuChungShevngYou.CardName)) {
+                            if (UseCardTag.Card.Name.Equals(P_WuChungShevngYou.CardName) ||
+                                UseCardTag.Card.Name.Equals(P_AnTuCheevnTsaang.CardName)) {
                                 Target = PAiCardExpectation.MostValuableCardUser(Game, Game.Teammates(Player));
                             }
                         }

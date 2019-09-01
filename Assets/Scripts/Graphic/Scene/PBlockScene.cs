@@ -5,8 +5,9 @@
 /// 用来实现一个格子
 /// </summary>
 public class PBlockScene : PAbstractUI{
-    private class Config {
+    public class Config {
         public readonly static Color DefaultBlockColor = new Color(0.66f, 0.66f, 0.66f);
+        public readonly static Color HighlightedBlockColor = new Color(1.0f, 1.0f, 1.0f);
     }
 
     public readonly TextMesh BlockName;

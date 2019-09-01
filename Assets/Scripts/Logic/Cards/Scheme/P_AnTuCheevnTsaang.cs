@@ -1,4 +1,4 @@
-﻿
+﻿using System;
 using System.Collections.Generic;
 /// <summary>
 /// 暗度陈仓
@@ -6,13 +6,12 @@ using System.Collections.Generic;
 public class P_AnTuCheevnTsaang: PSchemeCardModel {
 
     private List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
-        PPlayer Target = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName).ToPlayer;
-        return new List<PPlayer>() { Target };
+        return new List<PPlayer>() { Player };
     }
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
-        int Basic = 3000;
-        // 留给装备区
+        int Basic = 2000;
+        Basic = Math.Max(Basic, PAiMapAnalyzer.StartFromExpect(Game, Player, PMath.Max(Game.Map.BlockList, (PBlock Block) => PAiMapAnalyzer.StartFromExpect(Game, Player, Block))) - PAiMapAnalyzer.StartFromExpect(Game, Player, Player.Position));
         return Basic;
     }
 
@@ -22,25 +21,35 @@ public class P_AnTuCheevnTsaang: PSchemeCardModel {
         Point = 2;
         Index = 8;
         foreach (PTime Time in new PTime[] {
-            PTime.Injure.AcceptInjure
+            PPeriod.FirstFreeTime.End
         }) {
             MoveInHandTriggerList.Add((PPlayer Player, PCard Card) => {
                 return new PTrigger(CardName) {
                     IsLocked = false,
                     Player = Player,
                     Time = Time,
-                    AIPriority = 10,
+                    AIPriority = 120,
                     Condition = (PGame Game) => {
-                        PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
-                        return !Player.Equals(InjureTag.ToPlayer) && InjureTag.Injure > 0 && InjureTag.ToPlayer.Area.HandCardArea.CardNumber + InjureTag.ToPlayer.Area.EquipmentCardArea.CardNumber > 0;
+                        return Game.NowPlayer.Equals(Player);
                     },
                     AICondition = (PGame Game) => {
-                        PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
-                        return Player.TeamIndex != InjureTag.ToPlayer.TeamIndex;
+                        PBlock IdealBlock = PMath.Max(Game.Map.BlockList, (PBlock Block) => PAiMapAnalyzer.StartFromExpect(Game, Player, Block));
+                        int Ideal = PAiMapAnalyzer.StartFromExpect(Game, Player, IdealBlock);
+                        int Current = PAiMapAnalyzer.StartFromExpect(Game, Player, Player.Position);
+                        return (Ideal - Current >= 2000) || (-Current >= Player.Money && -Ideal < Player.Money);
                     },
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets, AIEmitTargets,
                         (PGame Game, PPlayer User, PPlayer Target) => {
-                            Game.GetCardFrom(User, Target);
+                            PBlock TargetBlock = Target.Position;
+                            if (Target.IsAI) {
+                                TargetBlock = PMath.Max(Game.Map.BlockList, (PBlock Block) => PAiMapAnalyzer.StartFromExpect(Game, Player, Block));
+                            } else {
+                                TargetBlock = PNetworkManager.NetworkServer.ChooseManager.AskToChooseBlock(Target, "[暗度陈仓]选择目标格子");
+                            }
+                            if (TargetBlock != null) {
+                                PNetworkManager.NetworkServer.TellClients(new PHighlightBlockOrder(TargetBlock.Index.ToString()));
+                                Game.MovePosition(Target, Target.Position, TargetBlock);
+                            }
                         })
                 };
             });

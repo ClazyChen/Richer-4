@@ -67,6 +67,21 @@ public class PChooseManager {
         return Game.TagManager.PopTag<PChooseCardTag>(PChooseCardTag.TagName).Card;
     }
 
+    public PBlock AskToChooseBlock(PPlayer Player, string Title, Predicate<PBlock> Condition = null) {
+        PGame Game = PNetworkManager.NetworkServer.Game;
+        PBlock Answer = null;
+        Game.TagManager.CreateTag(new PChooseBlockTag(Player, null));
+        PNetworkManager.NetworkServer.TellClient(Player, new PShowInformationOrder(Title));
+        while (Answer == null) {
+            PThread.WaitUntil(() => Game.TagManager.FindPeekTag<PChooseBlockTag>(PChooseBlockTag.TagName).Block != null);
+            Answer = Game.TagManager.FindPeekTag<PChooseBlockTag>(PChooseBlockTag.TagName).Block;
+            if (Condition != null && !Condition(Answer)) {
+                Answer = null;
+            }
+        }
+        return Game.TagManager.PopTag<PChooseBlockTag>(PChooseBlockTag.TagName).Block;
+    }
+
     public PCard AskToChooseOthersCard(PPlayer Player, PPlayer TargetPlayer, string Title, bool AllowJudge = false) {
         PGame Game = PNetworkManager.NetworkServer.Game;
         List<string> Names = new List<string>();
