@@ -17,10 +17,10 @@ public class PAiBusinessChooser {
         int MaxOperationCount = 1;
 
         int ShoppingCenterExpectation = 2 * PMath.Percent(Block.Price, 40 * Math.Max(1, 20 * MaxOperationCount / RingLength) + 20) * Game.Enemies(Player).Count;
-        int InsituteExpectation = Player.AiCardExpectation * 5 * Game.Teammates(Player).Count / 2;
+        int InsituteExpectation = Player.AiCardExpectation * 2 * Game.Teammates(Player).Count;
         int ParkExpectation = PMath.Percent(Block.Price, 60 * Math.Max(1, 20 * MaxOperationCount / RingLength) + 50);
         int CastleExpectation = 2 * PMath.Percent(Block.Price, 40 * Game.GetBonusHouseNumberOfCastle(Player, Block)) * Game.Enemies(Player).Count;
-        int PawnshopExpectation = (Math.Max(0, Player.AiCardExpectation - PMath.Min(Game.Teammates(Player, false).ConvertAll((PPlayer Teammate) => Teammate.AiCardExpectation))) + 1500) * Game.Teammates(Player).Count;
+        int PawnshopExpectation = (Math.Max(0, Player.AiCardExpectation - PMath.Min(Game.Teammates(Player, false).ConvertAll((PPlayer Teammate) => Teammate.AiCardExpectation))) + 2000) * Game.Teammates(Player).Count;
         List<int> ExpectationList = new List<int>() {
             ShoppingCenterExpectation,
             InsituteExpectation,

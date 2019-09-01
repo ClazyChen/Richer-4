@@ -1,9 +1,9 @@
 ﻿
 using System.Collections.Generic;
 /// <summary>
-/// 趁火打劫
+/// 暗度陈仓
 /// </summary>
-public class P_CheevnHuoTaChieh: PSchemeCardModel {
+public class P_AnTuCheevnTsaang: PSchemeCardModel {
 
     private List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
         PPlayer Target = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName).ToPlayer;
@@ -11,16 +11,16 @@ public class P_CheevnHuoTaChieh: PSchemeCardModel {
     }
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
-        int Basic = 4000;
+        int Basic = 3000;
         // 留给装备区
         return Basic;
     }
 
-    public readonly static string CardName = "趁火打劫";
+    public readonly static string CardName = "暗度陈仓";
 
-    public P_CheevnHuoTaChieh():base(CardName) {
-        Point = 1;
-        Index = 5;
+    public P_AnTuCheevnTsaang():base(CardName) {
+        Point = 2;
+        Index = 8;
         foreach (PTime Time in new PTime[] {
             PTime.Injure.AcceptInjure
         }) {

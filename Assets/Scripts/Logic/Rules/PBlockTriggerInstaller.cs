@@ -110,7 +110,7 @@
                 return Player.TeamIndex == Game.NowPlayer.TeamIndex;
             },
             Effect = (PGame Game) => {
-                int Number = PMath.RandInt(1, 6) / 2 + 1;
+                int Number = PMath.RandInt(2, 7) / 2;
                 Game.GetCard(Game.NowPlayer, Number);
             }
         });
@@ -126,7 +126,7 @@
             },
             Effect = (PGame Game) => {
                 Game.GiveCardTo(Game.NowPlayer, Game.NowPlayer.Position.Lord, false);
-                Game.GetMoney(Game.NowPlayer, 1500);
+                Game.GetMoney(Game.NowPlayer, 2000);
             }
         });
         TriggerList.Add(new PTrigger("公园[扩建政府补助]") {

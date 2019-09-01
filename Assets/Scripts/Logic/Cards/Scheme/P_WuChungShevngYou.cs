@@ -10,7 +10,7 @@ public class P_WuChungShevngYou: PSchemeCardModel {
     }
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
-        int Basic = 3000;
+        int Basic = 4000;
         return Basic;
     }
 
