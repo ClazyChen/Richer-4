@@ -1,29 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 /// <summary>
-/// 调虎离山
+/// 假痴不癫
 /// </summary>
-public class P_TiaoHuLiShan: PSchemeCardModel {
+public class P_ChiaChiihPuTien : PSchemeCardModel {
 
     public List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
-        return new List<PPlayer>() { PMath.Max(Game.Enemies(Player).FindAll((PPlayer _Player) => !_Player.OutOfGame), (PPlayer _Player) => {
-            return -PAiMapAnalyzer.OutOfGameExpect(Game, _Player);
-        }, true).Key };
+        return new List<PPlayer>() { Player };
     }
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
         int Basic = 0;
-        int OutOfGameExpect = PMath.Max(Game.Enemies(Player).FindAll((PPlayer _Player) => !_Player.OutOfGame), (PPlayer _Player) => {
-            return -PAiMapAnalyzer.OutOfGameExpect(Game, _Player);
-        }, true).Value;
-        return Math.Max(Basic, OutOfGameExpect);
+        int Test = PAiMapAnalyzer.OutOfGameExpect(Game, Player, true);
+        return Math.Max(Basic, Test);
     }
 
-    public readonly static string CardName = "调虎离山";
+    public readonly static string CardName = "假痴不癫";
 
-    public P_TiaoHuLiShan():base(CardName) {
-        Point = 3;
-        Index = 15;
+    public P_ChiaChiihPuTien():base(CardName) {
+        Point = 5;
+        Index = 27;
         foreach (PTime Time in new PTime[] {
             PPeriod.FirstFreeTime.During,
             PPeriod.SecondFreeTime.During
@@ -33,15 +29,15 @@ public class P_TiaoHuLiShan: PSchemeCardModel {
                     IsLocked = false,
                     Player = Player,
                     Time = Time,
-                    AIPriority = 170,
+                    AIPriority = 180,
                     Condition = (PGame Game) => {
-                        return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime());
+                        int MinMoney = PMath.Min(Game.PlayerList, (PPlayer _Player) => _Player.Money).Value;
+                        return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime()) && Player.Money == MinMoney;
                     },
                     AICondition = (PGame Game) => {
-                        return AIEmitTargets(Game, Player)[0] != null;
+                        return PAiMapAnalyzer.OutOfGameExpect(Game, Player, true) > 0 && !Player.OutOfGame;
                     },
-                    Effect = MakeNormalEffect(Player, Card, AIEmitTargets,
-                        PTrigger.Except(Player),
+                    Effect = MakeNormalEffect(Player, Card, AIEmitTargets, AIEmitTargets,
                         (PGame Game, PPlayer User, PPlayer Target) => {
                             Target.Tags.CreateTag(PTag.OutOfGameTag);
                             PTrigger ReturnGame = null;

@@ -3,13 +3,28 @@ using System.Collections.Generic;
 
 public class PAiMapAnalyzer {
 
-    public static int OutOfGameExpect(PGame Game, PPlayer Player) {
+    /// <summary>
+    /// 将一个玩家移出游戏对其的收益
+    /// </summary>
+    /// <param name="Game"></param>
+    /// <param name="Player"></param>
+    /// <param name="Including">是否包含其行走阶段</param>
+    /// <returns></returns>
+    public static int OutOfGameExpect(PGame Game, PPlayer Player, bool Including = false) {
         int Sum = 0;
         for (PPlayer _Player = Game.NowPlayer; !_Player.Equals(Player); _Player = Game.GetNextPlayer(_Player)) {
             PBlock Block = _Player.Position;
             for (int i = 0; i<6; ++i, Block = Block.NextBlock) {
                 if (Player.Equals(Block.Lord) && Player.TeamIndex != _Player.TeamIndex) {
                     Sum -= 2 * Block.Toll;
+                }
+            }
+        }
+        if (Including) {
+            PBlock Block = Player.Position;
+            for (int i = 0; i < 6; ++i, Block = Block.NextBlock) {
+                if (Block.Lord != null && Player.TeamIndex != Block.Lord.TeamIndex) {
+                    Sum += 2 * Block.Toll;
                 }
             }
         }

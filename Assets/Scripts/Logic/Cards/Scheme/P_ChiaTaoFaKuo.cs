@@ -80,7 +80,7 @@ public class P_ChiaTaoFaKuo : PSchemeCardModel {
                         return Player.Equals(Game.NowPlayer) && ChiaTaoFaKuoTag.LordList.Count >= 2;
                     },
                     AICondition = (PGame Game) => {
-                        return AIEmitTargets(Game, Player)[0] != null;
+                        return AIEmitTargets(Game, Player)[0] != null && !Player.OutOfGame;
                     },
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets, (PGame _Game, PPlayer _Player) => {
                         PChiaTaoFaKuoTag ChiaTaoFaKuoTag = _Game.TagManager.FindPeekTag<PChiaTaoFaKuoTag>(PChiaTaoFaKuoTag.TagName);

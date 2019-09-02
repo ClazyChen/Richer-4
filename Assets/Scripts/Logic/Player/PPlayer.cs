@@ -84,7 +84,13 @@ public class PPlayer: PObject {
             return Tags.ExistTag(PTag.BackFaceTag.Name);
         }
     }
-    
+
+    public bool OutOfGame {
+        get {
+            return Tags.ExistTag(PTag.OutOfGameTag.Name);
+        }
+    }
+
     /// <summary>
     /// 客户端专用，用于更新手牌数量
     /// </summary>

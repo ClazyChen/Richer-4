@@ -43,7 +43,7 @@ public class P_HunShuiMoYoo: PSchemeCardModel {
                                 Value += 1000 * (Player.TeamIndex == _Player.TeamIndex ? 0 : 1);
                             }
                         });
-                        return Value >= 1000;
+                        return Value >= 1000 && !Player.OutOfGame;
                     },
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets, AIEmitTargets,
                         (PGame Game, PPlayer User, PPlayer Target) => {
