@@ -1,3 +1,4 @@
+using System;
 public class PPlayer: PObject {
     public class Config {
         public static int DefaultMoney = 30000;
@@ -77,6 +78,10 @@ public class PPlayer: PObject {
                 return false;
             }
         }
+    }
+
+    public int Distance(PPlayer Another) {
+        return Math.Abs(Position.X - Another.Position.X) + Math.Abs(Position.Y - Another.Position.Y);
     }
 
     public bool BackFace {

@@ -38,17 +38,14 @@ public class P_ShevngTungChiHsi: PSchemeCardModel {
                             UseCardTag.Card.Name.Equals(P_KuanMevnChoTsev.CardName) ||
                             UseCardTag.Card.Name.Equals(P_ChihSangMaHuai.CardName)) {
                             return UseCardTag.TargetList[0].TeamIndex == Player.TeamIndex && UseCardTag.User.TeamIndex != Player.TeamIndex;
-                        }
-                        if (UseCardTag.Card.Name.Equals(P_WuChungShevngYou.CardName) ||
+                        } else if (UseCardTag.Card.Name.Equals(P_WuChungShevngYou.CardName) ||
                             UseCardTag.Card.Name.Equals(P_AnTuCheevnTsaang.CardName) ||
                             UseCardTag.Card.Name.Equals(P_ChiehShihHuanHun.CardName) ||
                             UseCardTag.Card.Name.Equals(P_YooenChiaoChinKung.CardName)) {
                             return UseCardTag.TargetList[0].TeamIndex != Player.TeamIndex;
-                        }
-                        if (UseCardTag.Card.Name.Equals(P_YooChiinKuTsung.CardName)) {
+                        } else if (UseCardTag.Card.Name.Equals(P_YooChiinKuTsung.CardName)) {
                             return UseCardTag.TargetList[0].TeamIndex == Player.TeamIndex && Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName).Injure <= 3000;
-                        }
-                        if (UseCardTag.Card.Name.Equals(P_ChiinTsevChiinWang.CardName)) {
+                        } else if (UseCardTag.Card.Name.Equals(P_ChiinTsevChiinWang.CardName)) {
                             return UseCardTag.User.TeamIndex != Player.TeamIndex && PMath.Max(Game.PlayerList, (PPlayer _Player) => {
                                 if (Player.TeamIndex == _Player.TeamIndex) {
                                     return PAiMapAnalyzer.ChangeFaceExpect(Game, _Player);
@@ -56,6 +53,16 @@ public class P_ShevngTungChiHsi: PSchemeCardModel {
                                     return -PAiMapAnalyzer.ChangeFaceExpect(Game, _Player);
                                 }
                             }).Value - PAiMapAnalyzer.ChangeFaceExpect(Game, UseCardTag.TargetList[0]) * (UseCardTag.TargetList[0].TeamIndex == Player.TeamIndex ? 1 : -1) >= 3000;
+                        } else if (UseCardTag.Card.Name.Equals(P_ShangWuChoouTii.CardName)) {
+                            int NowValue = PAiMapAnalyzer.Expect(Game, UseCardTag.TargetList[0], UseCardTag.TargetList[0].Position) * (UseCardTag.TargetList[0].TeamIndex == Player.TeamIndex ? 1 : -1);
+                            int MaxValue = PMath.Max(Game.PlayerList, (PPlayer _Player) => {
+                                if (_Player.TeamIndex == Player.TeamIndex) {
+                                    return PAiMapAnalyzer.Expect(Game, _Player, _Player.Position);
+                                } else {
+                                    return -PAiMapAnalyzer.Expect(Game, _Player, _Player.Position);
+                                }
+                            }, true).Value;
+                            return MaxValue - NowValue >= 3000;
                         }
                         return false;
                     },
@@ -80,14 +87,11 @@ public class P_ShevngTungChiHsi: PSchemeCardModel {
                         } else {
                             if (UseCardTag.Card.Name.Equals(P_ManTiienKuoHai.CardName)) {
                                 Target = PAiTargetChooser.InjureTarget(Game, Player, PTrigger.Except(Player), 700);
-                            }
-                            if (UseCardTag.Card.Name.Equals(P_KuanMevnChoTsev.CardName)) {
+                            } else if (UseCardTag.Card.Name.Equals(P_KuanMevnChoTsev.CardName)) {
                                 Target = PAiTargetChooser.InjureTarget(Game, Player, PTrigger.Except(Player), 1000);
-                            }
-                            if (UseCardTag.Card.Name.Equals(P_ChihSangMaHuai.CardName)) {
+                            } else if (UseCardTag.Card.Name.Equals(P_ChihSangMaHuai.CardName)) {
                                 Target = PAiTargetChooser.InjureTarget(Game, Player, PTrigger.Except(Player), Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName).Injure);
-                            }
-                            if (UseCardTag.Card.Name.Equals(P_ChiinTsevChiinWang.CardName)) {
+                            } else if (UseCardTag.Card.Name.Equals(P_ChiinTsevChiinWang.CardName)) {
                                 Target = PMath.Max(Game.PlayerList, (PPlayer _Player) => {
                                     if (Player.TeamIndex == _Player.TeamIndex) {
                                         return PAiMapAnalyzer.ChangeFaceExpect(Game, _Player);
@@ -95,14 +99,12 @@ public class P_ShevngTungChiHsi: PSchemeCardModel {
                                         return -PAiMapAnalyzer.ChangeFaceExpect(Game, _Player);
                                     }
                                 }).Key;
-                            }
-                            if (UseCardTag.Card.Name.Equals(P_TaTsaaoChingShev.CardName)) {
+                            } else if (UseCardTag.Card.Name.Equals(P_TaTsaaoChingShev.CardName)) {
                                 List<PPlayer> PossibleEnemies = Game.Enemies(Player).FindAll((PPlayer _Player) => Player.HasHouse);
                                 if (PossibleEnemies.Count > 0) {
                                     Target = PossibleEnemies[PMath.RandInt(0, PossibleEnemies.Count - 1)];
                                 }
-                            }
-                            if (UseCardTag.Card.Name.Equals(P_ChiehShihHuanHun.CardName)) {
+                            } else if (UseCardTag.Card.Name.Equals(P_ChiehShihHuanHun.CardName)) {
                                 int MaxMoney = PMath.Max(Game.PlayerList, (PPlayer _Player) => {
                                     return _Player.Money;
                                 }).Value;
@@ -115,10 +117,17 @@ public class P_ShevngTungChiHsi: PSchemeCardModel {
                                         return -Delta;
                                     }
                                 }).Key;
-                            }
-                            if (UseCardTag.Card.Name.Equals(P_WuChungShevngYou.CardName) ||
+                            } else if (UseCardTag.Card.Name.Equals(P_WuChungShevngYou.CardName) ||
                                 UseCardTag.Card.Name.Equals(P_AnTuCheevnTsaang.CardName)) {
                                 Target = PAiCardExpectation.MostValuableCardUser(Game, Game.Teammates(Player));
+                            } else if (UseCardTag.Card.Name.Equals(P_ShangWuChoouTii.CardName)) {
+                                Target = PMath.Max(Game.PlayerList, (PPlayer _Player) => {
+                                    if (_Player.TeamIndex == Player.TeamIndex) {
+                                        return PAiMapAnalyzer.Expect(Game, _Player, _Player.Position);
+                                    } else {
+                                        return -PAiMapAnalyzer.Expect(Game, _Player, _Player.Position);
+                                    }
+                                }, true).Key;
                             }
                         }
                         if (Target == null || Target == UseCardTag.TargetList[0]) {

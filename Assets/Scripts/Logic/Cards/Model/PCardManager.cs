@@ -161,7 +161,11 @@ public class PCardManager {
             new P_ChiaChiihPuTien().Instantiate(),
             new P_ChiaChiihPuTien().Instantiate(),
             new P_ChiaChiihPuTien().Instantiate(),
-            new P_ChiaChiihPuTien().Instantiate()
+            new P_ChiaChiihPuTien().Instantiate(),
+            new P_ShangWuChoouTii().Instantiate(),
+            new P_ShangWuChoouTii().Instantiate(),
+            new P_ShangWuChoouTii().Instantiate(),
+            new P_ShangWuChoouTii().Instantiate()
 
         }).ForEach((PCard Card) => {
             CardHeap.CardList.Add(Card);
