@@ -47,9 +47,7 @@ public class P_HunShuiMoYoo: PSchemeCardModel {
                     },
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets, AIEmitTargets,
                         (PGame Game, PPlayer User, PPlayer Target) => {
-                            for (int i = 0; i < 2; ++ i) {
-                                Game.Injure(User, Target, 500, Card);
-                            }
+                            Game.Injure(User, Target, 500, Card);
                         })
                 };
             });
