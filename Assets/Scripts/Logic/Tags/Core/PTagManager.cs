@@ -13,7 +13,7 @@ public class PTagManager {
         get {
             string Result = string.Empty;
             TagList.ForEach((PTag Tag) => {
-                if (Tag.Name.Length > 0) {
+                if (Tag.Name.Length > 0 && Tag.Visible) {
                     Result += "|" + Tag.Name[0];
                 }
             });

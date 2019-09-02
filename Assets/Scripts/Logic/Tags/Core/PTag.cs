@@ -16,6 +16,8 @@ public class PTag : PObject {
         }
     }
 
+    public bool Visible = true;
+
     public List<PTagField> FieldList;
     public PTag(string _Name) {
         Name = _Name;
