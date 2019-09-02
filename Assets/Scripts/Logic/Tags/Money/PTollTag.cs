@@ -5,10 +5,12 @@ public class PTollTag : PTag {
     public static string FromPlayerFieldName = "收取过路费的玩家";
     public static string ToPlayerFieldName = "过路费的目标";
     public static string TollFieldName = "过路费数额";
-    public PTollTag(PPlayer FromPlayer, PPlayer ToPlayer, int Toll): base(TagName) {
+    public static string BlockFieldName = "收取过路费的土地";
+    public PTollTag(PPlayer FromPlayer, PPlayer ToPlayer, int Toll, PBlock Block): base(TagName) {
         AppendField(FromPlayerFieldName, FromPlayer);
         AppendField(ToPlayerFieldName, ToPlayer);
         AppendField(TollFieldName, Toll);
+        AppendField(BlockFieldName, Block);
     }
     public PPlayer FromPlayer {
         get {
@@ -34,5 +36,12 @@ public class PTollTag : PTag {
             SetField(TollFieldName, value);
         }
     }
-
+    public PBlock Block {
+        get {
+            return GetField<PBlock>(BlockFieldName, null);
+        }
+        set {
+            SetField(BlockFieldName, value);
+        }
+    }
 }

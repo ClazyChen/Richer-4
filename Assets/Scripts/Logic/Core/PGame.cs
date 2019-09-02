@@ -99,18 +99,18 @@ public class PGame : PGameStatus {
 
     public void Toll(PPlayer FromPlayer, PPlayer ToPlayer, PBlock Block) {
         PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(FromPlayer.Name + "向" + ToPlayer.Name + "收取过路费"));
-        PTollTag TollTag = Monitor.CallTime(PTime.Toll.AfterEmitTarget, new PTollTag(FromPlayer, ToPlayer, Block.Toll));
+        PTollTag TollTag = Monitor.CallTime(PTime.Toll.AfterEmitTarget, new PTollTag(FromPlayer, ToPlayer, Block.Toll, Block));
         if (TollTag.ToPlayer != null && TollTag.ToPlayer.IsAlive && TollTag.Toll > 0) {
             TollTag = Monitor.CallTime(PTime.Toll.AfterAcceptTarget, TollTag);
             if (TollTag.ToPlayer != null && TollTag.ToPlayer.IsAlive && TollTag.Toll > 0) {
-                Injure(TollTag.FromPlayer, TollTag.ToPlayer, TollTag.Toll);
+                Injure(TollTag.FromPlayer, TollTag.ToPlayer, TollTag.Toll, TollTag.Block);
             }
         }
     }
 
-    public void Injure(PPlayer FromPlayer, PPlayer ToPlayer, int Count) {
+    public void Injure(PPlayer FromPlayer, PPlayer ToPlayer, int Count, PObject InjureSource) {
         PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder((FromPlayer == null ? "null" : FromPlayer.Name) + "对" + ToPlayer.Name + "造成" + Count + "点伤害"));
-        PInjureTag InjureTag = Monitor.CallTime(PTime.Injure.StartSettle, new PInjureTag(FromPlayer, ToPlayer, Count));
+        PInjureTag InjureTag = Monitor.CallTime(PTime.Injure.StartSettle, new PInjureTag(FromPlayer, ToPlayer, Count, InjureSource));
         foreach (PTime InjureTime in new PTime[] {
             PTime.Injure.BeforeEmitInjure,
             PTime.Injure.BeforeAcceptInjure,

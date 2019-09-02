@@ -44,7 +44,7 @@ public class P_ManTiienKuoHai: PSchemeCardModel {
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets,
                         PTrigger.Except(Player),
                         (PGame Game, PPlayer User, PPlayer Target) => {
-                            Game.Injure(User, Target, Game.Judge(User) * 200);
+                            Game.Injure(User, Target, Game.Judge(User) * 200, Card);
                         })
                 };
             });

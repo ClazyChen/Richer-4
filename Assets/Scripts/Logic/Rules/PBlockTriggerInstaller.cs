@@ -42,7 +42,7 @@
                 return Game.NowPlayer.Position.GetMoneyStopSolid < 0;
             },
             Effect = (PGame Game) => {
-                Game.Injure(null, Game.NowPlayer, -Game.NowPlayer.Position.GetMoneyStopSolid);
+                Game.Injure(null, Game.NowPlayer, -Game.NowPlayer.Position.GetMoneyStopSolid, null);
             }
         });
         TriggerList.Add(new PTrigger("天灾（百分比）") {
@@ -52,7 +52,7 @@
                 return Game.NowPlayer.Position.GetMoneyStopPercent < 0;
             },
             Effect = (PGame Game) => {
-                Game.Injure(null, Game.NowPlayer, PMath.Percent(Game.NowPlayer.Money, -Game.NowPlayer.Position.GetMoneyStopPercent));
+                Game.Injure(null, Game.NowPlayer, PMath.Percent(Game.NowPlayer.Money, -Game.NowPlayer.Position.GetMoneyStopPercent), null);
             }
         });
         TriggerList.Add(new PTrigger("牌库") {

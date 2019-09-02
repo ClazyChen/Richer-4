@@ -27,7 +27,7 @@
                 return Game.TagManager.FindPeekTag<PPassBlockTag>(PPassBlockTag.TagName).Block.GetMoneyPassSolid < 0;
             },
             Effect = (PGame Game) => {
-                Game.Injure(null, Game.TagManager.FindPeekTag<PPassBlockTag>(PPassBlockTag.TagName).Player, -Game.TagManager.FindPeekTag<PPassBlockTag>(PPassBlockTag.TagName).Block.GetMoneyPassSolid);
+                Game.Injure(null, Game.TagManager.FindPeekTag<PPassBlockTag>(PPassBlockTag.TagName).Player, -Game.TagManager.FindPeekTag<PPassBlockTag>(PPassBlockTag.TagName).Block.GetMoneyPassSolid, null);
             }
         });
         TriggerList.Add(new PTrigger("经过天灾（百分比）") {
@@ -37,7 +37,7 @@
                 return Game.TagManager.FindPeekTag<PPassBlockTag>(PPassBlockTag.TagName).Block.GetMoneyPassPercent < 0;
             },
             Effect = (PGame Game) => {
-                Game.Injure(null, Game.TagManager.FindPeekTag<PPassBlockTag>(PPassBlockTag.TagName).Player, PMath.Percent(Game.TagManager.FindPeekTag<PPassBlockTag>(PPassBlockTag.TagName).Player.Money, -Game.TagManager.FindPeekTag<PPassBlockTag>(PPassBlockTag.TagName).Block.GetMoneyPassPercent));
+                Game.Injure(null, Game.TagManager.FindPeekTag<PPassBlockTag>(PPassBlockTag.TagName).Player, PMath.Percent(Game.TagManager.FindPeekTag<PPassBlockTag>(PPassBlockTag.TagName).Player.Money, -Game.TagManager.FindPeekTag<PPassBlockTag>(PPassBlockTag.TagName).Block.GetMoneyPassPercent), null);
             }
         });
         TriggerList.Add(new PTrigger("牌库") {
