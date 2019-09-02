@@ -23,7 +23,7 @@ public class P_FuTiChoouHsin : PSchemeCardModel {
                     IsLocked = false,
                     Player = Player,
                     Time = Time,
-                    AIPriority = 100,
+                    AIPriority = 60,
                     Condition = (PGame Game) => {
                         PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
                         return Player.Equals(InjureTag.ToPlayer) && InjureTag.FromPlayer != null && InjureTag.Injure > 0 && InjureTag.InjureSource != null && (InjureTag.InjureSource is PBlock);

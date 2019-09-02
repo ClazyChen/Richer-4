@@ -16,8 +16,11 @@ public class PAiMapAnalyzer {
         return Sum;
     }
 
-    public static int ChangeFaceExpect(PGame Game, PPlayer Player) {
-        return StartFromExpect(Game, Player, Player.Position) * (Player.Tags.ExistTag(PTag.BackFaceTag.Name) ? 1 : -1) / 3;
+    public static int ChangeFaceExpect(PGame Game, PPlayer Player, PBlock Start = null) {
+        if (Start == null) {
+            Start = Player.Position;
+        }
+        return StartFromExpect(Game, Player, Start) * (Player.Tags.ExistTag(PTag.BackFaceTag.Name) ? 1 : -1) / 3;
     }
 
     public static int HouseValue(PGame Game, PPlayer Player, PBlock Block) {
@@ -58,7 +61,7 @@ public class PAiMapAnalyzer {
         return Expectation / 6;
     }
 
-    public static int Expect(PGame Game, PPlayer Player, PBlock Block) {
+    public static int Expect(PGame Game, PPlayer Player, PBlock Block, bool InPortal = false) {
         int DeltaMoney = 0;
         DeltaMoney += Block.GetMoneyStopSolid;
         DeltaMoney += PMath.Percent(Player.Money, Block.GetMoneyStopPercent);
@@ -92,7 +95,12 @@ public class PAiMapAnalyzer {
                 LandValue += 2000;
             }
         }
-        return DeltaMoney + LandValue * 20 / GetRingLength(Game, Block);
+
+        int PortalValue = 0;
+        if (!InPortal && Block.PortalBlockList.Count > 0) {
+            PortalValue = PMath.Max(Block.PortalBlockList, (PBlock _Block) => Expect(Game, Player, _Block, true)).Value;
+        }
+        return DeltaMoney + LandValue * 20 / GetRingLength(Game, Block) + PortalValue;
     }
 
     public static int GetRingLength(PGame Game, PBlock Block) {

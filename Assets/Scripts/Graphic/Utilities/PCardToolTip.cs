@@ -25,7 +25,7 @@ public class PCardToolTip : PObject {
     public static PCardToolTip ChiinTsevChiinWang = new PCardToolTip("擒贼擒王", "【主】空闲时间点，对现金最多（或之一）的一名角色使用。其翻面。");
     public static PCardToolTip FuTiChoouHsin = new PCardToolTip("釜底抽薪", "【被】当你受到过路费造成的伤害后，弃置该土地上的所有房屋。");
     public static PCardToolTip HunShuiMoYoo = new PCardToolTip("浑水摸鱼", "【主】当一张群体普通计策牌结算完毕后，对其所有目标使用。你对其造成500点伤害。");
-    public static PCardToolTip ChinChaanToowKeev = new PCardToolTip("金蝉脱壳", "【被】行走阶段开始时，对你自己使用。将武将牌翻面，并指定1至6的一个数字，作为本阶段移动的步数。此计策不能被【声东击西】响应。");
+    public static PCardToolTip ChinChaanToowKeev = new PCardToolTip("金蝉脱壳", "【被】行走阶段开始前，对你自己使用。将武将牌翻面，并指定1至6的一个数字，作为本阶段移动的步数。此计策不能被【声东击西】响应。");
     public static PCardToolTip KuanMevnChoTsev = new PCardToolTip("关门捉贼", "【主】空闲时间点，你对所在位置没有房屋的所有其他角色（至少一名）使用。你对其造成1000点伤害。");
     public static PCardToolTip YooenChiaoChinKung = new PCardToolTip("远交近攻", "【主】空闲时间点，对一名其他角色使用。其摸一张牌，然后你指定另一名角色：若你指定自己，你摸1000；否则，该角色弃1000。");
     public static PCardToolTip ChiaTaoFaKuo = new PCardToolTip("假道伐虢", "【被】回合结束阶段使用，若本回合内你经过了至少两名其他角色的土地，对其中一名角色使用。你对其造成1000点伤害。");

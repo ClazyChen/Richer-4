@@ -25,7 +25,7 @@ public class P_ShevngTungChiHsi: PSchemeCardModel {
                     AIPriority = 100,
                     Condition = (PGame Game) => {
                         PUseCardTag UseCardTag = Game.TagManager.FindPeekTag<PUseCardTag>(PUseCardTag.TagName);
-                        return UseCardTag.TargetList.Count == 1 && UseCardTag.Card.Type.Equals(PCardType.SchemeCard);
+                        return UseCardTag.TargetList.Count == 1 && UseCardTag.Card.Type.Equals(PCardType.SchemeCard) && !UseCardTag.Card.Name.Equals(P_ChinChaanToowChiiao.CardName);
                     },
                     AICondition = (PGame Game) => {
                         PUseCardTag UseCardTag = Game.TagManager.FindPeekTag<PUseCardTag>(PUseCardTag.TagName);

@@ -133,7 +133,15 @@ public class PCardManager {
             new P_FuTiChoouHsin().Instantiate(),
             new P_FuTiChoouHsin().Instantiate(),
             new P_FuTiChoouHsin().Instantiate(),
-            new P_FuTiChoouHsin().Instantiate()
+            new P_FuTiChoouHsin().Instantiate(),
+            new P_HunShuiMoYoo().Instantiate(),
+            new P_HunShuiMoYoo().Instantiate(),
+            new P_HunShuiMoYoo().Instantiate(),
+            new P_HunShuiMoYoo().Instantiate(),
+            new P_ChinChaanToowChiiao().Instantiate(),
+            new P_ChinChaanToowChiiao().Instantiate(),
+            new P_ChinChaanToowChiiao().Instantiate(),
+            new P_ChinChaanToowChiiao().Instantiate()
 
         }).ForEach((PCard Card) => {
             CardHeap.CardList.Add(Card);
