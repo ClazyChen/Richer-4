@@ -20,6 +20,7 @@ public class PMapUI : PAbstractUI {
     public readonly PPlayerInformationBoxGroup PlayerInformationGroup;
     public readonly PCameraController CameraController;
     public readonly PHandCardArea HandCardArea;
+    public readonly PToolTip ToolTip;
     public readonly Text InformationText;
     public readonly Text PushText;
 
@@ -34,6 +35,7 @@ public class PMapUI : PAbstractUI {
         MessageBox = new PMessageBox(UIBackgroundImage.Find("MessageBox"));
         PlayerInformationGroup = new PPlayerInformationBoxGroup(UIBackgroundImage.Find("PlayerInformationBoxes"));
         HandCardArea = new PHandCardArea(UIBackgroundImage.Find("HandCardArea"));
+        ToolTip = new PToolTip(UIBackgroundImage.Find("ToolTipImage"));
         CameraController = new PCameraController();
         DiceSpriteList = new Sprite[6];
         for (int i = 0; i < 6; ++i) {
@@ -49,6 +51,7 @@ public class PMapUI : PAbstractUI {
         CameraController.Open();
         PlayerInformationGroup.Open();
         HandCardArea.Open();
+        ToolTip.Close();
         InformationText.text = string.Empty;
         DiceImage.gameObject.SetActive(false);
         EndFreeTimeButton.onClick.AddListener(() => {
@@ -64,6 +67,7 @@ public class PMapUI : PAbstractUI {
         MessageBox.Close();
         HandCardArea.Close();
         PlayerInformationGroup.Close();
+        ToolTip.Close();
         base.Close();
     }
 
@@ -72,9 +76,9 @@ public class PMapUI : PAbstractUI {
         PlayerInformationGroup.InitializeBoxes(GameStatus);
     }
 
-    public void Ask(string Title, string[] Options) {
+    public void Ask(string Title, string[] Options, string[] ToolTips = null) {
         MessageBox.Open();
-        MessageBox.CreateMessages(Title, Options);
+        MessageBox.CreateMessages(Title, Options, ToolTips);
     }
 
     /// <summary>

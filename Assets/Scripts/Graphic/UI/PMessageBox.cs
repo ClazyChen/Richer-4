@@ -12,14 +12,14 @@ public class PMessageBox : PAbstractGroupUI<PMessage>{
         Close();
     }
 
-    public void CreateMessages(string Title, string[] ButtonTexts) {
+    public void CreateMessages(string Title, string[] ButtonTexts, string[] ToolTips = null) {
         int ButtonNumber = ButtonTexts.Length;
         float DeltaHeight = PrototypeUI.UIBackgroundImage.GetComponent<RectTransform>().rect.height * PrototypeUI.UIBackgroundImage.GetComponent<RectTransform>().lossyScale.y;
         Vector3 CenterPoint = PrototypeUI.UIBackgroundImage.GetComponent<RectTransform>().position;
         TitleText.text = Title;
         TitleText.rectTransform.position = CenterPoint + new Vector3(0, DeltaHeight * ButtonNumber /2);
         for (int i = 0; i < ButtonNumber; ++ i) {
-            AddSubUI().Initialize(ButtonTexts[i], i, ButtonNumber, CenterPoint, DeltaHeight);
+            AddSubUI().Initialize(ButtonTexts[i], i, ButtonNumber, CenterPoint, DeltaHeight, ToolTips == null ? string.Empty : ToolTips[i]);
         }
         Monitor = new Thread(() => {
             PMessage ChosenMessage = null;

@@ -317,7 +317,7 @@ public class PGame : PGameStatus {
                 List<PBusinessType> Types = new List<PBusinessType>() { PBusinessType.ShoppingCenter, PBusinessType.Institute,
                             PBusinessType.Pawnshop, PBusinessType.Castle, PBusinessType.Park};
                 if (Player.IsUser) {
-                    ChosenType = Types[PNetworkManager.NetworkServer.ChooseManager.Ask(Player, "选择商业用地的发展方向", Types.ConvertAll((PBusinessType BusinessType) => BusinessType.Name).ToArray())];
+                    ChosenType = Types[PNetworkManager.NetworkServer.ChooseManager.Ask(Player, "选择商业用地的发展方向", Types.ConvertAll((PBusinessType BusinessType) => BusinessType.Name).ToArray(), Types.ConvertAll((PBusinessType BusinessType) => BusinessType.ToolTip).ToArray())];
                 } else {
                     ChosenType = PAiBusinessChooser.ChooseDirection(this, Player, Block);
                 }

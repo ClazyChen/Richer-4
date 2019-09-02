@@ -3,11 +3,11 @@ using UnityEngine.UI;
 using System;
 
 public class PHandCard : PAbstractUI {
-    public readonly Button HandCardButton;
+    public readonly PToolTipedButton HandCardButton;
     public int Index;
 
     public PHandCard(Transform _Background):base(_Background) {
-        HandCardButton = UIBackgroundImage.GetComponent<Button>();
+        HandCardButton = UIBackgroundImage.GetComponent<PToolTipedButton>();
         Close();
     }
 
@@ -26,6 +26,7 @@ public class PHandCard : PAbstractUI {
             HandCardButton.onClick.AddListener(() => {
                 PNetworkManager.NetworkClient.Send(new PClickOnCardOrder(Index.ToString()));
             });
+            HandCardButton.ToolTip = FindInstance<PCardToolTip>(CardName).ToolTip;
         }
         return this;
     }

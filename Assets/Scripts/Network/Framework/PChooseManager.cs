@@ -9,9 +9,9 @@ public class PChooseManager {
         ChosenAnswer = -1;
     }
 
-    public int Ask(PPlayer Player, string Title, string[] Options) {
+    public int Ask(PPlayer Player, string Title, string[] Options, string[] ToolTips = null) {
         ChosenAnswer = -1;
-        PNetworkManager.NetworkServer.TellClient(Player, new PAskOrder(Title, Options.Length, Options));
+        PNetworkManager.NetworkServer.TellClient(Player, new PAskOrder(Title, Options.Length, Options, ToolTips));
         PThread.WaitUntil(() => ChosenAnswer >= 0);
         return ChosenAnswer;
     }
