@@ -16,6 +16,10 @@ public class PAiMapAnalyzer {
         return Sum;
     }
 
+    public static int ChangeFaceExpect(PGame Game, PPlayer Player) {
+        return StartFromExpect(Game, Player, Player.Position) * (Player.Tags.ExistTag(PTag.BackFaceTag.Name) ? 1 : -1) / 3;
+    }
+
     public static KeyValuePair< PBlock, int> MaxValueHouse(PGame Game, PPlayer Player) {
         int EnemyCount = Game.Enemies(Player).Count;
         return PMath.Max(Game.Map.BlockList.FindAll((PBlock Block) => Player.Equals(Block.Lord) && Block.HouseNumber > 0), (PBlock Block) => {

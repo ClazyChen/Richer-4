@@ -9,10 +9,32 @@ public class PTagManager {
         Owner = _Owner;
     }
 
+    public string TagString {
+        get {
+            string Result = string.Empty;
+            TagList.ForEach((PTag Tag) => {
+                if (Tag.Name.Length > 0) {
+                    Result += "|" + Tag.Name[0];
+                }
+            });
+            if (Result.Length <= 1) {
+                return "|";
+            }
+            return Result;
+        }
+        
+    }
+
+    /// <summary>
+    /// Player的标签域不能有两个同名标签
+    /// </summary>
+    /// <param name="Tag"></param>
     public void CreateTag(PTag Tag) {
-        PLogger.Log("创建标签：" + Tag.Name);
-        Tag.FieldList.ForEach((PTag.PTagField Field) => PLogger.Log("  域 " + Field + " = " + (Field.Field != null ? Field.Field.ToString() : "null")));
-        TagList.Add(Tag);
+        if (Owner == null || !ExistTag(Tag.Name)) {
+            PLogger.Log("创建标签：" + Tag.Name);
+            Tag.FieldList.ForEach((PTag.PTagField Field) => PLogger.Log("  域 " + Field + " = " + (Field.Field != null ? Field.Field.ToString() : "null")));
+            TagList.Add(Tag);
+        }
         if (Owner != null) {
             PNetworkManager.NetworkServer.TellClients(new PRefreshMarkStringOrder(Owner));
         }

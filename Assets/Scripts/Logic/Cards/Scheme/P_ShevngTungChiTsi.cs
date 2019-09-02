@@ -42,6 +42,9 @@ public class P_ShevngTungChiHsi: PSchemeCardModel {
                             UseCardTag.Card.Name.Equals(P_ChiehShihHuanHun.CardName)) {
                             return UseCardTag.TargetList[0].TeamIndex != Player.TeamIndex;
                         }
+                        if (UseCardTag.Card.Name.Equals(P_YooChiinKuTsung.CardName)) {
+                            return UseCardTag.TargetList[0].TeamIndex == Player.TeamIndex && Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName).Injure <= 3000;
+                        }
                         return false;
                     },
                     Effect = (PGame Game) => {

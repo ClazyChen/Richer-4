@@ -101,14 +101,7 @@ public class PPlayer: PObject {
     /// </summary>
     /// <returns></returns>
     public string GetMarkString() {
-        string Result = string.Empty;
-        if (Tags.ExistTag(PTag.OutOfGameTag.Name)) {
-            Result += "|ÒÆ³ö";
-        }
-        if (Result.Length <= 1) {
-            return "|";
-        }
-        return Result;
+        return Tags.TagString;
     }
 
 

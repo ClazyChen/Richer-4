@@ -20,4 +20,5 @@ public class PCardToolTip : PObject {
     public static PCardToolTip TaTssaoChingShev = new PCardToolTip("打草惊蛇", "【主】空闲时间点，对其他所有角色使用。目标依次弃置一座房屋。");
     public static PCardToolTip ChiehShihHuanHun = new PCardToolTip("借尸还魂", "【主】空闲时间点或你濒死时，对你自己使用。弃置其他所有牌，将你的现金摸或弃调整与一名其他角色相同。这张牌使你增加的钱数至多为10000。");
     public static PCardToolTip TiaoHuLiShan = new PCardToolTip("调虎离山", "【主】空闲时间点，对一名其他角色使用。将其移出游戏至其下回合开始。");
+    public static PCardToolTip YooChiinKuTsung = new PCardToolTip("欲擒故纵", "【被】当你造成伤害时，若目标有手牌，对目标使用。防止此伤害，然后依次获得其两张手牌。");
 }
