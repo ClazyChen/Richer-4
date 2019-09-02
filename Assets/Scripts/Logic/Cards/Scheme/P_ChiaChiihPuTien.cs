@@ -35,7 +35,7 @@ public class P_ChiaChiihPuTien : PSchemeCardModel {
                         return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime()) && Player.Money == MinMoney;
                     },
                     AICondition = (PGame Game) => {
-                        return PAiMapAnalyzer.OutOfGameExpect(Game, Player, true) > 0 && !Player.OutOfGame;
+                        return PAiMapAnalyzer.OutOfGameExpect(Game, Player, true) > 0;
                     },
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets, AIEmitTargets,
                         (PGame Game, PPlayer User, PPlayer Target) => {

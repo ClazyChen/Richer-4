@@ -11,20 +11,38 @@ public class PAiMapAnalyzer {
     /// <param name="Including">是否包含其行走阶段</param>
     /// <returns></returns>
     public static int OutOfGameExpect(PGame Game, PPlayer Player, bool Including = false) {
+        if (Player.OutOfGame) {
+            return 0;
+        }
         int Sum = 0;
         for (PPlayer _Player = Game.NowPlayer; !_Player.Equals(Player); _Player = Game.GetNextPlayer(_Player)) {
-            PBlock Block = _Player.Position;
-            for (int i = 0; i<6; ++i, Block = Block.NextBlock) {
+            if (_Player.NoLadder) {
+                PBlock Block = _Player.Position;
                 if (Player.Equals(Block.Lord) && Player.TeamIndex != _Player.TeamIndex) {
-                    Sum -= 2 * Block.Toll;
+                    Sum -= 12 * Block.Toll;
+                }
+            } else {
+                PBlock Block = _Player.Position.NextBlock;
+                for (int i = 0; i < 6; ++i, Block = Block.NextBlock) {
+                    if (Player.Equals(Block.Lord) && Player.TeamIndex != _Player.TeamIndex) {
+                        Sum -= 2 * Block.Toll;
+                    }
                 }
             }
+            
         }
         if (Including) {
-            PBlock Block = Player.Position;
-            for (int i = 0; i < 6; ++i, Block = Block.NextBlock) {
+            if (Player.NoLadder) {
+                PBlock Block = Player.Position;
                 if (Block.Lord != null && Player.TeamIndex != Block.Lord.TeamIndex) {
-                    Sum += 2 * Block.Toll;
+                    Sum += 12 * Block.Toll;
+                }
+            } else {
+                PBlock Block = Player.Position.NextBlock;
+                for (int i = 0; i < 6; ++i, Block = Block.NextBlock) {
+                    if (Block.Lord != null && Player.TeamIndex != Block.Lord.TeamIndex) {
+                        Sum += 2 * Block.Toll;
+                    }
                 }
             }
         }
@@ -66,6 +84,9 @@ public class PAiMapAnalyzer {
     }
 
     public static int StartFromExpect(PGame Game, PPlayer Player, PBlock Block) {
+        if (Player.NoLadder) {
+            return Expect(Game, Player, Block);
+        }
         PBlock CurrentBlock = Block.NextBlock;
         int Expectation = 0;
         for (int i = 6; i >= 1; -- i) {

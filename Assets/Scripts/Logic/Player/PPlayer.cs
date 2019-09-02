@@ -91,6 +91,12 @@ public class PPlayer: PObject {
         }
     }
 
+    public bool NoLadder {
+        get {
+            return Tags.ExistTag(PTag.NoLadderTag.Name);
+        }
+    }
+
     /// <summary>
     /// 客户端专用，用于更新手牌数量
     /// </summary>

@@ -43,8 +43,7 @@ public class P_ChinChaanToowChiiao : PSchemeCardModel {
                         return Player.Equals(Game.NowPlayer);
                     },
                     AICondition = (PGame Game) => {
-                        // 没有被上屋抽梯
-                        return AIInHandExpectation(Game, Player) > 3000;
+                        return !Player.NoLadder && AIInHandExpectation(Game, Player) > 3000;
                     },
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets, AIEmitTargets,
                         (PGame Game, PPlayer User, PPlayer Target) => {
