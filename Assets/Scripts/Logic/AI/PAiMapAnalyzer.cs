@@ -24,8 +24,16 @@ public class PAiMapAnalyzer {
     }
 
     public static int HouseValue(PGame Game, PPlayer Player, PBlock Block) {
-        int EnemyCount = Game.Enemies(Player).Count;
-        return PMath.Percent(Block.Price, 50 + 20 * EnemyCount * (Block.BusinessType.Equals(PBusinessType.ShoppingCenter) ? 2 : 1));
+        if (Block.Lord == null) {
+            return 0;
+        }
+        int EnemyCount = Game.Enemies(Block.Lord).Count;
+        int Value = PMath.Percent(Block.Price, 50 + 20 * EnemyCount * (Block.BusinessType.Equals(PBusinessType.ShoppingCenter) ? 2 : 1));
+        if (Player.TeamIndex == Block.Lord.TeamIndex) {
+            return Value;
+        } else {
+            return -Value;
+        }
     }
 
     public static KeyValuePair< PBlock, int> MaxValueHouse(PGame Game, PPlayer Player) {

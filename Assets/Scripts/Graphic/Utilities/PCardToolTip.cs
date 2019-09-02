@@ -30,7 +30,7 @@ public class PCardToolTip : PObject {
     public static PCardToolTip YooenChiaoChinKung = new PCardToolTip("远交近攻", "【主】空闲时间点，对一名其他角色使用。其摸一张牌，然后你指定另一名角色：若你指定自己，你摸1000；否则，该角色弃1000。");
     public static PCardToolTip ChiaTaoFaKuo = new PCardToolTip("假道伐虢", "【被】回合结束阶段，若本回合内你经过了至少两名其他角色的土地，对其中一名角色使用。你对其造成1000点伤害。");
     public static PCardToolTip ToouLiangHuanChu = new PCardToolTip("偷梁换柱", "【主】空闲时间点，你指定两片不同的有领主的领地，交换其上所有的房屋。");
-    public static PCardToolTip ChihSangMaHuai = new PCardToolTip("指桑骂槐", "【被】当你受到伤害时，对一名不为伤害来源的其他角色使用。伤害转移给该角色。");
+    public static PCardToolTip ChihSangMaHuai = new PCardToolTip("指桑骂槐", "【被】当你受到有来源的伤害时，对一名不为伤害来源的其他角色使用。伤害转移给该角色。");
     public static PCardToolTip ChiaChiihPuTien = new PCardToolTip("假痴不癫", "【主】空闲时间点，若你的现金为全场最少（或之一），对你自己使用。移出游戏至下回合开始。");
     public static PCardToolTip ShangWuChoouTii = new PCardToolTip("上屋抽梯", "【主】空闲时间点，对一名与你距离不大于3的其他角色使用。其下个行走阶段的步数*0。");
     public static PCardToolTip ShuShangKaaiHua = new PCardToolTip("树上开花", "【主】空闲时间点，令一片有主土地增加一座房屋。");
