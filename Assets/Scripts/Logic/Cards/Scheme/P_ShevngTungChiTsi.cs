@@ -45,6 +45,15 @@ public class P_ShevngTungChiHsi: PSchemeCardModel {
                         if (UseCardTag.Card.Name.Equals(P_YooChiinKuTsung.CardName)) {
                             return UseCardTag.TargetList[0].TeamIndex == Player.TeamIndex && Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName).Injure <= 3000;
                         }
+                        if (UseCardTag.Card.Name.Equals(P_ChiinTsevChiinWang.CardName)) {
+                            return UseCardTag.User.TeamIndex != Player.TeamIndex && PMath.Max(Game.PlayerList, (PPlayer _Player) => {
+                                if (Player.TeamIndex == _Player.TeamIndex) {
+                                    return PAiMapAnalyzer.ChangeFaceExpect(Game, _Player);
+                                } else {
+                                    return -PAiMapAnalyzer.ChangeFaceExpect(Game, _Player);
+                                }
+                            }).Value - PAiMapAnalyzer.ChangeFaceExpect(Game, UseCardTag.TargetList[0]) * (UseCardTag.TargetList[0].TeamIndex == Player.TeamIndex ? 1 : -1) >= 3000;
+                        }
                         return false;
                     },
                     Effect = (PGame Game) => {
@@ -68,6 +77,15 @@ public class P_ShevngTungChiHsi: PSchemeCardModel {
                         } else {
                             if (UseCardTag.Card.Name.Equals(P_ManTiienKuoHai.CardName)) {
                                 Target = ((P_ManTiienKuoHai)(UseCardTag.Card.Model)).AIEmitTargets(Game, Player)[0];
+                            }
+                            if (UseCardTag.Card.Name.Equals(P_ChiinTsevChiinWang.CardName)) {
+                                Target = PMath.Max(Game.PlayerList, (PPlayer _Player) => {
+                                    if (Player.TeamIndex == _Player.TeamIndex) {
+                                        return PAiMapAnalyzer.ChangeFaceExpect(Game, _Player);
+                                    } else {
+                                        return -PAiMapAnalyzer.ChangeFaceExpect(Game, _Player);
+                                    }
+                                }).Key;
                             }
                             if (UseCardTag.Card.Name.Equals(P_TaTsaaoChingShev.CardName)) {
                                 List<PPlayer> PossibleEnemies = Game.Enemies(Player).FindAll((PPlayer _Player) => Player.HasHouse);

@@ -20,6 +20,11 @@ public class PAiMapAnalyzer {
         return StartFromExpect(Game, Player, Player.Position) * (Player.Tags.ExistTag(PTag.BackFaceTag.Name) ? 1 : -1) / 3;
     }
 
+    public static int HouseValue(PGame Game, PPlayer Player, PBlock Block) {
+        int EnemyCount = Game.Enemies(Player).Count;
+        return PMath.Percent(Block.Price, 50 + 20 * EnemyCount * (Block.BusinessType.Equals(PBusinessType.ShoppingCenter) ? 2 : 1));
+    }
+
     public static KeyValuePair< PBlock, int> MaxValueHouse(PGame Game, PPlayer Player) {
         int EnemyCount = Game.Enemies(Player).Count;
         return PMath.Max(Game.Map.BlockList.FindAll((PBlock Block) => Player.Equals(Block.Lord) && Block.HouseNumber > 0), (PBlock Block) => {

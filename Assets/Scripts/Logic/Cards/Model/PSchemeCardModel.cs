@@ -18,9 +18,8 @@ public abstract class PSchemeCardModel: PCardModel {
             if (Targets.Count == 0) { return; }
             Game.Monitor.CallTime(PTime.Card.AfterEmitTargetTime, new PUseCardTag(Card, Player, Targets));
             Game.CardManager.MoveCard(Card, Player.Area.HandCardArea, Game.CardManager.SettlingArea);
-            List<PPlayer> EffectTargets = CloneList(Targets);
-            Game.Monitor.CallTime(PTime.Card.AfterBecomeTargetTime, new PUseCardTag(Card, Player, EffectTargets));
-            EffectTargets.ForEach((PPlayer Target) => {
+            Game.Monitor.CallTime(PTime.Card.AfterBecomeTargetTime, new PUseCardTag(Card, Player, Targets));
+            Targets.ForEach((PPlayer Target) => {
                 if (Target != null && Target.IsAlive) {
                     Effect(Game, Player, Target);
                 }

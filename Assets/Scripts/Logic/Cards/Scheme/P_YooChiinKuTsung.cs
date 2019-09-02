@@ -19,7 +19,7 @@ public class P_YooChiinKuTsung: PSchemeCardModel {
 
     public P_YooChiinKuTsung():base(CardName) {
         Point = 3;
-        Index = 15;
+        Index = 16;
         foreach (PTime Time in new PTime[] {
             PTime.Injure.EmitInjure
         }) {

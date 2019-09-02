@@ -34,7 +34,7 @@ public class P_ChiinTsevChiinWang : PSchemeCardModel {
 
     public P_ChiinTsevChiinWang():base(CardName) {
         Point = 3;
-        Index = 17;
+        Index = 18;
         foreach (PTime Time in new PTime[] {
             PPeriod.FirstFreeTime.During,
             PPeriod.SecondFreeTime.During

@@ -23,7 +23,7 @@ public class P_TiaoHuLiShan: PSchemeCardModel {
 
     public P_TiaoHuLiShan():base(CardName) {
         Point = 3;
-        Index = 14;
+        Index = 15;
         foreach (PTime Time in new PTime[] {
             PPeriod.FirstFreeTime.During,
             PPeriod.SecondFreeTime.During
