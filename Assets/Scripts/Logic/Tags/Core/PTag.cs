@@ -45,4 +45,5 @@ public class PTag : PObject {
     }
 
     public static PTag FreeTimeOperationTag = new PTag("空闲时间点操作中");
+    public static PTag OutOfGameTag = new PTag("移出游戏状态");
 }

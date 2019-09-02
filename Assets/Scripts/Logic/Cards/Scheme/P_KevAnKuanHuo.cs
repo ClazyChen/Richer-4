@@ -34,7 +34,7 @@ public class P_KevAnKuanHuo: PSchemeCardModel {
                         PUseCardTag UseCardTag = Game.TagManager.FindPeekTag<PUseCardTag>(PUseCardTag.TagName);
                         UseCardTag.TargetList.Remove(Player);
                         PTrigger GetMoneyTrigger = null;
-                        GetMoneyTrigger = new PTrigger(CardName + "-摸500") {
+                        GetMoneyTrigger = new PTrigger(CardName + "[摸500]") {
                             IsLocked = true,
                             Player = Player,
                             Time = PTime.Card.EndSettleTime,

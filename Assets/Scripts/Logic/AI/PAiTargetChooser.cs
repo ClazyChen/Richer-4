@@ -6,6 +6,11 @@ public class PAiTargetChooser {
     public static PPlayer InjureTarget(PGame Game, PPlayer Player, PTrigger.PlayerCondition Condition =null, int ExpectedMoney=0) {
 
         return PMath.Max(Game.PlayerList.FindAll((PPlayer Target) => Player.IsAlive && (Condition == null || Condition(Game, Target))), (PPlayer Target) => {
+
+            if (Player.Tags.ExistTag(PTag.OutOfGameTag.Name) || Target.Tags.ExistTag(PTag.OutOfGameTag.Name)) {
+                return 0;
+            }
+
             int Profit = ExpectedMoney *2 + Math.Max(0, (20000 - Target.Money)/1000) + PMath.RandInt(0,9);
             bool SameTeam = (Target.TeamIndex == Player.TeamIndex);
             int Cof = (SameTeam ? -1 : 1);

@@ -84,7 +84,9 @@ public class PGameStatus {
                 Name = PSystem.CurrentRoom.PlayerList[i].PlayerType.Equals(PPlayerType.Player) ? PSystem.CurrentRoom.PlayerList[i].Nickname : "P" + (i + 1).ToString(),
                 IsAlive = true,
                 Money = PPlayer.Config.DefaultMoney,
-                TeamIndex = GameMode.Seats[i].Party - 1
+                TeamIndex = GameMode.Seats[i].Party - 1,
+                Tags = null
+                
             });
             PBlock Position = Map.BlockList.Find((PBlock Block) => Block.StartPointIndex == i % Map.StartPointNumber);
             if (Position != null) {

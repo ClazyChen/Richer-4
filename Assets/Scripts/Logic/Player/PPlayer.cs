@@ -10,6 +10,8 @@ public class PPlayer: PObject {
     public int TeamIndex;
     public PBlock Position;
 
+    public PTagManager Tags;
+
     /// <summary>
     /// 玩家的IP地址，只有服务器可以获取，缺省为空串
     /// </summary>
@@ -89,6 +91,25 @@ public class PPlayer: PObject {
     /// 客户端专用，用于更新商业用地数量
     /// </summary>
     public int BusinessLandNumber = 0;
+    /// <summary>
+    /// 客户端专用，用于设置标记域
+    /// </summary>
+    public string MarkString = "|";
+
+    /// <summary>
+    /// 服务器端专用，用于设置标记域string
+    /// </summary>
+    /// <returns></returns>
+    public string GetMarkString() {
+        string Result = string.Empty;
+        if (Tags.ExistTag(PTag.OutOfGameTag.Name)) {
+            Result += "|移出";
+        }
+        if (Result.Length <= 1) {
+            return "|";
+        }
+        return Result;
+    }
 
 
     private string _EquipCards = string.Empty;

@@ -3,6 +3,19 @@ using System.Collections.Generic;
 
 public class PAiMapAnalyzer {
 
+    public static int OutOfGameExpect(PGame Game, PPlayer Player) {
+        int Sum = 0;
+        for (PPlayer _Player = Game.NowPlayer; !_Player.Equals(Player); _Player = Game.GetNextPlayer(_Player)) {
+            PBlock Block = _Player.Position;
+            for (int i = 0; i<6; ++i, Block = Block.NextBlock) {
+                if (Player.Equals(Block.Lord) && Player.TeamIndex != _Player.TeamIndex) {
+                    Sum -= 2 * Block.Toll;
+                }
+            }
+        }
+        return Sum;
+    }
+
     public static KeyValuePair< PBlock, int> MaxValueHouse(PGame Game, PPlayer Player) {
         int EnemyCount = Game.Enemies(Player).Count;
         return PMath.Max(Game.Map.BlockList.FindAll((PBlock Block) => Player.Equals(Block.Lord) && Block.HouseNumber > 0), (PBlock Block) => {

@@ -48,13 +48,15 @@ public class PGame : PGameStatus {
             #region 初始化玩家列表
             PlayerList = new List<PPlayer>();
             for (int i = 0; i < PlayerNumber; ++i) {
-                PlayerList.Add(new PPlayer() {
+                PPlayer Player = new PPlayer() {
                     Index = i,
                     Name = Room.PlayerList[i].PlayerType.Equals(PPlayerType.Player) ? Room.PlayerList[i].Nickname : "P" + (i + 1).ToString(),
                     IsAlive = true,
                     Money = PPlayer.Config.DefaultMoney,
                     TeamIndex = GameMode.Seats[i].Party - 1
-                });
+                };
+                Player.Tags = new PTagManager(Player);
+                PlayerList.Add(Player);
                 PBlock Position = Map.BlockList.Find((PBlock Block) => Block.StartPointIndex == i % Map.StartPointNumber);
                 if (Position != null) {
                     PlayerList[i].Position = Position;
@@ -132,7 +134,9 @@ public class PGame : PGameStatus {
                 break;
             }
         }
-        Monitor.CallTime(PTime.Injure.EndSettle, InjureTag);
+        if (InjureTag.ToPlayer != null && InjureTag.Injure > 0) {
+            Monitor.CallTime(PTime.Injure.EndSettle, InjureTag);
+        }
     }
 
     public void GetMoney(PPlayer Player, int Money) {
