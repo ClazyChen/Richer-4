@@ -456,4 +456,14 @@ public class PGame : PGameStatus {
             CardManager.MoveCard(Card, Player.Area.HandCardArea, TargetPlayer.Area.HandCardArea);
         }
     }
+
+    public void ChangeFace(PPlayer Player) {
+        PNetworkManager.NetworkServer.TellClients(new PPushTextOrder(Player.Index.ToString(), "翻面", PPushType.Information.Name));
+        if (Player.BackFace) {
+            Player.Tags.PopTag<PTag>(PTag.BackFaceTag.Name);
+        } else {
+            Player.Tags.CreateTag(PTag.BackFaceTag);
+        }
+        Monitor.CallTime(PTime.ChangeFaceTime, new PChangeFaceTag(Player));
+    }
 }

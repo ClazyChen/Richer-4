@@ -31,6 +31,8 @@ public class PTime : PObject {
     public static PTime DieTime = new PTime("死亡时");
     public static PTime AfterDieTime = new PTime("死亡后");
 
+    public static PTime ChangeFaceTime = new PTime("翻面时");
+
     public class Card {
         public static PTime LeaveAreaTime = new PTime("卡牌离开区域时");
         public static PTime EnterAreaTime = new PTime("卡牌进入区域时");

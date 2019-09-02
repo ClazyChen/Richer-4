@@ -78,6 +78,12 @@ public class PPlayer: PObject {
             }
         }
     }
+
+    public bool BackFace {
+        get {
+            return Tags.ExistTag(PTag.BackFaceTag.Name);
+        }
+    }
     
     /// <summary>
     /// 客户端专用，用于更新手牌数量
