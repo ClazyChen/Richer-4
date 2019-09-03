@@ -98,7 +98,7 @@ public class PPlayer: PObject {
 
     public bool CanBeInjured {
         get {
-            return !OutOfGame;
+            return !OutOfGame && !Tags.ExistTag(PKuungCheevngChiTag.TagName);
         }
     }
 

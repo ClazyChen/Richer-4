@@ -35,9 +35,9 @@ public abstract class PSchemeCardModel: PCardModel {
         }, Effect);
     }
 
-    protected Action<PGame> MakeMultiTargetNormalEffect(PPlayer Player, PCard Card, TargetChooser AITargetChooser, PTrigger.PlayerCondition TargetCondition, EffectFunc Effect) {
+    protected Action<PGame> MakeMultiTargetNormalEffect(PPlayer Player, PCard Card, TargetChooser AITargetChooser, PTrigger.PlayerCondition TargetCondition, EffectFunc Effect, int MaxNumber = -1) {
         return MakeNormalEffect(Player, Card, AITargetChooser, (PGame Game, PPlayer _Player) => {
-            return PNetworkManager.NetworkServer.ChooseManager.AskForTargetPlayers(_Player, TargetCondition, Card.Name) ;
+            return PNetworkManager.NetworkServer.ChooseManager.AskForTargetPlayers(_Player, TargetCondition, Card.Name, MaxNumber) ;
         }, Effect);
     }
 }

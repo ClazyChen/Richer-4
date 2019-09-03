@@ -42,7 +42,7 @@ public class P_LienHuanChi : PSchemeCardModel {
         int Cal(PPlayer _Player) {
             int Base = 1000;
             Base += Math.Max(0, (20000 - _Player.Money) / 10);
-            bool Positive = _Player.Tags.ExistTag(PTag.LockedTag.Name);
+            bool Positive = !_Player.Tags.ExistTag(PTag.LockedTag.Name);
             Positive ^= Player.TeamIndex == _Player.TeamIndex;
             return Base * (Positive ? 1 : -1);
         }
@@ -91,7 +91,7 @@ public class P_LienHuanChi : PSchemeCardModel {
                             } else {
                                 Target.Tags.PopTag<PTag>(PTag.LockedTag.Name);
                             }
-                        })
+                        }, 2)
                 };
             });
         }

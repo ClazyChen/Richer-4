@@ -34,7 +34,7 @@ public class P_KuanMevnChoTsev: PSchemeCardModel {
                     },
                     AICondition = (PGame Game) => {
                         List<PPlayer> Targets = AIEmitTargets(Game, Player);
-                        return !Targets.Exists((PPlayer _Player) => _Player.TeamIndex == Player.TeamIndex && _Player.Money <= 1000) && Targets.Exists((PPlayer _Player) => Player.TeamIndex != _Player.TeamIndex) && !Player.OutOfGame;
+                        return !Targets.Exists((PPlayer _Player) => _Player.TeamIndex == Player.TeamIndex && _Player.Money <= 1000 && _Player.CanBeInjured) && Targets.Exists((PPlayer _Player) => Player.TeamIndex != _Player.TeamIndex && _Player.CanBeInjured) && !Player.OutOfGame;
                     },
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets, AIEmitTargets,
                         (PGame Game, PPlayer User, PPlayer Target) => {

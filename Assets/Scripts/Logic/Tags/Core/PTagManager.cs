@@ -51,6 +51,7 @@ public class PTagManager {
     public T PopTag<T>(string Name)where T:PTag {
         T Tag = FindPeekTag<T>(Name);
         if (Tag != null) {
+            PLogger.Log("销毁标签：" + Tag.Name);
             TagList.Remove(Tag);
             if (Owner != null) {
                 PNetworkManager.NetworkServer.TellClients(new PRefreshMarkStringOrder(Owner));

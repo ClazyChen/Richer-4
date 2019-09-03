@@ -15,7 +15,7 @@ public class P_FanChienChi : PSchemeCardModel {
         int Sum = 0;
         AIEmitTargets(Game, Player).ForEach((PPlayer _Player) => {
             int Choose1 = PAiMapAnalyzer.ChangeFaceExpect(Game, _Player);
-            int Choose2 = _Player.TeamIndex == Player.TeamIndex ? (_Player.Money <= 1000 ? -30000 : 0) : -2000;
+            int Choose2 = _Player.Money <= 1000 ? -30000 : -1000;
             int Chosen = Math.Max(Choose1, Choose2);
             Sum += Chosen * (_Player.TeamIndex == Player.TeamIndex ? 1 : -1);
         });
@@ -58,19 +58,18 @@ public class P_FanChienChi : PSchemeCardModel {
                                 int Test = 0;
                                 if (Target.IsAI) {
                                     int Choose1 = PAiMapAnalyzer.ChangeFaceExpect(Game, Target);
-                                    int Choose2 = Target.TeamIndex == User.TeamIndex ? (Target.Money <= 1000 ? -30000 : 0) : -2000;
-                                    Test = (Choose1 >= Choose2 ? 0 : 1);
+                                    int Choose2 = Target.Money <= 1000 ? -30000 : -1000;
                                 } else {
                                     Test = PNetworkManager.NetworkServer.ChooseManager.Ask(Target, "反间计[选择一项]", new string[] {
-                                        "翻面", "受到" + User.Name + "造成的1000点伤害"
+                                        "翻面", "弃1000"
                                     });
                                 }
                                 if (Test == 0) {
                                     PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Target.Name + "选择了翻面"));
                                     Game.ChangeFace(Target);
                                 } else {
-                                    PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Target.Name + "选择了受到伤害"));
-                                    Game.Injure(User, Target, 1000, Card);
+                                    PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Target.Name + "选择了弃1000"));
+                                    Game.LoseMoney(Target, 1000);
                                 }
                             }
                         })

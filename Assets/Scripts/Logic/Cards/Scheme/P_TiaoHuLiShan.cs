@@ -6,14 +6,14 @@ using System.Collections.Generic;
 public class P_TiaoHuLiShan: PSchemeCardModel {
 
     public List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
-        return new List<PPlayer>() { PMath.Max(Game.Enemies(Player).FindAll((PPlayer _Player) => !_Player.OutOfGame), (PPlayer _Player) => {
+        return new List<PPlayer>() { PMath.Max(Game.Enemies(Player), (PPlayer _Player) => {
             return -PAiMapAnalyzer.OutOfGameExpect(Game, _Player);
         }, true).Key };
     }
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
         int Basic = 0;
-        int OutOfGameExpect = PMath.Max(Game.Enemies(Player).FindAll((PPlayer _Player) => !_Player.OutOfGame), (PPlayer _Player) => {
+        int OutOfGameExpect = PMath.Max(Game.Enemies(Player), (PPlayer _Player) => {
             return -PAiMapAnalyzer.OutOfGameExpect(Game, _Player);
         }, true).Value;
         return Math.Max(Basic, OutOfGameExpect);

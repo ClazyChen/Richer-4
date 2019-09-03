@@ -84,8 +84,8 @@ public class P_ToouLiangHuanChu : PSchemeCardModel {
                             int House2 = Land2.HouseNumber;
                             Game.LoseHouse(Land1, Land1.HouseNumber);
                             Game.LoseHouse(Land2, Land2.HouseNumber);
-                            Game.GetHouse(Land1, Land2.HouseNumber);
-                            Game.GetHouse(Land2, Land1.HouseNumber);
+                            Game.GetHouse(Land1, House2);
+                            Game.GetHouse(Land2, House1);
                         }
 
                         Game.CardManager.MoveCard(Card, Game.CardManager.SettlingArea, Game.CardManager.ThrownCardHeap);

@@ -43,7 +43,22 @@ public class P_ChinChaanToowChiiao : PSchemeCardModel {
                         return Player.Equals(Game.NowPlayer);
                     },
                     AICondition = (PGame Game) => {
-                        return !Player.NoLadder && AIInHandExpectation(Game, Player) > 3000;
+                        int StepCount = 1;
+                        int NowStepCount = Game.TagManager.FindPeekTag<PStepCountTag>(PStepCountTag.TagName).StepCount;
+                        int MaxValue = int.MinValue;
+                        int NowValue = 0;
+                        PBlock TestBlock = Player.Position.NextBlock;
+                        for (int i = 0; i < 6; ++i, TestBlock = TestBlock.NextBlock) {
+                            int Value = PAiMapAnalyzer.Expect(Game, Player, TestBlock);
+                            if (Value > MaxValue) {
+                                StepCount = i + 1;
+                            }
+                            if (i + 1 == NowStepCount) {
+                                NowValue = Value;
+                            }
+                            MaxValue = Math.Max(Value, MaxValue);
+                        }
+                        return !Player.NoLadder && MaxValue - NowValue >= 2000;
                     },
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets, AIEmitTargets,
                         (PGame Game, PPlayer User, PPlayer Target) => {
