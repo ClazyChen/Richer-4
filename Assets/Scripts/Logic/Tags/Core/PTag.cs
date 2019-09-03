@@ -57,4 +57,5 @@ public class PTag : PObject {
     public static PTag OutOfGameTag = new PTag("移出游戏状态");
     public static PTag BackFaceTag = new PTag("翻面状态");
     public static PTag NoLadderTag = new PTag("抽梯状态");
+    public static PTag LockedTag = new PTag("连环状态");
 }

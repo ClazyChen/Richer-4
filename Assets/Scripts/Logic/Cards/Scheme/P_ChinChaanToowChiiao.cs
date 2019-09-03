@@ -60,7 +60,7 @@ public class P_ChinChaanToowChiiao : PSchemeCardModel {
                                     MaxValue = Math.Max(Value, MaxValue);
                                 }
                             } else {
-                                StepCount = PNetworkManager.NetworkServer.ChooseManager.Ask(Target, "选择1个数字作为行走步数", new string[] { "1", "2", "3", "4", "5", "6" }) + 1;
+                                StepCount = PNetworkManager.NetworkServer.ChooseManager.Ask1To6(Target, "选择1个数字作为步数");
                             }
                             PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Target.Name + "选择了" + StepCount));
                             Game.TagManager.FindPeekTag<PStepCountTag>(PStepCountTag.TagName).StepCount = StepCount;

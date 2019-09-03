@@ -25,6 +25,10 @@ public class PChooseManager {
         return ChosenAnswer == 0;
     }
 
+    public int Ask1To6(PPlayer Player, string Title) {
+        return Ask(Player, Title, new string[] { "1", "2", "3", "4", "5", "6" }) + 1;
+    }
+
     /// <summary>
     /// 选择一个目标玩家
     /// </summary>
@@ -46,14 +50,18 @@ public class PChooseManager {
         return SatisfiedPlayerList[ChosenResult];
     }
 
-    public List<PPlayer> AskForTargetPlayers(PPlayer Chooser, PTrigger.PlayerCondition Condition, string Title) {
+    public List<PPlayer> AskForTargetPlayers(PPlayer Chooser, PTrigger.PlayerCondition Condition, string Title, int MaxNumber = -1) {
         List<PPlayer> PlayerList = new List<PPlayer>();
+        int Chosen = 0;
         for (PPlayer _Player = null; _Player != null || PlayerList.Count == 0; ) {
             _Player = AskForTargetPlayer(Chooser, (PGame Game, PPlayer Player) => {
                 return Condition(Game, Player) && !PlayerList.Contains(Player);
             }, Title, PlayerList.Count > 0);
             if (_Player != null) {
                 PlayerList.Add(_Player);
+                if (MaxNumber > 0 && ++Chosen >= MaxNumber) {
+                    break;
+                }
             }
         }
         return PlayerList;

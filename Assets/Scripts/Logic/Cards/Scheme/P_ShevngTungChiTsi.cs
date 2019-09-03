@@ -36,12 +36,14 @@ public class P_ShevngTungChiHsi: PSchemeCardModel {
                             UseCardTag.Card.Name.Equals(P_ShunShouChiienYang.CardName) ||
                             UseCardTag.Card.Name.Equals(P_TaTsaaoChingShev.CardName) ||
                             UseCardTag.Card.Name.Equals(P_KuanMevnChoTsev.CardName) ||
-                            UseCardTag.Card.Name.Equals(P_ChihSangMaHuai.CardName)) {
+                            UseCardTag.Card.Name.Equals(P_ChihSangMaHuai.CardName) ||
+                            UseCardTag.Card.Name.Equals(P_FanChienChi.CardName)) {
                             return UseCardTag.TargetList[0].TeamIndex == Player.TeamIndex && UseCardTag.User.TeamIndex != Player.TeamIndex;
                         } else if (UseCardTag.Card.Name.Equals(P_WuChungShevngYou.CardName) ||
                             UseCardTag.Card.Name.Equals(P_AnTuCheevnTsaang.CardName) ||
                             UseCardTag.Card.Name.Equals(P_ChiehShihHuanHun.CardName) ||
-                            UseCardTag.Card.Name.Equals(P_YooenChiaoChinKung.CardName)) {
+                            UseCardTag.Card.Name.Equals(P_YooenChiaoChinKung.CardName) ||
+                            UseCardTag.Card.Name.Equals(P_TsouWeiShangChi.CardName)) {
                             return UseCardTag.TargetList[0].TeamIndex != Player.TeamIndex;
                         } else if (UseCardTag.Card.Name.Equals(P_YooChiinKuTsung.CardName)) {
                             return UseCardTag.TargetList[0].TeamIndex == Player.TeamIndex && Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName).Injure <= 3000;
@@ -133,6 +135,8 @@ public class P_ShevngTungChiHsi: PSchemeCardModel {
                                 }, true).Key;
                             } else if (UseCardTag.Card.Name.Equals(P_KuungCheevngChi.CardName)) {
                                 Target = PMath.Max(Game.Enemies(Player), (PPlayer _Player) => _Player.Area.HandCardArea.CardNumber).Key;
+                            } else if (UseCardTag.Card.Name.Equals(P_TsouWeiShangChi.CardName)) {
+                                Target = PMath.Max(Game.Teammates(Player), (PPlayer _Player) => PAiMapAnalyzer.OutOfGameExpect(Game, Player)).Key;
                             }
                         }
                         if (Target == null || Target == UseCardTag.TargetList[0]) {
