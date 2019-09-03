@@ -10,26 +10,28 @@ public class PAiMapAnalyzer {
     /// <param name="Player"></param>
     /// <param name="Including">是否包含其行走阶段</param>
     /// <returns></returns>
-    public static int OutOfGameExpect(PGame Game, PPlayer Player, bool Including = false) {
+    public static int OutOfGameExpect(PGame Game, PPlayer Player, bool Including = false, bool IncludingOnly = false) {
         if (Player.OutOfGame) {
             return 0;
         }
         int Sum = 0;
-        for (PPlayer _Player = Game.NowPlayer; !_Player.Equals(Player); _Player = Game.GetNextPlayer(_Player)) {
-            if (_Player.NoLadder) {
-                PBlock Block = _Player.Position;
-                if (Player.Equals(Block.Lord) && Player.TeamIndex != _Player.TeamIndex) {
-                    Sum -= 12 * Block.Toll;
-                }
-            } else {
-                PBlock Block = _Player.Position.NextBlock;
-                for (int i = 0; i < 6; ++i, Block = Block.NextBlock) {
+        if (!IncludingOnly) {
+            for (PPlayer _Player = Game.NowPlayer; !_Player.Equals(Player); _Player = Game.GetNextPlayer(_Player)) {
+                if (_Player.NoLadder) {
+                    PBlock Block = _Player.Position;
                     if (Player.Equals(Block.Lord) && Player.TeamIndex != _Player.TeamIndex) {
-                        Sum -= 2 * Block.Toll;
+                        Sum -= 12 * Block.Toll;
+                    }
+                } else {
+                    PBlock Block = _Player.Position.NextBlock;
+                    for (int i = 0; i < 6; ++i, Block = Block.NextBlock) {
+                        if (Player.Equals(Block.Lord) && Player.TeamIndex != _Player.TeamIndex) {
+                            Sum -= 2 * Block.Toll;
+                        }
                     }
                 }
+
             }
-            
         }
         if (Including) {
             if (Player.NoLadder) {

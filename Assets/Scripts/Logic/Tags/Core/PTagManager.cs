@@ -14,7 +14,7 @@ public class PTagManager {
             string Result = string.Empty;
             TagList.ForEach((PTag Tag) => {
                 if (Tag.Name.Length > 0 && Tag.Visible) {
-                    Result += "|" + Tag.Name[0];
+                    Result += "|" + Tag.Mark();
                 }
             });
             if (Result.Length <= 1) {

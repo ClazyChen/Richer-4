@@ -46,6 +46,13 @@ public class PTag : PObject {
         }
     }
 
+    public virtual string Mark() {
+        if (Name.Length == 0) {
+            return Name;
+        }
+        return Name.Substring(0,1);
+    }
+
     public static PTag FreeTimeOperationTag = new PTag("空闲时间点操作中");
     public static PTag OutOfGameTag = new PTag("移出游戏状态");
     public static PTag BackFaceTag = new PTag("翻面状态");

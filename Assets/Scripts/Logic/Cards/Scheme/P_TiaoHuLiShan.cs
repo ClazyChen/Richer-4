@@ -44,20 +44,6 @@ public class P_TiaoHuLiShan: PSchemeCardModel {
                         PTrigger.Except(Player),
                         (PGame Game, PPlayer User, PPlayer Target) => {
                             Target.Tags.CreateTag(PTag.OutOfGameTag);
-                            PTrigger ReturnGame = null;
-                            ReturnGame = new PTrigger(CardName + "[移回游戏]") {
-                                IsLocked = true,
-                                Player = Target,
-                                Time = PPeriod.StartTurn.During,
-                                Condition = (PGame _Game) => {
-                                    return Target.Equals(_Game.NowPlayer);
-                                },
-                                Effect = (PGame _Game) => {
-                                    Target.Tags.PopTag<PTag>(PTag.OutOfGameTag.Name);
-                                    _Game.Monitor.RemoveTrigger(ReturnGame);
-                                }
-                            };
-                            Game.Monitor.AddTrigger(ReturnGame);
                         })
                 };
             });

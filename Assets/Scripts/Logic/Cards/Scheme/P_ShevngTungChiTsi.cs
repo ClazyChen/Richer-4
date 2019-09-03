@@ -63,6 +63,9 @@ public class P_ShevngTungChiHsi: PSchemeCardModel {
                                 }
                             }, true).Value;
                             return MaxValue - NowValue >= 3000;
+                        } else if (UseCardTag.Card.Name.Equals(P_KuungCheevngChi.CardName)) {
+                            KeyValuePair<PPlayer,int> Target = PMath.Max(Game.Enemies(Player), (PPlayer _Player) => _Player.Area.HandCardArea.CardNumber);
+                            return Target.Value >= 3 && !UseCardTag.TargetList[0].Equals(Target.Key);
                         }
                         return false;
                     },
@@ -128,6 +131,8 @@ public class P_ShevngTungChiHsi: PSchemeCardModel {
                                         return -PAiMapAnalyzer.Expect(Game, _Player, _Player.Position);
                                     }
                                 }, true).Key;
+                            } else if (UseCardTag.Card.Name.Equals(P_KuungCheevngChi.CardName)) {
+                                Target = PMath.Max(Game.Enemies(Player), (PPlayer _Player) => _Player.Area.HandCardArea.CardNumber).Key;
                             }
                         }
                         if (Target == null || Target == UseCardTag.TargetList[0]) {

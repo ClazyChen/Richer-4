@@ -11,6 +11,12 @@ public class PGameStatus {
         }
     }
 
+    public int AlivePlayerNumber {
+        get {
+            return PlayerList.FindAll((PPlayer TestPlayer) => TestPlayer.IsAlive).Count;
+        }
+    }
+
     public List<PPlayer> Teammates(PPlayer Player, bool ContainSelf = true) {
         return PlayerList.FindAll((PPlayer TestPlayer) => TestPlayer.TeamIndex == Player.TeamIndex && (ContainSelf || TestPlayer.Index != Player.Index) && TestPlayer.IsAlive);
     }

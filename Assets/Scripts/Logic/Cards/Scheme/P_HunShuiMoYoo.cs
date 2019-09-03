@@ -12,6 +12,9 @@ public class P_HunShuiMoYoo: PSchemeCardModel {
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
         int Basic = 1000;
+        if (Game.AlivePlayerNumber <= 2) {
+            return 0;
+        }
         return Basic;
     }
 

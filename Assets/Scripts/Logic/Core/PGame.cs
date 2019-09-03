@@ -143,7 +143,7 @@ public class PGame : PGameStatus {
         PGetMoneyTag GetMoneyTag = Monitor.CallTime(PTime.GetMoneyTime, new PGetMoneyTag(Player, Money));
         PPlayer GetMoneyPlayer = GetMoneyTag.Player;
         int MoneyCount = GetMoneyTag.Money;
-        if (GetMoneyPlayer != null && MoneyCount > 0) {
+        if (GetMoneyPlayer != null && GetMoneyPlayer.IsAlive && MoneyCount > 0) {
             GetMoneyPlayer.Money += MoneyCount;
             PNetworkManager.NetworkServer.TellClients(new PPushTextOrder(GetMoneyPlayer.Index.ToString(), "+" + MoneyCount.ToString(), PPushType.Heal.Name));
             PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(GetMoneyPlayer.Name + "获得金钱" + MoneyCount.ToString()));
@@ -155,7 +155,7 @@ public class PGame : PGameStatus {
         PLoseMoneyTag LoseMoneyTag = Monitor.CallTime(PTime.LoseMoneyTime, new PLoseMoneyTag(Player, Money, IsInjure));
         PPlayer LoseMoneyPlayer = LoseMoneyTag.Player;
         int MoneyCount = LoseMoneyTag.Money;
-        if (LoseMoneyPlayer != null && MoneyCount > 0) {
+        if (LoseMoneyPlayer != null && LoseMoneyPlayer.IsAlive && MoneyCount > 0) {
             LoseMoneyPlayer.Money -= MoneyCount;
             PNetworkManager.NetworkServer.TellClients(new PPushTextOrder(LoseMoneyPlayer.Index.ToString(), "-" + MoneyCount.ToString(), LoseMoneyTag.IsInjure ? PPushType.Injure.Name : PPushType.Throw.Name));
             PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(LoseMoneyPlayer.Name + "失去金钱" + MoneyCount.ToString()));
@@ -292,7 +292,7 @@ public class PGame : PGameStatus {
         PPurchaseHouseTag PurchaseHouseTag = Monitor.CallTime(PTime.PurchaseHouseTime, new PPurchaseHouseTag(Player, Block));
         Player = PurchaseHouseTag.Player;
         Block = PurchaseHouseTag.Block;
-        if (Player != null && Block != null) {
+        if (Player != null && Block != null && Player.IsAlive) {
             PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "购买了1座房屋"));
             PNetworkManager.NetworkServer.TellClients(new PHighlightBlockOrder(Block.Index.ToString()));
             if (Block.HousePrice > 0) {
@@ -307,7 +307,7 @@ public class PGame : PGameStatus {
         PPurchaseLandTag PurchaseLandTag = Monitor.CallTime(PTime.PurchaseLandTime, new PPurchaseLandTag(Player, Block));
         Player = PurchaseLandTag.Player;
         Block = PurchaseLandTag.Block;
-        if (Player != null && Block != null) {
+        if (Player != null && Block != null && Player.IsAlive) {
             LoseMoney(Player, Block.Price);
             Block.Lord = Player;
             GetHouse(Block, 1);
@@ -336,10 +336,16 @@ public class PGame : PGameStatus {
     }
 
     public void MovePosition(PPlayer Player, PBlock Source, PBlock Destination) {
+        if (Player == null || !Player.IsAlive) {
+            return;
+        }
         Monitor.CallTime(PTime.MovePositionTime, new PTransportTag(Player, Source, Destination));
     }
 
     public int Judge(PPlayer Player) {
+        if (!Player.IsAlive) {
+            return 7;
+        }
         int Result = PMath.RandInt(1, 6);
         PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "的判定结果：" + Result));
         PNetworkManager.NetworkServer.TellClients(new PPushTextOrder(Player.Index.ToString(), "判定结果：" + Result, PPushType.Information.Name));
@@ -412,7 +418,7 @@ public class PGame : PGameStatus {
     }
 
     /// <summary>
-    /// 弃牌行为；当前只有弃自己的牌
+    /// 弃牌行为
     /// </summary>
     /// <param name="Player">发起弃牌方</param>
     /// <param name="TargetPlayer">被弃牌方</param>

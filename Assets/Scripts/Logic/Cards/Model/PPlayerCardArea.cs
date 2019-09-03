@@ -23,6 +23,12 @@ public class PPlayerCardArea : PObject {
         }
     }
 
+    public int OwnerCardNumber {
+        get {
+            return HandCardArea.CardNumber + EquipmentCardArea.CardNumber;
+        }
+    }
+
     /// <summary>
     /// 0~999为手牌，1000起装备区，2000起判定区
     /// </summary>

@@ -7,7 +7,7 @@ public class PAiTargetChooser {
 
         return PMath.Max(Game.PlayerList.FindAll((PPlayer Target) => Player.IsAlive && (Condition == null || Condition(Game, Target))), (PPlayer Target) => {
 
-            if (Player.Tags.ExistTag(PTag.OutOfGameTag.Name) || Target.Tags.ExistTag(PTag.OutOfGameTag.Name)) {
+            if (!Target.CanBeInjured || Player.OutOfGame) {
                 return 0;
             }
 

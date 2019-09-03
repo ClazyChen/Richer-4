@@ -96,6 +96,12 @@ public class PPlayer: PObject {
         }
     }
 
+    public bool CanBeInjured {
+        get {
+            return !OutOfGame;
+        }
+    }
+
     public bool NoLadder {
         get {
             return Tags.ExistTag(PTag.NoLadderTag.Name);
