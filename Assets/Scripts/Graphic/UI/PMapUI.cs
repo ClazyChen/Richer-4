@@ -19,7 +19,8 @@ public class PMapUI : PAbstractUI {
     public readonly PMessageBox MessageBox;
     public readonly PPlayerInformationBoxGroup PlayerInformationGroup;
     public readonly PCameraController CameraController;
-    public readonly PHandCardArea HandCardArea;
+    public readonly PCardUIGroup HandCardArea;
+    public readonly PCardUIGroup EquipCardArea;
     public readonly PToolTip ToolTip;
     public readonly Text InformationText;
     public readonly Text PushText;
@@ -34,7 +35,8 @@ public class PMapUI : PAbstractUI {
         Scene = new PMapScene(GameObject.Find("Map").transform);
         MessageBox = new PMessageBox(UIBackgroundImage.Find("MessageBox"));
         PlayerInformationGroup = new PPlayerInformationBoxGroup(UIBackgroundImage.Find("PlayerInformationBoxes"));
-        HandCardArea = new PHandCardArea(UIBackgroundImage.Find("HandCardArea"));
+        HandCardArea = new PCardUIGroup(UIBackgroundImage.Find("HandCardArea")) { StartIndex = 0 };
+        EquipCardArea = new PCardUIGroup(UIBackgroundImage.Find("EquipCardArea")) { StartIndex = 1000 };
         ToolTip = new PToolTip(UIBackgroundImage.Find("ToolTipImage"));
         CameraController = new PCameraController();
         DiceSpriteList = new Sprite[6];
@@ -51,6 +53,7 @@ public class PMapUI : PAbstractUI {
         CameraController.Open();
         PlayerInformationGroup.Open();
         HandCardArea.Open();
+        EquipCardArea.Open();
         ToolTip.Close();
         InformationText.text = string.Empty;
         DiceImage.gameObject.SetActive(false);
@@ -66,6 +69,7 @@ public class PMapUI : PAbstractUI {
         Scene.Close();
         MessageBox.Close();
         HandCardArea.Close();
+        EquipCardArea.Close();
         PlayerInformationGroup.Close();
         ToolTip.Close();
         base.Close();

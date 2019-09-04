@@ -127,11 +127,12 @@ public class PAiMapAnalyzer {
                 LandValue += PMath.Max(PAiBusinessChooser.DirectionExpectations(Game, Player, Block));
             }
         } else if (Player.Equals(Block.Lord)) {
-            LandValue += PMath.Percent(Block.Price, 20) * Game.Enemies(Player).Count;
+            int PurchaseLimit = Player.PurchaseLimit;
+            LandValue += PMath.Percent(Block.Price, 20) * Game.Enemies(Player).Count * PurchaseLimit;
             if (Block.BusinessType.Equals(PBusinessType.Park)) {
-                LandValue += PMath.Percent(Block.Price, 60);
+                LandValue += PMath.Percent(Block.Price, 60) * PurchaseLimit;
             } else if (Block.BusinessType.Equals(PBusinessType.ShoppingCenter)) {
-                LandValue += PMath.Percent(Block.Price, 20) * Game.Enemies(Player).Count;
+                LandValue += PMath.Percent(Block.Price, 20) * Game.Enemies(Player).Count * PurchaseLimit;
             }
         }
         if (Block.Lord != null && Block.Lord.TeamIndex == Player.TeamIndex) {

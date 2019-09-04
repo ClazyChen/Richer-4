@@ -108,6 +108,38 @@ public class PPlayer: PObject {
         }
     }
 
+    public int PurchaseLimit {
+        get {
+            int Base = 1;
+            PCard Weapon = GetEquipment(PCardType.WeaponCard);
+            if (Weapon != null && Weapon.Model is P_ChuKevLienNu) {
+                Base += 3;
+            }
+            return Base;
+        }
+    }
+
+    public PCard GetEquipment(PCardType EquipType) {
+        return Area.EquipmentCardArea.CardList.Find((PCard Card) => Card.Type.Equals(EquipType));
+    }
+
+    public PCard Weapon {
+        get {
+            return GetEquipment(PCardType.WeaponCard);
+        }
+    }
+
+    public PCard Defensor {
+        get {
+            return GetEquipment(PCardType.DefensorCard);
+        }
+    }
+    public PCard Ambush {
+        get {
+            return GetEquipment(PCardType.AmbushCard);
+        }
+    }
+
     /// <summary>
     /// 客户端专用，用于更新手牌数量
     /// </summary>
@@ -124,6 +156,10 @@ public class PPlayer: PObject {
     /// 客户端专用，用于设置标记域
     /// </summary>
     public string MarkString = "|";
+    /// <summary>
+    /// 客户端专用，用于设置装备域
+    /// </summary>
+    public string EquipString = "|";
 
     /// <summary>
     /// 服务器端专用，用于设置标记域string
@@ -133,16 +169,14 @@ public class PPlayer: PObject {
         return Tags.TagString;
     }
 
-
-    private string _EquipCards = string.Empty;
-    public int EquipCardNumber {
-        get {
-            if (PNetworkManager.CurrentHostType.Equals(PHostType.Client)) {
-                return _EquipCards.Length;
-            } else {
-                return Area.EquipmentCardArea.CardNumber;
+    public string GetEquipString() {
+        string Result = string.Empty;
+        foreach (PCard Card in new PCard[] { Weapon, Defensor, Ambush}) {
+            if (Card != null) {
+                Result += "|" + Card.Name[Card.Name.Length - 1];
             }
         }
+        return Result;
     }
 
 }

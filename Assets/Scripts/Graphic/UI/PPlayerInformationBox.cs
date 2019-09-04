@@ -35,7 +35,7 @@ public class PPlayerInformationBox : PAbstractUI {
         if (AttachedPlayer.IsAlive) {
             MoneyText.text = "￥" + AttachedPlayer.Money.ToString();
             CardText.text = "□" + AttachedPlayer.HandCardNumber.ToString();
-            EquipText.text = "❀";
+            EquipText.text = "❀" + AttachedPlayer.EquipString.Substring(1);
             JudgeText.text = "✪";
             FlagText.text = "" + AttachedPlayer.MarkString.Substring(1);
         } else {

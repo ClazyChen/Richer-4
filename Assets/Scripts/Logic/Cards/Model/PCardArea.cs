@@ -18,6 +18,10 @@ public class PCardArea : PObject {
         return Owner != null && Equals(Owner.Area.HandCardArea);
     }
 
+    public bool IsEquipmentArea() {
+        return Owner != null && Equals(Owner.Area.EquipmentCardArea);
+    }
+
     /// <summary>
     /// 洗牌操作
     /// </summary>

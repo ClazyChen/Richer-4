@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class P_ShangWuChoouTii: PSchemeCardModel {
 
     public List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
-        return new List<PPlayer>() { PMath.Max(Game.PlayerList.FindAll((PPlayer _Player) => !_Player.Equals(Player) && _Player.Distance(Player) <= 3 && !_Player.NoLadder), (PPlayer _Player) => {
+        return new List<PPlayer>() { PMath.Max(Game.PlayerList.FindAll((PPlayer _Player) => _Player.IsAlive && !_Player.Equals(Player) && _Player.Distance(Player) <= 3 && !_Player.NoLadder), (PPlayer _Player) => {
             int Value = PAiMapAnalyzer.Expect(Game, _Player, _Player.Position);
             if (_Player.TeamIndex == Player.TeamIndex) {
                 return Value;

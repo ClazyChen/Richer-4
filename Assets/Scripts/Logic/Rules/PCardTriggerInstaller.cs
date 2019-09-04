@@ -6,7 +6,7 @@ public class PCardTriggerInstaller : PSystemTriggerInstaller {
         public static int StartGameCardCount = 3;
     }
 
-    public PCardTriggerInstaller() : base("卡牌移入移出手牌") {
+    public PCardTriggerInstaller() : base("卡牌移入移出区域") {
         TriggerList.Add(new PTrigger("游戏开始时摸牌") {
             IsLocked = true,
             Time = PTime.StartGameTime,
@@ -43,6 +43,37 @@ public class PCardTriggerInstaller : PSystemTriggerInstaller {
                 PMoveCardTag MoveTagFlag = Game.TagManager.FindPeekTag<PMoveCardTag>(PMoveCardTag.TagName);
                 PPlayer Giver = MoveTagFlag.Source.Owner;
                 MoveTagFlag.Card.MoveInHandTriggerList.ForEach((PTrigger Trigger) => {
+                    Game.Monitor.RemoveTrigger(Trigger);
+                });
+            }
+        });
+        TriggerList.Add(new PTrigger("卡牌移入装备区装载触发器") {
+            IsLocked = true,
+            Time = PTime.Card.EnterAreaTime,
+            Condition = (PGame Game) => {
+                PMoveCardTag MoveTagFlag = Game.TagManager.FindPeekTag<PMoveCardTag>(PMoveCardTag.TagName);
+                return MoveTagFlag.Destination.IsEquipmentArea();
+            },
+            Effect = (PGame Game) => {
+                PMoveCardTag MoveTagFlag = Game.TagManager.FindPeekTag<PMoveCardTag>(PMoveCardTag.TagName);
+                PPlayer Accepter = MoveTagFlag.Destination.Owner;
+                MoveTagFlag.Card.MoveInEquipTriggerList = MoveTagFlag.Card.Model.MoveInEquipTriggerList.ConvertAll((Func<PPlayer, PCard, PTrigger> Trigger) => Trigger(Accepter, MoveTagFlag.Card));
+                MoveTagFlag.Card.MoveInHandTriggerList.ForEach((PTrigger Trigger) => {
+                    Game.Monitor.AddTrigger(Trigger);
+                });
+            }
+        });
+        TriggerList.Add(new PTrigger("卡牌移出装备区摘下触发器") {
+            IsLocked = true,
+            Time = PTime.Card.LeaveAreaTime,
+            Condition = (PGame Game) => {
+                PMoveCardTag MoveTagFlag = Game.TagManager.FindPeekTag<PMoveCardTag>(PMoveCardTag.TagName);
+                return MoveTagFlag.Source.IsEquipmentArea();
+            },
+            Effect = (PGame Game) => {
+                PMoveCardTag MoveTagFlag = Game.TagManager.FindPeekTag<PMoveCardTag>(PMoveCardTag.TagName);
+                PPlayer Giver = MoveTagFlag.Source.Owner;
+                MoveTagFlag.Card.MoveInEquipTriggerList.ForEach((PTrigger Trigger) => {
                     Game.Monitor.RemoveTrigger(Trigger);
                 });
             }

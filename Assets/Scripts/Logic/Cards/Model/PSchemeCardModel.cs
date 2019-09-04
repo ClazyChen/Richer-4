@@ -11,7 +11,7 @@ public abstract class PSchemeCardModel: PCardModel {
         Type = PCardType.SchemeCard;
     }
 
-    protected Action<PGame> MakeNormalEffect(PPlayer Player, PCard Card, TargetChooser AITargetChooser, TargetChooser PlayerTargetChooser, EffectFunc Effect) {
+    protected static Action<PGame> MakeNormalEffect(PPlayer Player, PCard Card, TargetChooser AITargetChooser, TargetChooser PlayerTargetChooser, EffectFunc Effect) {
         return (PGame Game) => {
             List<PPlayer> Targets = Player.IsAI ? AITargetChooser(Game, Player) : PlayerTargetChooser(Game,Player) ;
             Targets.RemoveAll((PPlayer _Player) => _Player == null);
@@ -29,13 +29,13 @@ public abstract class PSchemeCardModel: PCardModel {
         };
     }
 
-    protected Action<PGame> MakeNormalEffect(PPlayer Player, PCard Card, TargetChooser AITargetChooser, PTrigger.PlayerCondition TargetCondition, EffectFunc Effect) {
+    protected static Action<PGame> MakeNormalEffect(PPlayer Player, PCard Card, TargetChooser AITargetChooser, PTrigger.PlayerCondition TargetCondition, EffectFunc Effect) {
         return MakeNormalEffect(Player, Card, AITargetChooser, (PGame Game, PPlayer _Player) => {
             return new List<PPlayer> { PNetworkManager.NetworkServer.ChooseManager.AskForTargetPlayer(_Player, TargetCondition, Card.Name) };
         }, Effect);
     }
 
-    protected Action<PGame> MakeMultiTargetNormalEffect(PPlayer Player, PCard Card, TargetChooser AITargetChooser, PTrigger.PlayerCondition TargetCondition, EffectFunc Effect, int MaxNumber = -1) {
+    protected static Action<PGame> MakeMultiTargetNormalEffect(PPlayer Player, PCard Card, TargetChooser AITargetChooser, PTrigger.PlayerCondition TargetCondition, EffectFunc Effect, int MaxNumber = -1) {
         return MakeNormalEffect(Player, Card, AITargetChooser, (PGame Game, PPlayer _Player) => {
             return PNetworkManager.NetworkServer.ChooseManager.AskForTargetPlayers(_Player, TargetCondition, Card.Name, MaxNumber) ;
         }, Effect);

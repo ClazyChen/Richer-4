@@ -7,6 +7,7 @@ public class PCard : PCardModel {
     public PCardModel Model; // 牌的原型
 
     public new List<PTrigger> MoveInHandTriggerList;
+    public new List<PTrigger> MoveInEquipTriggerList;
 
     public PTrigger FindTrigger(PTime Time) {
         return MoveInHandTriggerList.Find((PTrigger Trigger) => Trigger.Time.Equals(Time));
@@ -18,5 +19,6 @@ public class PCard : PCardModel {
         Point = Prototype.Point;
         Index = Prototype.Index;
         MoveInHandTriggerList = new List<PTrigger>();
+        MoveInEquipTriggerList = new List<PTrigger>();
     }
 }

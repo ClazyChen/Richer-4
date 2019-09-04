@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class P_TaTsaaoChingShev: PSchemeCardModel {
 
     public List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
-        return Game.PlayerList.FindAll((PPlayer _Player) => _Player.IsAlive && !_Player.Equals(Player));
+        return Game.PlayerList.FindAll((PPlayer _Player) => _Player.IsAlive && !_Player.Equals(Player) && Player.HasHouse);
     }
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
@@ -42,7 +42,7 @@ public class P_TaTsaaoChingShev: PSchemeCardModel {
                     Time = Time,
                     AIPriority = 95,
                     Condition = (PGame Game) => {
-                        return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime());
+                        return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime()) && AIEmitTargets(Game, Player).Count > 0;
                     },
                     AICondition = (PGame Game) => {
                         return AIInHandExpectation(Game, Player) > 900;

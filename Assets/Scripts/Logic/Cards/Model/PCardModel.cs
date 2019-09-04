@@ -23,9 +23,14 @@ public abstract class PCardModel: PObject {
     public int Index;
 
     public List<Func<PPlayer, PCard, PTrigger>> MoveInHandTriggerList;
+    public List<Func<PPlayer, PCard, PTrigger>> MoveInEquipTriggerList;
 
     protected delegate List<PPlayer> TargetChooser(PGame Game, PPlayer Player);
     protected delegate void EffectFunc(PGame Game, PPlayer User, PPlayer Target);
+
+    public virtual int AIInEquipExpectation(PGame Game, PPlayer Player) {
+        return 0;
+    }
 
     public virtual int AIInHandExpectation(PGame Game, PPlayer Player) {
         return 0;
@@ -34,6 +39,7 @@ public abstract class PCardModel: PObject {
     public PCardModel(string _Name) {
         Name = _Name;
         MoveInHandTriggerList = new List<Func<PPlayer, PCard, PTrigger>>();
+        MoveInEquipTriggerList = new List<Func<PPlayer, PCard, PTrigger>>();
     }
     public PCard Instantiate() {
         return new PCard(this);

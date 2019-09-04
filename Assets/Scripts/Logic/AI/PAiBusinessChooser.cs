@@ -14,7 +14,7 @@ public class PAiBusinessChooser {
          * 当铺收益    ：2000*己方人数
          */
         int RingLength = PAiMapAnalyzer.GetRingLength(Game, Block);
-        int MaxOperationCount = 1;
+        int MaxOperationCount = Player.PurchaseLimit;
 
         int ShoppingCenterExpectation = 2 * PMath.Percent(Block.Price, 40 * Math.Max(1, 20 * MaxOperationCount / RingLength) + 20) * Game.Enemies(Player).Count;
         int InsituteExpectation = 2000 * 2 * Game.Teammates(Player).Count;

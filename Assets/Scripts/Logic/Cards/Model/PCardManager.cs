@@ -47,6 +47,9 @@ public class PCardManager {
                 if (MoveCardTag.Source.IsHandCardArea()) {
                     PNetworkManager.NetworkServer.TellClient(MoveCardTag.Source.Owner, new PRefreshHandCardsOrder(MoveCardTag.Source.ToStringArray()));
                     PNetworkManager.NetworkServer.TellClients(new PRefreshHandCardNumberOrder(MoveCardTag.Source.Owner.Index.ToString(), MoveCardTag.Source.CardNumber.ToString()));
+                } else if (MoveCardTag.Source.IsEquipmentArea()) {
+                    PNetworkManager.NetworkServer.TellClient(MoveCardTag.Source.Owner, new PRefreshEquipmentsOrder(MoveCardTag.Source.ToStringArray()));
+                    PNetworkManager.NetworkServer.TellClients(new PRefreshEquipStringOrder(MoveCardTag.Source.Owner));
                 }
             }
             Game.Monitor.CallTime(PTime.Card.EnterAreaTime, MoveCardTag);
@@ -55,6 +58,9 @@ public class PCardManager {
                 if (MoveCardTag.Destination.IsHandCardArea()) {
                     PNetworkManager.NetworkServer.TellClient(MoveCardTag.Destination.Owner, new PRefreshHandCardsOrder(MoveCardTag.Destination.ToStringArray()));
                     PNetworkManager.NetworkServer.TellClients(new PRefreshHandCardNumberOrder(MoveCardTag.Destination.Owner.Index.ToString(), MoveCardTag.Destination.CardNumber.ToString()));
+                } else if (MoveCardTag.Source.IsEquipmentArea()) {
+                    PNetworkManager.NetworkServer.TellClient(MoveCardTag.Destination.Owner, new PRefreshEquipmentsOrder(MoveCardTag.Destination.ToStringArray()));
+                    PNetworkManager.NetworkServer.TellClients(new PRefreshEquipStringOrder(MoveCardTag.Destination.Owner));
                 }
             }
         }
@@ -133,7 +139,15 @@ public class PCardManager {
             new P_LienHuanChi().Instantiate(),
             new P_LienHuanChi().Instantiate(),
             new P_TsouWeiShangChi().Instantiate(),
-            new P_TsouWeiShangChi().Instantiate()
+            new P_TsouWeiShangChi().Instantiate(),
+            new P_ChuKevLienNu().Instantiate(),
+            new P_ChuKevLienNu().Instantiate(),
+            new P_ChuKevLienNu().Instantiate(),
+            new P_ChuKevLienNu().Instantiate(),
+            new P_ChuKevLienNu().Instantiate(),
+            new P_ChuKevLienNu().Instantiate(),
+            new P_ChuKevLienNu().Instantiate(),
+            new P_ChuKevLienNu().Instantiate()
 
         }).ForEach((PCard Card) => {
             CardHeap.CardList.Add(Card);
