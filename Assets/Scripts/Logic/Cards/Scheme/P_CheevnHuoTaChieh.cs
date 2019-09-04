@@ -12,7 +12,6 @@ public class P_CheevnHuoTaChieh: PSchemeCardModel {
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
         int Basic = 4000;
-        // 留给装备区
         return Basic;
     }
 

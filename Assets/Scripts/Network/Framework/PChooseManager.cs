@@ -102,6 +102,12 @@ public class PChooseManager {
             Names.Add(Card.Name);
             CardList.Add(Card);
         });
+        if (AllowJudge) {
+            TargetPlayer.Area.JudgeCardArea.CardList.ForEach((PCard Card) => {
+                Names.Add(Card.Name);
+                CardList.Add(Card);
+            });
+        }
         if (Names.Count < 1) {
             return null;
         }

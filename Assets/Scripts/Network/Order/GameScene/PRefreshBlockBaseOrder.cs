@@ -15,11 +15,11 @@ public class PRefreshBlockBasicOrder : POrder {
             PBlock Block = PNetworkManager.NetworkClient.GameStatus.Map.FindBlock(BlockIndex);
             PPlayer Lord = PNetworkManager.NetworkClient.GameStatus.FindPlayer(LordIndex);
             if (Block != null && BusinessType != null) {
-                PPlayer OriginalLord = Block.Lord;
-                Block.Lord = Lord;
-                Block.HouseNumber = HouseNumber;
-                Block.BusinessType = BusinessType;
                 PAnimation.AddAnimation("刷新格子基本信息", () => {
+                    PPlayer OriginalLord = Block.Lord;
+                    Block.Lord = Lord;
+                    Block.HouseNumber = HouseNumber;
+                    Block.BusinessType = BusinessType;
                     PUIManager.GetUI<PMapUI>().Scene.BlockGroup.GroupUIList[BlockIndex].InitializeBlock(Block);
                     if (OriginalLord != null) {
                         if (Block.IsBusinessLand) {

@@ -114,8 +114,7 @@ public class P_ShevngTungChiHsi: PSchemeCardModel {
                                     return _Player.Money;
                                 }).Value;
                                 Target = PMath.Max(Game.PlayerList, (PPlayer _Player) => {
-                                    int Delta = Math.Min(10000, MaxMoney - _Player.Money) - 2000 * _Player.Area.HandCardArea.CardNumber;
-                                    // 装备待定
+                                    int Delta = Math.Min(10000, MaxMoney - _Player.Money) - 2000 * _Player.Area.HandCardArea.CardNumber - (int)PMath.Sum(_Player.Area.EquipmentCardArea.CardList.ConvertAll((PCard _Card) =>(double) _Card.Model.AIInEquipExpectation(Game, _Player)));
                                     if (_Player.TeamIndex == Player.TeamIndex) {
                                         return Delta;
                                     } else {

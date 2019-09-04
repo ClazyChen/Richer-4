@@ -21,7 +21,7 @@ public class P_ChiehShihHuanHun: PSchemeCardModel {
             Delta *= 2;
         }
         Delta -= 2000 * Player.Area.HandCardArea.CardNumber;
-        // 装备
+        Delta -= (int)PMath.Sum(Player.Area.EquipmentCardArea.CardList.ConvertAll((PCard _Card) => (double)_Card.Model.AIInEquipExpectation(Game, Player)));
         return Math.Max(Delta, Basic);
     }
 
