@@ -66,7 +66,7 @@
             }
         });
         MultiPlayerTriggerList.Add((PPlayer Player) => new PTrigger("购买土地") {
-            IsLocked = true,
+            IsLocked = false,
             Player = Player,
             Time = PPeriod.SettleStage.During,
             Condition = (PGame Game) => {
@@ -75,15 +75,12 @@
                 return (Game.NowPlayer.Equals(Player) && NowBlock.CanPurchase && NowBlock.Lord == null && PurchaseTag.Count < PurchaseTag.Limit && NowBlock.Price < Game.NowPlayer.Money);
             },
             Effect = (PGame Game) => {
-                bool Purchase = Game.NowPlayer.IsAI || PNetworkManager.NetworkServer.ChooseManager.AskYesOrNo(Game.NowPlayer, "是否购买土地？");
-                if (Purchase) {
-                    Game.TagManager.FindPeekTag<PPurchaseTag>(PPurchaseTag.TagName).Count++;
-                    Game.PurchaseLand(Game.NowPlayer, Game.NowPlayer.Position);
-                }
+                Game.TagManager.FindPeekTag<PPurchaseTag>(PPurchaseTag.TagName).Count++;
+                Game.PurchaseLand(Game.NowPlayer, Game.NowPlayer.Position);
             }
         });
         MultiPlayerTriggerList.Add((PPlayer Player) => new PTrigger("购买房屋") {
-            IsLocked = true,
+            IsLocked = false,
             Player = Player,
             Time = PPeriod.SettleStage.During,
             CanRepeat = true,
@@ -98,11 +95,8 @@
                 return PurchaseTag.Count == 0 || (PurchaseTag.Count == 1 && Player.Money >= 5000) || (PurchaseTag.Count > 1 && Player.Money >= 10000 && NowBlock.Price >= 2000) || NowBlock.BusinessType.Equals(PBusinessType.Park);
             },
             Effect = (PGame Game) => {
-                bool Purchase = Game.NowPlayer.IsAI || PNetworkManager.NetworkServer.ChooseManager.AskYesOrNo(Game.NowPlayer, "是否购买房屋？");
-                if (Purchase) {
-                    Game.TagManager.FindPeekTag<PPurchaseTag>(PPurchaseTag.TagName).Count++;
-                    Game.PurchaseHouse(Game.NowPlayer, Game.NowPlayer.Position);
-                }
+                Game.TagManager.FindPeekTag<PPurchaseTag>(PPurchaseTag.TagName).Count++;
+                Game.PurchaseHouse(Game.NowPlayer, Game.NowPlayer.Position);
             }
         });
         MultiPlayerTriggerList.Add((PPlayer Player) => new PTrigger("研究所[视察研究成果]") {
