@@ -10,6 +10,9 @@ public class PAiTargetChooser {
             if (!Target.CanBeInjured || Player.OutOfGame) {
                 return 0;
             }
+            if (Target.Area.HandCardArea.CardNumber == 0 && Player.Weapon != null && Player.Weapon.Model is P_KuTingTao) {
+                ExpectedMoney *= 2;
+            }
 
             int Profit = ExpectedMoney *2 + Math.Max(0, (20000 - Target.Money)/1000) + PMath.RandInt(0,9);
             bool SameTeam = (Target.TeamIndex == Player.TeamIndex);

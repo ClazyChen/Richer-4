@@ -21,12 +21,18 @@ public class PAiMapAnalyzer {
                     PBlock Block = _Player.Position;
                     if (Player.Equals(Block.Lord) && Player.TeamIndex != _Player.TeamIndex) {
                         Sum -= 12 * Block.Toll;
+                        if (Player.Weapon != null && Player.Weapon.Model is P_KuTingTao && _Player.Area.HandCardArea.CardNumber == 0) {
+                            Sum -= 12 * Block.Toll;
+                        }
                     }
                 } else {
                     PBlock Block = _Player.Position.NextBlock;
                     for (int i = 0; i < 6; ++i, Block = Block.NextBlock) {
                         if (Player.Equals(Block.Lord) && Player.TeamIndex != _Player.TeamIndex) {
                             Sum -= 2 * Block.Toll;
+                            if (Player.Weapon != null && Player.Weapon.Model is P_KuTingTao && _Player.Area.HandCardArea.CardNumber == 0) {
+                                Sum -= 2 * Block.Toll;
+                            }
                         }
                     }
                 }
@@ -38,12 +44,18 @@ public class PAiMapAnalyzer {
                 PBlock Block = Player.Position;
                 if (Block.Lord != null && Player.TeamIndex != Block.Lord.TeamIndex) {
                     Sum += 12 * Block.Toll;
+                    if (Block.Lord.Weapon != null && Block.Lord.Weapon.Model is P_KuTingTao && Player.Area.HandCardArea.CardNumber == 0) {
+                        Sum += 12 * Block.Toll;
+                    }
                 }
             } else {
                 PBlock Block = Player.Position.NextBlock;
                 for (int i = 0; i < 6; ++i, Block = Block.NextBlock) {
                     if (Block.Lord != null && Player.TeamIndex != Block.Lord.TeamIndex) {
                         Sum += 2 * Block.Toll;
+                        if (Block.Lord.Weapon != null && Block.Lord.Weapon.Model is P_KuTingTao && Player.Area.HandCardArea.CardNumber == 0) {
+                            Sum += 2 * Block.Toll;
+                        }
                     }
                 }
             }
@@ -113,6 +125,9 @@ public class PAiMapAnalyzer {
         DeltaMoney += PMath.Percent(Player.Money, Block.GetMoneyStopPercent);
         if (Block.Lord != null && Block.Lord.TeamIndex != Player.TeamIndex) {
             DeltaMoney -= Block.Toll;
+            if (Block.Lord.Weapon != null && Block.Lord.Weapon.Model is P_KuTingTao && Player.Area.HandCardArea.CardNumber == 0) {
+                DeltaMoney -= Block.Toll;
+            } 
         }
         if (Player.Money + DeltaMoney <= 0) {
             return -30000 + DeltaMoney * 2;
