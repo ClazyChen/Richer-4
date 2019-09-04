@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class PToolTipedButton : Button {
+    [SerializeField]
     public string ToolTip = string.Empty;
 
     public override void OnPointerEnter(PointerEventData eventData) {

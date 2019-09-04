@@ -58,7 +58,7 @@ public class PCardTriggerInstaller : PSystemTriggerInstaller {
                 PMoveCardTag MoveTagFlag = Game.TagManager.FindPeekTag<PMoveCardTag>(PMoveCardTag.TagName);
                 PPlayer Accepter = MoveTagFlag.Destination.Owner;
                 MoveTagFlag.Card.MoveInEquipTriggerList = MoveTagFlag.Card.Model.MoveInEquipTriggerList.ConvertAll((Func<PPlayer, PCard, PTrigger> Trigger) => Trigger(Accepter, MoveTagFlag.Card));
-                MoveTagFlag.Card.MoveInHandTriggerList.ForEach((PTrigger Trigger) => {
+                MoveTagFlag.Card.MoveInEquipTriggerList.ForEach((PTrigger Trigger) => {
                     Game.Monitor.AddTrigger(Trigger);
                 });
             }

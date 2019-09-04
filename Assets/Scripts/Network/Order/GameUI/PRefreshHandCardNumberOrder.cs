@@ -9,7 +9,7 @@ public class PRefreshHandCardNumberOrder : POrder {
         null,
         (string[] args) => {
             int PlayerIndex = Convert.ToInt32(args[1]);
-            int HandCardNumber = Convert.ToInt32(args[1]);
+            int HandCardNumber = Convert.ToInt32(args[2]);
             PAnimation.AddAnimation("RefreshHandCardNumber-刷新信息栏", () => {
                 if (0 <= PlayerIndex && PlayerIndex < PNetworkManager.NetworkClient.GameStatus.PlayerNumber) {
                     PNetworkManager.NetworkClient.GameStatus.PlayerList[PlayerIndex].HandCardNumber = HandCardNumber;

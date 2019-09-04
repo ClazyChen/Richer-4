@@ -3,11 +3,11 @@ using UnityEngine.UI;
 using System;
 
 public class PCardUI : PAbstractUI {
-    public readonly PToolTipedButton HandCardButton;
+    public readonly PToolTipedButton CardButton;
     public int Index;
 
     public PCardUI(Transform _Background):base(_Background) {
-        HandCardButton = UIBackgroundImage.GetComponent<PToolTipedButton>();
+        CardButton = UIBackgroundImage.GetComponent<PToolTipedButton>();
         Close();
     }
 
@@ -23,10 +23,10 @@ public class PCardUI : PAbstractUI {
             UIBackgroundImage.localScale = new Vector3(1, 1, 1);
             UIBackgroundImage.localPosition = new Vector3(Interval * (_Index % 1000) + PrototypePosition.x, 0.0f, 0.0f);
             Index = _Index;
-            HandCardButton.onClick.AddListener(() => {
+            CardButton.onClick.AddListener(() => {
                 PNetworkManager.NetworkClient.Send(new PClickOnCardOrder(Index.ToString()));
             });
-            HandCardButton.ToolTip = FindInstance<PCardToolTip>(CardName).ToolTip;
+            CardButton.ToolTip = FindInstance<PCardToolTip>(CardName).ToolTip;
         }
         return this;
     }
