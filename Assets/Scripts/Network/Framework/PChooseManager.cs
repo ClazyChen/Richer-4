@@ -67,9 +67,9 @@ public class PChooseManager {
         return PlayerList;
     }
 
-    public PCard AskToChooseOwnCard(PPlayer Player, string Title, bool AllowEquipment = true, bool AllowJudge = false) {
+    public PCard AskToChooseOwnCard(PPlayer Player, string Title, bool AllowHandCards = true, bool AllowEquipment = true, bool AllowJudge = false) {
         PGame Game = PNetworkManager.NetworkServer.Game;
-        Game.TagManager.CreateTag(new PChooseCardTag(Player, null, AllowEquipment, AllowJudge));
+        Game.TagManager.CreateTag(new PChooseCardTag(Player, null, AllowHandCards, AllowEquipment, AllowJudge));
         PNetworkManager.NetworkServer.TellClient(Player, new PShowInformationOrder(Title));
         PThread.WaitUntil(() => Game.TagManager.FindPeekTag<PChooseCardTag>(PChooseCardTag.TagName).Card != null);
         return Game.TagManager.PopTag<PChooseCardTag>(PChooseCardTag.TagName).Card;
@@ -90,11 +90,11 @@ public class PChooseManager {
         return Game.TagManager.PopTag<PChooseBlockTag>(PChooseBlockTag.TagName).Block;
     }
 
-    public PCard AskToChooseOthersCard(PPlayer Player, PPlayer TargetPlayer, string Title, bool AllowJudge = false) {
+    public PCard AskToChooseOthersCard(PPlayer Player, PPlayer TargetPlayer, string Title, bool AllowHandCards = true, bool AllowJudge = false) {
         PGame Game = PNetworkManager.NetworkServer.Game;
         List<string> Names = new List<string>();
         List<PCard> CardList = new List<PCard>();
-        if (TargetPlayer.Area.HandCardArea.CardNumber > 0) {
+        if (TargetPlayer.Area.HandCardArea.CardNumber > 0 && AllowHandCards) {
             Names.Add("手牌");
             CardList.Add(null);
         }

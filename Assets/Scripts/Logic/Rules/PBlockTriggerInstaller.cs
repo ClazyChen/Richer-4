@@ -122,10 +122,10 @@
                 return Game.NowPlayer.Equals(Player) && NowBlock.Lord != null && Player.Area.HandCardArea.CardNumber > 0 && NowBlock.BusinessType.Equals(PBusinessType.Pawnshop);
             },
             AICondition = (PGame Game) => {
-                return Game.NowPlayer.TeamIndex == Game.NowPlayer.Position.Lord.TeamIndex || PAiCardExpectation.FindLeastValuable(Game, Player, Player, false, false, true).Value < 750;
+                return Game.NowPlayer.TeamIndex == Game.NowPlayer.Position.Lord.TeamIndex || PAiCardExpectation.FindLeastValuable(Game, Player, Player, true, false, false, true).Value < 750;
             },
             Effect = (PGame Game) => {
-                Game.GiveCardTo(Game.NowPlayer, Game.NowPlayer.Position.Lord, false);
+                Game.GiveCardTo(Game.NowPlayer, Game.NowPlayer.Position.Lord, true, false);
                 Game.GetMoney(Game.NowPlayer, 2000);
             }
         });

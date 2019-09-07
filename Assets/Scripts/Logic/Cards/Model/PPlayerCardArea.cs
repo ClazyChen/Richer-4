@@ -34,8 +34,8 @@ public class PPlayerCardArea : PObject {
     /// </summary>
     /// <param name="Index"></param>
     /// <returns></returns>
-    public PCard GetCard(int Index, bool AllowEquipment = true, bool AllowJudge = false) {
-        if (Index < 1000) {
+    public PCard GetCard(int Index, bool AllowHandCards = true, bool AllowEquipment = true, bool AllowJudge = false) {
+        if (Index < 1000 && AllowHandCards) {
             return HandCardArea.GetCard(Index);
         } else if (Index < 2000 && AllowEquipment) {
             return EquipmentCardArea.GetCard(Index - 1000);

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class P_LoFevngKung : PEquipmentCardModel {
 
     public override int AIInEquipExpectation(PGame Game, PPlayer Player) {
-        return 500 + 1000 * (int)PMath.Sum(Game.Enemies(Player).ConvertAll((PPlayer _Player) => (double)_Player.Area.EquipmentCardArea.CardNumber));
+        return 500 + 2000 * (int)PMath.Sum(Game.Enemies(Player).ConvertAll((PPlayer _Player) => (double)_Player.Area.EquipmentCardArea.CardNumber));
     }
 
     public readonly static string CardName = "落凤弓";
@@ -31,7 +31,8 @@ public class P_LoFevngKung : PEquipmentCardModel {
                         return InjureTag.ToPlayer.TeamIndex != Player.TeamIndex;
                     },
                     Effect = (PGame Game) => {
-                        //Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName).Injure *= 2;
+                        PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
+                        Game.ThrowCard(Player, InjureTag.ToPlayer, false);
                     }
                 };
             });

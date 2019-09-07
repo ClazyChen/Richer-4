@@ -48,7 +48,7 @@ public class P_YooChiinKuTsung: PSchemeCardModel {
                             InjureTag.Injure = 0;
                             for (int i = 0; i < 2; ++ i) {
                                 if (Target.Area.HandCardArea.CardNumber > 0) {
-                                    Game.GetCardFrom(User, Target, false);
+                                    Game.GetCardFrom(User, Target, true, false);
                                 }
                             }
                         })

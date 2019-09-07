@@ -395,23 +395,25 @@ public class PGame : PGameStatus {
         }
     }
 
-    private PCard ChooseCard(PPlayer Player, PPlayer TargetPlayer, string Title, bool AllowEquipment = true, bool AllowJudge = false) {
+    private PCard ChooseCard(PPlayer Player, PPlayer TargetPlayer, string Title, bool AllowHandCards = true, bool AllowEquipment = true, bool AllowJudge = false) {
         PCard TargetCard = null;
         if (Player.IsUser) {
             if (Player.Equals(TargetPlayer)) {
-                TargetCard = PNetworkManager.NetworkServer.ChooseManager.AskToChooseOwnCard(Player, Title, AllowEquipment, AllowJudge);
+                TargetCard = PNetworkManager.NetworkServer.ChooseManager.AskToChooseOwnCard(Player, Title, AllowHandCards, AllowEquipment, AllowJudge);
             } else {
                 if (!AllowEquipment) {
-                    TargetCard = TargetPlayer.Area.HandCardArea.RandomCard();
+                    if (AllowHandCards) {
+                        TargetCard = TargetPlayer.Area.HandCardArea.RandomCard();
+                    }
                 } else {
-                    TargetCard = PNetworkManager.NetworkServer.ChooseManager.AskToChooseOthersCard(Player, TargetPlayer, Title, AllowJudge);
+                    TargetCard = PNetworkManager.NetworkServer.ChooseManager.AskToChooseOthersCard(Player, TargetPlayer, Title, AllowHandCards, AllowJudge);
                 }
             }
         } else {
             if (Player.TeamIndex == TargetPlayer.TeamIndex) {
-                TargetCard = PAiCardExpectation.FindLeastValuable(this, Player, TargetPlayer, AllowEquipment, AllowJudge, Player.Equals(TargetPlayer)).Key;
+                TargetCard = PAiCardExpectation.FindLeastValuable(this, Player, TargetPlayer, AllowHandCards, AllowEquipment, AllowJudge, Player.Equals(TargetPlayer)).Key;
             } else {
-                TargetCard = PAiCardExpectation.FindMostValuable(this, Player, TargetPlayer, AllowEquipment, AllowJudge).Key;
+                TargetCard = PAiCardExpectation.FindMostValuable(this, Player, TargetPlayer, AllowHandCards, AllowEquipment, AllowJudge).Key;
             }
         }
         return TargetCard;
@@ -422,9 +424,9 @@ public class PGame : PGameStatus {
     /// </summary>
     /// <param name="Player">发起弃牌方</param>
     /// <param name="TargetPlayer">被弃牌方</param>
-    public void ThrowCard(PPlayer Player, PPlayer TargetPlayer, bool AllowEquipment = true, bool AllowJudge = false) {
+    public void ThrowCard(PPlayer Player, PPlayer TargetPlayer, bool AllowHandCards = true, bool AllowEquipment = true, bool AllowJudge = false) {
         string Title = "请选择弃置一张手牌" + (AllowEquipment ? "或装备" : string.Empty) + (AllowJudge ? "或伏兵" : string.Empty);
-        PCard TargetCard = ChooseCard(Player, TargetPlayer, Title, AllowEquipment, AllowJudge);
+        PCard TargetCard = ChooseCard(Player, TargetPlayer, Title, AllowHandCards, AllowEquipment, AllowJudge);
         if (TargetCard != null) {
             PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "弃置了" + TargetPlayer.Name + "的" + TargetCard.Name));
             if (TargetPlayer.Area.HandCardArea.CardList.Contains(TargetCard)) {
@@ -440,9 +442,9 @@ public class PGame : PGameStatus {
     /// </summary>
     /// <param name="Player">获得牌的玩家</param>
     /// <param name="TargetPlayer">被获得牌的玩家</param>
-    public void GetCardFrom(PPlayer Player, PPlayer TargetPlayer, bool AllowEquipment = true, bool AllowJudge = false) {
+    public void GetCardFrom(PPlayer Player, PPlayer TargetPlayer, bool AllowHandCards = true, bool AllowEquipment = true, bool AllowJudge = false) {
         string Title = "请选择获得一张手牌" + (AllowEquipment ? "或装备" : string.Empty) + (AllowJudge ? "或伏兵" : string.Empty);
-        PCard TargetCard = ChooseCard(Player, TargetPlayer, Title, AllowEquipment, AllowJudge);
+        PCard TargetCard = ChooseCard(Player, TargetPlayer, Title, AllowHandCards, AllowEquipment, AllowJudge);
         if (TargetCard != null) {
             PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "获得了" + TargetPlayer.Name + "的" + (TargetPlayer.Area.HandCardArea.CardList.Contains(TargetCard) ? "1张手牌" : TargetCard.Name)));
             if (TargetPlayer.Area.HandCardArea.CardList.Contains(TargetCard)) {
@@ -453,17 +455,17 @@ public class PGame : PGameStatus {
         }
     }
 
-    public void GiveCardTo(PPlayer Player, PPlayer TargetPlayer, bool AllowEquipment = true, bool AllowJudge = false) {
+    public void GiveCardTo(PPlayer Player, PPlayer TargetPlayer, bool AllowHandCards = true, bool AllowEquipment = true, bool AllowJudge = false) {
         string Title = "请选择给出一张手牌" + (AllowEquipment ? "或装备" : string.Empty) + (AllowJudge ? "或伏兵" : string.Empty);
         PCard Card = null;
         if (Player.IsAI) {
             if (Player.TeamIndex == TargetPlayer.TeamIndex) {
-                Card = PAiCardExpectation.FindMostValuable(this, TargetPlayer, Player, AllowEquipment, AllowJudge, true).Key;
+                Card = PAiCardExpectation.FindMostValuable(this, TargetPlayer, Player, AllowHandCards, AllowEquipment, AllowJudge, true).Key;
             } else {
-                Card = PAiCardExpectation.FindLeastValuable(this, TargetPlayer, Player, AllowEquipment, AllowJudge, true).Key;
+                Card = PAiCardExpectation.FindLeastValuable(this, TargetPlayer, Player, AllowHandCards, AllowEquipment, AllowJudge, true).Key;
             }
         } else {
-            Card = PNetworkManager.NetworkServer.ChooseManager.AskToChooseOwnCard(Player, Title, AllowEquipment, AllowJudge);
+            Card = PNetworkManager.NetworkServer.ChooseManager.AskToChooseOwnCard(Player, Title, AllowHandCards, AllowEquipment, AllowJudge);
         }
         if (Card != null) {
             PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "交给了" + TargetPlayer.Name + (Player.Area.HandCardArea.CardList.Contains(Card) ? "1张手牌" : Card.Name)));

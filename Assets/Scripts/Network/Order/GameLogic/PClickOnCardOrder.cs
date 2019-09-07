@@ -12,7 +12,7 @@ public class PClickOnCardOrder : POrder {
             PGame Game = PNetworkManager.Game;
             PChooseCardTag ChooseCardTag = Game.TagManager.FindPeekTag<PChooseCardTag>(PChooseCardTag.TagName);
             if (ChooseCardTag != null && ChooseCardTag.Player.IPAddress.Equals(IPAddress)) {
-                ChooseCardTag.Card = ChooseCardTag.Player.Area.GetCard(CardIndex, ChooseCardTag.AllowEquipment, ChooseCardTag.AllowJudge);
+                ChooseCardTag.Card = ChooseCardTag.Player.Area.GetCard(CardIndex, ChooseCardTag.AllowHandCards, ChooseCardTag.AllowEquipment, ChooseCardTag.AllowJudge);
             } else if (Game.Logic.WaitingForEndFreeTime() && Game.NowPlayer.IPAddress.Equals(IPAddress) && Game.TagManager.ExistTag(PTag.FreeTimeOperationTag.Name) && Game.NowPlayer.IsAlive) {
                 PCard Card = Game.NowPlayer.Area.GetCard(CardIndex);
                 if (Card != null) {

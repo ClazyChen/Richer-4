@@ -9,7 +9,7 @@ public class P_ShunShouChiienYang: PSchemeCardModel {
 
         return new List<PPlayer> { PMath.Max(Game.PlayerList.FindAll((PPlayer TargetPlayer) => TargetPlayer.IsAlive && !TargetPlayer.Equals(Player)), (PPlayer TargetPlayer) => {
             if (TargetPlayer.TeamIndex == Player.TeamIndex) {
-                KeyValuePair<PCard, int> Test = PAiCardExpectation.FindLeastValuable(Game, TargetPlayer, TargetPlayer, true, true);
+                KeyValuePair<PCard, int> Test = PAiCardExpectation.FindLeastValuable(Game, TargetPlayer, TargetPlayer, true, true, true);
                 if (Test.Key == null) {
                     return -4000;
                 }
@@ -17,7 +17,7 @@ public class P_ShunShouChiienYang: PSchemeCardModel {
                 int ForMe = Test.Key.Model.AIInHandExpectation(Game, Player);
                 return ForMe - Least - 3000;
             } else {
-                KeyValuePair<PCard, int> Test = PAiCardExpectation.FindMostValuable(Game, TargetPlayer, TargetPlayer, true, true);
+                KeyValuePair<PCard, int> Test = PAiCardExpectation.FindMostValuable(Game, TargetPlayer, TargetPlayer, true, true, true);
                 if (Test.Key == null) {
                     return -4000;
                 }
@@ -59,7 +59,7 @@ public class P_ShunShouChiienYang: PSchemeCardModel {
                         return _Player.Area.CardNumber > 0 && !_Player.Equals(Player);
                     },
                         (PGame Game, PPlayer User, PPlayer Target) => {
-                            Game.GetCardFrom(User, Target, true, true);
+                            Game.GetCardFrom(User, Target, true, true, true);
                         })
                 };
             });
