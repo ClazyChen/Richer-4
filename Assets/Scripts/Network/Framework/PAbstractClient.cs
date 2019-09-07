@@ -108,7 +108,7 @@ public abstract class PAbstractClient {
     /// 发送一个字符串
     /// </summary>
     /// <param name="message">发送的字符串信息</param>
-    protected virtual void Send(string message) {
+    public virtual void Send(string message) {
         PLogger.Log("发送消息：" + message);
         lock(sendQueue) {
             sendQueue.Enqueue(PNetworkConfig.MessageStartFlag + message + PNetworkConfig.MessageEndFlag);

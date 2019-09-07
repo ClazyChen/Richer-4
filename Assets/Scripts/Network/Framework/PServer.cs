@@ -17,6 +17,7 @@ public class PServer {
     public int maxConnectionNumber = 8;
     public PGame Game = null;
     public PChooseManager ChooseManager = null;
+    public static int PacketSeq = 0;
 
     /// <summary>
     /// 用于和客户端直接通信的TCP客户端
@@ -27,9 +28,13 @@ public class PServer {
             RemoteIPAddress = _client.Client.RemoteEndPoint.ToString();
         }
 
-        public new void Send(string message) {
+        public override void Send(string message) {
             base.Send(message);
             PLogger.Log("发送给 (" + RemoteIPAddress + "):" + message);
+        }
+
+        public override void Send(POrder Order) {
+            Send(Order.Name + "\'" + (++PacketSeq) + " " + string.Join(" ", Order.args));
         }
     }
 
@@ -40,6 +45,7 @@ public class PServer {
     private Thread ProtectorThread = null;
 
     public PServer() {
+        PacketSeq = 0;
         #region 启动服务器线程，侦听客户端的连接请求
         ServerThread = new Thread(() => {
             #region 获取IP地址并启动监听器

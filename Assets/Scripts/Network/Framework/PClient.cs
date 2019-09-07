@@ -6,6 +6,7 @@ using System.Threading;
 public class PClient : PAbstractClient {
     private readonly Thread MessageProcessor = null;
     public PGameStatus GameStatus = null;
+    public int CurrentIndex = 0;
 
     public PClient(TcpClient _client) : base(_client) {
         #region 启动处理信息的线程
@@ -34,8 +35,15 @@ public class PClient : PAbstractClient {
         if (MessageList.Length < 1) {
             return;
         }
-        string OrderName = MessageList[0];
+        string OrderName = MessageList[0].Split('\'')[0];
         try {
+            int OrderIndex = Convert.ToInt32(MessageList[0].Split('\'')[1]);
+            if (OrderIndex <= CurrentIndex) {
+                PLogger.Log("不正当的信息：" + message);
+                return;
+            } else {
+                CurrentIndex = OrderIndex;
+            }
             POrder Order = POrder.GetOrder(OrderName);
             Order.ClientResponseAction(MessageList);
         } catch (Exception e) {
