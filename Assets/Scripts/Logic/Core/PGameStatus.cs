@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 public class PGameStatus {
     public PMap Map;
@@ -77,6 +78,16 @@ public class PGameStatus {
         } else {
             return PlayerList[Index];
         }
+    }
+
+    public void Traverse(Action<PPlayer> Operation, PPlayer Starter) {
+        PPlayer Player = Starter;
+        do {
+            if (Player.IsAlive) {
+                Operation(Player);
+            }
+            Player = GetNextPlayer(Player);
+        } while (!Player.Equals(Starter));
     }
 
     // 这个是Client端的StartGame
