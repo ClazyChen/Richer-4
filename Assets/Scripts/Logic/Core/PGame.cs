@@ -427,7 +427,11 @@ public class PGame : PGameStatus {
         PCard TargetCard = ChooseCard(Player, TargetPlayer, Title, AllowEquipment, AllowJudge);
         if (TargetCard != null) {
             PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "弃置了" + TargetPlayer.Name + "的" + TargetCard.Name));
-            CardManager.MoveCard(TargetCard, TargetPlayer.Area.HandCardArea, CardManager.ThrownCardHeap);
+            if (TargetPlayer.Area.HandCardArea.CardList.Contains(TargetCard)) {
+                CardManager.MoveCard(TargetCard, TargetPlayer.Area.HandCardArea, CardManager.ThrownCardHeap);
+            } else if (TargetPlayer.Area.EquipmentCardArea.CardList.Contains(TargetCard)) {
+                CardManager.MoveCard(TargetCard, TargetPlayer.Area.EquipmentCardArea, CardManager.ThrownCardHeap);
+            }
         }
     }
 
@@ -441,7 +445,11 @@ public class PGame : PGameStatus {
         PCard TargetCard = ChooseCard(Player, TargetPlayer, Title, AllowEquipment, AllowJudge);
         if (TargetCard != null) {
             PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "获得了" + TargetPlayer.Name + "的" + (TargetPlayer.Area.HandCardArea.CardList.Contains(TargetCard) ? "1张手牌" : TargetCard.Name)));
-            CardManager.MoveCard(TargetCard, TargetPlayer.Area.HandCardArea, Player.Area.HandCardArea);
+            if (TargetPlayer.Area.HandCardArea.CardList.Contains(TargetCard)) {
+                CardManager.MoveCard(TargetCard, TargetPlayer.Area.HandCardArea, Player.Area.HandCardArea);
+            } else if (TargetPlayer.Area.EquipmentCardArea.CardList.Contains(TargetCard)) {
+                CardManager.MoveCard(TargetCard, TargetPlayer.Area.EquipmentCardArea, Player.Area.HandCardArea);
+            }
         }
     }
 
@@ -459,6 +467,11 @@ public class PGame : PGameStatus {
         }
         if (Card != null) {
             PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "交给了" + TargetPlayer.Name + (Player.Area.HandCardArea.CardList.Contains(Card) ? "1张手牌" : Card.Name)));
+            if (TargetPlayer.Area.HandCardArea.CardList.Contains(Card)) {
+                CardManager.MoveCard(Card, Player.Area.HandCardArea, TargetPlayer.Area.HandCardArea);
+            } else if (TargetPlayer.Area.EquipmentCardArea.CardList.Contains(Card)) {
+                CardManager.MoveCard(Card, Player.Area.EquipmentCardArea, TargetPlayer.Area.HandCardArea);
+            }
             CardManager.MoveCard(Card, Player.Area.HandCardArea, TargetPlayer.Area.HandCardArea);
         }
     }

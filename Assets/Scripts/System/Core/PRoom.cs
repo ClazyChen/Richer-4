@@ -60,8 +60,8 @@ public class PRoom {
                     Player.Nickname = NickName;
                     Player.IPAddress = IPAddress;
                     Player.PlayerType = PPlayerType.Player;
+                    return true;
                 }
-                return true;
             }
             return false;
         }

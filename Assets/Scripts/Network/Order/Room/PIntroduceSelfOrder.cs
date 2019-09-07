@@ -8,9 +8,14 @@ public class PIntroduceSelfOrder : POrder {
         (string[] args, string IPAddress) => {
             string Nickname = args[1];
             PLogger.Log("新的连接：" + Nickname + " @" + IPAddress);
-            PNetworkManager.Game.Room.AddPlayer(Nickname, IPAddress);
-            PNetworkManager.NetworkServer.TellClient(IPAddress, new PRoomModeOrder(PNetworkManager.Game.GameMode.Name));
-            PNetworkManager.NetworkServer.TellClients(new PRoomDataOrder(PNetworkManager.Game.Room.ToString()));
+            if (PNetworkManager.Game.Room.AddPlayer(Nickname, IPAddress)) {
+                PLogger.Log("加入房间成功");
+                PNetworkManager.NetworkServer.TellClient(IPAddress, new PRoomModeOrder(PNetworkManager.Game.GameMode.Name));
+                PNetworkManager.NetworkServer.TellClients(new PRoomDataOrder(PNetworkManager.Game.Room.ToString()));
+            } else {
+                PLogger.Log("加入房间失败");
+            }
+            
         },
         null) {
     }

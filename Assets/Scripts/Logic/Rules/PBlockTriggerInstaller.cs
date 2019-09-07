@@ -92,7 +92,7 @@
             AICondition = (PGame Game) => {
                 PBlock NowBlock = Game.NowPlayer.Position;
                 PPurchaseTag PurchaseTag = Game.TagManager.FindPeekTag<PPurchaseTag>(PPurchaseTag.TagName);
-                return PurchaseTag.Count == 0 || (PurchaseTag.Count == 1 && Player.Money >= 5000) || (PurchaseTag.Count > 1 && Player.Money >= 10000 && NowBlock.Price >= 2000) || NowBlock.BusinessType.Equals(PBusinessType.Park);
+                return PurchaseTag.Count == 0 || (PurchaseTag.Count == 1 && Player.Money >= 5000) || (PurchaseTag.Count == 1 && Player.Money >= 10000 && NowBlock.Price >= 2000) || (PurchaseTag.Count > 1 && Player.Money >= 15000 && NowBlock.Price >= 3000) || NowBlock.BusinessType.Equals(PBusinessType.Park);
             },
             Effect = (PGame Game) => {
                 Game.TagManager.FindPeekTag<PPurchaseTag>(PPurchaseTag.TagName).Count++;
