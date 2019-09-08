@@ -30,6 +30,9 @@ public class PTagManager {
     /// </summary>
     /// <param name="Tag"></param>
     public void CreateTag(PTag Tag) {
+        if (Owner != null && ExistTag(Tag.Name)) {
+            PopTag<PTag>(Tag.Name);
+        }
         if (Owner == null || !ExistTag(Tag.Name)) {
             PLogger.Log("创建标签：" + Tag.Name);
             Tag.FieldList.ForEach((PTag.PTagField Field) => PLogger.Log("  域 " + Field + " = " + (Field.Field != null ? Field.Field.ToString() : "null")));

@@ -62,7 +62,7 @@ public class P_ChevnHunChiin : PEquipmentCardModel {
                         } else if (Result == 1) {
                             Game.Traverse((PPlayer _Player) => {
                                 Game.GetMoney(_Player, 500);
-                            });
+                            }, Player);
                         }
                     }
                 };

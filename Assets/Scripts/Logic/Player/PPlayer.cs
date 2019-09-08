@@ -176,6 +176,9 @@ public class PPlayer: PObject {
                 Result += "|" + Card.Name[Card.Name.Length - 1];
             }
         }
+        if (Result.Length <= 1) {
+            return "|";
+        }
         return Result;
     }
 

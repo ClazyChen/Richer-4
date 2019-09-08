@@ -5,7 +5,7 @@ public class PAiTargetChooser {
     
     public static PPlayer InjureTarget(PGame Game, PPlayer Player, PTrigger.PlayerCondition Condition =null, int ExpectedMoney=0) {
 
-        return PMath.Max(Game.PlayerList.FindAll((PPlayer Target) => Player.IsAlive && (Condition == null || Condition(Game, Target))), (PPlayer Target) => {
+        return PMath.Max(Game.PlayerList.FindAll((PPlayer Target) => Target.IsAlive && (Condition == null || Condition(Game, Target))), (PPlayer Target) => {
 
             if (!Target.CanBeInjured || Player.OutOfGame) {
                 return 0;
