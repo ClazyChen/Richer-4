@@ -83,9 +83,9 @@ public class PAiMapAnalyzer {
         }
     }
 
-    public static KeyValuePair< PBlock, int> MaxValueHouse(PGame Game, PPlayer Player) {
+    public static KeyValuePair< PBlock, int> MaxValueHouse(PGame Game, PPlayer Player, bool StartFromZero = false) {
         int EnemyCount = Game.Enemies(Player).Count;
-        return PMath.Max(Game.Map.BlockList.FindAll((PBlock Block) => Player.Equals(Block.Lord) && Block.HouseNumber > 0), (PBlock Block) => {
+        return PMath.Max(Game.Map.BlockList.FindAll((PBlock Block) => Player.Equals(Block.Lord) && ( StartFromZero || Block.HouseNumber > 0)), (PBlock Block) => {
             return PMath.Percent(Block.Price, 50 + 20 * EnemyCount * (Block.BusinessType.Equals(PBusinessType.ShoppingCenter) ? 2 : 1));
         });
     }

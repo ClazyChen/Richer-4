@@ -11,7 +11,7 @@ public abstract class PSchemeCardModel: PCardModel {
         Type = PCardType.SchemeCard;
     }
 
-    protected static Action<PGame> MakeNormalEffect(PPlayer Player, PCard Card, TargetChooser AITargetChooser, TargetChooser PlayerTargetChooser, EffectFunc Effect) {
+    protected static Action<PGame> MakeNormalEffect(PPlayer Player, PCard Card, TargetChooser AITargetChooser, TargetChooser PlayerTargetChooser, EffectFunc Effect, Action<PGame,PPlayer,List<PPlayer>> StartAction = null, Action<PGame, PPlayer, List<PPlayer>> EndAction = null) {
         return (PGame Game) => {
             List<PPlayer> Targets = Player.IsAI ? AITargetChooser(Game, Player) : PlayerTargetChooser(Game,Player) ;
             Targets.RemoveAll((PPlayer _Player) => _Player == null);
@@ -19,11 +19,13 @@ public abstract class PSchemeCardModel: PCardModel {
             Game.Monitor.CallTime(PTime.Card.AfterEmitTargetTime, new PUseCardTag(Card, Player, Targets));
             Game.CardManager.MoveCard(Card, Player.Area.HandCardArea, Game.CardManager.SettlingArea);
             Game.Monitor.CallTime(PTime.Card.AfterBecomeTargetTime, new PUseCardTag(Card, Player, Targets));
+            StartAction?.Invoke(Game, Player, Targets);
             Targets.ForEach((PPlayer Target) => {
                 if (Target != null && Target.IsAlive) {
                     Effect(Game, Player, Target);
                 }
             });
+            EndAction?.Invoke(Game, Player, Targets);
             Game.CardManager.MoveCard(Card, Game.CardManager.SettlingArea, Game.CardManager.ThrownCardHeap);
             Game.Monitor.CallTime(PTime.Card.EndSettleTime, new PUseCardTag(Card, Player, Targets));
         };

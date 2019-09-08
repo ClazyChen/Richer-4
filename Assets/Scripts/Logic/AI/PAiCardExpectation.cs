@@ -61,7 +61,7 @@ public class PAiCardExpectation {
             }
         }) : new KeyValuePair<PCard, int>(null, int.MinValue);
         KeyValuePair<PCard, int> EquipResult = AllowEquipment ? PMath.Max(TargetPlayer.Area.EquipmentCardArea.CardList, (PCard Card) => {
-            return (Card.Model.AIInEquipExpectation(Game, TargetPlayer) + Card.Model.AIInHandExpectation(Game, Player)) / 2;
+            return Card.Model.AIInEquipExpectation(Game, TargetPlayer);
         }) : new KeyValuePair<PCard, int>(null,int.MinValue);
         KeyValuePair<PCard, int> Temp = HandCardResult.Value >= EquipResult.Value ? HandCardResult : EquipResult;
         return Temp;

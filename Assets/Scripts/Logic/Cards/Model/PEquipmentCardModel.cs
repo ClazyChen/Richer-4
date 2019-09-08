@@ -42,10 +42,6 @@ public abstract class PEquipmentCardModel : PCardModel {
                         Game.Monitor.CallTime(PTime.Card.AfterEmitTargetTime, new PUseCardTag(Card, Player, Targets));
                         Game.Monitor.CallTime(PTime.Card.AfterBecomeTargetTime, new PUseCardTag(Card, Player, Targets));
                         if (Targets.Count > 0) {
-                            PCard Current = Targets[0].GetEquipment(Type);
-                            if (Current != null) {
-                                Game.CardManager.MoveCard(Current, Targets[0].Area.EquipmentCardArea, Game.CardManager.ThrownCardHeap);
-                            }
                             Game.CardManager.MoveCard(Card, Player.Area.HandCardArea, Targets[0].Area.EquipmentCardArea);
                         } else {
                             Game.CardManager.MoveCard(Card, Player.Area.HandCardArea, Game.CardManager.ThrownCardHeap);

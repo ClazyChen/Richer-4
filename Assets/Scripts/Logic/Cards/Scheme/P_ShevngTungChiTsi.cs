@@ -37,7 +37,9 @@ public class P_ShevngTungChiHsi: PSchemeCardModel {
                             UseCardTag.Card.Name.Equals(P_TaTsaaoChingShev.CardName) ||
                             UseCardTag.Card.Name.Equals(P_KuanMevnChoTsev.CardName) ||
                             UseCardTag.Card.Name.Equals(P_ChihSangMaHuai.CardName) ||
-                            UseCardTag.Card.Name.Equals(P_FanChienChi.CardName)) {
+                            UseCardTag.Card.Name.Equals(P_FanChienChi.CardName) ||
+                            UseCardTag.Card.Name.Equals(P_ChiehTaoShaJevn.CardName) ||
+                            UseCardTag.Card.Name.Equals(P_PaaoChuanYinYoo.CardName)) {
                             return UseCardTag.TargetList[0].TeamIndex == Player.TeamIndex && UseCardTag.User.TeamIndex != Player.TeamIndex;
                         } else if (UseCardTag.Card.Name.Equals(P_WuChungShevngYou.CardName) ||
                             UseCardTag.Card.Name.Equals(P_AnTuCheevnTsaang.CardName) ||
@@ -68,6 +70,8 @@ public class P_ShevngTungChiHsi: PSchemeCardModel {
                         } else if (UseCardTag.Card.Name.Equals(P_KuungCheevngChi.CardName)) {
                             KeyValuePair<PPlayer,int> Target = PMath.Max(Game.Enemies(Player), (PPlayer _Player) => _Player.Area.HandCardArea.CardNumber);
                             return Target.Value >= 3 && !UseCardTag.TargetList[0].Equals(Target.Key);
+                        } else if (UseCardTag.Card.Name.Equals(P_HsiaoLiTsaangTao.CardName)) {
+                            return UseCardTag.User.TeamIndex != Player.TeamIndex && (UseCardTag.TargetList[0].TeamIndex != Player.TeamIndex || UseCardTag.TargetList[0].Area.EquipmentCardArea.CardNumber > 0 || UseCardTag.TargetList[0].Money <= 500);
                         }
                         return false;
                     },
