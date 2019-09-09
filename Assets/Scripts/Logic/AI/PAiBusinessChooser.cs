@@ -19,7 +19,7 @@ public class PAiBusinessChooser {
         int ShoppingCenterExpectation = 2 * PMath.Percent(Block.Price, 40 * Math.Max(1, 20 * MaxOperationCount / RingLength) + 20) * Game.Enemies(Player).Count;
         int InsituteExpectation = 2000 * 2 * Game.Teammates(Player).Count;
         int ParkExpectation = PMath.Percent(Block.Price, 60 * Math.Max(1, 20 * MaxOperationCount / RingLength) + 50);
-        int CastleExpectation = PMath.Percent(Block.Price, 50 + 20 *Game.Enemies(Player).Count) * Game.GetBonusHouseNumberOfCastle(Player, Block);
+        int CastleExpectation = Game.Enemies(Player).Exists((PPlayer _Player) => _Player.Money > 3000 && _Player.Weapon != null && _Player.Weapon.Model is P_ToouShihChi) ? 0: PMath.Percent(Block.Price, 50 + 20 *Game.Enemies(Player).Count) * Game.GetBonusHouseNumberOfCastle(Player, Block);
         int PawnshopExpectation = 2000 * Game.Teammates(Player).Count;
         List<int> ExpectationList = new List<int>() {
             ShoppingCenterExpectation,

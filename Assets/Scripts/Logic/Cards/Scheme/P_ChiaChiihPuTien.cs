@@ -29,9 +29,9 @@ public class P_ChiaChiihPuTien : PSchemeCardModel {
                     IsLocked = false,
                     Player = Player,
                     Time = Time,
-                    AIPriority = 180,
+                    AIPriority = 10,
                     Condition = (PGame Game) => {
-                        int MinMoney = PMath.Min(Game.PlayerList, (PPlayer _Player) => _Player.Money).Value;
+                        int MinMoney = PMath.Min(Game.PlayerList.FindAll((PPlayer _Player) => _Player.IsAlive), (PPlayer _Player) => _Player.Money).Value;
                         return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime()) && Player.Money == MinMoney;
                     },
                     AICondition = (PGame Game) => {

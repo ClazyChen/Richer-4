@@ -52,6 +52,12 @@ public class PCardManager {
                     PNetworkManager.NetworkServer.TellClients(new PRefreshEquipStringOrder(MoveCardTag.Source.Owner));
                 }
             }
+            if (MoveCardTag.Destination.IsEquipmentArea()) {
+                PCard CurrentCard = MoveCardTag.Destination.Owner.GetEquipment(Card.Type);
+                if (CurrentCard != null) {
+                    MoveCard(CurrentCard, MoveCardTag.Destination, ThrownCardHeap);
+                }
+            }
             Game.Monitor.CallTime(PTime.Card.EnterAreaTime, MoveCardTag);
             MoveCardTag.Destination.CardList.Add(Card);
             if (MoveCardTag.Destination.Owner != null) {
@@ -59,10 +65,6 @@ public class PCardManager {
                     PNetworkManager.NetworkServer.TellClient(MoveCardTag.Destination.Owner, new PRefreshHandCardsOrder(MoveCardTag.Destination.ToStringArray()));
                     PNetworkManager.NetworkServer.TellClients(new PRefreshHandCardNumberOrder(MoveCardTag.Destination.Owner.Index.ToString(), MoveCardTag.Destination.CardNumber.ToString()));
                 } else if (MoveCardTag.Destination.IsEquipmentArea()) {
-                    PCard CurrentCard = MoveCardTag.Destination.Owner.GetEquipment(Card.Type);
-                    if (CurrentCard != null) {
-                        MoveCard(CurrentCard, MoveCardTag.Destination, ThrownCardHeap);
-                    }
                     PNetworkManager.NetworkServer.TellClient(MoveCardTag.Destination.Owner, new PRefreshEquipmentsOrder(MoveCardTag.Destination.ToStringArray()));
                     PNetworkManager.NetworkServer.TellClients(new PRefreshEquipStringOrder(MoveCardTag.Destination.Owner));
                 }
@@ -84,6 +86,8 @@ public class PCardManager {
             new P_ManTiienKuoHai().Instantiate(),
             new P_WeiWeiChiuChao().Instantiate(),
             new P_WeiWeiChiuChao().Instantiate(),
+            new P_ChiehTaoShaJevn().Instantiate(),
+            new P_ChiehTaoShaJevn().Instantiate(),
             new P_IITaiLao().Instantiate(),
             new P_IITaiLao().Instantiate(),
             new P_CheevnHuoTaChieh().Instantiate(),
@@ -96,6 +100,8 @@ public class PCardManager {
             new P_AnTuCheevnTsaang().Instantiate(),
             new P_KevAnKuanHuo().Instantiate(),
             new P_KevAnKuanHuo().Instantiate(),
+            new P_HsiaoLiTsaangTao().Instantiate(),
+            new P_HsiaoLiTsaangTao().Instantiate(),
             new P_LiTaiTaaoChiang().Instantiate(),
             new P_LiTaiTaaoChiang().Instantiate(),
             new P_ShunShouChiienYang().Instantiate(),
@@ -108,6 +114,8 @@ public class PCardManager {
             new P_TiaoHuLiShan().Instantiate(),
             new P_YooChiinKuTsung().Instantiate(),
             new P_YooChiinKuTsung().Instantiate(),
+            new P_PaaoChuanYinYoo().Instantiate(),
+            new P_PaaoChuanYinYoo().Instantiate(),
             new P_ChiinTsevChiinWang().Instantiate(),
             new P_ChiinTsevChiinWang().Instantiate(),
             new P_FuTiChoouHsin().Instantiate(),
@@ -154,8 +162,8 @@ public class PCardManager {
             new P_ChevnHunChiin().Instantiate(),
             new P_LoFevngKung().Instantiate(),
             new P_LoFevngKung().Instantiate(),
-            new P_ToouShihCheev().Instantiate(),
-            new P_ToouShihCheev().Instantiate()
+            new P_ToouShihChi().Instantiate(),
+            new P_ToouShihChi().Instantiate()
 
         }).ForEach((PCard Card) => {
             CardHeap.CardList.Add(Card);

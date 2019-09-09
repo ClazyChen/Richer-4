@@ -1,17 +1,17 @@
 ﻿
 using System.Collections.Generic;
 /// <summary>
-/// 投石车
+/// 投石机
 /// </summary>
-public class P_ToouShihCheev : PEquipmentCardModel {
+public class P_ToouShihChi : PEquipmentCardModel {
 
     public override int AIInEquipExpectation(PGame Game, PPlayer Player) {
         return 500 + 5000 * Game.Map.BlockList.FindAll((PBlock Block) => Block.Lord != null && Block.Lord.TeamIndex != Player.Index && Block.HouseNumber > 1 && Block.BusinessType.Equals(PBusinessType.Castle)).Count;
     }
 
-    public readonly static string CardName = "投石车";
+    public readonly static string CardName = "投石机";
 
-    public P_ToouShihCheev():base(CardName, PCardType.WeaponCard) {
+    public P_ToouShihChi():base(CardName, PCardType.WeaponCard) {
         Point = 6;
         Index = 48;
         MoveInEquipTriggerList.Add((PPlayer Player, PCard Card) => {

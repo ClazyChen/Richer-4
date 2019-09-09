@@ -5,24 +5,22 @@ using System.Collections.Generic;
 /// </summary>
 public class P_ChiehTaoShaJevn : PSchemeCardModel {
 
+    private KeyValuePair<PPlayer, int> FindTarget(PGame Game, PPlayer Player) {
+        int Basic = PAiMapAnalyzer.MaxValueHouse(Game, Player).Value;
+        return PMath.Max(Game.Enemies(Player).FindAll((PPlayer _Player) => _Player.Area.EquipmentCardArea.CardNumber > 0), (PPlayer _Player) => {
+            int HouseValue = _Player.HasHouse ?  PAiMapAnalyzer.MaxValueHouse(Game, _Player).Value + Basic : 30000;
+            int EquipValue = PMath.Max(_Player.Area.EquipmentCardArea.CardList, (PCard Card ) => Card.Model.AIInEquipExpectation(Game, _Player) + Card.Model.AIInHandExpectation(Game, Player)).Value;
+            return Math.Min(HouseValue, EquipValue);
+        }, true);
+    }
+
     public List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
-        return new List<PPlayer>() { Player };
+        
+        return new List<PPlayer>() { FindTarget(Game, Player).Key };
     }
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
-        int Basic = PAiMapAnalyzer.MaxValueHouse(Game, Player).Value;
-        KeyValuePair<PPlayer, int> HouseValue = PMath.Max(Game.Enemies(Player).FindAll((PPlayer _Player) => _Player.HasHouse), (PPlayer _Player) => PAiMapAnalyzer.MaxValueHouse(Game, _Player).Value);
-        if (HouseValue.Key != null) {
-            Basic += HouseValue.Value;
-        } else {
-            Basic = 0;
-        }
-        int Test = PMath.Max(Game.Enemies(Player).FindAll((PPlayer _Player) => _Player.Area.EquipmentCardArea.CardNumber > 0), (PPlayer _Player) => {
-            KeyValuePair<PCard, int> Target = PAiCardExpectation.FindMostValuable(Game, Player, _Player, false);
-            int ForMe = Target.Key.Model.AIInHandExpectation(Game, Player);
-            return Target.Value + ForMe;
-        }).Value;
-        return Math.Min(Basic, Test);
+        return Math.Max(500, FindTarget(Game, Player).Value);
     }
 
     public readonly static string CardName = "借刀杀人";
@@ -42,6 +40,9 @@ public class P_ChiehTaoShaJevn : PSchemeCardModel {
                     AIPriority = 110,
                     Condition = (PGame Game) => {
                         return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime()) && Game.PlayerList.Exists((PPlayer _Player ) => !_Player.Equals(Player) && _Player.Area.EquipmentCardArea.CardNumber > 0);
+                    },
+                    AICondition = (PGame Game) => {
+                        return AIEmitTargets(Game, Player)[0] != null;
                     },
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets, (PGame Game, PPlayer _Player) => {
                         return !_Player.Equals(Player) && _Player.Area.EquipmentCardArea.CardNumber > 0;
