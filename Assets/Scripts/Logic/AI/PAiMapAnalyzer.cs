@@ -67,7 +67,7 @@ public class PAiMapAnalyzer {
         if (Start == null) {
             Start = Player.Position;
         }
-        return StartFromExpect(Game, Player, Start) * (Player.Tags.ExistTag(PTag.BackFaceTag.Name) ? 1 : -1) / 3;
+        return StartFromExpect(Game, Player, Start) * (Player.BackFace ? 1 : -1) / 3;
     }
 
     public static int HouseValue(PGame Game, PPlayer Player, PBlock Block) {

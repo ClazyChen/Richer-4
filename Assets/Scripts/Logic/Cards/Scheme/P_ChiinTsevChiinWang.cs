@@ -49,7 +49,7 @@ public class P_ChiinTsevChiinWang : PSchemeCardModel {
                         return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime());
                     },
                     AICondition = (PGame Game) => {
-                        return AIInHandExpectation(Game, Player) > 300;
+                        return AIInHandExpectation(Game, Player) > 500;
                     },
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets,
                         (PGame Game, PPlayer _Player) => {
