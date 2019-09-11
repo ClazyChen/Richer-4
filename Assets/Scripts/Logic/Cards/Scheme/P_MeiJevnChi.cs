@@ -7,8 +7,12 @@ public class P_MeiJevnChi : PSchemeCardModel {
 
     public List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
         int ExpectedMoney = 1000;
-        PPlayer Target1 = PAiTargetChooser.InjureTarget(Game, Player, null, ExpectedMoney);
-        PPlayer Target2 = PAiTargetChooser.InjureTarget(Game, Player, PTrigger.Except(Target1), ExpectedMoney);
+        PPlayer Target1 = PAiTargetChooser.InjureTarget(Game, Player, (PGame _Game, PPlayer _Player) => {
+            return  !(_Player.Defensor != null && _Player.Defensor.Model is P_YooHsi);
+        }, ExpectedMoney);
+        PPlayer Target2 = PAiTargetChooser.InjureTarget(Game, Player, (PGame _Game, PPlayer _Player) => {
+            return !_Player.Equals(Target1) && !(_Player.Defensor != null && _Player.Defensor.Model is P_YooHsi);
+        }, ExpectedMoney);
         return new List<PPlayer>() { Target1, Target2 };
     }
 

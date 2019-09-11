@@ -13,11 +13,14 @@ public class P_FanChienChi : PSchemeCardModel {
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
         int Basic = 1000;
         int Sum = 0;
-        AIEmitTargets(Game, Player).ForEach((PPlayer _Player) => {
-            int Choose1 = PAiMapAnalyzer.ChangeFaceExpect(Game, _Player);
-            int Choose2 = _Player.Money <= 1000 ? -30000 : -1000;
-            int Chosen = Math.Max(Choose1, Choose2);
-            Sum += Chosen * (_Player.TeamIndex == Player.TeamIndex ? 1 : -1);
+        List<PPlayer> Targets = AIEmitTargets(Game, Player);
+        Targets.ForEach((PPlayer _Player) => {
+            if (!(_Player.Defensor != null && _Player.Defensor.Model is P_YooHsi && Targets.Count > 1)) {
+                int Choose1 = PAiMapAnalyzer.ChangeFaceExpect(Game, _Player);
+                int Choose2 = _Player.Money <= 1000 ? -30000 : -1000;
+                int Chosen = Math.Max(Choose1, Choose2);
+                Sum += Chosen * (_Player.TeamIndex == Player.TeamIndex ? 1 : -1);
+            }
         });
         Sum = Sum * 5 / 6;
         return Math.Max(Basic, Sum);

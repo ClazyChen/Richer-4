@@ -46,8 +46,8 @@ public class P_LienHuanChi : PSchemeCardModel {
             Positive ^= Player.TeamIndex == _Player.TeamIndex;
             return Base * (Positive ? 1 : -1);
         }
-        Targets.Add(PMath.Max(Game.PlayerList.FindAll((PPlayer _Player) => _Player.IsAlive), Cal, true).Key);
-        Targets.Add(PMath.Max(Game.PlayerList.FindAll((PPlayer _Player) => _Player.IsAlive && !_Player.Equals(Targets[0])), Cal, true).Key);
+        Targets.Add(PMath.Max(Game.PlayerList.FindAll((PPlayer _Player) => _Player.IsAlive && !(_Player.Defensor != null && _Player.Defensor.Model is P_YooHsi)), Cal, true).Key);
+        Targets.Add(PMath.Max(Game.PlayerList.FindAll((PPlayer _Player) => _Player.IsAlive && !_Player.Equals(Targets[0]) && !(_Player.Defensor != null && _Player.Defensor.Model is P_YooHsi)), Cal, true).Key);
         return Targets;
     }
 

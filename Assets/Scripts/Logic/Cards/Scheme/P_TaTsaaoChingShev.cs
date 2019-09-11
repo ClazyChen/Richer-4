@@ -11,15 +11,16 @@ public class P_TaTsaaoChingShev: PSchemeCardModel {
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
         int Basic = 0;
+        bool MultiTarget = AIEmitTargets(Game, Player).Count > 1;
         Game.Teammates(Player, false).ForEach((PPlayer _Player) => {
             KeyValuePair<PBlock, int> Test = PAiMapAnalyzer.MinValueHouse(Game, Player);
-            if (Test.Key != null) {
+            if (Test.Key != null && !(_Player.Defensor != null && _Player.Defensor.Model is P_YooHsi && MultiTarget)) {
                 Basic -= Test.Value;
             }
         });
         Game.Enemies(Player).ForEach((PPlayer _Player) => {
             KeyValuePair<PBlock, int> Test = PAiMapAnalyzer.MinValueHouse(Game, Player);
-            if (Test.Key != null) {
+            if (Test.Key != null && !(_Player.Defensor != null && _Player.Defensor.Model is P_YooHsi && MultiTarget)) {
                 Basic += Test.Value;
             }
         });

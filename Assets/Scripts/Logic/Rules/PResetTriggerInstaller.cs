@@ -13,7 +13,7 @@
         });
         TriggerList.Add(new PTrigger("移回游戏") {
             IsLocked = true,
-            Time = PPeriod.StartTurn.Before,
+            Time = PPeriod.StartTurn.Start,
             Condition = (PGame Game) => {
                 return Game.NowPlayer.OutOfGame;
             },

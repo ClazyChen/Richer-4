@@ -89,6 +89,13 @@ public class PMonitor {
                         PLogger.Log("阶段立刻结束");
                         return;
                     }
+                    if (Time.Equals(PTime.EnterDyingTime)) {
+                        PDyingTag DyingTag = Game.TagManager.FindPeekTag<PDyingTag>(PDyingTag.TagName);
+                        if (DyingTag.Player != null && DyingTag.Player.Money > 0) {
+                            PLogger.Log("脱离濒死状态");
+                            return;
+                        }
+                    }
                 } else {
                     break;
                 }

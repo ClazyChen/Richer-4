@@ -40,8 +40,8 @@ public class P_HunShuiMoYoo: PSchemeCardModel {
                         int Value = 0;
                         PUseCardTag UseCardTag = Game.TagManager.FindPeekTag<PUseCardTag>(PUseCardTag.TagName);
                         UseCardTag.TargetList.ForEach((PPlayer _Player) => {
-                            if (Player.CanBeInjured) {
-                                if (Player.Money <= 500) {
+                            if (_Player.CanBeInjured && !(_Player.Defensor != null && _Player.Defensor.Model is P_YooHsi)) {
+                                if (_Player.Money <= 500) {
                                     Value += 30000 * (Player.TeamIndex == _Player.TeamIndex ? -1 : 1);
                                 } else {
                                     Value += 1000 * (Player.TeamIndex == _Player.TeamIndex ? 0 : 1);

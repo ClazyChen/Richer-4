@@ -171,6 +171,8 @@ public class PGame : PGameStatus {
         Monitor.CallTime(PTime.EnterDyingTime, new PDyingTag(Player));
         if (Player.Money <= 0) {
             Die(Player);
+        } else {
+            Monitor.CallTime(PTime.LeaveDyingTime, new PDyingTag(Player));
         }
     }
 

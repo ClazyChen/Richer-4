@@ -14,7 +14,8 @@ public class P_PaaoChuanYinYoo : PSchemeCardModel {
         if (!Game.Map.BlockList.Exists((PBlock Block) => Player.Equals(Block.Lord))) {
             return Basic;
         }
-        int Test = (int)PMath.Sum(Game.PlayerList.FindAll((PPlayer _Player) => _Player.IsAlive).ConvertAll((PPlayer _Player) => {
+        int TargetNumber = Game.AlivePlayerNumber - 1;
+        int Test = (int)PMath.Sum(Game.PlayerList.FindAll((PPlayer _Player) => _Player.IsAlive && !(_Player.Defensor != null && _Player.Defensor.Model is P_YooHsi && TargetNumber > 1)).ConvertAll((PPlayer _Player) => {
             return (double)PAiMapAnalyzer.MaxValueHouse(Game, Player, true).Value + PAiMapAnalyzer.MinValueHouse(Game, _Player).Value * (_Player.TeamIndex == Player.TeamIndex ? -1 : 1);
         }));
         

@@ -13,6 +13,13 @@ public class PAiTargetChooser {
             if (Target.Area.HandCardArea.CardNumber == 0 && Player.Weapon != null && Player.Weapon.Model is P_KuTingTao) {
                 ExpectedMoney *= 2;
             }
+            if (Target.Defensor != null && Target.Defensor.Model is P_PaKuaChevn) {
+                ExpectedMoney = (PMath.Percent(ExpectedMoney, 50) + ExpectedMoney) / 2;
+            }
+
+            if (Target.Defensor != null && Target.Defensor.Model is P_PaiHuaChooon && !Player.Sex.Equals(Target.Sex)) {
+                ExpectedMoney = PMath.Percent(ExpectedMoney, 50);
+            }
 
             int Profit = ExpectedMoney *2 + Math.Max(0, (20000 - Target.Money)/1000) + PMath.RandInt(0,9);
             bool SameTeam = (Target.TeamIndex == Player.TeamIndex);
