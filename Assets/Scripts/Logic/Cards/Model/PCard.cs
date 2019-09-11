@@ -13,6 +13,10 @@ public class PCard : PCardModel {
         return MoveInHandTriggerList.Find((PTrigger Trigger) => Trigger.Time.Equals(Time));
     }
 
+    public PTrigger FindEquipmentTrigger(PTime Time) {
+        return MoveInEquipTriggerList.Find((PTrigger Trigger) => Trigger.Time.Equals(Time));
+    }
+
     public PCard(PCardModel Prototype): base(Prototype.Name) {
         Model = Prototype;
         Type = Prototype.Type;

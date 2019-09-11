@@ -48,7 +48,7 @@ public class PCardToolTip : PObject {
     public static PCardToolTip YinYooehChiiang = new PCardToolTip("银月枪", "【被】当你于回合外使用一张牌后，你可对一名其他角色造成1000点伤害。");
     public static PCardToolTip ChevnHunChiin = new PCardToolTip("镇魂琴", "【被】回合开始时，若你的现金数不多于10000，你可选择一项：1.令所有角色依次弃置500；2.令所有角色依次摸500。");
     public static PCardToolTip LoFevngKung = new PCardToolTip("落凤弓", "【被】当你通过过路费造成伤害时，你可弃置目标的一件装备。");
-    public static PCardToolTip ToouShihCheev = new PCardToolTip("投石机", "【主】回合内限一次，你可弃3000拆除场上的一座房屋，若其为城堡，你进行一次判定，额外拆除X座房屋。");
+    public static PCardToolTip ToouShihChi = new PCardToolTip("投石机", "【主】回合内限一次，你可弃3000拆除场上的一座房屋，若其为城堡，你进行一次判定，额外拆除X座房屋。");
     public static PCardToolTip PaKuaChevn = new PCardToolTip("八卦阵", "【被】当你受到伤害时，你可进行一次判定，若为奇数，此伤害*50%。");
     public static PCardToolTip PaiHuaChooon = new PCardToolTip("百花裙", "【被】当你受到异性角色造成的伤害时，你可令此伤害*50%。");
     public static PCardToolTip YooHsi = new PCardToolTip("玉玺", "【被】锁定技，群体普通计策牌对你无效。");

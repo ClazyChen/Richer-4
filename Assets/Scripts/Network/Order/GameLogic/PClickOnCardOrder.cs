@@ -16,7 +16,12 @@ public class PClickOnCardOrder : POrder {
             } else if (Game.Logic.WaitingForEndFreeTime() && Game.NowPlayer.IPAddress.Equals(IPAddress) && Game.TagManager.ExistTag(PTag.FreeTimeOperationTag.Name) && Game.NowPlayer.IsAlive) {
                 PCard Card = Game.NowPlayer.Area.GetCard(CardIndex);
                 if (Card != null) {
-                    PTrigger Trigger = Card.FindTrigger(PPeriod.FirstFreeTime.During);
+                    PTrigger Trigger = null;
+                    if (Game.NowPlayer.Area.HandCardArea.CardList.Contains(Card)) {
+                        Trigger = Card.FindTrigger(Game.NowPeriod.During);
+                    } else if (Game.NowPlayer.Area.EquipmentCardArea.CardList.Contains(Card)) {
+                        Trigger = Card.FindEquipmentTrigger(Game.NowPeriod.During);
+                    }
                     if (Trigger != null) {
                         if (Trigger.Condition(Game)) {
                             PThread.Async(() => {

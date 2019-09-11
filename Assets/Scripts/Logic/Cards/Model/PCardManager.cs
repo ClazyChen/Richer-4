@@ -128,6 +128,8 @@ public class PCardManager {
             new P_KuanMevnChoTsev().Instantiate(),
             new P_YooenChiaoChinKung().Instantiate(),
             new P_YooenChiaoChinKung().Instantiate(),
+            new P_ChiaTaoFaKuo().Instantiate(),
+            new P_ChiaTaoFaKuo().Instantiate(),
             new P_ToouLiangHuanChu().Instantiate(),
             new P_ToouLiangHuanChu().Instantiate(),
             new P_ChihSangMaHuai().Instantiate(),
