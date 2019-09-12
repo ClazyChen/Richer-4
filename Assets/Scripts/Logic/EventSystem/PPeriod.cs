@@ -42,4 +42,19 @@ public class PPeriod : PObject {
     public static PPeriod SecondFreeTime = new PPeriod("第二个空闲时间点");
     public static PPeriod EndTurnStage = new PPeriod("回合结束阶段");
     public static PPeriod EndTurn = new PPeriod("回合结束时");
+
+    public bool IsAfter(PPeriod Another) {
+        int Index1 = 0, Index2 = 0;
+        for (int i = 0; i < PPeriodTriggerInstaller.TurnFlow.Length; ++ i) {
+            if (Equals(PPeriodTriggerInstaller.TurnFlow[i])) {
+                Index1 = i;
+            }
+        }
+        for (int i = 0; i < PPeriodTriggerInstaller.TurnFlow.Length; ++i) {
+            if (Another.Equals(PPeriodTriggerInstaller.TurnFlow[i])) {
+                Index2 = i;
+            }
+        }
+        return Index1 > Index2;
+    }
 }

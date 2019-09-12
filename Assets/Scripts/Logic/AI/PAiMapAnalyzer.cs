@@ -17,6 +17,9 @@ public class PAiMapAnalyzer {
         int Sum = 0;
         if (!IncludingOnly) {
             for (PPlayer _Player = Game.NowPlayer; !_Player.Equals(Player); _Player = Game.GetNextPlayer(_Player)) {
+                if (_Player.Equals(Game.NowPlayer) && Game.NowPeriod.IsAfter(PPeriod.WalkingStage)) {
+                    continue;
+                }
                 if (_Player.NoLadder) {
                     PBlock Block = _Player.Position;
                     if (Player.Equals(Block.Lord) && Player.TeamIndex != _Player.TeamIndex) {
