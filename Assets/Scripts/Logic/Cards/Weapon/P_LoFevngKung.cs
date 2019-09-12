@@ -31,6 +31,7 @@ public class P_LoFevngKung : PEquipmentCardModel {
                         return InjureTag.ToPlayer.TeamIndex != Player.TeamIndex;
                     },
                     Effect = (PGame Game) => {
+                        AnnouceUseEquipmentSkill(Player);
                         PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
                         Game.ThrowCard(Player, InjureTag.ToPlayer, false);
                     }

@@ -27,6 +27,7 @@ public class P_YooHsi : PEquipmentCardModel {
                         return UseCardTag.TargetList.Count >= 2 && UseCardTag.TargetList.Contains(Player) && UseCardTag.Card.Type.Equals(PCardType.SchemeCard);
                     },
                     Effect = (PGame Game ) => {
+                        AnnouceUseEquipmentSkill(Player);
                         PUseCardTag UseCardTag = Game.TagManager.FindPeekTag<PUseCardTag>(PUseCardTag.TagName);
                         UseCardTag.TargetList.Remove(Player);
                     }

@@ -17,6 +17,10 @@ public abstract class PEquipmentCardModel : PCardModel {
         }
     }
 
+    protected void AnnouceUseEquipmentSkill(PPlayer Player) {
+        PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "发动了" + Name));
+    }
+
     protected PEquipmentCardModel(string _Name, PCardType CardType):base(_Name) {
         Type = CardType;
         foreach (PTime Time in new PTime[] {

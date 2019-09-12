@@ -28,6 +28,7 @@ public class P_PaiHuaChooon : PEquipmentCardModel {
                         return Player.Equals(InjureTag.ToPlayer) && InjureTag.Injure > 0 && InjureTag.FromPlayer != null && !InjureTag.FromPlayer.Sex.Equals(Player.Sex);
                     },
                     Effect = (PGame Game ) => {
+                        AnnouceUseEquipmentSkill(Player);
                         PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
                         InjureTag.Injure = PMath.Percent(InjureTag.Injure, 50);
                     }

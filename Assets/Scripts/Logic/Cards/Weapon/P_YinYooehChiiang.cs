@@ -27,6 +27,7 @@ public class P_YinYooehChiiang : PEquipmentCardModel {
                         return !Game.NowPlayer.Equals(Player) && UseCardTag.User.Equals(Player);
                     },
                     Effect = (PGame Game) => {
+                        AnnouceUseEquipmentSkill(Player);
                         PPlayer TargetPlayer = null;
                         if (Player.IsAI) {
                             TargetPlayer = PAiTargetChooser.InjureTarget(Game, Player, PTrigger.Except(Player), 1000);

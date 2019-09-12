@@ -47,14 +47,17 @@ public class P_ChevnHunChiin : PEquipmentCardModel {
                         return AiChooseResult(Game, Player) >= 0;
                     },
                     Effect = (PGame Game) => {
+                        AnnouceUseEquipmentSkill(Player);
                         int Result = 0;
+                        string[] Options = new string[] {
+                            "全体弃500", "全体摸500"
+                        };
                         if (Player.IsAI) {
                             Result = AiChooseResult(Game, Player);
                         } else {
-                            Result = PNetworkManager.NetworkServer.ChooseManager.Ask(Player, CardName, new string[] {
-                                "全体弃500", "全体摸500"
-                            });
+                            Result = PNetworkManager.NetworkServer.ChooseManager.Ask(Player, CardName, Options);
                         }
+                        PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "选择了" + Options[Result]));
                         if (Result == 0) {
                             Game.Traverse((PPlayer _Player) => {
                                 Game.LoseMoney(_Player, 500);

@@ -44,6 +44,7 @@ public class P_ToouShihChi : PEquipmentCardModel {
                         return Game.Map.BlockList.Exists((PBlock Block) => Block.Lord != null && Block.Lord.TeamIndex != Player.Index && Block.HouseNumber > 1 && Block.BusinessType.Equals(PBusinessType.Castle)) && Player.Money >= 6000;
                     },
                     Effect = (PGame Game) => {
+                        AnnouceUseEquipmentSkill(Player);
                         PBlock TargetBlock = null;
                         if (Player.IsAI) {
                             TargetBlock = PMath.Max(Game.Map.BlockList.FindAll((PBlock Block) => Block.Lord != null && Block.Lord.TeamIndex != Player.Index && Block.BusinessType.Equals(PBusinessType.Castle)), (PBlock Block) => Block.HouseNumber).Key;
