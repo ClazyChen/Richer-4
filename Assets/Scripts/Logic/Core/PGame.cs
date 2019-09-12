@@ -427,7 +427,7 @@ public class PGame : PGameStatus {
     /// <param name="Player">发起弃牌方</param>
     /// <param name="TargetPlayer">被弃牌方</param>
     public void ThrowCard(PPlayer Player, PPlayer TargetPlayer, bool AllowHandCards = true, bool AllowEquipment = true, bool AllowJudge = false) {
-        string Title = "请选择弃置一张手牌" + (AllowEquipment ? "或装备" : string.Empty) + (AllowJudge ? "或伏兵" : string.Empty);
+        string Title = "请选择弃置一张" + (AllowHandCards ? "[手牌]" : string.Empty) + (AllowEquipment ? "[装备]" : string.Empty) + (AllowJudge ? "[伏兵]" : string.Empty);
         PCard TargetCard = ChooseCard(Player, TargetPlayer, Title, AllowHandCards, AllowEquipment, AllowJudge);
         if (TargetCard != null) {
             PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "弃置了" + TargetPlayer.Name + "的" + TargetCard.Name));
@@ -445,7 +445,7 @@ public class PGame : PGameStatus {
     /// <param name="Player">获得牌的玩家</param>
     /// <param name="TargetPlayer">被获得牌的玩家</param>
     public void GetCardFrom(PPlayer Player, PPlayer TargetPlayer, bool AllowHandCards = true, bool AllowEquipment = true, bool AllowJudge = false) {
-        string Title = "请选择获得一张手牌" + (AllowEquipment ? "或装备" : string.Empty) + (AllowJudge ? "或伏兵" : string.Empty);
+        string Title = "请选择获得一张" + (AllowHandCards ? "[手牌]" : string.Empty) + (AllowEquipment ? "[装备]" : string.Empty) + (AllowJudge ? "[伏兵]" : string.Empty);
         PCard TargetCard = ChooseCard(Player, TargetPlayer, Title, AllowHandCards, AllowEquipment, AllowJudge);
         if (TargetCard != null) {
             PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "获得了" + TargetPlayer.Name + "的" + (TargetPlayer.Area.HandCardArea.CardList.Contains(TargetCard) ? "1张手牌" : TargetCard.Name)));
@@ -458,7 +458,7 @@ public class PGame : PGameStatus {
     }
 
     public void GiveCardTo(PPlayer Player, PPlayer TargetPlayer, bool AllowHandCards = true, bool AllowEquipment = true, bool AllowJudge = false) {
-        string Title = "请选择给出一张手牌" + (AllowEquipment ? "或装备" : string.Empty) + (AllowJudge ? "或伏兵" : string.Empty);
+        string Title = "请选择给出一张" + (AllowHandCards ? "[手牌]" : string.Empty) + (AllowEquipment ? "[装备]" : string.Empty) + (AllowJudge ? "[伏兵]" : string.Empty);
         PCard Card = null;
         if (Player.IsAI) {
             if (Player.TeamIndex == TargetPlayer.TeamIndex) {

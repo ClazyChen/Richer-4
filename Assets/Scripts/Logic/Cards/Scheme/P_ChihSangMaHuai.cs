@@ -7,10 +7,9 @@ public class P_ChihSangMaHuai: PSchemeCardModel {
 
     private List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
         PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
-        PPlayer Target = PAiTargetChooser.InjureTarget(Game, Player, PTrigger.Except(InjureTag.FromPlayer));
-        if (Target == Player) {
-            Target = Game.PlayerList.Find((PPlayer _Player) => !_Player.Equals(InjureTag.FromPlayer) && !_Player.Equals(Player));
-        }
+        PPlayer Target = PAiTargetChooser.InjureTarget(Game, Player, (PGame _Game, PPlayer _Player) => {
+            return _Player.IsAlive && !_Player.Equals(Player) && !_Player.Equals(InjureTag.FromPlayer);
+        }, InjureTag.Injure);
         return new List<PPlayer>() { Target };
     }
 
@@ -44,7 +43,7 @@ public class P_ChihSangMaHuai: PSchemeCardModel {
                     },
                     AICondition = (PGame Game) => {
                         PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
-                        return Player.Money <= InjureTag.Injure || (InjureTag.FromPlayer.TeamIndex != Player.TeamIndex && Game.Enemies(Player).Count < 2 && InjureTag.Injure >= 3000);
+                        return Player.Money <= InjureTag.Injure || (InjureTag.FromPlayer.TeamIndex != Player.TeamIndex && Game.Enemies(Player).Count < 2 && InjureTag.Injure >= 3000) && AIEmitTargets(Game, Player)[0] != null;
                     },
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets, (PGame Game, PPlayer _Player) => {
                         PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
