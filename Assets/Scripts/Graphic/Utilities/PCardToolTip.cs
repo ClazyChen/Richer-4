@@ -43,6 +43,13 @@ public class PCardToolTip : PObject {
     public static PCardToolTip KuuJouChi = new PCardToolTip("苦肉计", "【主】空闲时间点，对你自己使用。弃1000，然后摸一张牌。");
     public static PCardToolTip LienHuanChi = new PCardToolTip("连环计", "【主】空闲时间点，对一或两名角色使用。目标被连环（若已被连环则解开）。被连环的角色受到伤害时，其他被连环的角色依次受到等量伤害，然后解开连环。");
     public static PCardToolTip TsouWeiShangChi = new PCardToolTip("走为上计", "【被】当你濒死时，对你自己使用。摸5000，然后移出游戏。");
+    public static PCardToolTip LevPuSsuShu = new PCardToolTip("乐不思蜀", "【主】伏兵于一名其他角色。伏兵生效时，其进行一次判定，若结果不为3，其弃置一半（向下取整）的手牌。");
+    public static PCardToolTip PingLiangTsuunTuan = new PCardToolTip("兵粮寸断", "【主】伏兵于一名其他角色。伏兵生效时，其进行一次判定，若结果不为4，其弃置一座房屋。");
+    public static PCardToolTip TsaaoMuChiehPing = new PCardToolTip("草木皆兵", "【主】伏兵于一名其他角色。伏兵生效时，其进行一次判定，若结果不为1，其所在所有队列的有主土地增加一座房屋。");
+    public static PCardToolTip ShanTien = new PCardToolTip("闪电", "【主】伏兵于自己。伏兵生效时，进行两次判定，若和不大于5，受到无来源6000点伤害；否则，继续伏兵于下家。");
+    public static PCardToolTip WevnI = new PCardToolTip("瘟疫", "【主】伏兵于自己。伏兵生效时，进行一次判定，若不为2，弃置1000，然后继续伏兵于下家。");
+    public static PCardToolTip HsienChing = new PCardToolTip("陷阱", "【主】伏兵于自己。伏兵生效时，进行一次判定，若不为6，弃置一张装备，然后继续伏兵于下家。");
+
     public static PCardToolTip ChuKevLienNu = new PCardToolTip("诸葛连弩", "【被】锁定技，你于每个结算阶段购买土地或房屋的次数上限+3。");
     public static PCardToolTip KuTingTao = new PCardToolTip("古锭刀", "【被】锁定技，当你通过过路费造成伤害时，若目标没有手牌，该伤害*2。");
     public static PCardToolTip YinYooehChiiang = new PCardToolTip("银月枪", "【被】当你于回合外使用一张牌后，你可对一名其他角色造成1000点伤害。");

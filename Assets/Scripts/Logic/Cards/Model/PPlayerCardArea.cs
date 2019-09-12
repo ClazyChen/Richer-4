@@ -6,7 +6,7 @@
 public class PPlayerCardArea : PObject {
     public PCardArea HandCardArea;
     public PCardArea EquipmentCardArea;
-    public PCardArea JudgeCardArea;
+    public PCardArea AmbushCardArea;
     public PPlayer Owner;
 
     public PPlayerCardArea(PPlayer _Owner) {
@@ -14,12 +14,12 @@ public class PPlayerCardArea : PObject {
         Name = Owner.Name + "的区域";
         HandCardArea = new PCardArea(Owner.Name + "的手牌", Owner);
         EquipmentCardArea = new PCardArea(Owner.Name + "的装备区", Owner);
-        JudgeCardArea = new PCardArea(Owner.Name + "的判定区", Owner);
+        AmbushCardArea = new PCardArea(Owner.Name + "的判定区", Owner);
     }
 
     public int CardNumber {
         get {
-            return HandCardArea.CardNumber + EquipmentCardArea.CardNumber + JudgeCardArea.CardNumber;
+            return HandCardArea.CardNumber + EquipmentCardArea.CardNumber + AmbushCardArea.CardNumber;
         }
     }
 
@@ -40,7 +40,7 @@ public class PPlayerCardArea : PObject {
         } else if (Index < 2000 && AllowEquipment) {
             return EquipmentCardArea.GetCard(Index - 1000);
         } else if (AllowJudge) {
-            return JudgeCardArea.GetCard(Index - 2000);
+            return AmbushCardArea.GetCard(Index - 2000);
         }
         return null;
     }
@@ -48,6 +48,6 @@ public class PPlayerCardArea : PObject {
     public void Clear() {
         HandCardArea.CardList.Clear();
         EquipmentCardArea.CardList.Clear();
-        JudgeCardArea.CardList.Clear();
+        AmbushCardArea.CardList.Clear();
     }
 }

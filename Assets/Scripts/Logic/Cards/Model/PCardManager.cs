@@ -33,8 +33,8 @@ public class PCardManager {
         for (int i = Area.EquipmentCardArea.CardNumber - 1; i >= 0; --i) {
             MoveCard(Area.EquipmentCardArea.CardList[i], Area.EquipmentCardArea, ThrownCardHeap);
         }
-        for (int i = Area.JudgeCardArea.CardNumber - 1; i >= 0; --i) {
-            MoveCard(Area.JudgeCardArea.CardList[i], Area.JudgeCardArea, ThrownCardHeap);
+        for (int i = Area.AmbushCardArea.CardNumber - 1; i >= 0; --i) {
+            MoveCard(Area.AmbushCardArea.CardList[i], Area.AmbushCardArea, ThrownCardHeap);
         }
     }
 

@@ -103,7 +103,7 @@ public class PChooseManager {
             CardList.Add(Card);
         });
         if (AllowJudge) {
-            TargetPlayer.Area.JudgeCardArea.CardList.ForEach((PCard Card) => {
+            TargetPlayer.Area.AmbushCardArea.CardList.ForEach((PCard Card) => {
                 Names.Add(Card.Name);
                 CardList.Add(Card);
             });
