@@ -34,8 +34,9 @@ public class P_PaKuaChevn : PEquipmentCardModel {
                             PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(CardName + "：成功"));
                             PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
                             InjureTag.Injure = PMath.Percent(InjureTag.Injure, 50);
+                        } else {
+                            PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(CardName + "：失败"));
                         }
-                        PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(CardName + "：失败"));
                     }
                 };
             });
