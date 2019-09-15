@@ -19,7 +19,7 @@ public class P_WevnI : PAmbushCardModel {
 
     public List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
         
-        return new List<PPlayer>() { RoundExpect(Game, Player) > 0 ? Player : null };
+        return new List<PPlayer>() { RoundExpect(Game, Player) > 0 && (Player.Defensor == null || !(Player.Defensor.Model is P_ChiiHsingPaao)) ? Player : null };
     }
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {

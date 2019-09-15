@@ -6,8 +6,8 @@ using System.Collections.Generic;
 public class P_PingLiangTsuunTuan : PAmbushCardModel {
 
     public List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
-        
-        return new List<PPlayer>() { PMath.Max(Game.Enemies(Player).FindAll((PPlayer _Player) => _Player.HasHouse), (PPlayer _Player) => PAiMapAnalyzer.MinValueHouse(Game, _Player).Value + PMath.RandInt(-10,10)).Key };
+        PPlayer Target = PMath.Max(Game.Enemies(Player).FindAll((PPlayer _Player) => _Player.HasHouse && (_Player.Defensor == null || !(_Player.Defensor.Model is P_ChiiHsingPaao))), (PPlayer _Player) => PAiMapAnalyzer.MinValueHouse(Game, _Player).Value + PMath.RandInt(-10, 10)).Key;
+        return new List<PPlayer>() { Target};
     }
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {

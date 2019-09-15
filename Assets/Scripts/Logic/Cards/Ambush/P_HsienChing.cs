@@ -17,7 +17,7 @@ public class P_HsienChing : PAmbushCardModel {
 
     public List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
         
-        return new List<PPlayer>() { RoundExpect(Game, Player) >= 1000 ? Player : null };
+        return new List<PPlayer>() { RoundExpect(Game, Player) >= 1000 && (Player.Defensor == null || !(Player.Defensor.Model is P_ChiiHsingPaao)) ? Player : null };
     }
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {

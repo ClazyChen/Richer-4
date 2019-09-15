@@ -7,7 +7,7 @@ public class P_ShanTien : PAmbushCardModel {
 
     public List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
         
-        return new List<PPlayer>() { Game.Enemies(Player).Count > Game.Teammates(Player).Count && (PMath.Min(Game.Teammates(Player), (PPlayer _Player) => _Player.Money).Value > 6000 || PMath.Min(Game.Enemies(Player), (PPlayer _Player) => _Player.Money).Value <= 6000) ? Player : null };
+        return new List<PPlayer>() { Game.Enemies(Player).Count > Game.Teammates(Player).Count && (PMath.Min(Game.Teammates(Player), (PPlayer _Player) => _Player.Money).Value > 6000 || PMath.Min(Game.Enemies(Player), (PPlayer _Player) => _Player.Money).Value <= 6000) && (Player.Defensor == null || !(Player.Defensor.Model is P_ChiiHsingPaao)) ? Player : null };
     }
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {

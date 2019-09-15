@@ -33,8 +33,8 @@ public class P_TsaaoMuChiehPing : PAmbushCardModel {
 
 
     public List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
-        
-        return new List<PPlayer>() { PMath.Max(Game.PlayerList.FindAll((PPlayer _Player) => _Player.IsAlive && !_Player.Equals(Player)), (PPlayer _Player) => AIExpect(Game, _Player, _Player.Position) - 4000, true).Key };
+        PPlayer Target = PMath.Max(Game.PlayerList.FindAll((PPlayer _Player) => _Player.IsAlive && !_Player.Equals(Player) && (_Player.Defensor == null || !(_Player.Defensor.Model is P_ChiiHsingPaao))), (PPlayer _Player) => AIExpect(Game, _Player, _Player.Position) - 4000, true).Key;
+        return new List<PPlayer>() {  Target };
     }
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
