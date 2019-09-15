@@ -27,6 +27,9 @@ public class P_MuNiuLiuMa : PEquipmentCardModel {
                     AIPriority = 15,
                     Condition = (PGame Game) => {
                         PUsedTag UsedTag = Player.Tags.FindPeekTag<PUsedTag>(PUsedTag.TagNamePrefix + CardName);
+                        if (UsedTag == null) {
+                            Player.Tags.CreateTag(UsedTag = new PUsedTag(CardName, 1));
+                        }
                         return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime()) && UsedTag != null && UsedTag.Count < UsedTag.Limit && Player.Money > 2000;
                     },
                     AICondition = (PGame Game) => {

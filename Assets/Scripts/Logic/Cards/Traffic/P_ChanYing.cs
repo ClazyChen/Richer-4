@@ -27,6 +27,9 @@ public class P_ChanYing : PEquipmentCardModel {
                     AIPriority = 0,
                     Condition = (PGame Game) => {
                         PUsedTag UsedTag = Player.Tags.FindPeekTag<PUsedTag>(PUsedTag.TagNamePrefix + CardName);
+                        if (UsedTag == null) {
+                            Player.Tags.CreateTag(UsedTag = new PUsedTag(CardName, 1));
+                        }
                         return Player.Equals(Game.NowPlayer) && Player.IsUser && Game.Logic.WaitingForEndFreeTime() && UsedTag != null && UsedTag.Count < UsedTag.Limit;
                     },
                     AICondition = (PGame Game) => {
