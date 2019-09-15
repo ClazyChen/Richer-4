@@ -25,5 +25,10 @@ public class PInitialUI : PAbstractUI {
             PUIManager.AddNewUIAction("加入游戏：转到JUI", () => PUIManager.ChangeUI<PJoinUI>());
         });
         #endregion
+        #region 成就按钮：跳转到ArchUI
+        ArchievementButton.onClick.AddListener(() => {
+            PUIManager.AddNewUIAction("成就：转到AUI", () => PUIManager.ChangeUI<PArchUI>());
+        });
+        #endregion
     }
 }

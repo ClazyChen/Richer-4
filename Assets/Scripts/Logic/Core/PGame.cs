@@ -178,6 +178,7 @@ public class PGame : PGameStatus {
 
     public void Die(PPlayer Player) {
         PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "死亡！"));
+        Monitor.CallTime(PTime.DieTime, new PDyingTag(Player));
         Map.BlockList.ForEach((PBlock Block) => {
             if (Player.Equals(Block.Lord)) {
                 Block.Lord = null;
@@ -210,6 +211,23 @@ public class PGame : PGameStatus {
         return LivingTeam.Count <= 1;
     }
 
+    public List<PPlayer> GetWinner() {
+        List<int> LivingTeam = new List<int>();
+        PlayerList.ForEach((PPlayer Player) => {
+            if (Player.IsAlive && !LivingTeam.Contains(Player.TeamIndex)) {
+                LivingTeam.Add(Player.TeamIndex);
+            }
+        });
+        if (LivingTeam.Count < 1) {
+            return new List<PPlayer>();
+        } else {
+            int WinnerTeam = LivingTeam[0];
+            return PlayerList.FindAll((PPlayer Player) => {
+                return Player.TeamIndex == WinnerTeam;
+            });
+        }
+    }
+
     private string Winners() {
         List<int> LivingTeam = new List<int>();
         PlayerList.ForEach((PPlayer Player) => {
@@ -239,6 +257,7 @@ public class PGame : PGameStatus {
         if (EndGameFlag) {
             return;
         }
+        Monitor.CallTime(PTime.EndGameTime);
         EndGameFlag = true;
         ReadyToStartGameFlag = false;
         PreparedList = new List<bool>();

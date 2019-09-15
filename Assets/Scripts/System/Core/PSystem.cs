@@ -7,6 +7,7 @@ public class PSystem: MonoBehaviour {
     public static PRoom CurrentRoom = null;
     public static PMode CurrentMode = null;
     public static int PlayerIndex = 0;
+    public static PArchManager ArchManager = null;
 
     public static Vector3 LastMousePosition;
     public static bool MouseRightButtonDown = false;
@@ -16,6 +17,8 @@ public class PSystem: MonoBehaviour {
 
     void Start() {
         PLogger.StartLogging(true);
+        ArchManager = new PArchManager();
+        ArchManager.Read();
         #region ≥ı ºªØµÿÕºø‚
         string MapDirectory = PPath.GetPath("Data\\Maps");
         string[] MapFileNames = Directory.GetFiles(MapDirectory, "*.xml");
