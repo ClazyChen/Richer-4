@@ -7,7 +7,7 @@ public class P_ChiinTsevChiinWang : PSchemeCardModel {
 
     public List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
         int MaxMoney = PMath.Max(Game.PlayerList, (PPlayer _Player) => _Player.Money).Value;
-        PPlayer Target =  PMath.Max(Game.PlayerList.FindAll((PPlayer _Player) => Player.Money == MaxMoney), (PPlayer _Player) => {
+        PPlayer Target =  PMath.Max(Game.PlayerList.FindAll((PPlayer _Player) => _Player.Money == MaxMoney), (PPlayer _Player) => {
             if (Player.TeamIndex == _Player.TeamIndex) {
                 return PAiMapAnalyzer.ChangeFaceExpect(Game, _Player);
             } else {
@@ -20,7 +20,7 @@ public class P_ChiinTsevChiinWang : PSchemeCardModel {
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
         int Basic = 300;
         int MaxMoney = PMath.Max(Game.PlayerList, (PPlayer _Player) => _Player.Money).Value;
-        int Test = PMath.Max(Game.PlayerList.FindAll((PPlayer _Player) => Player.Money == MaxMoney), (PPlayer _Player) => {
+        int Test = PMath.Max(Game.PlayerList.FindAll((PPlayer _Player) => _Player.Money == MaxMoney), (PPlayer _Player) => {
             if (Player.TeamIndex == _Player.TeamIndex) {
                 return PAiMapAnalyzer.ChangeFaceExpect(Game, _Player);
             } else {
