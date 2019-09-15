@@ -11,7 +11,9 @@ public class P_ShanTien : PAmbushCardModel {
         Game.Traverse((PPlayer _Player) => {
             int Base = _Player.Money <= 60000 ? 30000 : 1000;
             Base *= _Player.TeamIndex == Player.TeamIndex ? -1 : 1;
-            Sum += (int)(Base * Rate);
+            if (_Player.Defensor == null || !(_Player.Defensor.Model is P_YinYangChing)) {
+                Sum += (int)(Base * Rate);
+            }
             Rate *= 26.0 / 36;
         }, Player);
         return Sum;

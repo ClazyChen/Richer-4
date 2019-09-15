@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class P_TaaiPiingYaoShu : PEquipmentCardModel {
 
     public override int AIInEquipExpectation(PGame Game, PPlayer Player) {
-        return 1200;
+        return 2000;
     }
 
     public readonly static string CardName = "太平要术";
