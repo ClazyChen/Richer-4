@@ -128,10 +128,22 @@ public class PAiMapAnalyzer {
         for (int i = 6; i >= 1; -- i) {
             Expectation += Expect(Game, Player, CurrentBlock);
             if (CurrentBlock.GetMoneyPassSolid != 0) {
-                Expectation += i * CurrentBlock.GetMoneyPassSolid;
+                int Disaster = Block.GetMoneyPassSolid;
+                if (Disaster < 0 && -Disaster <= 1000 && Player.Traffic != null && Player.Traffic.Model is P_NanManHsiang) {
+                    Disaster = 0;
+                } else if (Disaster < 0 && Player.Defensor != null && Player.Defensor.Model is P_YinYangChing) {
+                    Disaster = 0;
+                }
+                Expectation += i * Disaster;
             }
             if (CurrentBlock.GetMoneyPassPercent != 0) {
-                Expectation += i * PMath.Percent(Player.Money, CurrentBlock.GetMoneyPassPercent);
+                int Disaster = PMath.Percent(Player.Money, CurrentBlock.GetMoneyPassPercent);
+                if (Disaster < 0 && -Disaster <= 1000 && Player.Traffic != null && Player.Traffic.Model is P_NanManHsiang) {
+                    Disaster = 0;
+                } else if (Disaster < 0 && Player.Defensor != null && Player.Defensor.Model is P_YinYangChing) {
+                    Disaster = 0;
+                }
+                Expectation += i * Disaster;
             }
             if (CurrentBlock.GetCardPass != 0) {
                 Expectation += i * 2000 * CurrentBlock.GetCardPass;
@@ -148,13 +160,32 @@ public class PAiMapAnalyzer {
 
     public static int Expect(PGame Game, PPlayer Player, PBlock Block, bool InPortal = false) {
         int DeltaMoney = 0;
-        DeltaMoney += Block.GetMoneyStopSolid;
-        DeltaMoney += PMath.Percent(Player.Money, Block.GetMoneyStopPercent);
+        int Disaster = Block.GetMoneyStopSolid;
+        if (Disaster < 0 && -Disaster <= 1000 && Player.Traffic != null && Player.Traffic.Model is P_NanManHsiang) {
+            Disaster = 0;
+        } else if (Disaster < 0 && Player.Defensor != null && Player.Defensor.Model is P_YinYangChing) {
+            Disaster = 0;
+        }
+        DeltaMoney += Disaster;
+        Disaster = PMath.Percent(Player.Money, Block.GetMoneyStopPercent);
+        if (Disaster < 0 && -Disaster <= 1000 && Player.Traffic != null && Player.Traffic.Model is P_NanManHsiang) {
+            Disaster = 0;
+        } else if (Disaster < 0 && Player.Defensor != null && Player.Defensor.Model is P_YinYangChing) {
+            Disaster = 0;
+        }
+        DeltaMoney += Disaster;
         if (Block.Lord != null && Block.Lord.TeamIndex != Player.TeamIndex) {
-            DeltaMoney -= Block.Toll;
+            int Toll = Block.Toll;
+            if (Block.BusinessType.Equals(PBusinessType.ShoppingCenter)) {
+                Toll *= 2;
+            }
             if (Block.Lord.Weapon != null && Block.Lord.Weapon.Model is P_KuTingTao && Player.Area.HandCardArea.CardNumber == 0) {
-                DeltaMoney -= Block.Toll;
-            } 
+                Toll *= 2;
+            }
+            if (Toll <= 1000 && Player.Traffic != null && Player.Traffic.Model is P_NanManHsiang) {
+                Toll = 0;
+            }
+            DeltaMoney -= Toll;
         }
         if (Player.Money + DeltaMoney <= 0) {
             return -30000 + DeltaMoney * 2;

@@ -27,6 +27,10 @@ public class P_PaiHuaChooon : PEquipmentCardModel {
                         PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
                         return Player.Equals(InjureTag.ToPlayer) && InjureTag.Injure > 0 && InjureTag.FromPlayer != null && !InjureTag.FromPlayer.Sex.Equals(Player.Sex);
                     },
+                    AICondition = (PGame Game) => {
+                        PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
+                        return InjureTag.Injure > 500;
+                    },
                     Effect = (PGame Game ) => {
                         AnnouceUseEquipmentSkill(Player);
                         PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);

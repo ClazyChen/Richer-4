@@ -65,9 +65,11 @@ public class PCardManager {
             MoveCardTag.Destination.CardList.Add(Card);
             if (MoveCardTag.Destination.Owner != null) {
                 if (MoveCardTag.Destination.IsHandCardArea()) {
+                    MoveCardTag.Destination.Arrange();
                     PNetworkManager.NetworkServer.TellClient(MoveCardTag.Destination.Owner, new PRefreshHandCardsOrder(MoveCardTag.Destination.ToStringArray()));
                     PNetworkManager.NetworkServer.TellClients(new PRefreshHandCardNumberOrder(MoveCardTag.Destination.Owner.Index.ToString(), MoveCardTag.Destination.CardNumber.ToString()));
                 } else if (MoveCardTag.Destination.IsEquipmentArea()) {
+                    MoveCardTag.Destination.Arrange();
                     PNetworkManager.NetworkServer.TellClient(MoveCardTag.Destination.Owner, new PRefreshEquipmentsOrder(MoveCardTag.Destination.ToStringArray()));
                     PNetworkManager.NetworkServer.TellClients(new PRefreshEquipStringOrder(MoveCardTag.Destination.Owner));
                 } else if (MoveCardTag.Destination.IsAmbushArea()) {

@@ -27,6 +27,10 @@ public class P_PaKuaChevn : PEquipmentCardModel {
                         PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
                         return Player.Equals(InjureTag.ToPlayer) && InjureTag.Injure > 0;
                     },
+                    AICondition = (PGame Game) => {
+                        PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
+                        return InjureTag.Injure > 500;
+                    },
                     Effect = (PGame Game ) => {
                         AnnouceUseEquipmentSkill(Player);
                         int Result = Game.Judge(Player);
