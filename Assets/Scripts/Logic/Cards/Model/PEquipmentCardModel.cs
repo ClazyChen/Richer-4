@@ -17,6 +17,22 @@ public abstract class PEquipmentCardModel : PCardModel {
         }
     }
 
+    protected void AnnouceOnce(string CardName) {
+        MoveInEquipTriggerList.Add((PPlayer Player, PCard Card) => {
+            return new PTrigger(CardName) {
+                IsLocked = true,
+                Player = Player,
+                Time = PPeriod.StartTurn.Start,
+                Condition = (PGame Game) => {
+                    return Player.Equals(Game.NowPlayer);
+                },
+                Effect = (PGame Game) => {
+                    Player.Tags.CreateTag(new PUsedTag(CardName, 1));
+                }
+            };
+        });
+    }
+
     protected void AnnouceUseEquipmentSkill(PPlayer Player) {
         PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "发动了" + Name));
     }

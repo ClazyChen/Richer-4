@@ -14,19 +14,7 @@ public class P_ToouShihChi : PEquipmentCardModel {
     public P_ToouShihChi():base(CardName, PCardType.WeaponCard) {
         Point = 6;
         Index = 48;
-        MoveInEquipTriggerList.Add((PPlayer Player, PCard Card) => {
-            return new PTrigger(CardName) {
-                IsLocked = true,
-                Player = Player,
-                Time = PPeriod.StartTurn.Start,
-                Condition = (PGame Game) => {
-                    return Player.Equals(Game.NowPlayer);
-                },
-                Effect = (PGame Game) => {
-                    Player.Tags.CreateTag(new PUsedTag(CardName, 1));
-                }
-            };
-        });
+        AnnouceOnce(CardName);
         foreach (PTime Time in new PTime[] {
             PPeriod.FirstFreeTime.During,
             PPeriod.SecondFreeTime.During
