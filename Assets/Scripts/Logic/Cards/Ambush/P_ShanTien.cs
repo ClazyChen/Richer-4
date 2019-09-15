@@ -49,6 +49,6 @@ public class P_ShanTien : PAmbushCardModel {
     public P_ShanTien():base(CardName) {
         Point = 4;
         Index = 40;
-        BuildAmbush(AIEmitTargets, false, 10);
+        BuildAmbush(AIEmitTargets, true, 10);
     }
 }

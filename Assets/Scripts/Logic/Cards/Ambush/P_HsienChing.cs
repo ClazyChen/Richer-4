@@ -46,6 +46,6 @@ public class P_HsienChing : PAmbushCardModel {
     public P_HsienChing():base(CardName) {
         Point = 5;
         Index = 41;
-        BuildAmbush(AIEmitTargets, false, 10);
+        BuildAmbush(AIEmitTargets, true, 10);
     }
 }
