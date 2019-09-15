@@ -67,7 +67,7 @@ public class PAiCardExpectation {
         }) : new KeyValuePair<PCard, int>(null,int.MinValue);
         KeyValuePair<PCard, int> AmbushResult = AllowAmbush ? PMath.Max(TargetPlayer.Area.AmbushCardArea.CardList, (PCard Card) => {
             return Card.Model.AIInAmbushExpectation(Game, TargetPlayer);
-        }) : new KeyValuePair<PCard, int>(null, int.MaxValue);
+        }) : new KeyValuePair<PCard, int>(null, int.MinValue);
         KeyValuePair<PCard, int> Temp = HandCardResult.Value >= EquipResult.Value ? HandCardResult : EquipResult;
         Temp = Temp.Value >= AmbushResult.Value ? Temp : AmbushResult;
         return Temp;
@@ -88,7 +88,7 @@ public class PAiCardExpectation {
         }) : new KeyValuePair<PCard, int>(null, int.MinValue);
         KeyValuePair<PCard, int> AmbushResult = AllowAmbush ? PMath.Max(TargetPlayer.Area.AmbushCardArea.CardList, (PCard Card) => {
             return Card.Model.AIInHandExpectation(Game, Player) + Cof * Card.Model.AIInAmbushExpectation(Game, TargetPlayer);
-        }) : new KeyValuePair<PCard, int>(null, int.MaxValue);
+        }) : new KeyValuePair<PCard, int>(null, int.MinValue);
         KeyValuePair<PCard, int> Temp = HandCardResult.Value >= EquipResult.Value ? HandCardResult : EquipResult;
         Temp = Temp.Value >= AmbushResult.Value ? Temp : AmbushResult;
         return Temp;

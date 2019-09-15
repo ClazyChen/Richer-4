@@ -397,28 +397,28 @@ public class PGame : PGameStatus {
         }
     }
 
-    private PCard ChooseCard(PPlayer Player, PPlayer TargetPlayer, string Title, bool AllowHandCards = true, bool AllowEquipment = true, bool AllowJudge = false, bool IsGet =false) {
+    private PCard ChooseCard(PPlayer Player, PPlayer TargetPlayer, string Title, bool AllowHandCards = true, bool AllowEquipment = true, bool AllowAmbush = false, bool IsGet =false) {
         PCard TargetCard = null;
         if (Player.IsUser) {
             if (Player.Equals(TargetPlayer)) {
-                TargetCard = PNetworkManager.NetworkServer.ChooseManager.AskToChooseOwnCard(Player, Title, AllowHandCards, AllowEquipment, AllowJudge);
+                TargetCard = PNetworkManager.NetworkServer.ChooseManager.AskToChooseOwnCard(Player, Title, AllowHandCards, AllowEquipment, AllowAmbush);
             } else {
                 if (!AllowEquipment) {
                     if (AllowHandCards) {
                         TargetCard = TargetPlayer.Area.HandCardArea.RandomCard();
                     }
                 } else {
-                    TargetCard = PNetworkManager.NetworkServer.ChooseManager.AskToChooseOthersCard(Player, TargetPlayer, Title, AllowHandCards, AllowJudge);
+                    TargetCard = PNetworkManager.NetworkServer.ChooseManager.AskToChooseOthersCard(Player, TargetPlayer, Title, AllowHandCards, AllowAmbush);
                 }
             }
         } else {
             if (IsGet) {
-                TargetCard = PAiCardExpectation.FindMostValuableToGet(this, Player, TargetPlayer, AllowHandCards, AllowEquipment, AllowJudge, Player.Equals(TargetPlayer)).Key;
+                TargetCard = PAiCardExpectation.FindMostValuableToGet(this, Player, TargetPlayer, AllowHandCards, AllowEquipment, AllowAmbush, Player.Equals(TargetPlayer)).Key;
             } else {
                 if (Player.TeamIndex == TargetPlayer.TeamIndex) {
-                    TargetCard = PAiCardExpectation.FindLeastValuable(this, Player, TargetPlayer, AllowHandCards, AllowEquipment, AllowJudge, Player.Equals(TargetPlayer)).Key;
+                    TargetCard = PAiCardExpectation.FindLeastValuable(this, Player, TargetPlayer, AllowHandCards, AllowEquipment, AllowAmbush, Player.Equals(TargetPlayer)).Key;
                 } else {
-                    TargetCard = PAiCardExpectation.FindMostValuable(this, Player, TargetPlayer, AllowHandCards, AllowEquipment, AllowJudge).Key;
+                    TargetCard = PAiCardExpectation.FindMostValuable(this, Player, TargetPlayer, AllowHandCards, AllowEquipment, AllowAmbush).Key;
                 }
             }
         }
