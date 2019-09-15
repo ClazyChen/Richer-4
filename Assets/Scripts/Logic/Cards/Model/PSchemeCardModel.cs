@@ -19,6 +19,7 @@ public abstract class PSchemeCardModel: PCardModel {
             Game.Monitor.CallTime(PTime.Card.AfterEmitTargetTime, new PUseCardTag(Card, Player, Targets));
             Game.CardManager.MoveCard(Card, Player.Area.HandCardArea, Game.CardManager.SettlingArea);
             Game.Monitor.CallTime(PTime.Card.AfterBecomeTargetTime, new PUseCardTag(Card, Player, Targets));
+            Game.TagManager.CreateTag(new PUseCardTag(Card, Player, Targets));
             StartAction?.Invoke(Game, Player, Targets);
             Targets.ForEach((PPlayer Target) => {
                 if (Target != null && Target.IsAlive) {
@@ -26,6 +27,7 @@ public abstract class PSchemeCardModel: PCardModel {
                 }
             });
             EndAction?.Invoke(Game, Player, Targets);
+            Game.TagManager.PopTag<PUseCardTag>(PUseCardTag.TagName);
             Game.CardManager.MoveCard(Card, Game.CardManager.SettlingArea, Game.CardManager.ThrownCardHeap);
             Game.Monitor.CallTime(PTime.Card.EndSettleTime, new PUseCardTag(Card, Player, Targets));
         };

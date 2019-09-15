@@ -7,6 +7,7 @@ public class PPlayer: PObject {
     public int Index;
     public int Money = 0;
     public PSex Sex = PSex.NoSex;
+    public PAge Age = PAge.NoAge;
     public bool IsAlive = true;
     public int TeamIndex;
     public PBlock Position;

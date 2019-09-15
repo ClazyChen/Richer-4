@@ -3,7 +3,16 @@ using System.Collections.Generic;
 
 public class PAiTargetChooser {
     
-    public static PPlayer InjureTarget(PGame Game, PPlayer Player, PTrigger.PlayerCondition Condition =null, int ExpectedMoney=0) {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="Game"></param>
+    /// <param name="Player"></param>
+    /// <param name="Condition"></param>
+    /// <param name="ExpectedMoney"></param>
+    /// <param name="TagTsaangLang">是否会触发苍狼，即额外考虑获得一张牌的收益</param>
+    /// <returns></returns>
+    public static PPlayer InjureTarget(PGame Game, PPlayer Player, PTrigger.PlayerCondition Condition =null, int ExpectedMoney=0, bool TagTsaangLang = false) {
 
         return PMath.Max(Game.PlayerList.FindAll((PPlayer Target) => Target.IsAlive && (Condition == null || Condition(Game, Target))), (PPlayer Target) => {
 
@@ -36,6 +45,11 @@ public class PAiTargetChooser {
             if (Target.Money <= ExpectedMoney) {
                 Profit += 30000 * Cof;
             }
+
+            if (TagTsaangLang || Player.Area.HandCardArea.CardList.Exists((PCard Card) => Card.Model is P_CheevnHuoTaChieh)) {
+                Profit += Math.Max(0, PAiCardExpectation.FindMostValuableToGet(Game, Player, Target).Value);
+            }
+
             // 加上受到、造成伤害触发技能的增益
             return Profit;
         }, true).Key;

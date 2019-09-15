@@ -26,7 +26,6 @@ public class PAiCardExpectation {
 
 
     public static KeyValuePair< PCard, int> FindLeastValuable(PGame Game, PPlayer Player, PPlayer TargetPlayer, bool AllowHandCards = true, bool AllowEquipment = true, bool AllowAmbush = false, bool CanSee = false) {
-        // 装备和伏兵另外计算
         KeyValuePair<PCard, int> HandCardResult = AllowHandCards ?  PMath.Min(TargetPlayer.Area.HandCardArea.CardList, (PCard Card) => {
             if (CanSee) {
                 return Card.Model.AIInHandExpectation(Game, Player);
@@ -48,7 +47,7 @@ public class PAiCardExpectation {
             }
         }) : new KeyValuePair<PCard, int>(null, int.MaxValue);
         KeyValuePair<PCard, int> AmbushResult = AllowAmbush ? PMath.Min(TargetPlayer.Area.AmbushCardArea.CardList, (PCard Card) => {
-            return Card.Model.AIInAmbushExpectation(Game, Player);
+            return Card.Model.AIInAmbushExpectation(Game, TargetPlayer);
         }) : new KeyValuePair<PCard, int>(null, int.MaxValue);
         KeyValuePair<PCard, int> Temp = HandCardResult.Value <= EquipResult.Value ? HandCardResult : EquipResult;
         Temp = Temp.Value <= AmbushResult.Value ? Temp : AmbushResult;
@@ -56,7 +55,6 @@ public class PAiCardExpectation {
     }
 
     public static KeyValuePair<PCard, int> FindMostValuable(PGame Game, PPlayer Player, PPlayer TargetPlayer, bool AllowHandCards = true, bool AllowEquipment = true, bool AllowAmbush = false, bool CanSee = false) {
-        // 装备和伏兵另外计算
         KeyValuePair<PCard, int> HandCardResult = AllowHandCards ? PMath.Max(TargetPlayer.Area.HandCardArea.CardList, (PCard Card) => {
             if (CanSee) {
                 return Card.Model.AIInHandExpectation(Game, Player);
@@ -68,7 +66,27 @@ public class PAiCardExpectation {
             return Card.Model.AIInEquipExpectation(Game, TargetPlayer);
         }) : new KeyValuePair<PCard, int>(null,int.MinValue);
         KeyValuePair<PCard, int> AmbushResult = AllowAmbush ? PMath.Max(TargetPlayer.Area.AmbushCardArea.CardList, (PCard Card) => {
-            return Card.Model.AIInAmbushExpectation(Game, Player);
+            return Card.Model.AIInAmbushExpectation(Game, TargetPlayer);
+        }) : new KeyValuePair<PCard, int>(null, int.MaxValue);
+        KeyValuePair<PCard, int> Temp = HandCardResult.Value >= EquipResult.Value ? HandCardResult : EquipResult;
+        Temp = Temp.Value >= AmbushResult.Value ? Temp : AmbushResult;
+        return Temp;
+    }
+
+    public static KeyValuePair<PCard, int> FindMostValuableToGet(PGame Game, PPlayer Player, PPlayer TargetPlayer, bool AllowHandCards = true, bool AllowEquipment = true, bool AllowAmbush = false, bool CanSee = false) {
+        int Cof = Player.TeamIndex == TargetPlayer.TeamIndex ? -1 : 1;
+        KeyValuePair<PCard, int> HandCardResult = AllowHandCards ? PMath.Max(TargetPlayer.Area.HandCardArea.CardList, (PCard Card) => {
+            if (CanSee) {
+                return Card.Model.AIInHandExpectation(Game, Player) + Cof * Card.Model.AIInHandExpectation(Game, TargetPlayer);
+            } else {
+                return Cof < 0 ? 0 : 2000 + PMath.RandInt(-10, 10);
+            }
+        }) : new KeyValuePair<PCard, int>(null, int.MinValue);
+        KeyValuePair<PCard, int> EquipResult = AllowEquipment ? PMath.Max(TargetPlayer.Area.EquipmentCardArea.CardList, (PCard Card) => {
+            return Card.Model.AIInHandExpectation(Game, Player)+ Cof* Card.Model.AIInEquipExpectation(Game, TargetPlayer);
+        }) : new KeyValuePair<PCard, int>(null, int.MinValue);
+        KeyValuePair<PCard, int> AmbushResult = AllowAmbush ? PMath.Max(TargetPlayer.Area.AmbushCardArea.CardList, (PCard Card) => {
+            return Card.Model.AIInHandExpectation(Game, Player) + Cof * Card.Model.AIInAmbushExpectation(Game, TargetPlayer);
         }) : new KeyValuePair<PCard, int>(null, int.MaxValue);
         KeyValuePair<PCard, int> Temp = HandCardResult.Value >= EquipResult.Value ? HandCardResult : EquipResult;
         Temp = Temp.Value >= AmbushResult.Value ? Temp : AmbushResult;

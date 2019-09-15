@@ -11,7 +11,7 @@ public class P_HsiaoLiTsaangTao : PSchemeCardModel {
             PCard CurrentEquip = _Player.GetEquipment(Card.Type);
             int Current = CurrentEquip == null ? 0 : CurrentEquip.Model.AIInEquipExpectation(Game, _Player);
             int Delta = (_Player.Area.EquipmentCardArea.CardNumber + (CurrentEquip == null ? 1 : 0)) * 500;
-            return New - Current - (Delta >= _Player.Money ? 30000 : 0);
+            return New - Current - (Delta >= _Player.Money ? 30000 : 0) + Math.Max(0, PAiCardExpectation.FindMostValuableToGet(Game, Player, _Player).Value);
         });
     }
 
@@ -21,7 +21,7 @@ public class P_HsiaoLiTsaangTao : PSchemeCardModel {
             PCard CurrentEquip = _Player.GetEquipment(Card.Type);
             int Current = CurrentEquip == null ? 0 : CurrentEquip.Model.AIInEquipExpectation(Game, _Player);
             int Delta = (_Player.Area.EquipmentCardArea.CardNumber + (CurrentEquip == null ? 1 : 0)) * 500;
-            return (Delta >= _Player.Money ? 30000 : 0) + 2 * Delta - (New - Current);
+            return (Delta >= _Player.Money ? 30000 : 0) + 2 * Delta - (New - Current) + Math.Max(0, PAiCardExpectation.FindMostValuableToGet(Game, Player, _Player).Value);
         });
     }
 
