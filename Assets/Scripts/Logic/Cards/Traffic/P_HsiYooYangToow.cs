@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class P_HsiYooYangToow : PEquipmentCardModel {
 
     public override int AIInEquipExpectation(PGame Game, PPlayer Player) {
-        return 2000 * Game.Enemies(Player).FindAll((PPlayer _Player) => !_Player.Age.Equals(Player.Age)).Count;
+        return 1500 * Game.Enemies(Player).FindAll((PPlayer _Player) => !_Player.Age.Equals(Player.Age)).Count;
     }
 
     public readonly static string CardName = "西域羊驼";

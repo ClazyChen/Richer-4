@@ -14,7 +14,7 @@ public class P_TsaangLang : PEquipmentCardModel {
 
     public readonly static string CardName = "苍狼";
 
-    public P_TsaangLang():base(CardName, PCardType.DefensorCard) {
+    public P_TsaangLang():base(CardName, PCardType.TrafficCard) {
         Point = 3;
         Index = 57;
         foreach (PTime Time in new PTime[] {
