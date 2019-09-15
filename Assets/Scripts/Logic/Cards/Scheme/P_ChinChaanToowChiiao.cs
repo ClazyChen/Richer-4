@@ -48,6 +48,9 @@ public class P_ChinChaanToowChiiao : PSchemeCardModel {
                         int MaxValue = int.MinValue;
                         int NowValue = 0;
                         PBlock TestBlock = Player.Position.NextBlock;
+                        if (Player.Traffic != null && Player.Traffic.Model is P_ChiihTuu) {
+                            TestBlock = TestBlock.NextBlock;
+                        }
                         for (int i = 0; i < 6; ++i, TestBlock = TestBlock.NextBlock) {
                             int Value = PAiMapAnalyzer.Expect(Game, Player, TestBlock);
                             if (Value > MaxValue) {
@@ -67,6 +70,9 @@ public class P_ChinChaanToowChiiao : PSchemeCardModel {
                             if (Target.IsAI) {
                                 int MaxValue = int.MinValue;
                                 PBlock TestBlock = Player.Position.NextBlock;
+                                if (Player.Traffic != null && Player.Traffic.Model is P_ChiihTuu) {
+                                    TestBlock = TestBlock.NextBlock;
+                                }
                                 for (int i = 0; i < 6; ++i, TestBlock = TestBlock.NextBlock) {
                                     int Value = PAiMapAnalyzer.Expect(Game, Player, TestBlock);
                                     if (Value > MaxValue) {

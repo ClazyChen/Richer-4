@@ -7,7 +7,11 @@ public class P_ShangWuChoouTii: PSchemeCardModel {
 
     public List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
         return new List<PPlayer>() { PMath.Max(Game.PlayerList.FindAll((PPlayer _Player) => _Player.IsAlive && !_Player.Equals(Player) && _Player.Distance(Player) <= 3 && !_Player.NoLadder), (PPlayer _Player) => {
-            int Value = PAiMapAnalyzer.Expect(Game, _Player, _Player.Position);
+            PBlock ExpectBlock = _Player.Position;
+            if (_Player.Traffic != null && _Player.Traffic.Model is P_ChiihTuu) {
+                ExpectBlock = ExpectBlock.NextBlock;
+            }
+            int Value = PAiMapAnalyzer.Expect(Game, _Player, ExpectBlock);
             if (_Player.TeamIndex == Player.TeamIndex) {
                 return Value;
             } else {
@@ -48,7 +52,7 @@ public class P_ShangWuChoouTii: PSchemeCardModel {
                             PTrigger StepZero = null;
                             StepZero = new PTrigger(CardName + "[步数变为0]") {
                                 IsLocked = true,
-                                Player = Target,
+                                Player = null,
                                 Time = PPeriod.WalkingStage.Start,
                                 Condition = (PGame _Game) => {
                                     return Target.Equals(_Game.NowPlayer);

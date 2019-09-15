@@ -20,8 +20,16 @@ public class PAiMapAnalyzer {
                 if (_Player.Equals(Game.NowPlayer) && Game.NowPeriod.IsAfter(PPeriod.WalkingStage)) {
                     continue;
                 }
+                PBlock Block = _Player.Position;
+                if (!_Player.NoLadder) {
+                    Block = Block.NextBlock;
+                }
+                if (_Player.Traffic != null && _Player.Traffic.Model is P_ChiihTuu) {
+                    Block = Block.NextBlock;
+                }
+
                 if (_Player.NoLadder) {
-                    PBlock Block = _Player.Position;
+                    
                     if (Player.Equals(Block.Lord) && Player.TeamIndex != _Player.TeamIndex) {
                         Sum -= 12 * Block.Toll;
                         if (Player.Weapon != null && Player.Weapon.Model is P_KuTingTao && _Player.Area.HandCardArea.CardNumber == 0) {
@@ -29,7 +37,6 @@ public class PAiMapAnalyzer {
                         }
                     }
                 } else {
-                    PBlock Block = _Player.Position.NextBlock;
                     for (int i = 0; i < 6; ++i, Block = Block.NextBlock) {
                         if (Player.Equals(Block.Lord) && Player.TeamIndex != _Player.TeamIndex) {
                             Sum -= 2 * Block.Toll;
@@ -43,8 +50,15 @@ public class PAiMapAnalyzer {
             }
         }
         if (Including) {
+            PBlock Block = Player.Position;
+            if (!Player.NoLadder) {
+                Block = Block.NextBlock;
+            }
+            if (Player.Traffic != null && Player.Traffic.Model is P_ChiihTuu) {
+                Block = Block.NextBlock;
+            }
+
             if (Player.NoLadder) {
-                PBlock Block = Player.Position;
                 if (Block.Lord != null && Player.TeamIndex != Block.Lord.TeamIndex) {
                     Sum += 12 * Block.Toll;
                     if (Block.Lord.Weapon != null && Block.Lord.Weapon.Model is P_KuTingTao && Player.Area.HandCardArea.CardNumber == 0) {
@@ -52,7 +66,6 @@ public class PAiMapAnalyzer {
                     }
                 }
             } else {
-                PBlock Block = Player.Position.NextBlock;
                 for (int i = 0; i < 6; ++i, Block = Block.NextBlock) {
                     if (Block.Lord != null && Player.TeamIndex != Block.Lord.TeamIndex) {
                         Sum += 2 * Block.Toll;
@@ -101,10 +114,16 @@ public class PAiMapAnalyzer {
     }
 
     public static int StartFromExpect(PGame Game, PPlayer Player, PBlock Block) {
-        if (Player.NoLadder) {
-            return Expect(Game, Player, Block);
+        PBlock CurrentBlock = Block;
+        if (!Player.NoLadder) {
+            CurrentBlock = CurrentBlock.NextBlock;
         }
-        PBlock CurrentBlock = Block.NextBlock;
+        if (Player.Traffic != null && Player.Traffic.Model is P_ChiihTuu) {
+            CurrentBlock = CurrentBlock.NextBlock;
+        }
+        if (Player.NoLadder) {
+            return Expect(Game, Player, CurrentBlock);
+        }
         int Expectation = 0;
         for (int i = 6; i >= 1; -- i) {
             Expectation += Expect(Game, Player, CurrentBlock);
