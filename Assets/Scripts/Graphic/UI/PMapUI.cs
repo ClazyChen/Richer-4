@@ -56,6 +56,7 @@ public class PMapUI : PAbstractUI {
         PlayerInformationGroup.Open();
         HandCardArea.Open();
         EquipCardArea.Open();
+        AmbushCardArea.Open();
         ToolTip.Close();
         InformationText.text = string.Empty;
         DiceImage.gameObject.SetActive(false);
@@ -72,6 +73,7 @@ public class PMapUI : PAbstractUI {
         MessageBox.Close();
         HandCardArea.Close();
         EquipCardArea.Close();
+        AmbushCardArea.Close();
         PlayerInformationGroup.Close();
         ToolTip.Close();
         base.Close();
