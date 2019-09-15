@@ -11,7 +11,7 @@ public class PPeriodTriggerInstaller : PSystemTriggerInstaller {
     public static readonly PPeriod[] TurnFlow = {
         PPeriod.StartTurn,
         PPeriod.PreparationStage,
-        PPeriod.JudgeStage,
+        PPeriod.AmbushStage,
         PPeriod.FirstFreeTime,
         PPeriod.DiceStage,
         PPeriod.WalkingStage,

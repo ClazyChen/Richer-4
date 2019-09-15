@@ -50,6 +50,9 @@ public class PCardManager {
                 } else if (MoveCardTag.Source.IsEquipmentArea()) {
                     PNetworkManager.NetworkServer.TellClient(MoveCardTag.Source.Owner, new PRefreshEquipmentsOrder(MoveCardTag.Source.ToStringArray()));
                     PNetworkManager.NetworkServer.TellClients(new PRefreshEquipStringOrder(MoveCardTag.Source.Owner));
+                } else if (MoveCardTag.Source.IsAmbushArea()) {
+                    PNetworkManager.NetworkServer.TellClient(MoveCardTag.Source.Owner, new PRefreshAmbushOrder(MoveCardTag.Source.ToStringArray()));
+                    PNetworkManager.NetworkServer.TellClients(new PRefreshAmbushStringOrder(MoveCardTag.Source.Owner));
                 }
             }
             if (MoveCardTag.Destination.IsEquipmentArea()) {
@@ -67,6 +70,9 @@ public class PCardManager {
                 } else if (MoveCardTag.Destination.IsEquipmentArea()) {
                     PNetworkManager.NetworkServer.TellClient(MoveCardTag.Destination.Owner, new PRefreshEquipmentsOrder(MoveCardTag.Destination.ToStringArray()));
                     PNetworkManager.NetworkServer.TellClients(new PRefreshEquipStringOrder(MoveCardTag.Destination.Owner));
+                } else if (MoveCardTag.Destination.IsAmbushArea()) {
+                    PNetworkManager.NetworkServer.TellClient(MoveCardTag.Destination.Owner, new PRefreshAmbushOrder(MoveCardTag.Destination.ToStringArray()));
+                    PNetworkManager.NetworkServer.TellClients(new PRefreshAmbushStringOrder(MoveCardTag.Destination.Owner));
                 }
             }
         }
@@ -171,7 +177,9 @@ public class PCardManager {
             new P_PaiHuaChooon().Instantiate(),
             new P_PaiHuaChooon().Instantiate(),
             new P_YooHsi().Instantiate(),
-            new P_YooHsi().Instantiate()
+            new P_YooHsi().Instantiate(),
+            new P_LevPuSsuShu().Instantiate(),
+            new P_LevPuSsuShu().Instantiate()
 
         }).ForEach((PCard Card) => {
             CardHeap.CardList.Add(Card);

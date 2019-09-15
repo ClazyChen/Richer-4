@@ -21,6 +21,7 @@ public class PMapUI : PAbstractUI {
     public readonly PCameraController CameraController;
     public readonly PCardUIGroup HandCardArea;
     public readonly PCardUIGroup EquipCardArea;
+    public readonly PCardUIGroup AmbushCardArea;
     public readonly PToolTip ToolTip;
     public readonly Text InformationText;
     public readonly Text PushText;
@@ -37,6 +38,7 @@ public class PMapUI : PAbstractUI {
         PlayerInformationGroup = new PPlayerInformationBoxGroup(UIBackgroundImage.Find("PlayerInformationBoxes"));
         HandCardArea = new PCardUIGroup(UIBackgroundImage.Find("HandCardArea")) { StartIndex = 0 };
         EquipCardArea = new PCardUIGroup(UIBackgroundImage.Find("EquipCardArea")) { StartIndex = 1000 };
+        AmbushCardArea = new PCardUIGroup(UIBackgroundImage.Find("AmbushCardArea")) { StartIndex = 2000 };
         ToolTip = new PToolTip(UIBackgroundImage.Find("ToolTipImage"));
         CameraController = new PCameraController();
         DiceSpriteList = new Sprite[6];

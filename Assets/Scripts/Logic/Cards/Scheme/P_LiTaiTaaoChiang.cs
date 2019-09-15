@@ -48,18 +48,7 @@ public class P_LiTaiTaaoChiang: PSchemeCardModel {
                         (PGame Game, PPlayer User, PPlayer Target) => {
                             PNetworkManager.NetworkServer.TellClients(new PPushTextOrder(User.Index.ToString(), "李代桃僵：防止伤害", PPushType.Information.Name));
                             Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName).Injure = 0;
-                            if (User.HasHouse) {
-                                PBlock TargetBlock = null;
-                                if (Target.IsAI) {
-                                    TargetBlock = PAiMapAnalyzer.MaxValueHouse(Game, User).Key;
-                                } else {
-                                    TargetBlock = PNetworkManager.NetworkServer.ChooseManager.AskToChooseBlock(Target, "[李代桃僵]选择目标格子", (PBlock Block) => User.Equals(Block.Lord) && Block.HouseNumber > 0);
-                                }
-                                if (TargetBlock != null) {
-                                    PNetworkManager.NetworkServer.TellClients(new PHighlightBlockOrder(TargetBlock.Index.ToString()));
-                                    Game.LoseHouse(TargetBlock, 1);
-                                }
-                            }
+                            Game.ThrowHouse(Target, User, CardName);
                         })
                 };
             });

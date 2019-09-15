@@ -440,6 +440,32 @@ public class PGame : PGameStatus {
     }
 
     /// <summary>
+    /// 弃一座房屋（没有则不弃）
+    /// </summary>
+    /// <param name="Player"></param>
+    /// <param name="TargetPlayer"></param>
+    /// <param name="Title"></param>
+    public void ThrowHouse(PPlayer Player, PPlayer TargetPlayer, string Title) {
+        if (TargetPlayer.HasHouse) {
+            PBlock TargetBlock = null;
+            if (Player.IsAI) {
+                if (Player.TeamIndex == TargetPlayer.TeamIndex) {
+                    TargetBlock = PAiMapAnalyzer.MinValueHouse(this, TargetPlayer).Key;
+                } else {
+                    TargetBlock = PAiMapAnalyzer.MaxValueHouse(this, TargetPlayer).Key;
+                }
+                    
+            } else {
+                TargetBlock = PNetworkManager.NetworkServer.ChooseManager.AskToChooseBlock(Player, "[" + Title + "]选择" + TargetPlayer.Name + "的房屋", (PBlock Block) => TargetPlayer.Equals(Block.Lord) && Block.HouseNumber > 0);
+            }
+            if (TargetBlock != null) {
+                PNetworkManager.NetworkServer.TellClients(new PHighlightBlockOrder(TargetBlock.Index.ToString()));
+                LoseHouse(TargetBlock, 1);
+            }
+        }
+    }
+
+    /// <summary>
     /// 获得牌行为
     /// </summary>
     /// <param name="Player">获得牌的玩家</param>

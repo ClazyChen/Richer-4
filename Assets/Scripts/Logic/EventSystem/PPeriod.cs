@@ -34,7 +34,7 @@ public class PPeriod : PObject {
 
     public static PPeriod StartTurn = new PPeriod("回合开始时");
     public static PPeriod PreparationStage = new PPeriod("准备阶段");
-    public static PPeriod JudgeStage = new PPeriod("判定阶段");
+    public static PPeriod AmbushStage = new PPeriod("判定阶段");
     public static PPeriod FirstFreeTime = new PPeriod("第一个空闲时间点");
     public static PPeriod DiceStage = new PPeriod("掷骰阶段");
     public static PPeriod WalkingStage = new PPeriod("行走阶段");

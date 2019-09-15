@@ -11,8 +11,8 @@ public abstract class PAmbushCardModel : PCardModel {
         return 0;
     }
 
-    protected void AnnouceInvokeJudge(PPlayer Player) {
-        PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder("伏兵[" + Name + "]生效"));
+    public virtual void AnnouceInvokeJudge(PGame Game, PPlayer Player, PCard Card) {
+        PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder("伏兵[" + Card.Name + "]生效"));
     }
 
     /// <summary>

@@ -119,6 +119,11 @@ public class PAiMapAnalyzer {
             }
             CurrentBlock = Block.NextBlock;
         }
+        Player.Area.AmbushCardArea.CardList.ForEach((PCard Card) => {
+            if (Card.Model is P_TsaaoMuChiehPing) {
+                Expectation += ((P_TsaaoMuChiehPing)Card.Model).AIExpect(Game, Player, Block);
+            }
+        });
         return Expectation / 6;
     }
 

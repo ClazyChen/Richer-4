@@ -50,18 +50,7 @@ public class P_TaTsaaoChingShev: PSchemeCardModel {
                     },
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets, AIEmitTargets,
                         (PGame Game, PPlayer User, PPlayer Target) => {
-                            if (Target.HasHouse) {
-                                PBlock TargetBlock = null;
-                                if (Target.IsAI) {
-                                    TargetBlock = PAiMapAnalyzer.MinValueHouse(Game, Target).Key;
-                                } else {
-                                    TargetBlock = PNetworkManager.NetworkServer.ChooseManager.AskToChooseBlock(Target, "[打草惊蛇]选择目标格子", (PBlock Block) => Target.Equals(Block.Lord) && Block.HouseNumber > 0);
-                                }
-                                if (TargetBlock != null) {
-                                    PNetworkManager.NetworkServer.TellClients(new PHighlightBlockOrder(TargetBlock.Index.ToString()));
-                                    Game.LoseHouse(TargetBlock, 1);
-                                }
-                            }
+                            Game.ThrowHouse(Target, Target, CardName);
                         })
                 };
             });

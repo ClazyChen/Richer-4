@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class P_ToouShihChi : PEquipmentCardModel {
 
     public override int AIInEquipExpectation(PGame Game, PPlayer Player) {
-        return 500 + 5000 * Game.Map.BlockList.FindAll((PBlock Block) => Block.Lord != null && Block.Lord.TeamIndex != Player.Index && Block.HouseNumber > 1 && Block.BusinessType.Equals(PBusinessType.Castle)).Count;
+        return 500 + 5000 * Game.Map.BlockList.FindAll((PBlock Block) => Block.Lord != null && Block.Lord.TeamIndex != Player.TeamIndex && Block.HouseNumber > 1 && Block.BusinessType.Equals(PBusinessType.Castle)).Count;
     }
 
     public readonly static string CardName = "投石机";
@@ -38,7 +38,7 @@ public class P_ToouShihChi : PEquipmentCardModel {
                     Time = Time,
                     Condition = (PGame Game) => {
                         PUsedTag UsedTag = Player.Tags.FindPeekTag<PUsedTag>(PUsedTag.TagNamePrefix + CardName);
-                        return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime()) && UsedTag != null && UsedTag.Count < UsedTag.Limit && Player.Money > 3000;
+                        return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime()) && UsedTag != null && UsedTag.Count < UsedTag.Limit && Player.Money > 3000 && Game.Map.BlockList.Exists((PBlock Block ) => Block.HouseNumber > 0);
                     },
                     AICondition = (PGame Game) => {
                         return Game.Map.BlockList.Exists((PBlock Block) => Block.Lord != null && Block.Lord.TeamIndex != Player.Index && Block.HouseNumber > 1 && Block.BusinessType.Equals(PBusinessType.Castle)) && Player.Money >= 6000;
@@ -47,7 +47,7 @@ public class P_ToouShihChi : PEquipmentCardModel {
                         AnnouceUseEquipmentSkill(Player);
                         PBlock TargetBlock = null;
                         if (Player.IsAI) {
-                            TargetBlock = PMath.Max(Game.Map.BlockList.FindAll((PBlock Block) => Block.Lord != null && Block.Lord.TeamIndex != Player.Index && Block.BusinessType.Equals(PBusinessType.Castle)), (PBlock Block) => Block.HouseNumber).Key;
+                            TargetBlock = PMath.Max(Game.Map.BlockList.FindAll((PBlock Block) => Block.Lord != null && Block.Lord.TeamIndex != Player.TeamIndex && Block.BusinessType.Equals(PBusinessType.Castle)), (PBlock Block) => Block.HouseNumber).Key;
                         } else {
                             TargetBlock = PNetworkManager.NetworkServer.ChooseManager.AskToChooseBlock(Player, CardName + "之目标", (PBlock Block) => Block.HouseNumber > 0);
                         }

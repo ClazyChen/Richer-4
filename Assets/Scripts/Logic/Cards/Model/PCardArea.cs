@@ -22,6 +22,10 @@ public class PCardArea : PObject {
         return Owner != null && Equals(Owner.Area.EquipmentCardArea);
     }
 
+    public bool IsAmbushArea() {
+        return Owner != null && Equals(Owner.Area.AmbushCardArea);
+    }
+
     /// <summary>
     /// 洗牌操作
     /// </summary>

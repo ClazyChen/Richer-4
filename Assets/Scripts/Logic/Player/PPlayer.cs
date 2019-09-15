@@ -134,9 +134,9 @@ public class PPlayer: PObject {
             return GetEquipment(PCardType.DefensorCard);
         }
     }
-    public PCard Ambush {
+    public PCard Traffic {
         get {
-            return GetEquipment(PCardType.AmbushCard);
+            return GetEquipment(PCardType.TrafficCard);
         }
     }
 
@@ -160,6 +160,10 @@ public class PPlayer: PObject {
     /// 客户端专用，用于设置装备域
     /// </summary>
     public string EquipString = "|";
+    /// <summary>
+    /// 客户端专用，用于设置伏兵域
+    /// </summary>
+    public string AmbushString = "|";
 
     /// <summary>
     /// 服务器端专用，用于设置标记域string
@@ -171,11 +175,24 @@ public class PPlayer: PObject {
 
     public string GetEquipString() {
         string Result = string.Empty;
-        foreach (PCard Card in new PCard[] { Weapon, Defensor, Ambush}) {
+        foreach (PCard Card in new PCard[] { Weapon, Defensor, Traffic}) {
             if (Card != null) {
                 Result += "|" + Card.Name[Card.Name.Length - 1];
             }
         }
+        if (Result.Length <= 1) {
+            return "|";
+        }
+        return Result;
+    }
+
+    public string GetAmbushString() {
+        string Result = string.Empty;
+        foreach (PCard Card in Area.AmbushCardArea.CardList) {
+            if (Card != null) {
+                Result += "|" + Card.Name[0];
+            }
+        } 
         if (Result.Length <= 1) {
             return "|";
         }
