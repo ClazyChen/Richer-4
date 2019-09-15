@@ -60,7 +60,7 @@ public class PCardToolTip : PObject {
     public static PCardToolTip PaiHuaChooon = new PCardToolTip("百花裙", "【被】当你受到异性角色造成的伤害时，你可令此伤害*50%。");
     public static PCardToolTip YooHsi = new PCardToolTip("玉玺", "【被】锁定技，群体普通计策牌对你无效。");
     public static PCardToolTip ChiiHsingPaao = new PCardToolTip("七星袍", "【被】锁定技，伏兵牌对你无效。");
-    public static PCardToolTip TaaiPiingYaoShu = new PCardToolTip("太平要术", "【被】当你的牌即将被其他角色获得时，你可以改为将其置入弃牌堆。");
+    public static PCardToolTip TaaiPiingYaoShu = new PCardToolTip("太平要术", "【被】回合开始时，你可以摸200。");
     public static PCardToolTip YinYangChing = new PCardToolTip("阴阳镜", "【被】锁定技，防止你受到的无来源伤害。");
     public static PCardToolTip ChiihTuu = new PCardToolTip("赤兔", "【被】锁定技，你的行走步数+1。");
     public static PCardToolTip ChanYing = new PCardToolTip("战鹰", "【主】回合内限一次，你可观看一名其他角色的手牌。");

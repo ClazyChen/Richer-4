@@ -5,17 +5,29 @@ using System.Collections.Generic;
 /// </summary>
 public class P_ShanTien : PAmbushCardModel {
 
+    private int RoundExpect(PGame Game, PPlayer Player) {
+        int Sum = 0;
+        double Rate = 10.0 / 36;
+        Game.Traverse((PPlayer _Player) => {
+            int Base = _Player.Money <= 60000 ? 30000 : 1000;
+            Base *= _Player.TeamIndex == Player.TeamIndex ? -1 : 1;
+            Sum += (int)(Base * Rate);
+            Rate *= 26.0 / 36;
+        }, Player);
+        return Sum;
+    }
+
     public List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
         
-        return new List<PPlayer>() { Game.Enemies(Player).Count > Game.Teammates(Player).Count && (PMath.Min(Game.Teammates(Player), (PPlayer _Player) => _Player.Money).Value > 6000 || PMath.Min(Game.Enemies(Player), (PPlayer _Player) => _Player.Money).Value <= 6000) && (Player.Defensor == null || !(Player.Defensor.Model is P_ChiiHsingPaao)) ? Player : null };
+        return new List<PPlayer>() { RoundExpect(Game, Player) >= 500 && (Player.Defensor == null || !(Player.Defensor.Model is P_ChiiHsingPaao)) ? Player : null };
     }
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
-        return AIInAmbushExpectation(Game, Player);
+        return RoundExpect(Game, Player);
     }
 
     public override int AIInAmbushExpectation(PGame Game, PPlayer Player) {
-        return 6000 * 10 / 36 * (Game.Enemies(Player).Count - Game.Teammates(Player).Count + 4 * (Game.Enemies(Player).FindAll((PPlayer _Player) => _Player.Money <= 6000).Count - Game.Teammates(Player).FindAll((PPlayer _Player) => _Player.Money <= 6000).Count));
+        return RoundExpect(Game, Player);
     }
 
     public override void AnnouceInvokeJudge(PGame Game, PPlayer Player, PCard Card) {
