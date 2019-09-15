@@ -19,6 +19,10 @@ public class PAiTargetChooser {
             if (!Target.CanBeInjured || Player.OutOfGame) {
                 return 0;
             }
+            if (ExpectedMoney <= 1000 && Target.Traffic != null && Target.Traffic.Model is P_NanManHsiang) {
+                return 0;
+            }
+
             if (Target.Area.HandCardArea.CardNumber == 0 && Player.Weapon != null && Player.Weapon.Model is P_KuTingTao) {
                 ExpectedMoney *= 2;
             }

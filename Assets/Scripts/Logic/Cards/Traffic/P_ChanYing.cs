@@ -29,6 +29,9 @@ public class P_ChanYing : PEquipmentCardModel {
                         PUsedTag UsedTag = Player.Tags.FindPeekTag<PUsedTag>(PUsedTag.TagNamePrefix + CardName);
                         return Player.Equals(Game.NowPlayer) && Player.IsUser && Game.Logic.WaitingForEndFreeTime() && UsedTag != null && UsedTag.Count < UsedTag.Limit;
                     },
+                    AICondition = (PGame Game) => {
+                        return false; // 永远不会发动
+                    },
                     Effect = (PGame Game ) => {
                         AnnouceUseEquipmentSkill(Player);
                         if (Player.IsUser) {

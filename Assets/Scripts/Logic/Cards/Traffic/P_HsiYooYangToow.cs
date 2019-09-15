@@ -11,7 +11,7 @@ public class P_HsiYooYangToow : PEquipmentCardModel {
 
     public readonly static string CardName = "西域羊驼";
 
-    public P_HsiYooYangToow():base(CardName, PCardType.DefensorCard) {
+    public P_HsiYooYangToow():base(CardName, PCardType.TrafficCard) {
         Point = 4;
         Index = 58;
         foreach (PTime Time in new PTime[] {
