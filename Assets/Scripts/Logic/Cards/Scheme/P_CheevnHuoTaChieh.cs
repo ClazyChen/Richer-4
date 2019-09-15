@@ -35,7 +35,7 @@ public class P_CheevnHuoTaChieh: PSchemeCardModel {
                     },
                     AICondition = (PGame Game) => {
                         PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
-                        return Player.TeamIndex != InjureTag.ToPlayer.TeamIndex;
+                        return Player.TeamIndex != InjureTag.ToPlayer.TeamIndex && PAiCardExpectation.FindMostValuableToGet(Game, Player, InjureTag.ToPlayer).Value > 3000;
                     },
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets, AIEmitTargets,
                         (PGame Game, PPlayer User, PPlayer Target) => {

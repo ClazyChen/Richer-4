@@ -38,7 +38,7 @@ public class P_YooChiinKuTsung: PSchemeCardModel {
                         if ( Player.TeamIndex == InjureTag.ToPlayer.TeamIndex) {
                             return InjureTag.Injure >= InjureTag.ToPlayer.Money || InjureTag.Injure >= 6000;
                         } else {
-                            return InjureTag.Injure < InjureTag.ToPlayer.Money && InjureTag.Injure <= 1000 && InjureTag.ToPlayer.Area.HandCardArea.CardNumber >= 2;
+                            return InjureTag.Injure < InjureTag.ToPlayer.Money && InjureTag.Injure <= 1000 && InjureTag.ToPlayer.Area.HandCardArea.CardNumber >= 2 && PAiCardExpectation.FindMostValuableToGet(Game, Player, InjureTag.ToPlayer).Value > 3000;
                         }
                     },
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets, AIEmitTargets,

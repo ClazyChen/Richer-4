@@ -75,11 +75,12 @@ public class PAiCardExpectation {
 
     public static KeyValuePair<PCard, int> FindMostValuableToGet(PGame Game, PPlayer Player, PPlayer TargetPlayer, bool AllowHandCards = true, bool AllowEquipment = true, bool AllowAmbush = false, bool CanSee = false) {
         int Cof = Player.TeamIndex == TargetPlayer.TeamIndex ? -1 : 1;
+        int YangToowCof = TargetPlayer.Traffic != null && TargetPlayer.Traffic.Model is P_HsiYooYangToow && !Player.Age.Equals(TargetPlayer.Age) ? 0 : 1;
         KeyValuePair<PCard, int> HandCardResult = AllowHandCards ? PMath.Max(TargetPlayer.Area.HandCardArea.CardList, (PCard Card) => {
             if (CanSee) {
-                return Card.Model.AIInHandExpectation(Game, Player) + Cof * Card.Model.AIInHandExpectation(Game, TargetPlayer);
+                return Card.Model.AIInHandExpectation(Game, Player) * YangToowCof + Cof * Card.Model.AIInHandExpectation(Game, TargetPlayer);
             } else {
-                return Cof < 0 ? 0 : 2000 + PMath.RandInt(-10, 10);
+                return Cof < 0 ? 0 : 2000 * YangToowCof + 2000 * Cof + PMath.RandInt(-10, 10);
             }
         }) : new KeyValuePair<PCard, int>(null, int.MinValue);
         KeyValuePair<PCard, int> EquipResult = AllowEquipment ? PMath.Max(TargetPlayer.Area.EquipmentCardArea.CardList, (PCard Card) => {
