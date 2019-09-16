@@ -122,11 +122,15 @@ public class PGame : PGameStatus {
             if (InjureTag.ToPlayer != null && InjureTag.Injure > 0) {
                 if (InjureTime.Equals(PTime.Injure.AfterEmitInjure)) {
                     if (InjureTag.FromPlayer != null && InjureTag.FromPlayer.IsAlive) {
+                        TagManager.CreateTag(InjureTag);
                         GetMoney(InjureTag.FromPlayer, InjureTag.Injure);
+                        InjureTag = TagManager.PopTag<PInjureTag>(PInjureTag.TagName);
                     }
                 } else if (InjureTime.Equals(PTime.Injure.AfterAcceptInjure)) {
                     if (InjureTag.ToPlayer.IsAlive) {
+                        TagManager.CreateTag(InjureTag);
                         LoseMoney(InjureTag.ToPlayer, InjureTag.Injure, true);
+                        InjureTag = TagManager.PopTag<PInjureTag>(PInjureTag.TagName);
                     }
                 }
                 InjureTag = Monitor.CallTime(InjureTime, InjureTag);
