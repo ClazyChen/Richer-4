@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class P_PaaoChuanYinYoo : PSchemeCardModel {
 
     public List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
-        return Game.PlayerList.FindAll((PPlayer _Player) => _Player.IsAlive && !_Player.Equals(Player));
+        return Game.ListPlayers((PPlayer _Player) => !_Player.Equals(Player), Player);
     }
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
@@ -54,6 +54,7 @@ public class P_PaaoChuanYinYoo : PSchemeCardModel {
                                 }
                                 if (TargetBlock != null) {
                                     Game.LoseHouse(TargetBlock, 1);
+                                    TargetBlock = null;
                                     if (User.IsAI) {
                                         TargetBlock = PAiMapAnalyzer.MaxValueHouse(Game, User, true).Key;
                                     } else {

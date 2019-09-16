@@ -7,7 +7,7 @@ using System.Collections.Generic;
 public class P_FanChienChi : PSchemeCardModel {
 
     public List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
-        return Game.PlayerList.FindAll((PPlayer _Player) => _Player.IsAlive && !_Player.Equals(Player)); ;
+        return Game.ListPlayers((PPlayer _Player) => !_Player.Equals(Player), Player);
     }
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {

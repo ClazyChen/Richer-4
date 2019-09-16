@@ -90,6 +90,16 @@ public class PGameStatus {
         } while (!Player.Equals(Starter));
     }
 
+    public List<PPlayer> ListPlayers(Predicate<PPlayer> Condition, PPlayer Starter) {
+        List<PPlayer> Answer = new List<PPlayer>();
+        Traverse((PPlayer Player) => {
+            if (Condition(Player)) {
+                Answer.Add(Player);
+            }
+        }, Starter);
+        return Answer;
+    }
+
     // 这个是Client端的StartGame
     // Server的StartGame在PGame里
     public void StartGame() {

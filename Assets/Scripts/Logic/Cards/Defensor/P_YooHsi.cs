@@ -29,7 +29,7 @@ public class P_YooHsi : PEquipmentCardModel {
                     Effect = (PGame Game ) => {
                         AnnouceUseEquipmentSkill(Player);
                         PUseCardTag UseCardTag = Game.TagManager.FindPeekTag<PUseCardTag>(PUseCardTag.TagName);
-                        UseCardTag.TargetList.Remove(Player);
+                        PLogger.Log("玉玺发动记录：" + UseCardTag.TargetList.Remove(Player));
                     }
                 };
             });
