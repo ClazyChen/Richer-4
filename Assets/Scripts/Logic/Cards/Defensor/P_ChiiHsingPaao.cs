@@ -6,19 +6,7 @@ using System.Collections.Generic;
 public class P_ChiiHsingPaao : PEquipmentCardModel {
 
     public override int AIInEquipExpectation(PGame Game, PPlayer Player) {
-        double Sum = PMath.Sum(Game.CardManager.CardHeap.CardList.ConvertAll((PCard Card) => (double)Card.Model.AIInAmbushExpectation(Game, Player)));
-        int Count = Game.CardManager.CardHeap.CardNumber;
-
-        if (Count <= 10) {
-            Sum += PMath.Sum(Game.CardManager.ThrownCardHeap.CardList.ConvertAll((PCard Card) => (double)Card.Model.AIInAmbushExpectation(Game, Player)));
-            Count += Game.CardManager.ThrownCardHeap.CardNumber;
-        }
-
-        if (Count == 0) {
-            return 0;
-        } else {
-            return (int)(Sum / Count) * 6;
-        }
+        return 1000;
     }
 
     public readonly static string CardName = "七星袍";

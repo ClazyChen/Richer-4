@@ -62,6 +62,7 @@ public class PPeriodTriggerInstaller : PSystemTriggerInstaller {
                 }
             }
             PNetworkManager.NetworkServer.TellClients(new PStartPeriodOrder(Game.NowPlayerIndex.ToString(), Game.NowPeriod.Name));
+            PLogger.Log(Game.NowPlayer.Name + "【手牌】" + string.Join(";",Game.NowPlayer.Area.HandCardArea.ToStringArray()));
             Game.Logic.ShutDown();
             Game.Logic.StartLogic(NextPeroid.Execute());
         });

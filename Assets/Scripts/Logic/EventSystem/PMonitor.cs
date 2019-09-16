@@ -61,6 +61,7 @@ public class PMonitor {
             while ((ValidTriggerList = TriggerList.FindAll((PTrigger Trigger) => {
                 return Trigger.Time.Equals(Time) && Trigger.Player == Judger && !AlreadyTriggerList.Contains(Trigger) && Trigger.Condition(Game) && (Judger == null || Judger.IsAlive) && (Judger == null || Judger.IsUser || Trigger.AICondition(Game));
             })).Count > 0) {
+                PLogger.Log("开始启动" + (Judger == null ? "null" : Judger.Name) + "的响应");
                 PTrigger ChosenTrigger = null;
                 if (Judger == null || Judger.IsAI) {
                     ChosenTrigger = PMath.Max(ValidTriggerList, (PTrigger Trigger) => Trigger.AIPriority).Key;

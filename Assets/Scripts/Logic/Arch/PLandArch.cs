@@ -16,7 +16,7 @@
             Time = PTime.EndGameTime,
             Effect = (PGame Game) => {
                 Game.GetWinner().ForEach((PPlayer Player) => {
-                    if (PMath.Sum(Game.Map.BlockList.FindAll((PBlock Block) => Player.Equals(Block.Lord)).ConvertAll((PBlock Block) =>(double) Block.HouseNumber)) >= 30) {
+                    if (PMath.Sum(Game.Map.BlockList.FindAll((PBlock Block) => Player.Equals(Block.Lord)).ConvertAll((PBlock Block) => (double)Block.HouseNumber)) >= 30) {
                         Announce(Game, Player, "大包工头");
                     }
                 });
@@ -28,7 +28,7 @@
             Effect = (PGame Game) => {
                 PDyingTag DyingTag = Game.TagManager.FindPeekTag<PDyingTag>(PDyingTag.TagName);
                 PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
-                if (InjureTag != null && DyingTag != null && DyingTag.Player.Equals( InjureTag.ToPlayer) && InjureTag.InjureSource is PBlock && ((PBlock)InjureTag.InjureSource).BusinessType.Equals(PBusinessType.ShoppingCenter)) {
+                if (InjureTag != null && DyingTag != null && DyingTag.Player.Equals(InjureTag.ToPlayer) && InjureTag.InjureSource is PBlock && ((PBlock)InjureTag.InjureSource).BusinessType.Equals(PBusinessType.ShoppingCenter)) {
                     Announce(Game, DyingTag.Player, "双11剁手");
                 }
             }
