@@ -16,6 +16,10 @@ public class PMonitor {
         TriggerList.Add(Trigger);
     }
 
+    public List<PTrigger> FindTriggers(string Name) {
+        return TriggerList.FindAll((PTrigger Trigger) => Trigger.Name.Equals(Name));
+    }
+
     public void RemoveAll() {
         EndTurnDirectly = false;
         TriggerList.Clear();

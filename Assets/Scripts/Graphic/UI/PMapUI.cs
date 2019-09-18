@@ -168,6 +168,7 @@ public class PMapUI : PAbstractUI {
                 ColorBlock Colors = SkillButton.colors;
                 Colors.normalColor = SkillInfo.Type.SkillColor;
                 Colors.highlightedColor = SkillInfo.Type.SkillColor;
+                SkillButton.colors = Colors;
                 SkillButton.ToolTip = SkillInfo.ToolTip;
                 SkillButton.onClick.RemoveAllListeners();
                 SkillButton.onClick.AddListener(() => {

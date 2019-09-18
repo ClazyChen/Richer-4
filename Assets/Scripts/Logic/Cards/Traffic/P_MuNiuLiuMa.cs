@@ -25,6 +25,7 @@ public class P_MuNiuLiuMa : PEquipmentCardModel {
                     Player = Player,
                     Time = Time,
                     AIPriority = 180,
+                    CanRepeat = true,
                     Condition = (PGame Game) => {
                         return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime()) && Player.RemainLimit(CardName) && Player.Money > 2000;
                     },

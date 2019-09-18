@@ -22,6 +22,7 @@ public class P_TaaiPiingYaoShu : PEquipmentCardModel {
                     IsLocked = true,
                     Player = Player,
                     Time = Time,
+                    AIPriority = 100,
                     Condition = (PGame Game) => {
                         return Player.Equals(Game.NowPlayer);
                     },

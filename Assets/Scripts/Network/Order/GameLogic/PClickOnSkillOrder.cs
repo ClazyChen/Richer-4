@@ -10,21 +10,28 @@ public class PClickOnSkillOrder : POrder {
         (string[] args, string IPAddress) => {
             int SkillIndex = Convert.ToInt32(args[1]);
             PGame Game = PNetworkManager.Game;
-            if (Game.Logic.WaitingForEndFreeTime() && Game.NowPlayer.IPAddress.Equals(IPAddress) && Game.TagManager.ExistTag(PTag.FreeTimeOperationTag.Name) && Game.NowPlayer.IsAlive) {
-                if (SkillIndex < Game.NowPlayer.General.SkillList.Count) {
-                    PSkill Skill = Game.NowPlayer.General.SkillList[SkillIndex];
-                    if (Skill != null) {
-                        PTrigger Trigger = Skill.TriggerList.Find((Func<PPlayer, PSkill, PTrigger> TriggerGenerator) => TriggerGenerator(Game.NowPlayer, Skill).Time.Equals(Game.NowPeriod.During))?.Invoke(Game.NowPlayer, Skill);
+            PPlayer Player = Game.PlayerList.Find((PPlayer _Player) => _Player.IPAddress.Equals(IPAddress));
+            if (Player != null && Player.IsAlive && SkillIndex < Player.General.SkillList.Count) {
+                PSkill Skill = Player.General.SkillList[SkillIndex];
+                if (Skill != null) {
+                    bool UseSkill = false;
+                    if (Game.Logic.WaitingForEndFreeTime() && Game.NowPlayer.Equals(Player) && Game.TagManager.ExistTag(PTag.FreeTimeOperationTag.Name)) {
+                        PTrigger Trigger = Skill.TriggerList.Find((Func<PPlayer, PSkill, PTrigger> TriggerGenerator) => TriggerGenerator(Player, Skill).Time.Equals(Game.NowPeriod.During))?.Invoke(Player, Skill);
                         if (Trigger != null) {
                             if (Trigger.Condition(Game)) {
                                 PThread.Async(() => {
                                     Game.Logic.StartSettle(new PSettle("发动技能[" + Trigger.Name + "]", Trigger.Effect));
                                 });
+                                UseSkill = true;
                             }
-                        } else if (Skill.SoftLockOpen) {
-                            Skill.ChangeSoftLock();
-                            PNetworkManager.NetworkServer.TellClient(Game.NowPlayer, new PRefreshGeneralOrder(Game.NowPlayer));
                         }
+                    }
+                    if (Skill.SoftLockOpen && !UseSkill) {
+                        Skill.Lock = !Skill.Lock;
+                        Game.Monitor.FindTriggers(Skill.Name).ForEach((PTrigger Trigger) => {
+                            Trigger.IsLocked = Skill.Lock;
+                        });
+                        PNetworkManager.NetworkServer.TellClient(Player, new PRefreshGeneralOrder(Player));
                     }
                 }
             }

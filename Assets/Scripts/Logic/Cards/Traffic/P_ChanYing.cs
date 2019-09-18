@@ -25,6 +25,7 @@ public class P_ChanYing : PEquipmentCardModel {
                     Player = Player,
                     Time = Time,
                     AIPriority = 0,
+                    CanRepeat = true,
                     Condition = (PGame Game) => {
                         PUsedTag UsedTag = Player.Tags.FindPeekTag<PUsedTag>(PUsedTag.TagNamePrefix + CardName);
                         if (UsedTag == null) {

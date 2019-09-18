@@ -34,7 +34,7 @@ public class PPlayerInformationBox : PAbstractUI {
         if (Image != null) {
             GeneralImage.sprite = Image;
         }
-        NameText.text = AttachedPlayer.Name + "[" + AttachedPlayer.General.Name + "]";
+        NameText.text = AttachedPlayer.Name + "/" + AttachedPlayer.General.Name;
         if (AttachedPlayer.IsAlive) {
             MoneyText.text = "￥" + AttachedPlayer.Money.ToString();
             CardText.text = "□" + AttachedPlayer.HandCardNumber.ToString();

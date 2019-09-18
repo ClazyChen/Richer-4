@@ -92,7 +92,16 @@
             AICondition = (PGame Game) => {
                 PBlock NowBlock = Game.NowPlayer.Position;
                 PPurchaseTag PurchaseTag = Game.TagManager.FindPeekTag<PPurchaseTag>(PPurchaseTag.TagName);
-                return (PurchaseTag.Count == 0 || (PurchaseTag.Count == 1 && Player.Money >= 5000) || (PurchaseTag.Count == 1 && Player.Money >= 10000 && NowBlock.Price >= 2000) || (PurchaseTag.Count > 1 && Player.Money >= 15000 && NowBlock.Price >= 3000) || NowBlock.BusinessType.Equals(PBusinessType.Park)) && !(Player.Area.AmbushCardArea.CardList.Exists((PCard Card) => Card.Model is P_PingLiangTsuunTuan) && !Player.HasHouse);
+                /*
+                 * AI的买房策略：
+                 * 第1次：必买
+                 * 第2次：钱多于20000 or 钱多于10000且地价高于2000
+                 * 以上：钱多于15000且地价多于3000 or 钱多于10000且为购物中心
+                 * 
+                 * 必买：公园
+                 * 必不买：廉颇 or 无房被兵
+                 */
+                return (PurchaseTag.Count == 0 || (PurchaseTag.Count == 1 && Player.Money >= 20000) || (PurchaseTag.Count == 1 && Player.Money >= 10000 && NowBlock.Price >= 2000) || (Player.Money >= 15000 && NowBlock.Price >= 3000) || (Player.Money >= 10000 && NowBlock.BusinessType.Equals(PBusinessType.ShoppingCenter)) || NowBlock.BusinessType.Equals(PBusinessType.Park)) && !(Player.Area.AmbushCardArea.CardList.Exists((PCard Card) => Card.Model is P_PingLiangTsuunTuan) && !Player.HasHouse) && !(Player.General is P_LianPo);
             },
             Effect = (PGame Game) => {
                 Game.TagManager.FindPeekTag<PPurchaseTag>(PPurchaseTag.TagName).Count++;

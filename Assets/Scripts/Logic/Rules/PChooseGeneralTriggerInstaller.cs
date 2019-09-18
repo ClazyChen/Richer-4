@@ -6,7 +6,12 @@ public class PChooseGeneralTriggerInstaller : PSystemTriggerInstaller {
             Time = PTime.StartGameTime,
             Effect = (PGame Game) => {
                 Game.Traverse((PPlayer Player) => {
-                    Player.General = new P_LianPo();
+                    if (PMath.RandTest(0.5)) {
+                        Player.General = new P_LianPo();
+                    } else {
+                        Player.General = new P_PanYue();
+                    }
+
                     Player.Age = Player.General.Age;
                     Player.Sex = Player.General.Sex;
                     Player.General.SkillList.ForEach((PSkill Skill) => {

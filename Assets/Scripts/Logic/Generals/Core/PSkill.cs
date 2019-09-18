@@ -14,7 +14,7 @@ public class PSkill: PObject {
     /// </summary>
     public bool SoftLockOpen;
     public bool Initiative;
-    public bool Lock { get; private set; }
+    public bool Lock;
     public List<Func<PPlayer, PSkill, PTrigger>> TriggerList;
 
     public PSkill(string _Name) {
@@ -27,10 +27,6 @@ public class PSkill: PObject {
 
     public void AnnouceUseSkill(PPlayer Player) {
         PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "发动了" + Name));
-    }
-
-    public void ChangeSoftLock() {
-        Lock = !Lock;
     }
 
     public PSkill AddTrigger(Func<PPlayer, PSkill, PTrigger> TriggerGenerator) {
@@ -47,7 +43,7 @@ public class PSkill: PObject {
 
     public PSkill AnnouceTurnOnce() {
         TriggerList.Add((PPlayer Player, PSkill Skill) => {
-            return new PTrigger(Skill.Name) {
+            return new PTrigger(Skill.Name + "[初始化使用次数]") {
                 IsLocked = true,
                 Player = Player,
                 Time = PPeriod.StartTurn.Start,

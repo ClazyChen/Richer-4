@@ -24,6 +24,7 @@ public class P_ToouShihChi : PEquipmentCardModel {
                     IsLocked = false,
                     Player = Player,
                     Time = Time,
+                    CanRepeat = true,
                     Condition = (PGame Game) => {
                         PUsedTag UsedTag = Player.Tags.FindPeekTag<PUsedTag>(PUsedTag.TagNamePrefix + CardName);
                         if (UsedTag == null) {

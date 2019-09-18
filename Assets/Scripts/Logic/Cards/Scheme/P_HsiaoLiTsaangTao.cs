@@ -69,7 +69,7 @@ public class P_HsiaoLiTsaangTao : PSchemeCardModel {
                         return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime()) && Player.Area.HandCardArea.CardList.Exists((PCard _Card) => _Card.Type.IsEquipment());
                     },
                     AICondition = (PGame Game) => {
-                        return AIEmitTargets(Game, Player)[0] != null;
+                        return AIEmitTargets(Game, Player)[0] != null && P_PanYue.XianJuTest(Game, Player);
                     },
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets, PTrigger.Except(Player),
                         (PGame Game, PPlayer User, PPlayer Target) => {

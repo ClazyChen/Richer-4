@@ -40,6 +40,7 @@ public class P_ChevnHunChiin : PEquipmentCardModel {
                     IsLocked = false,
                     Player = Player,
                     Time = Time,
+                    AIPriority = 50,
                     Condition = (PGame Game) => {
                         return Game.NowPlayer.Equals(Player) && Player.Money <= 10000;
                     },

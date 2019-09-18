@@ -39,7 +39,7 @@ public class P_ManTiienKuoHai: PSchemeCardModel {
                         return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime());
                     },
                     AICondition = (PGame Game) => {
-                        return AIEmitTargets(Game, Player)[0] != null && !Player.OutOfGame;
+                        return AIEmitTargets(Game, Player)[0] != null && !Player.OutOfGame && P_PanYue.XianJuTest(Game,Player);
                     },
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets,
                         PTrigger.Except(Player),

@@ -48,7 +48,7 @@ public class P_HunShuiMoYoo: PSchemeCardModel {
                                 }
                             }
                         });
-                        return Value >= 1000 && !Player.OutOfGame;
+                        return Value >= 1000 && !Player.OutOfGame && P_PanYue.XianJuTest(Game, Player);
                     },
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets, AIEmitTargets,
                         (PGame Game, PPlayer User, PPlayer Target) => {

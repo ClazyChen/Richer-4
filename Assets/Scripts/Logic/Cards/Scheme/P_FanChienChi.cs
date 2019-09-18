@@ -45,7 +45,7 @@ public class P_FanChienChi : PSchemeCardModel {
                         return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime());
                     },
                     AICondition = (PGame Game) => {
-                        return AIInHandExpectation(Game, Player) > 1000;
+                        return AIInHandExpectation(Game, Player) > 1000 && P_PanYue.XianJuTest(Game, Player);
                     },
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets, AIEmitTargets,
                         (PGame Game, PPlayer User, PPlayer Target) => {

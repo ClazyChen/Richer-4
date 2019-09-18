@@ -39,7 +39,6 @@ public class PRefreshGeneralOrder : POrder {
         for (int i= 0; i < SkillCount; ++ i) {
             PSkill Skill = Player.General.SkillList[i];
             Answer.Add(Skill.Name);
-            
             if (Skill.SoftLockOpen) {
                 if (Skill.Lock) {
                     Answer.Add(PSkillType.SoftLock.Name);

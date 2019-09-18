@@ -24,6 +24,7 @@ public class P_LianPo: PGeneral {
                     Player = Player,
                     Time = Time,
                     AIPriority = 180,
+                    CanRepeat = true,
                     Condition = (PGame Game) => {
                         return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime()) && Player.RemainLimit(FuJing.Name) ;
                     },
@@ -33,13 +34,10 @@ public class P_LianPo: PGeneral {
                         } else {
                             bool CanGo = true;
                             PAiMapAnalyzer.NextBlocks(Game, Player).ForEach((PBlock Block) => {
-                                if (Block.Lord == null && Block.CanPurchase && Block.Price >= Player.Money - 3000) {
+                                if (Block.Lord == null && Block.CanPurchase && Block.Price >= Player.Money - 8000) {
                                     CanGo = false;
                                 }
-                                if (Player.Equals(Block.Lord) && Block.HousePrice >= Player.Money - 3000) {
-                                    CanGo = false;
-                                }
-                                if (Block.Lord != null && Block.Lord.TeamIndex != Player.TeamIndex && Block.Toll >= Player.Money - 3000) {
+                                if (Block.Lord != null && Block.Lord.TeamIndex != Player.TeamIndex && Block.Toll >= Player.Money - 8000) {
                                     CanGo = false;
                                 }
                             });
