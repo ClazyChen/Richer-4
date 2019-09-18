@@ -38,7 +38,7 @@ public class PAiTargetChooser {
             bool SameTeam = (Target.TeamIndex == Player.TeamIndex);
             int Cof = (SameTeam ? -1 : 1);
             if (SameTeam) {
-                Profit -= ExpectedMoney * 2;
+                Profit  = 0;
             }
             if (Target.Money <= 10000) {
                 Profit += ExpectedMoney * Cof;

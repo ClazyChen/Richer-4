@@ -236,7 +236,7 @@ public class PAiMapAnalyzer {
             } else if (Block.BusinessType.Equals(PBusinessType.Pawnshop)) {
                 LandValue += 2000;
             }
-            if (Player.General is P_PanYue) {
+            if (Player.General is P_PanYue && (Block.PortalBlockList.Count == 0 || InPortal)) {
                 if (!Player.Equals(Game.NowPlayer) || Player.RemainLimit("闲居")) {
                     LandValue += PMath.Percent(Block.Price, 20 * Game.Enemies(Player).Count + 50);
                 }

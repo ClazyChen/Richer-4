@@ -48,7 +48,7 @@ public class P_LianPo: PGeneral {
                         FuJing.AnnouceUseSkill(Player);
                         PPlayer Target = null;
                         if (Player.IsAI) {
-                            Target = PMath.Max(Game.Teammates(Player, false), (PPlayer _Player) => _Player.AiCardExpectation).Key;
+                            Target = PMath.Max(Game.Teammates(Player, false), (PPlayer _Player) => _Player.AiCardExpectation + PMath.RandInt(0,5)).Key;
                         } else {
                             Target = PNetworkManager.NetworkServer.ChooseManager.AskForTargetPlayer(Player, PTrigger.Except(Player), FuJing.Name, true);
                         }
