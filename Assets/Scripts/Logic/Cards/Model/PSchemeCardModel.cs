@@ -11,6 +11,16 @@ public abstract class PSchemeCardModel: PCardModel {
         Type = PCardType.SchemeCard;
     }
 
+    private static List<PPlayer> ArrangeTargets(PGame Game, List<PPlayer> Targets, PPlayer Starter) {
+        List<PPlayer> Answers = new List<PPlayer>();
+        Game.Traverse((PPlayer Player) => {
+            if (Targets.Contains(Player)) {
+                Answers.Add(Player);
+            }
+        }, Starter);
+        return Answers;
+    }
+
     protected static Action<PGame> MakeNormalEffect(PPlayer Player, PCard Card, TargetChooser AITargetChooser, TargetChooser PlayerTargetChooser, EffectFunc Effect, Action<PGame,PPlayer,List<PPlayer>> StartAction = null, Action<PGame, PPlayer, List<PPlayer>> EndAction = null) {
         return (PGame Game) => {
             List<PPlayer> Targets = Player.IsAI ? AITargetChooser(Game, Player) : PlayerTargetChooser(Game,Player) ;
@@ -19,6 +29,7 @@ public abstract class PSchemeCardModel: PCardModel {
             Game.Monitor.CallTime(PTime.Card.AfterEmitTargetTime, new PUseCardTag(Card, Player, Targets));
             Game.CardManager.MoveCard(Card, Player.Area.HandCardArea, Game.CardManager.SettlingArea);
             Game.Monitor.CallTime(PTime.Card.AfterBecomeTargetTime, new PUseCardTag(Card, Player, Targets));
+            Targets = ArrangeTargets(Game, Targets, Player);
             Game.TagManager.CreateTag(new PUseCardTag(Card, Player, Targets));
             StartAction?.Invoke(Game, Player, Targets);
             Targets.ForEach((PPlayer Target) => {
