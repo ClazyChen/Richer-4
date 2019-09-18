@@ -33,7 +33,7 @@ public class P_TsaaoMuChiehPing : PAmbushCardModel {
 
 
     public List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
-        PPlayer Target = PMath.Max(Game.PlayerList.FindAll((PPlayer _Player) => _Player.IsAlive && !_Player.Equals(Player) && (_Player.Defensor == null || !(_Player.Defensor.Model is P_ChiiHsingPaao))), (PPlayer _Player) => AIExpect(Game, Player, _Player.Position) - 4000, true).Key;
+        PPlayer Target = PMath.Max(Game.PlayerList.FindAll((PPlayer _Player) => _Player.IsAlive && !_Player.Equals(Player) && (_Player.Defensor == null || !(_Player.Defensor.Model is P_ChiiHsingPaao)) && !_Player.Area.AmbushCardArea.CardList.Exists((PCard _Card) => _Card.Model.Name.Equals(CardName))), (PPlayer _Player) => AIExpect(Game, Player, _Player.Position) - 4000, true).Key;
         return new List<PPlayer>() {  Target };
     }
 

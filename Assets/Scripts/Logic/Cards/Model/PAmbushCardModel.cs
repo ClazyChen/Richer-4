@@ -36,9 +36,9 @@ public abstract class PAmbushCardModel : PCardModel {
                     Condition = (PGame Game) => {
                         bool Existed = false;
                         if (SelfOnly) {
-                            Existed = Player.Area.AmbushCardArea.CardList.Exists((PCard _Card) => _Card.Name.Equals(Card.Name));
+                            Existed = Player.Area.AmbushCardArea.CardList.Exists((PCard _Card) => _Card.Model.Name.Equals(Card.Name));
                         } else {
-                            Existed = Game.PlayerList.FindAll((PPlayer _Player) => _Player.IsAlive && !_Player.Equals(Player)).TrueForAll((PPlayer _Player) => _Player.Area.AmbushCardArea.CardList.Exists((PCard _Card) => _Card.Name.Equals(Card.Name)));
+                            Existed = Game.PlayerList.FindAll((PPlayer _Player) => _Player.IsAlive && !_Player.Equals(Player)).TrueForAll((PPlayer _Player) => _Player.Area.AmbushCardArea.CardList.Exists((PCard _Card) => _Card.Model.Name.Equals(Card.Name)));
                         }
                         return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime()) && !Existed;
                     },
@@ -54,7 +54,7 @@ public abstract class PAmbushCardModel : PCardModel {
                                 Targets = new List<PPlayer> { Player };
                             } else {
                                 Targets = new List<PPlayer> { PNetworkManager.NetworkServer.ChooseManager.AskForTargetPlayer(Player, (PGame _Game, PPlayer _Player) => {
-                                    return _Player.IsAlive && !_Player.Equals(Player) && !_Player.Area.AmbushCardArea.CardList.Exists((PCard _Card) => _Card.Name.Equals(Card.Name));
+                                    return _Player.IsAlive && !_Player.Equals(Player) && !_Player.Area.AmbushCardArea.CardList.Exists((PCard _Card) => _Card.Model.Name.Equals(Card.Name));
                                 }, Card.Name) };
                             }
                         }

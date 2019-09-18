@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class P_LevPuSsuShu : PAmbushCardModel {
 
     public List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
-        PPlayer Target = PMath.Max(Game.Enemies(Player).FindAll((PPlayer _Player) => _Player.Area.HandCardArea.CardNumber >= 4 && (_Player.Defensor == null || !(_Player.Defensor.Model is P_ChiiHsingPaao))), (PPlayer _Player) => _Player.Area.HandCardArea.CardNumber * 100 + PMath.RandInt(-10, 10)).Key;
+        PPlayer Target = PMath.Max(Game.Enemies(Player).FindAll((PPlayer _Player) => _Player.Area.HandCardArea.CardNumber >= 4 && (_Player.Defensor == null || !(_Player.Defensor.Model is P_ChiiHsingPaao)) && !_Player.Area.AmbushCardArea.CardList.Exists((PCard _Card) => _Card.Model.Name.Equals(CardName))), (PPlayer _Player) => _Player.Area.HandCardArea.CardNumber * 100 + PMath.RandInt(-10, 10)).Key;
         return new List<PPlayer>() { Target  };
     }
 
