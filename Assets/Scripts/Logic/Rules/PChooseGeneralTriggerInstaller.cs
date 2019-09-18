@@ -6,7 +6,7 @@ public class PChooseGeneralTriggerInstaller : PSystemTriggerInstaller {
             Time = PTime.StartGameTime,
             Effect = (PGame Game) => {
                 Game.Traverse((PPlayer Player) => {
-                    if (PMath.RandTest(0.5)) {
+                    if (PMath.RandTest(0.5) && !Game.Teammates(Player).Exists((PPlayer _Player) => _Player.General is P_LianPo)) {
                         Player.General = new P_LianPo();
                     } else {
                         Player.General = new P_PanYue();
