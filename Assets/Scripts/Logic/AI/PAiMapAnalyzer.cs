@@ -3,6 +3,28 @@ using System.Collections.Generic;
 
 public class PAiMapAnalyzer {
 
+    public static List<PBlock> NextBlocks (PGame Game, PPlayer Player, PBlock StartBlock = null) {
+        if (StartBlock == null) {
+            StartBlock = Player.Position;
+        }
+        List<PBlock> Answer = new List<PBlock>();
+        PBlock Block = StartBlock;
+        if (!Player.NoLadder) {
+            Block = Block.NextBlock;
+        }
+        if (Player.Traffic != null && Player.Traffic.Model is P_ChiihTuu) {
+            Block = Block.NextBlock;
+        }
+        if (Player.NoLadder) {
+            Answer.Add(Block);
+        } else {
+            for (int i = 0;i < 6; ++i, Block = Block.NextBlock) {
+                Answer.Add(Block);
+            }
+        }
+        return Answer;
+    }
+
     /// <summary>
     /// 将一个玩家移出游戏对其的收益
     /// </summary>

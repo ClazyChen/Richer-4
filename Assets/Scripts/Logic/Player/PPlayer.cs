@@ -12,6 +12,8 @@ public class PPlayer: PObject {
     public int TeamIndex;
     public PBlock Position;
 
+    public PGeneral General = new P_Soldier();
+
     public PTagManager Tags;
 
     /// <summary>
@@ -198,6 +200,14 @@ public class PPlayer: PObject {
             return "|";
         }
         return Result;
+    }
+
+    public bool RemainLimit(string UsedName) {
+        PUsedTag UsedTag = Tags.FindPeekTag<PUsedTag>(PUsedTag.TagNamePrefix + UsedName);
+        if (UsedTag == null) {
+            Tags.CreateTag(UsedTag = new PUsedTag(UsedName, 1));
+        }
+        return  UsedTag != null && UsedTag.Count < UsedTag.Limit ;
     }
 
 }

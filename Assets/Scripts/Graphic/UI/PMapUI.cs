@@ -14,6 +14,8 @@ public class PMapUI : PAbstractUI {
     //}
 
     public readonly Button EndFreeTimeButton;
+    public readonly Button Skill1Button;
+    public readonly Button Skill2Button;
     public readonly Image DiceImage;
     public readonly PMapScene Scene;
     public readonly PMessageBox MessageBox;
@@ -148,5 +150,9 @@ public class PMapUI : PAbstractUI {
             InformationPointer++;
         }
         RefreshInformation();
+    }
+
+    public void InitializeSkillButton(PGeneral General) {
+
     }
 }

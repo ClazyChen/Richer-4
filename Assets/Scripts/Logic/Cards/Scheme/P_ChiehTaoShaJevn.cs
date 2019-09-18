@@ -53,6 +53,8 @@ public class P_ChiehTaoShaJevn : PSchemeCardModel {
                                 if (Target.Area.EquipmentCardArea.CardNumber > 0) {
                                     ChosenResult = 1;
                                 }
+                            } else if (Target.Area.EquipmentCardArea.CardNumber == 0) {
+                                ChosenResult = 0;
                             } else {
                                 if (Target.IsAI) {
                                     ChosenResult = PAiMapAnalyzer.MaxValueHouse(Game, Target).Value > PAiCardExpectation.FindMostValuable(Game, Target, Target, false).Value ? 1 : 0;

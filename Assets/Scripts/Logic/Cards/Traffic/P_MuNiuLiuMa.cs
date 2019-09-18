@@ -24,13 +24,9 @@ public class P_MuNiuLiuMa : PEquipmentCardModel {
                     IsLocked = true,
                     Player = Player,
                     Time = Time,
-                    AIPriority = 15,
+                    AIPriority = 180,
                     Condition = (PGame Game) => {
-                        PUsedTag UsedTag = Player.Tags.FindPeekTag<PUsedTag>(PUsedTag.TagNamePrefix + CardName);
-                        if (UsedTag == null) {
-                            Player.Tags.CreateTag(UsedTag = new PUsedTag(CardName, 1));
-                        }
-                        return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime()) && UsedTag != null && UsedTag.Count < UsedTag.Limit && Player.Money > 2000;
+                        return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime()) && Player.RemainLimit(CardName) && Player.Money > 2000;
                     },
                     AICondition = (PGame Game) => {
                         return Game.Teammates(Player, false).Count > 0 && (Player.Money >= 20000 || (Player.Money >= 10000 && PMath.RandTest(0.5)));
