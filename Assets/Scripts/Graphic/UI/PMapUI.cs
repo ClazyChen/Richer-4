@@ -14,8 +14,8 @@ public class PMapUI : PAbstractUI {
     //}
 
     public readonly Button EndFreeTimeButton;
-    public readonly Button Skill1Button;
-    public readonly Button Skill2Button;
+    public readonly PToolTipedButton Skill1Button;
+    public readonly PToolTipedButton Skill2Button;
     public readonly Image DiceImage;
     public readonly PMapScene Scene;
     public readonly PMessageBox MessageBox;
@@ -32,6 +32,7 @@ public class PMapUI : PAbstractUI {
 
     public PMapUI(Transform _Background) : base(_Background) {
         InitializeControls<Button>();
+        InitializeControls<PToolTipedButton>();
         InitializeControls<Image>();
         InitializeControls<Text>();
         InformationList = new List<string>();
@@ -152,7 +153,30 @@ public class PMapUI : PAbstractUI {
         RefreshInformation();
     }
 
-    public void InitializeSkillButton(PGeneral General) {
-
+    public void InitializeSkillButton(List<PSkillInfo> SkillInfos) {
+        void InitializeSkillButton(PToolTipedButton SkillButton, int Index) {
+            SkillButton.gameObject.SetActive(false);
+            if (SkillInfos.Count > Index) {
+                PSkillInfo SkillInfo = SkillInfos[Index];
+                string ButtonText = SkillInfo.Name;
+                if (SkillInfo.Type.Equals(PSkillType.Lock)) {
+                    ButtonText += "[锁定]";
+                } else if (SkillInfo.Type.Equals(PSkillType.SoftLock)) {
+                    ButtonText += "[软锁定]";
+                }
+                SkillButton.GetComponentInChildren<Text>().text = ButtonText;
+                ColorBlock Colors = SkillButton.colors;
+                Colors.normalColor = SkillInfo.Type.SkillColor;
+                Colors.highlightedColor = SkillInfo.Type.SkillColor;
+                SkillButton.ToolTip = SkillInfo.ToolTip;
+                SkillButton.onClick.RemoveAllListeners();
+                SkillButton.onClick.AddListener(() => {
+                    PNetworkManager.NetworkClient.Send(new PClickOnSkillOrder(Index.ToString()));
+                });
+                SkillButton.gameObject.SetActive(true);
+            }
+        }
+        InitializeSkillButton(Skill1Button, 0);
+        InitializeSkillButton(Skill2Button, 1);
     }
 }

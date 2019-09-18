@@ -68,6 +68,7 @@ public abstract class PAbstractUI : PObject {
     /// </summary>
     protected void RemoveAllListeners() {
         GetControls<Button>().ForEach((Button Control) => Control.onClick.RemoveAllListeners());
+        GetControls<PToolTipedButton>().ForEach((PToolTipedButton Control) => Control.onClick.RemoveAllListeners());
     }
 
     /// <summary>

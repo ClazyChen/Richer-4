@@ -30,8 +30,11 @@ public class PPlayerInformationBox : PAbstractUI {
     public void UpdateInformation() {
         NameText.color = PPlayerScene.Config.PlayerColors[AttachedPlayer.TeamIndex];
         GeneralImageBackground.color = PPlayerScene.Config.PlayerColors[AttachedPlayer.Index];
-        // 设置武将图片
-        NameText.text = AttachedPlayer.Name; // + 武将名
+        Sprite Image = Resources.Load<Sprite>("Images/Generals/Avatar/" + AttachedPlayer.General.Name);
+        if (Image != null) {
+            GeneralImage.sprite = Image;
+        }
+        NameText.text = AttachedPlayer.Name + "[" + AttachedPlayer.General.Name + "]";
         if (AttachedPlayer.IsAlive) {
             MoneyText.text = "￥" + AttachedPlayer.Money.ToString();
             CardText.text = "□" + AttachedPlayer.HandCardNumber.ToString();

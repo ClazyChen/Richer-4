@@ -12,8 +12,11 @@ public class PToolTipedButton : Button {
             return;
         }
         PUIManager.AddNewUIAction(string.Empty, () => {
-            PUIManager.GetUI<PMapUI>().ToolTip.Show(ToolTip, new Vector3(Input.mousePosition.x + 10,
-            Input.mousePosition.y - 10, 0));
+            if (Input.mousePosition.x > Screen.width - 200) {
+                PUIManager.GetUI<PMapUI>().ToolTip.Show(ToolTip, new Vector3(Input.mousePosition.x -250, Input.mousePosition.y - 10, 0));
+            } else {
+                PUIManager.GetUI<PMapUI>().ToolTip.Show(ToolTip, new Vector3(Input.mousePosition.x + 10, Input.mousePosition.y - 10, 0));
+            }
         });
     }
 

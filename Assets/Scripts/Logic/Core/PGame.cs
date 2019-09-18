@@ -79,6 +79,7 @@ public class PGame : PGameStatus {
                 PNetworkManager.NetworkServer.TellClient(Player, new PStartGameOrder(Map.Name, Player.Index.ToString()));
             });
             NowPlayer = PlayerList[0];
+            Monitor.CallTime(PTime.BeforeStartGameTime);
             Monitor.CallTime(PTime.StartGameTime);
             NowPeriod = PPeriod.StartTurn;
             PNetworkManager.NetworkServer.TellClients(new PStartTurnOrder(NowPlayerIndex.ToString()));

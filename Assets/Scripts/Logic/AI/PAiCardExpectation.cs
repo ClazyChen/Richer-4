@@ -51,6 +51,9 @@ public class PAiCardExpectation {
         }) : new KeyValuePair<PCard, int>(null, int.MaxValue);
         KeyValuePair<PCard, int> Temp = HandCardResult.Value <= EquipResult.Value ? HandCardResult : EquipResult;
         Temp = Temp.Value <= AmbushResult.Value ? Temp : AmbushResult;
+        if (Temp.Key == null) {
+            return new KeyValuePair<PCard, int>(null, 0);
+        }
         return Temp;
     }
 
@@ -70,6 +73,9 @@ public class PAiCardExpectation {
         }) : new KeyValuePair<PCard, int>(null, int.MinValue);
         KeyValuePair<PCard, int> Temp = HandCardResult.Value >= EquipResult.Value ? HandCardResult : EquipResult;
         Temp = Temp.Value >= AmbushResult.Value ? Temp : AmbushResult;
+        if (Temp.Key == null) {
+            return new KeyValuePair<PCard, int>(null, 0);
+        }
         return Temp;
     }
 
@@ -91,6 +97,9 @@ public class PAiCardExpectation {
         }) : new KeyValuePair<PCard, int>(null, int.MinValue);
         KeyValuePair<PCard, int> Temp = HandCardResult.Value >= EquipResult.Value ? HandCardResult : EquipResult;
         Temp = Temp.Value >= AmbushResult.Value ? Temp : AmbushResult;
+        if (Temp.Key == null) {
+            return new KeyValuePair<PCard, int>(null, 0);
+        }
         return Temp;
     }
 

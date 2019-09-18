@@ -8,15 +8,17 @@ public class P_LianPo: PGeneral {
         Sex = PSex.Male;
         Age = PAge.Classic;
         Index = 1;
-        PSkill FuJing = new PSkill("负荆");
+        PSkill FuJing = new PSkill("负荆") {
+            Initiative = true
+        };
         SkillList.Add(FuJing
-            .AnnouceTurnOnce(FuJing.Name)
+            .AnnouceTurnOnce()
             .AddTimeTrigger(
             new PTime[] {
                 PPeriod.FirstFreeTime.During,
                 PPeriod.SecondFreeTime.During
             },
-            (PTime Time, PPlayer Player) => {
+            (PTime Time, PPlayer Player, PSkill Skill) => {
                 return new PTrigger(FuJing.Name) {
                     IsLocked = false,
                     Player = Player,
@@ -45,7 +47,7 @@ public class P_LianPo: PGeneral {
                         }
                     },
                     Effect = (PGame Game) => {
-                        PSkill.AnnouceUseSkill(Player, FuJing.Name);
+                        FuJing.AnnouceUseSkill(Player);
                         PPlayer Target = null;
                         if (Player.IsAI) {
                             Target = PMath.Max(Game.Teammates(Player, false), (PPlayer _Player) => _Player.AiCardExpectation).Key;

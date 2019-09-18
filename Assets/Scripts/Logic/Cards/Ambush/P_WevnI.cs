@@ -35,7 +35,11 @@ public class P_WevnI : PAmbushCardModel {
         int Result = Game.Judge(Player);
         if (Result != 2) {
             Game.LoseMoney(Player, 1000);
-            Game.CardManager.MoveCard(Card, Player.Area.AmbushCardArea, Game.GetNextPlayer(Player).Area.AmbushCardArea);
+            if (Game.GetNextPlayer(Player).Area.AmbushCardArea.CardList.Exists((PCard _Card) => _Card.Model is P_WevnI)) {
+                Game.CardManager.MoveCard(Card, Player.Area.AmbushCardArea, Game.GetNextPlayer(Game.GetNextPlayer(Player)).Area.AmbushCardArea);
+            } else {
+                Game.CardManager.MoveCard(Card, Player.Area.AmbushCardArea, Game.GetNextPlayer(Player).Area.AmbushCardArea);
+            }
         } else {
             Game.CardManager.MoveCard(Card, Player.Area.AmbushCardArea, Game.CardManager.ThrownCardHeap);
         }

@@ -35,7 +35,12 @@ public class P_HsienChing : PAmbushCardModel {
             if (Player.Area.EquipmentCardArea.CardNumber > 0) {
                 Game.ThrowCard(Player, Player, false, true);
             }
-            Game.CardManager.MoveCard(Card, Player.Area.AmbushCardArea, Game.GetNextPlayer(Player).Area.AmbushCardArea);
+            if (Game.GetNextPlayer(Player).Area.AmbushCardArea.CardList.Exists((PCard _Card) => _Card.Model is P_HsienChing)) {
+                Game.CardManager.MoveCard(Card, Player.Area.AmbushCardArea, Game.GetNextPlayer(Game.GetNextPlayer(Player)).Area.AmbushCardArea);
+            } else {
+                Game.CardManager.MoveCard(Card, Player.Area.AmbushCardArea, Game.GetNextPlayer(Player).Area.AmbushCardArea);
+            }
+            
         } else {
             Game.CardManager.MoveCard(Card, Player.Area.AmbushCardArea, Game.CardManager.ThrownCardHeap);
         }
