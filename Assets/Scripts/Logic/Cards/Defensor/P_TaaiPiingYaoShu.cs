@@ -19,6 +19,7 @@ public class P_TaaiPiingYaoShu : PEquipmentCardModel {
         }) {
             MoveInEquipTriggerList.Add((PPlayer Player, PCard Card) => {
                 return new PTrigger(CardName) {
+                    IsLocked = true,
                     Player = Player,
                     Time = Time,
                     Condition = (PGame Game) => {
