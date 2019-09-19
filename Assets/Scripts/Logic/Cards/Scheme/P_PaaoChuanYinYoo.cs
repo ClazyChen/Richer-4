@@ -10,12 +10,12 @@ public class P_PaaoChuanYinYoo : PSchemeCardModel {
     }
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
-        int Basic = 3000;
+        int Basic = 2000;
         if (!Game.Map.BlockList.Exists((PBlock Block) => Player.Equals(Block.Lord))) {
             return Basic;
         }
         int TargetNumber = Game.AlivePlayerNumber - 1;
-        int Test = (int)PMath.Sum(Game.PlayerList.FindAll((PPlayer _Player) => _Player.IsAlive && !(_Player.Defensor != null && _Player.Defensor.Model is P_YooHsi && TargetNumber > 1)).ConvertAll((PPlayer _Player) => {
+        int Test = (int)PMath.Sum(Game.PlayerList.FindAll((PPlayer _Player) => _Player.IsAlive && !(_Player.Defensor != null && _Player.Defensor.Model is P_YooHsi && TargetNumber > 1) && _Player.HasHouse).ConvertAll((PPlayer _Player) => {
             return (double)PAiMapAnalyzer.MaxValueHouse(Game, Player, true).Value + PAiMapAnalyzer.MinValueHouse(Game, _Player).Value * (_Player.TeamIndex == Player.TeamIndex ? -1 : 1);
         }));
         
@@ -41,7 +41,7 @@ public class P_PaaoChuanYinYoo : PSchemeCardModel {
                         return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime()) && Game.Map.BlockList.Exists((PBlock Block) => Player.Equals(Block.Lord)) && (Player.Area.EquipmentCardArea.CardNumber > 0 || Player.Area.HandCardArea.CardList.Exists((PCard _Card) => Card.Type.IsEquipment()));
                     },
                     AICondition = (PGame Game) => {
-                        return Player.Area.HandCardArea.CardList.Exists((PCard _Card) => Card.Type.IsEquipment()) && AIInHandExpectation(Game, Player) > 3000;
+                        return Player.Area.HandCardArea.CardList.Exists((PCard _Card) => Card.Type.IsEquipment()) && AIInHandExpectation(Game, Player) > 2000;
                     },
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets, AIEmitTargets,
                         (PGame Game, PPlayer User, PPlayer Target) => {

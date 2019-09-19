@@ -80,4 +80,16 @@ public class PMath {
         }
         return Weight.Count - 1;
     }
+
+    public static void Wash<T>(List<T> Items) where T: PObject {
+        for (int i = Items.Count - 1; i > 0; --i) {
+            int t1 = RandInt(0, i);
+            int t2 = i;
+            if (t1 != t2) {
+                T Temp = Items[t1];
+                Items[t1] = Items[t2];
+                Items[t2] = Temp;
+            }
+        }
+    }
 }

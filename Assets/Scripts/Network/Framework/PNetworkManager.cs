@@ -99,6 +99,22 @@ public class PNetworkManager {
     }
 
     /// <summary>
+    /// 建立单一服务器，用于全AI测试
+    /// </summary>
+    /// <param name="GameMap">游戏地图</param>
+    /// <param name="GameMode">游戏模式</param>
+    public static void CreateSingleServer(PMap GameMap, PMode GameMode) {
+        AbortClient();
+        CurrentHostType = PHostType.Server;
+        PThread.Async(() => {
+            _NetworkServer = new PServer() {
+                maxConnectionNumber = GameMode.PlayerNumber,
+                Game = new PGame(GameMap, GameMode)
+            };
+        });
+    }
+
+    /// <summary>
     /// 关闭服务器（及其关联的客户端），如果不为服务器模式则不操作
     /// </summary>
     public static void AbortServer() {

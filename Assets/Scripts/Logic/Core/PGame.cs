@@ -43,8 +43,8 @@ public class PGame : PGameStatus {
     /// </summary>
     /// 和客户端上的开始游戏不同，初始化玩家列表的时候
     /// 从Room而非客户端用于同步的CurrentRoom获得数据
-    public new void StartGame() {
-        if (Room.IsFull()) {
+    public new void StartGame(List<PGeneral> DefaultGenerals = null) {
+        if (Room.IsFull()) { 
             #region 初始化玩家列表
             PlayerList = new List<PPlayer>();
             for (int i = 0; i < PlayerNumber; ++i) {
@@ -55,6 +55,9 @@ public class PGame : PGameStatus {
                     Money = PPlayer.Config.DefaultMoney,
                     TeamIndex = GameMode.Seats[i].Party - 1
                 };
+                if ( DefaultGenerals != null && i < DefaultGenerals.Count) {
+                    Player.General = DefaultGenerals[i];
+                }
                 Player.Tags = new PTagManager(Player);
                 PlayerList.Add(Player);
                 PBlock Position = Map.BlockList.Find((PBlock Block) => Block.StartPointIndex == i % Map.StartPointNumber);
@@ -78,8 +81,15 @@ public class PGame : PGameStatus {
             PNetworkManager.NetworkServer.Game.PlayerList.ForEach((PPlayer Player) => {
                 PNetworkManager.NetworkServer.TellClient(Player, new PStartGameOrder(Map.Name, Player.Index.ToString()));
             });
+            if (PSystem.AllAi) {
+                Room.PlayerList.ForEach((PRoom.PlayerInRoom Player) => {
+                    Player.PlayerType = PPlayerType.AI;
+                });
+            }
             NowPlayer = PlayerList[0];
-            Monitor.CallTime(PTime.BeforeStartGameTime);
+            if (DefaultGenerals ==null) {
+                Monitor.CallTime(PTime.ChooseGeneralTime);
+            }
             Monitor.CallTime(PTime.StartGameTime);
             NowPeriod = PPeriod.StartTurn;
             PNetworkManager.NetworkServer.TellClients(new PStartTurnOrder(NowPlayerIndex.ToString()));
@@ -233,7 +243,7 @@ public class PGame : PGameStatus {
         }
     }
 
-    private string Winners() {
+    public string Winners(bool AsGenerals = false) {
         List<int> LivingTeam = new List<int>();
         PlayerList.ForEach((PPlayer Player) => {
             if (Player.IsAlive && !LivingTeam.Contains(Player.TeamIndex)) {
@@ -247,7 +257,7 @@ public class PGame : PGameStatus {
             string WinnerNames = string.Empty;
             PlayerList.ForEach((PPlayer Player) => {
                 if (Player.TeamIndex == WinnerTeam) {
-                    WinnerNames += "," + Player.Name;
+                    WinnerNames += "," + (AsGenerals ? Player.General.Name : Player.Name);
                 }
             });
             if (WinnerNames.Length > 0) {
@@ -279,6 +289,13 @@ public class PGame : PGameStatus {
     }
 
     public void Prepared(string IPAddress) {
+        if (Room.AllAi()) {
+            PThread.Async(() => {
+                PThread.WaitUntil(() => ReadyToStartGameFlag);
+                StartGame();
+            });
+        }
+
         PPlayer TargetPlayer = PNetworkManager.NetworkServer.Game.PlayerList.Find((PPlayer Player) => Player.IPAddress.Equals(IPAddress));
         if (TargetPlayer != null) {
             lock (PreparedList) {

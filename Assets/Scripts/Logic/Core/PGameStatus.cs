@@ -102,7 +102,7 @@ public class PGameStatus {
 
     // 这个是Client端的StartGame
     // Server的StartGame在PGame里
-    public void StartGame() {
+    public void StartGame(List<PGeneral> DefaultGenerals = null) {
         #region 初始化玩家列表
         PlayerList = new List<PPlayer>();
         for (int i = 0; i < PlayerNumber; ++i) {

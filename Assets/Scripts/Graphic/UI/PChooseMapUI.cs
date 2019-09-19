@@ -7,6 +7,7 @@ public class PChooseMapUI : PAbstractUI {
     public readonly Dropdown ChooseModeDropdown;
     public readonly Button EnterButton;
     public readonly Button ReturnButton;
+    public readonly Button TestButton;
 
     public PChooseMapUI(Transform _Background) : base(_Background) {
         InitializeControls<Button>();
@@ -36,6 +37,7 @@ public class PChooseMapUI : PAbstractUI {
         EnterButton.onClick.AddListener(() => {
             int MapValue = ChooseMapDropdown.value;
             int ModeValue = ChooseModeDropdown.value;
+            PSystem.AllAi = false;
             try {
                 PNetworkManager.CreateServer(PSystem.MapList[MapValue], PMode.ListModes().Find((PMode Mode) => Mode.Name.Equals(ChooseModeDropdown.options[ModeValue].text)));
             } catch (Exception e) {
@@ -43,6 +45,25 @@ public class PChooseMapUI : PAbstractUI {
                 PLogger.Log(e.ToString());
             }
             // 等待客户端接收到信息
+        });
+        #endregion
+        #region 测试按钮：开启AI测试界面
+        TestButton.onClick.AddListener(() => {
+            int MapValue = ChooseMapDropdown.value;
+            int ModeValue = ChooseModeDropdown.value;
+            PSystem.AllAi = true;
+            try {
+                PNetworkManager.CreateServer(PSystem.MapList[MapValue], PMode.ListModes().Find((PMode Mode) => Mode.Name.Equals(ChooseModeDropdown.options[ModeValue].text)));
+            } catch (Exception e) {
+                PLogger.Log("建立服务器错误");
+                PLogger.Log(e.ToString());
+            }
+            //int MapValue = ChooseMapDropdown.value;
+            //int ModeValue = ChooseModeDropdown.value;
+            //PSystem.AllAiConfig = string.Empty;
+            //PSystem.CurrentMode = PMode.ListModes().Find((PMode Mode) => Mode.Name.Equals(ChooseModeDropdown.options[ModeValue].text));
+            //PSystem.CurrentMap = PSystem.MapList[MapValue];
+            //PUIManager.AddNewUIAction("测试：转到TUI", () => PUIManager.ChangeUI<PTestUI>());
         });
         #endregion
     }

@@ -17,11 +17,14 @@ public class PLogger {
     /// <summary>
     /// 启动Logger，清空原有日志文件
     /// </summary>
-    public static void StartLogging(bool Valid = true) {
+    public static void StartLogging(bool Valid = true, string Path = "") {
         if (Valid ) {
             IsValid = true;
             try {
-                Writer = new StreamWriter(PPath.GetPath(Config.LogFileName), false, Encoding.UTF8) {
+                if (Writer != null) {
+                    Writer.Close();
+                }
+                Writer = new StreamWriter(PPath.GetPath(Path.Equals(string.Empty) ? Config.LogFileName : Path), false, Encoding.UTF8) {
                     AutoFlush = true
                 };
                 Writer.WriteLine(PDebug.DebugHeader);

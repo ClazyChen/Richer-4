@@ -29,7 +29,7 @@ public class PNetworkConfig {
     /// <summary>
     /// 服务器用于通信的端口号
     /// </summary>
-    public const int ServerPort = 8881;
+    public const int ServerPort = 9012;
 
     /// <summary>
     /// 默认网络传输延迟

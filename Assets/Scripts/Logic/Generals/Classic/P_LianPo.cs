@@ -29,7 +29,10 @@ public class P_LianPo: PGeneral {
                         return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime()) && Player.RemainLimit(FuJing.Name) ;
                     },
                     AICondition = (PGame Game) => {
-                        if (Player.Money >= 15000) {
+                        if (Game.Teammates(Player, false).Count == 0) {
+                            return false;
+                        }
+                        if (Player.Money >= 15000 || !Player.CanBeInjured) {
                             return true;
                         } else {
                             bool CanGo = true;
@@ -48,7 +51,7 @@ public class P_LianPo: PGeneral {
                         FuJing.AnnouceUseSkill(Player);
                         PPlayer Target = null;
                         if (Player.IsAI) {
-                            Target = PMath.Max(Game.Teammates(Player, false), (PPlayer _Player) => _Player.AiCardExpectation + PMath.RandInt(0,5)).Key;
+                            Target = PMath.Max(Game.Teammates(Player, false), (PPlayer _Player) => _Player.AiCardExpectation + PMath.RandInt(0,5) + ((Player.Defensor != null && Player.Defensor.Model is P_PaiHuaChooon && !Player.Sex.Equals(_Player.Sex)) ? 1500 : 0 )).Key;
                         } else {
                             Target = PNetworkManager.NetworkServer.ChooseManager.AskForTargetPlayer(Player, PTrigger.Except(Player), FuJing.Name, true);
                         }

@@ -16,7 +16,7 @@ public class PTime : PObject {
         return false;
     }
 
-    public static PTime BeforeStartGameTime = new PTime("游戏开始前");
+    public static PTime ChooseGeneralTime = new PTime("选将时");
     public static PTime StartGameTime = new PTime("游戏开始时");
     public static PTime EndGameTime = new PTime("游戏结束时");
     public static PTime PassBlockTime = new PTime("经过格子时");
