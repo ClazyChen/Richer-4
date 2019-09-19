@@ -21,6 +21,11 @@ public class PAiBusinessChooser {
         int ParkExpectation = PMath.Percent(Block.Price, 60 * Math.Max(1, 20 * MaxOperationCount / RingLength) + 50);
         int CastleExpectation = Game.Enemies(Player).Exists((PPlayer _Player) => _Player.Money > 3000 && _Player.Weapon != null && _Player.Weapon.Model is P_ToouShihChi) ? 0: PMath.Percent(Block.Price, 50 + 20 *Game.Enemies(Player).Count) * Game.GetBonusHouseNumberOfCastle(Player, Block);
         int PawnshopExpectation = 2000 * Game.Teammates(Player).Count;
+
+        if (Player.General is P_YangYuHuan) {
+            InsituteExpectation += 4000;
+        }
+
         List<int> ExpectationList = new List<int>() {
             ShoppingCenterExpectation,
             InsituteExpectation,

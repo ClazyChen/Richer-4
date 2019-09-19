@@ -33,7 +33,7 @@ public class P_ToouShihChi : PEquipmentCardModel {
                         return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime()) && UsedTag != null && UsedTag.Count < UsedTag.Limit && Player.Money > 3000 && Game.Map.BlockList.Exists((PBlock Block ) => Block.HouseNumber > 0);
                     },
                     AICondition = (PGame Game) => {
-                        return Game.Map.BlockList.Exists((PBlock Block) => Block.Lord != null && Block.Lord.TeamIndex != Player.Index && Block.HouseNumber > 1 && Block.BusinessType.Equals(PBusinessType.Castle)) && Player.Money >= 6000;
+                        return Game.Map.BlockList.Exists((PBlock Block) => Block.Lord != null && Block.Lord.TeamIndex != Player.TeamIndex && Block.HouseNumber > 1 && Block.BusinessType.Equals(PBusinessType.Castle)) && Player.Money >= 6000;
                     },
                     Effect = (PGame Game) => {
                         AnnouceUseEquipmentSkill(Player);

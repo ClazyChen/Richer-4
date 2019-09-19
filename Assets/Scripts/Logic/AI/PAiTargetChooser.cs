@@ -54,6 +54,13 @@ public class PAiTargetChooser {
                 Profit += Math.Max(0, PAiCardExpectation.FindMostValuableToGet(Game, Player, Target).Value);
             }
 
+            if (Player.General is P_ChenYuanYuan) {
+                Profit += 200;
+            }
+            if (Target.General is P_ChenYuanYuan) {
+                Profit -= 200 * Cof;
+            }
+
             // 加上受到、造成伤害触发技能的增益
             return Profit;
         }, true).Key;

@@ -229,6 +229,9 @@ public class PAiMapAnalyzer {
             } else if (Block.BusinessType.Equals(PBusinessType.ShoppingCenter)) {
                 LandValue += PMath.Percent(Block.Price, 20) * Game.Enemies(Player).Count * PurchaseLimit;
             }
+            if (Player.General is P_YangYuHuan) {
+                LandValue += P_ShunShouChiienYang.AIExpect(Game, Player, 0).Value;
+            }
         }
         if (Block.Lord != null && Block.Lord.TeamIndex == Player.TeamIndex) {
             if (Block.BusinessType.Equals(PBusinessType.Institute)) {

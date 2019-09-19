@@ -5,27 +5,35 @@ using System.Collections.Generic;
 /// </summary>
 public class P_ShunShouChiienYang: PSchemeCardModel {
 
-    public List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
-
-        return new List<PPlayer> { PMath.Max(Game.PlayerList.FindAll((PPlayer TargetPlayer) => TargetPlayer.IsAlive && !TargetPlayer.Equals(Player)), (PPlayer TargetPlayer) => {
+    public static KeyValuePair<PPlayer, int> AIExpect(PGame Game, PPlayer Player, int BaseValue = 4000) {
+        return PMath.Max(Game.PlayerList.FindAll((PPlayer TargetPlayer) => TargetPlayer.IsAlive && !TargetPlayer.Equals(Player)), (PPlayer TargetPlayer) => {
             if (TargetPlayer.TeamIndex == Player.TeamIndex) {
                 KeyValuePair<PCard, int> Test = PAiCardExpectation.FindLeastValuable(Game, TargetPlayer, TargetPlayer, true, true, true);
                 if (Test.Key == null) {
-                    return -4000;
+                    return -BaseValue;
                 }
                 int Least = Test.Value;
                 int ForMe = Test.Key.Model.AIInHandExpectation(Game, Player);
-                return ForMe - Least - 3000;
+                return ForMe - Least - BaseValue;
             } else {
                 KeyValuePair<PCard, int> Test = PAiCardExpectation.FindMostValuable(Game, TargetPlayer, TargetPlayer, true, true, true);
                 if (Test.Key == null) {
-                    return -4000;
+                    return -BaseValue;
                 }
                 int Most = Test.Value;
                 int ForMe = Test.Key.Model.AIInHandExpectation(Game, Player);
-                return ForMe + Most - 3000;
+                return ForMe + Most - BaseValue;
             }
-        }, true).Key };
+        }, true);
+    }
+
+    public static List<PPlayer> AIBaseEmitTargets(PGame Game, PPlayer Player, int BaseValue = 4000) {
+
+        return new List<PPlayer> { AIExpect(Game, Player, BaseValue).Key };
+    }
+
+    public List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
+        return AIBaseEmitTargets(Game, Player);
     }
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {

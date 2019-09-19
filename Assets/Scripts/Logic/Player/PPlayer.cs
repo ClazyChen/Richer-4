@@ -83,6 +83,26 @@ public class PPlayer: PObject {
         }
     }
 
+    public int LandNumber {
+        get {
+            if (PNetworkManager.CurrentHostType.Equals(PHostType.Server)) {
+                return (int)PMath.Sum(PNetworkManager.Game.Map.BlockList.FindAll((PBlock Block) => Equals(Block.Lord)).ConvertAll( (PBlock Block) => 1.0));
+            } else {
+                return 0;
+            }
+        }
+    }
+
+    public int HouseNumber {
+        get {
+            if (PNetworkManager.CurrentHostType.Equals(PHostType.Server)) {
+                return (int)PMath.Sum(PNetworkManager.Game.Map.BlockList.FindAll((PBlock Block) => Equals(Block.Lord)).ConvertAll((PBlock Block) => (double) Block.HouseNumber));
+            } else {
+                return 0;
+            }
+        }
+    }
+
     public int Distance(PPlayer Another) {
         return Math.Abs(Position.X - Another.Position.X) + Math.Abs(Position.Y - Another.Position.Y);
     }
