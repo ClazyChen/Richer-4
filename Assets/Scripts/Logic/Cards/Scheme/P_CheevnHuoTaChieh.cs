@@ -39,7 +39,12 @@ public class P_CheevnHuoTaChieh: PSchemeCardModel {
                     },
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets, AIEmitTargets,
                         (PGame Game, PPlayer User, PPlayer Target) => {
-                            Game.GetCardFrom(User, Target);
+                            PCard Got = Game.GetCardFrom(User, Target);
+                            #region 成就：分一杯羹
+                            if (Got.Model is P_MuNiuLiuMa && User.Area.HandCardArea.CardList.Contains(Got)) {
+                                PArch.Announce(Game, User, "分一杯羹");
+                            }
+                            #endregion
                         })
                 };
             });

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class P_KuanMevnChoTsev: PSchemeCardModel {
 
     public List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
-        return Game.ListPlayers((PPlayer _Player) => _Player.Position.HouseNumber == 0 && _Player.IsAlive, Player);
+        return Game.ListPlayers((PPlayer _Player) => _Player.Position.HouseNumber == 0 && _Player.IsAlive && !_Player.Equals(Player), Player);
     }
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {

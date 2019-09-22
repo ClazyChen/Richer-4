@@ -27,7 +27,9 @@ public abstract class PSchemeCardModel: PCardModel {
             Targets.RemoveAll((PPlayer _Player) => _Player == null);
             if (Targets.Count == 0) { return; }
             Game.Monitor.CallTime(PTime.Card.AfterEmitTargetTime, new PUseCardTag(Card, Player, Targets));
-            Game.CardManager.MoveCard(Card, Player.Area.HandCardArea, Game.CardManager.SettlingArea);
+            if (Card.Point > 0) {
+                Game.CardManager.MoveCard(Card, Player.Area.HandCardArea, Game.CardManager.SettlingArea);
+            }
             Game.Monitor.CallTime(PTime.Card.AfterBecomeTargetTime, new PUseCardTag(Card, Player, Targets));
             Targets = ArrangeTargets(Game, Targets, Player);
             Game.TagManager.CreateTag(new PUseCardTag(Card, Player, Targets));
@@ -39,7 +41,9 @@ public abstract class PSchemeCardModel: PCardModel {
             });
             EndAction?.Invoke(Game, Player, Targets);
             Game.TagManager.PopTag<PUseCardTag>(PUseCardTag.TagName);
-            Game.CardManager.MoveCard(Card, Game.CardManager.SettlingArea, Game.CardManager.ThrownCardHeap);
+            if (Card.Point > 0) {
+                Game.CardManager.MoveCard(Card, Game.CardManager.SettlingArea, Game.CardManager.ThrownCardHeap);
+            }
             Game.Monitor.CallTime(PTime.Card.EndSettleTime, new PUseCardTag(Card, Player, Targets));
         };
     }

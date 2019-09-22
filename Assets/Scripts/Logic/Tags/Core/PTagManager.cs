@@ -28,10 +28,14 @@ public class PTagManager {
     /// <summary>
     /// Player的标签域不能有两个同名标签
     /// </summary>
-    /// <param name="Tag"></param>
+    /// <param name="Tag">如果为数字标签，数字相加</param>
     public void CreateTag(PTag Tag) {
         if (Owner != null && ExistTag(Tag.Name)) {
-            PopTag<PTag>(Tag.Name);
+            if (Tag is PNumberedTag) {
+                FindPeekTag<PNumberedTag>(Tag.Name).Value += ((PNumberedTag)Tag).Value;
+            } else {
+                PopTag<PTag>(Tag.Name);
+            }
         }
         if (Owner == null || !ExistTag(Tag.Name)) {
             PLogger.Log("创建标签：" + Tag.Name);
@@ -44,7 +48,7 @@ public class PTagManager {
     }
 
     public T FindPeekTag<T>(string Name) where T:PTag {
-        return (T)TagList.FindLast((PTag Tag) => Tag.Name.Equals(Name));
+        return (T)TagList.FindLast((PTag Tag) => Tag.Name.Equals(Name) && Tag is T);
     }
 
     public bool ExistTag(string Name) {
@@ -61,6 +65,18 @@ public class PTagManager {
             }
         }
         return Tag;
+    }
+
+    public void MinusTag(string Name, int Value) {
+        PNumberedTag Tag = FindPeekTag<PNumberedTag>(Name);
+        if (Tag.Value <= Value) {
+            PopTag<PNumberedTag>(Tag.Name);
+        } else {
+            Tag.Value -= Value;
+        }
+        if (Owner != null) {
+            PNetworkManager.NetworkServer.TellClients(new PRefreshMarkStringOrder(Owner));
+        }
     }
 
     public void RemoveAll() {

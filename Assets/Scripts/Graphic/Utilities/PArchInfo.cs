@@ -23,4 +23,17 @@ public class PArchInfo : PObject {
     public static PArchInfo 疯狂试探 = new PArchInfo("疯狂试探", "在现金少于3000的情况下赢得一场游戏。");
     public static PArchInfo 十三太堡 = new PArchInfo("十三太堡", "在一片土地上拥有至少13座城堡赢得一场游戏。");
 
+    // 第2批成就
+    public static PArchInfo 独孤求败 = new PArchInfo("独孤求败", "在8人混战模式下获胜。");
+    public static PArchInfo 千钧一发 = new PArchInfo("千钧一发", "使用【围魏救赵】防止一次至少10000点的伤害。");
+    public static PArchInfo 老司机 = new PArchInfo("老司机", "使用【借刀杀人】获得【投石机】。");
+    public static PArchInfo 躺尸 = new PArchInfo("躺尸", "使用【以逸待劳】获得【借尸还魂】。");
+    public static PArchInfo 分一杯羹 = new PArchInfo("分一杯羹", "使用【趁火打劫】获得【木牛流马】。");
+    public static PArchInfo 地府的公正 = new PArchInfo("地府的公正", "使用【声东击西】令【借尸还魂】无效。");
+    public static PArchInfo 鸿运当头 = new PArchInfo("鸿运当头", "使用【无中生有】获得【无中生有】。");
+    public static PArchInfo 出其不意 = new PArchInfo("出其不意", "在自己的同一回合内，使用【暗度陈仓】并购买一片商业用地。");
+    public static PArchInfo 不辞劳苦 = new PArchInfo("不辞劳苦", "使用【隔岸观火】取消【以逸待劳】。");
+    public static PArchInfo 口蜜腹剑 = new PArchInfo("口蜜腹剑", "使用【笑里藏刀】杀死一名角色。");
+    public static PArchInfo 桃李不言 = new PArchInfo("桃李不言", "使用【李代桃僵】防止一次致命伤害。");
+    public static PArchInfo 名副其实 = new PArchInfo("名副其实", "使用【顺手牵羊】获得【西域羊驼】。");
 }

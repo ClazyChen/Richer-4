@@ -38,7 +38,9 @@ public class P_ShunShouChiienYang: PSchemeCardModel {
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
         int Basic = 4000;
-        // 装备和伏兵另算
+        int ShiQian = Game.Enemies(Player).FindAll((PPlayer _Player) => _Player.General is P_ShiQian).Count;
+        Basic *= Game.Enemies(Player).Count - ShiQian;
+        Basic /= Game.Enemies(Player).Count;
         return Basic;
     }
 
@@ -67,7 +69,12 @@ public class P_ShunShouChiienYang: PSchemeCardModel {
                         return _Player.Area.CardNumber > 0 && !_Player.Equals(Player);
                     },
                         (PGame Game, PPlayer User, PPlayer Target) => {
-                            Game.GetCardFrom(User, Target, true, true, true);
+                            PCard Got = Game.GetCardFrom(User, Target, true, true, true);
+                            #region 成就：名副其实
+                            if (Got.Model is P_HsiYooYangToow && User.Area.HandCardArea.CardList.Contains(Got)) {
+                                PArch.Announce(Game, User, "名副其实");
+                            }
+                            #endregion
                         })
                 };
             });

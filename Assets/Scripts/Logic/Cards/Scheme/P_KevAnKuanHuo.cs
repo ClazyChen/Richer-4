@@ -32,6 +32,11 @@ public class P_KevAnKuanHuo: PSchemeCardModel {
                         Game.CardManager.MoveCard(Card, Player.Area.HandCardArea, Game.CardManager.SettlingArea);
                         Game.Monitor.CallTime(PTime.Card.AfterBecomeTargetTime, new PUseCardTag(Card, Player, Targets));
                         PUseCardTag UseCardTag = Game.TagManager.FindPeekTag<PUseCardTag>(PUseCardTag.TagName);
+                        #region 成就：不辞劳苦
+                        if (UseCardTag.Card.Model is P_IITaiLao) {
+                            PArch.Announce(Game, Player, "不辞劳苦");
+                        }
+                        #endregion
                         UseCardTag.TargetList.Remove(Player);
                         PTrigger GetMoneyTrigger = null;
                         GetMoneyTrigger = new PTrigger(CardName + "[摸500]") {

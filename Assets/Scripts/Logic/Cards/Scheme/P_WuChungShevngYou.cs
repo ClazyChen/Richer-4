@@ -37,7 +37,12 @@ public class P_WuChungShevngYou: PSchemeCardModel {
                     },
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets, AIEmitTargets,
                         (PGame Game, PPlayer User, PPlayer Target) => {
-                            Game.GetCard(Target, 2);
+                            List<PCard> Gots = Game.GetCard(Target, 2);
+                            #region 成就：鸿运当头
+                            if (Gots.Exists((PCard Got) => Got.Model is P_WuChungShevngYou && User.Area.HandCardArea.CardList.Contains(Got))) {
+                                PArch.Announce(Game, User, "鸿运当头");
+                            }
+                            #endregion
                         })
                 };
             });

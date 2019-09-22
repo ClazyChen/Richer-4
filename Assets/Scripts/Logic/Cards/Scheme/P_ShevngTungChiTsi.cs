@@ -144,6 +144,11 @@ public class P_ShevngTungChiHsi: PSchemeCardModel {
                         }
                         if (Target == null || Target == UseCardTag.TargetList[0]) {
                             PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder("声东击西：无效"));
+                            #region 成就：地府的公正
+                            if (UseCardTag.Card.Model is P_ChiehShihHuanHun) {
+                                PArch.Announce(Game, Player, "地府的公正");
+                            }
+                            #endregion
                             UseCardTag.TargetList.Clear();
                         } else {
                             PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder("声东击西：转移给" + Target.Name));

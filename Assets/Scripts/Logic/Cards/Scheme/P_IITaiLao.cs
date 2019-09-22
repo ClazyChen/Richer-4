@@ -37,7 +37,12 @@ public class P_IITaiLao: PSchemeCardModel {
                     Effect = MakeMultiTargetNormalEffect(Player, Card, AIEmitTargets,
                         PTrigger.NoCondition,
                         (PGame Game, PPlayer User, PPlayer Target) => {
-                            Game.GetCard(Target);
+                            PCard Got = Game.GetCard(Target);
+                            #region 成就：躺尸
+                            if (Got.Model is P_ChiehShihHuanHun && User.Area.HandCardArea.CardList.Contains(Got)) {
+                                PArch.Announce(Game, User, "躺尸");
+                            }
+                            #endregion
                             Game.ThrowCard(Target, Target);
                         })
                 };

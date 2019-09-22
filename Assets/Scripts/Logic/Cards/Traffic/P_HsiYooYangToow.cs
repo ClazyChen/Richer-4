@@ -27,7 +27,7 @@ public class P_HsiYooYangToow : PEquipmentCardModel {
                         PMoveCardTag MoveCardTag = Game.TagManager.FindPeekTag<PMoveCardTag>(PMoveCardTag.TagName);
                         PPlayer SourceOwner = MoveCardTag.Source.Owner;
                         PPlayer DestinationOwner = MoveCardTag.Destination.Owner;
-                        return Player.Equals(SourceOwner) && DestinationOwner!= null && !Player.Age.Equals(DestinationOwner.Age);
+                        return Player.Equals(SourceOwner) && !MoveCardTag.Source.IsAmbushArea() && DestinationOwner!= null && MoveCardTag.Destination.IsHandCardArea() && !Player.Age.Equals(DestinationOwner.Age);
                     },
                     Effect = (PGame Game ) => {
                         AnnouceUseEquipmentSkill(Player);

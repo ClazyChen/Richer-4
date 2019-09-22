@@ -47,6 +47,11 @@ public class P_LiTaiTaaoChiang: PSchemeCardModel {
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets, AIEmitTargets,
                         (PGame Game, PPlayer User, PPlayer Target) => {
                             PNetworkManager.NetworkServer.TellClients(new PPushTextOrder(User.Index.ToString(), "李代桃僵：防止伤害", PPushType.Information.Name));
+                            #region 成就：桃李不言
+                            if (Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName).Injure >= User.Money) {
+                                PArch.Announce(Game, User, "桃李不言");
+                            }
+                            #endregion
                             Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName).Injure = 0;
                             Game.ThrowHouse(Target, User, CardName);
                         })

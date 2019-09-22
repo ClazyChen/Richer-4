@@ -100,8 +100,43 @@
                  * 
                  * 必买：公园
                  * 必不买：廉颇 or 无房被兵
+                 * 
+                 * 赵云：2000次数上限为3,1000无限建
                  */
-                return (PurchaseTag.Count == 0 || (PurchaseTag.Count == 1 && Player.Money >= 20000) || (PurchaseTag.Count == 1 && Player.Money >= 10000 && NowBlock.Price >= 2000) || (Player.Money >= 15000 && NowBlock.Price >= 3000) || (Player.Money >= 10000 && NowBlock.BusinessType.Equals(PBusinessType.ShoppingCenter)) || NowBlock.BusinessType.Equals(PBusinessType.Park)) && !(Player.Area.AmbushCardArea.CardList.Exists((PCard Card) => Card.Model is P_PingLiangTsuunTuan) && !Player.HasHouse) && !(Player.General is P_LianPo);
+                if (NowBlock.BusinessType.Equals(PBusinessType.Park)) {
+                    return true;
+                }
+                if (Player.General is P_LianPo) {
+                    return false;
+                }
+                if (Player.Area.AmbushCardArea.CardList.Exists((PCard Card) => Card.Model is P_PingLiangTsuunTuan) && !Player.HasHouse) {
+                    return false;
+                }
+                if (PurchaseTag.Count == 0) {
+                    return true;
+                }
+                if (PurchaseTag.Count == 1) {
+                    if (Player.Money >= 20000) {
+                        return true;
+                    } else if (Player.Money >= 10000 && NowBlock.Price >= 2000) {
+                        return true;
+                    }
+                }
+                if (Player.Money >= 15000 && NowBlock.Price >= 3000) {
+                    return true;
+                }
+                if (Player.Money >= 10000 && NowBlock.BusinessType.Equals(PBusinessType.ShoppingCenter)) {
+                    return true;
+                }
+                if (Player.General is P_ZhaoYun) {
+                    if (Player.Money >= 5000 && NowBlock.Price < 3000 && PurchaseTag.Count <= 2) {
+                        return true;
+                    }
+                    if (Player.Money >= 2000 && NowBlock.Price < 2000 ) {
+                        return true;
+                    }
+                }
+                return false;
             },
             Effect = (PGame Game) => {
                 Game.TagManager.FindPeekTag<PPurchaseTag>(PPurchaseTag.TagName).Count++;

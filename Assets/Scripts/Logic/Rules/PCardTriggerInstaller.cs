@@ -87,8 +87,12 @@ public class PCardTriggerInstaller : PSystemTriggerInstaller {
                 PCard Card = UseCardTag.Card;
                 List<PPlayer> TargetList = UseCardTag.TargetList;
                 if (User != null && Card != null && TargetList != null && !TargetList.Contains(null)) {
-                    PNetworkManager.NetworkServer.TellClients(new PPushTextOrder(User.Index.ToString(), Card.Name, PPushType.Information.Name));
-                    PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(User.Name + "使用了" + Card.Name));
+                    PNetworkManager.NetworkServer.TellClients(new PPushTextOrder(User.Index.ToString(), Card.Model.Name, PPushType.Information.Name));
+                    if (Card.Name.Equals(Card.Model.Name)) {
+                        PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(User.Name + "使用了" + Card.Name));
+                    } else {
+                        PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(User.Name + "把" + Card.Name + "当做" + Card.Model.Name + "使用"));
+                    }
                     PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder("目标：" + string.Join(",", TargetList.ConvertAll((PPlayer Player) => Player.Name))));
                 }
             }

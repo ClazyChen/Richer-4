@@ -311,6 +311,9 @@ public class PGame : PGameStatus {
     }
 
     public void GetHouse(PBlock Block, int HouseCount) {
+        if (HouseCount <= 0) {
+            return;
+        }
         PGetHouseTag GetHouseTag = Monitor.CallTime(PTime.GetHouseTime, new PGetHouseTag(Block, HouseCount));
         PBlock GetHouseBlock = GetHouseTag.Block;
         int GetHouseCount = GetHouseTag.House;
@@ -321,6 +324,9 @@ public class PGame : PGameStatus {
     }
 
     public void LoseHouse(PBlock Block, int HouseCount) {
+        if (HouseCount <= 0) {
+            return;
+        }
         PLoseHouseTag LoseHouseTag = Monitor.CallTime(PTime.LoseHouseTime, new PLoseHouseTag(Block, HouseCount));
         PBlock LoseHouseBlock = LoseHouseTag.Block;
         int LoseHouseCount = LoseHouseTag.House;
@@ -415,27 +421,32 @@ public class PGame : PGameStatus {
         return Result;
     }
 
-    public void GetCard(PPlayer Player, int Count) {
+    public List<PCard> GetCard(PPlayer Player, int Count) {
+        List<PCard> Ans = new List<PCard>();
         for (int i = 0; i < Count;++i) {
-            GetCard(Player);
+            Ans.Add(GetCard(Player));
         }
+        Ans.RemoveAll((PCard Card) => Card == null);
+        return Ans;
     }
 
-    public void GetCard(PPlayer Player) {
+    public PCard GetCard(PPlayer Player) {
         if (Player == null || !Player.IsAlive) {
-            return;
+            return null;
         }
         if (CardManager.CardHeap.CardNumber == 0 && CardManager.ThrownCardHeap.CardNumber > 0) {
             CardManager.CardHeap.CardList.AddRange(CardManager.ThrownCardHeap.CardList);
             CardManager.ThrownCardHeap.CardList.Clear();
             CardManager.CardHeap.Wash();
         }
+        PCard Got = null;
         if (CardManager.CardHeap.CardNumber > 0) {
-            CardManager.MoveCard(CardManager.CardHeap.TopCard, CardManager.CardHeap, Player.Area.HandCardArea);
+            CardManager.MoveCard(Got = CardManager.CardHeap.TopCard, CardManager.CardHeap, Player.Area.HandCardArea);
         }
         if (NowPeriod != null) {
             PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "摸了1张牌"));
         }
+        return Got;
     }
 
     private PCard ChooseCard(PPlayer Player, PPlayer TargetPlayer, string Title, bool AllowHandCards = true, bool AllowEquipment = true, bool AllowAmbush = false, bool IsGet =false) {
@@ -515,7 +526,8 @@ public class PGame : PGameStatus {
     /// </summary>
     /// <param name="Player">获得牌的玩家</param>
     /// <param name="TargetPlayer">被获得牌的玩家</param>
-    public void GetCardFrom(PPlayer Player, PPlayer TargetPlayer, bool AllowHandCards = true, bool AllowEquipment = true, bool AllowJudge = false) {
+    /// <returns>获得的牌</returns>
+    public PCard GetCardFrom(PPlayer Player, PPlayer TargetPlayer, bool AllowHandCards = true, bool AllowEquipment = true, bool AllowJudge = false) {
         string Title = "请选择获得一张" + (AllowHandCards ? "[手牌]" : string.Empty) + (AllowEquipment ? "[装备]" : string.Empty) + (AllowJudge ? "[伏兵]" : string.Empty);
         PCard TargetCard = ChooseCard(Player, TargetPlayer, Title, AllowHandCards, AllowEquipment, AllowJudge, true);
         if (TargetCard != null) {
@@ -526,6 +538,7 @@ public class PGame : PGameStatus {
                 CardManager.MoveCard(TargetCard, TargetPlayer.Area.EquipmentCardArea, Player.Area.HandCardArea);
             }
         }
+        return TargetCard;
     }
 
     public void GiveCardTo(PPlayer Player, PPlayer TargetPlayer, bool AllowHandCards = true, bool AllowEquipment = true, bool AllowJudge = false) {

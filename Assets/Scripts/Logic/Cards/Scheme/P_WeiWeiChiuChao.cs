@@ -48,6 +48,11 @@ public class P_WeiWeiChiuChao: PSchemeCardModel {
                         (PGame Game, PPlayer User, PPlayer Target) => {
                             if (Game.PkPoint(User, Target) == 1) {
                                 PNetworkManager.NetworkServer.TellClients(new PPushTextOrder(User.Index.ToString(), "围魏救赵：防止伤害", PPushType.Information.Name));
+                                #region 成就：千钧一发
+                                if (Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName).Injure >= 10000) {
+                                    PArch.Announce(Game, User, "千钧一发");
+                                }
+                                #endregion
                                 Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName).Injure = 0;
                             }
                         })

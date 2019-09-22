@@ -5,7 +5,7 @@ using System.Collections.Generic;
 /// </summary>
 public class P_YooenChiaoChinKung: PSchemeCardModel {
 
-    public List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
+    public static List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
         
         return new List<PPlayer> { PAiCardExpectation.MostValuableCardUser(Game, Game.Teammates(Player, false)) };
     }

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class P_PaaoChuanYinYoo : PSchemeCardModel {
 
     public List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
-        return Game.ListPlayers((PPlayer _Player) => !_Player.Equals(Player), Player);
+        return Game.ListPlayers((PPlayer _Player) => !_Player.Equals(Player) && _Player.HasHouse, Player);
     }
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
@@ -38,7 +38,7 @@ public class P_PaaoChuanYinYoo : PSchemeCardModel {
                     Time = Time,
                     AIPriority = 140,
                     Condition = (PGame Game) => {
-                        return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime()) && Game.Map.BlockList.Exists((PBlock Block) => Player.Equals(Block.Lord)) && (Player.Area.EquipmentCardArea.CardNumber > 0 || Player.Area.HandCardArea.CardList.Exists((PCard _Card) => Card.Type.IsEquipment()));
+                        return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime()) && Game.Map.BlockList.Exists((PBlock Block) => Player.Equals(Block.Lord)) && (Player.Area.EquipmentCardArea.CardNumber > 0 || Player.Area.HandCardArea.CardList.Exists((PCard _Card) => Card.Type.IsEquipment())) && AIEmitTargets(Game,Player).Count > 0;
                     },
                     AICondition = (PGame Game) => {
                         return Player.Area.HandCardArea.CardList.Exists((PCard _Card) => Card.Type.IsEquipment()) && AIInHandExpectation(Game, Player) > 2000;

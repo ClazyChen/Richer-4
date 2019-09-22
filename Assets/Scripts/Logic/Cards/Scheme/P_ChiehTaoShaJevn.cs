@@ -84,7 +84,12 @@ public class P_ChiehTaoShaJevn : PSchemeCardModel {
                                     }
                                 }
                             } else if (ChosenResult == 1) {
-                                Game.GetCardFrom(User, Target, false);
+                                PCard Got = Game.GetCardFrom(User, Target, false);
+                                #region 成就：老司机
+                                if (Got.Model is P_ToouShihChi && User.Area.HandCardArea.CardList.Contains(Got)) {
+                                    PArch.Announce(Game, User, "老司机");
+                                }
+                                #endregion
                             }
                         })
                 };

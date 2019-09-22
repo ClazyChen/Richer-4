@@ -9,25 +9,16 @@ public class P_ChiinTsevChiinWang : PSchemeCardModel {
         int MaxMoney = PMath.Max(Game.PlayerList, (PPlayer _Player) => _Player.Money).Value;
         PPlayer Target =  PMath.Max(Game.PlayerList.FindAll((PPlayer _Player) => _Player.Money == MaxMoney), (PPlayer _Player) => {
             if (Player.TeamIndex == _Player.TeamIndex) {
-                return PAiMapAnalyzer.ChangeFaceExpect(Game, _Player);
+                return PAiMapAnalyzer.ChangeFaceExpect(Game, _Player) - 500;
             } else {
-                return -PAiMapAnalyzer.ChangeFaceExpect(Game, _Player);
+                return -PAiMapAnalyzer.ChangeFaceExpect(Game, _Player) - 500;
             }
         }).Key;
         return new List<PPlayer>() { Target };
     }
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
-        int Basic = 300;
-        int MaxMoney = PMath.Max(Game.PlayerList, (PPlayer _Player) => _Player.Money).Value;
-        int Test = PMath.Max(Game.PlayerList.FindAll((PPlayer _Player) => _Player.Money == MaxMoney), (PPlayer _Player) => {
-            if (Player.TeamIndex == _Player.TeamIndex) {
-                return PAiMapAnalyzer.ChangeFaceExpect(Game, _Player);
-            } else {
-                return -PAiMapAnalyzer.ChangeFaceExpect(Game, _Player);
-            }
-        }).Value;
-        return Math.Max(Basic, Test);
+        return 500;
     }
 
     public readonly static string CardName = "擒贼擒王";
@@ -49,7 +40,7 @@ public class P_ChiinTsevChiinWang : PSchemeCardModel {
                         return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime());
                     },
                     AICondition = (PGame Game) => {
-                        return AIInHandExpectation(Game, Player) > 500;
+                        return AIEmitTargets(Game, Player)[0] != null;
                     },
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets,
                         (PGame Game, PPlayer _Player) => {

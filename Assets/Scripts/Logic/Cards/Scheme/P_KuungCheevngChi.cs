@@ -56,7 +56,7 @@ public class P_KuungCheevngChi : PSchemeCardModel {
                             Game.Monitor.AddTrigger(KuungCheevngChiTrigger = new PTrigger("空城状态更新") {
                                 IsLocked = true,
                                 Player = Target,
-                                Time = PPeriod.StartTurn.During,
+                                Time = PPeriod.EndTurn.During,
                                 Condition = (PGame _Game) => {
                                     return Target.Equals(_Game.NowPlayer);
                                 },

@@ -6,12 +6,16 @@ using System.Collections.Generic;
 public class P_ChuKevLienNu : PEquipmentCardModel {
 
     public override int AIInEquipExpectation(PGame Game, PPlayer Player) {
+        int Base = 0;
+        if (Player.General is P_ZhaoYun) {
+            Base += 2000;
+        }
         if (Player.Money <= 5000) {
-            return 500;
+            return Base+500;
         } else if (Player.Money <= 10000) {
-            return 1000;
+            return Base + 1000;
         } else {
-            return 1200 * Game.Enemies(Player).Count;
+            return Base + 1200 * Game.Enemies(Player).Count;
         }
     }
 

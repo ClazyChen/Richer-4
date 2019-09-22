@@ -15,6 +15,12 @@ public class PSkillInfo : PObject {
     public static PSkillInfo 羞花 = new PSkillInfo("羞花", "【被】回合结束时，你可以摸200X[X=满足的条件数： 1.现金数最少；2.手牌数最少；3.土地数最少；4.房屋数最少]。", PSkillType.SoftLock);
     public static PSkillInfo 风云 = new PSkillInfo("风云", "【被】你每造成或受到一次伤害，可以在此伤害结算后摸200。", PSkillType.SoftLock);
     public static PSkillInfo 楚楚 = new PSkillInfo("楚楚", "【被】回合结束阶段，你可以进行一次判定，若X=4，你摸一张牌。", PSkillType.SoftLock);
+    public static PSkillInfo 纵横 = new PSkillInfo("纵横", "【主】你可以将一张点数为3或6的手牌当做【远交近攻】使用。", PSkillType.Initiative);
+    public static PSkillInfo 隐居 = new PSkillInfo("隐居", "【主】回合内限一次，你可以移动到一片你的有房屋的土地上，就地拆除一座房屋，将自己移出游戏。", PSkillType.Initiative);
+    public static PSkillInfo 龙胆 = new PSkillInfo("龙胆", "【主】回合内限一次，你可弃置你的一座房屋，获得1个胆 ；当你造成伤害时，你可消耗1个胆使伤害*150%；当你受到伤害时，你可消耗1个胆使伤害*50%。", PSkillType.Initiative);
+    public static PSkillInfo 飞贼 = new PSkillInfo("飞贼", "【被】锁定技，【顺手牵羊】对你无效。", PSkillType.Lock);
+    public static PSkillInfo 轻敏 = new PSkillInfo("轻敏", "【主】你可以将一张点数为1的手牌当做【顺手牵羊】使用。", PSkillType.Initiative);
+    public static PSkillInfo 太极 = new PSkillInfo("太极", "【被】锁定技，回合开始时，你须选择“阴”或“阳”。锁定技，当你处在“阴”状态时，造成的伤害+20%；当你处在“阳”状态时，受到的伤害-20%。", PSkillType.Lock);
 
     public PSkillInfo Copy() {
         return new PSkillInfo(Name, ToolTip, Type);

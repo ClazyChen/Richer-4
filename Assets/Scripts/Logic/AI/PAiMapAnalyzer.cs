@@ -128,11 +128,13 @@ public class PAiMapAnalyzer {
         });
     }
 
-    public static KeyValuePair<PBlock, int> MinValueHouse(PGame Game, PPlayer Player) {
+    public static KeyValuePair<PBlock, int> MinValueHouse(PGame Game, PPlayer Player, bool Concentrate = false) {
         int EnemyCount = Game.Enemies(Player).Count;
-        return PMath.Min(Game.Map.BlockList.FindAll((PBlock Block) => Player.Equals(Block.Lord) && Block.HouseNumber > 0), (PBlock Block) => {
-            return PMath.Percent(Block.Price, 50 + 20 * EnemyCount * (Block.BusinessType.Equals(PBusinessType.ShoppingCenter) ? 2 : 1));
+        KeyValuePair<PBlock, int> Test = PMath.Min(Game.Map.BlockList.FindAll((PBlock Block) => Player.Equals(Block.Lord) && Block.HouseNumber > 0), (PBlock Block) => {
+            return PMath.Percent(Block.Price, 50 + 20 * EnemyCount * (Block.BusinessType.Equals(PBusinessType.ShoppingCenter) ? 2 : 1)) * 1000 + 
+            (Concentrate ? Block.HouseNumber : 0);
         });
+        return new KeyValuePair<PBlock, int>(Test.Key, Test.Value / 1000);
     }
 
     public static int StartFromExpect(PGame Game, PPlayer Player, PBlock Block) {

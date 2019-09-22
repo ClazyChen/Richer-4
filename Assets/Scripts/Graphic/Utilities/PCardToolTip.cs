@@ -23,7 +23,7 @@ public class PCardToolTip : PObject {
     public static PCardToolTip ChiehShihHuanHun = new PCardToolTip("借尸还魂", "【主】空闲时间点或你濒死时，对你自己使用。弃置所有牌，将你的现金摸或弃至与另一名角色相同。这张牌使你增加的钱数至多为10000。");
     public static PCardToolTip TiaoHuLiShan = new PCardToolTip("调虎离山", "【主】空闲时间点，对一名其他角色使用。将其移出游戏。");
     public static PCardToolTip YooChiinKuTsung = new PCardToolTip("欲擒故纵", "【被】当你造成伤害时，若目标有手牌，对目标使用。防止此伤害，然后获得其两张手牌。");
-    public static PCardToolTip PaaoChuanYinYoo = new PCardToolTip("抛砖引玉", "【主】空闲时间点，对其他所有角色使用。你弃一张装备牌，目标依次交给你一座房屋。");
+    public static PCardToolTip PaaoChuanYinYoo = new PCardToolTip("抛砖引玉", "【主】空闲时间点，对有房屋的所有其他角色（至少一名）使用。你弃一张装备牌，目标依次交给你一座房屋。");
     public static PCardToolTip ChiinTsevChiinWang = new PCardToolTip("擒贼擒王", "【主】空闲时间点，对现金最多的一名角色使用。其翻面。");
     public static PCardToolTip FuTiChoouHsin = new PCardToolTip("釜底抽薪", "【被】当你受到过路费造成的伤害后，弃置所有相关房屋。");
     public static PCardToolTip HunShuiMoYoo = new PCardToolTip("浑水摸鱼", "【被】当一张群体普通计策牌结算完毕后，对其所有目标使用。你依次对目标造成500点伤害。");

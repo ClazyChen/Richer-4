@@ -33,6 +33,19 @@ public class PAiTargetChooser {
             if (Target.Defensor != null && Target.Defensor.Model is P_PaiHuaChooon && !Player.Sex.Equals(Target.Sex)) {
                 ExpectedMoney = PMath.Percent(ExpectedMoney, 50);
             }
+            if (Player.General is P_ZhaoYun && Player.Tags.ExistTag(P_ZhaoYun.PDanTag.TagName) && (ExpectedMoney >= 3000 || ExpectedMoney >= Target.Money)) {
+                ExpectedMoney = PMath.Percent(ExpectedMoney, 150);
+            }
+            if (Target.General is P_ZhaoYun && Target.Tags.ExistTag(P_ZhaoYun.PDanTag.TagName) && (ExpectedMoney >= 2000 || ExpectedMoney >= Target.Money)) {
+                ExpectedMoney = PMath.Percent(ExpectedMoney, 50);
+            }
+
+            if (Player.General is P_ZhangSanFeng && Player.Tags.ExistTag(P_ZhangSanFeng.PYinTag.Name)) {
+                ExpectedMoney += PMath.Percent(ExpectedMoney, 20);
+            }
+            if (Target.General is P_ZhangSanFeng && Target.Tags.ExistTag(P_ZhangSanFeng.PYangTag.Name)) {
+                ExpectedMoney -= PMath.Percent(ExpectedMoney, 20);
+            }
 
             int Profit = ExpectedMoney *2 + Math.Max(0, (20000 - Target.Money)/1000) + PMath.RandInt(0,9);
             bool SameTeam = (Target.TeamIndex == Player.TeamIndex);
