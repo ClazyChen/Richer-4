@@ -98,7 +98,7 @@ public class PAiMapAnalyzer {
                 }
             }
         }
-        return Sum;
+        return Sum / 6;
     }
 
     public static int ChangeFaceExpect(PGame Game, PPlayer Player, PBlock Start = null) {
