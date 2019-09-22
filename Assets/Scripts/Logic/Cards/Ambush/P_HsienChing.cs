@@ -9,7 +9,7 @@ public class P_HsienChing : PAmbushCardModel {
         int Sum = 0;
         double Rate = 5.0 / 6;
         Game.Traverse((PPlayer _Player) => {
-            Sum +=(int)( PAiCardExpectation.FindLeastValuable(Game, _Player, _Player, false, true, false, true).Value * Rate);
+            Sum +=(int)( PAiCardExpectation.FindLeastValuable(Game, _Player, _Player, false, true, false, true).Value * Rate) * (Player.TeamIndex == _Player.TeamIndex ? -1 : 1);
             Rate *= 5.0 / 6;
         }, Player);
         return Sum;
