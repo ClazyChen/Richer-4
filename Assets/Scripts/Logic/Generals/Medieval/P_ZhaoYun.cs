@@ -86,7 +86,7 @@ public class P_ZhaoYun : PGeneral {
             .AddTrigger(
             (PPlayer Player, PSkill Skill) => {
                 return new PTrigger(LongDan.Name + "II") {
-                    IsLocked = true,
+                    IsLocked = false,
                     Player = Player,
                     Time = PTime.Injure.AcceptInjure,
                     AIPriority = 100,
