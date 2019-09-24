@@ -6,7 +6,7 @@ using UnityEngine.UI;
 /// CR：刷新阶段
 public class PStartPeriodOrder : POrder {
     private class Config {
-        public const float ChangePeriodTime = 0.2f;
+        public const float ChangePeriodTime = 0.1f;
     }
 
     public PStartPeriodOrder() : base("start_period",

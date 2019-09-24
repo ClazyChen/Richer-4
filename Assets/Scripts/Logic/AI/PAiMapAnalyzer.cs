@@ -50,7 +50,9 @@ public class PAiMapAnalyzer {
                 int Temp = 0;
                 List<PBlock> Blocks = NextBlocks(Game, _Player);
                 Blocks.ForEach((PBlock Block) => {
-                    Temp -= Math.Max(0, PAiTargetChooser.InjureExpect(Game, Player, Player, _Player, Block.Toll, Block));
+                    if (Block.Lord != null && Player.Equals(Block.Lord)) {
+                        Temp -= Math.Max(0, PAiTargetChooser.InjureExpect(Game, Player, Player, _Player, Block.Toll, Block));
+                    }
                 });
                 Sum += Temp / Math.Max(1, Blocks.Count);
             }
