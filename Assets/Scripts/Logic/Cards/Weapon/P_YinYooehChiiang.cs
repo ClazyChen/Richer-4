@@ -30,7 +30,7 @@ public class P_YinYooehChiiang : PEquipmentCardModel {
                         AnnouceUseEquipmentSkill(Player);
                         PPlayer TargetPlayer = null;
                         if (Player.IsAI) {
-                            TargetPlayer = PAiTargetChooser.InjureTarget(Game, Player, PTrigger.Except(Player), 1000);
+                            TargetPlayer = PAiTargetChooser.InjureTarget(Game, Player, Player, PTrigger.Except(Player), 1000, Card);
                         } else {
                             TargetPlayer = PNetworkManager.NetworkServer.ChooseManager.AskForTargetPlayer(Player, PTrigger.Except(Player), CardName);
                         }

@@ -45,7 +45,7 @@ public class P_YooenChiaoChinKung: PSchemeCardModel {
                             PPlayer Another = null;
                             if (User.IsAI) {
                                 if (Game.Enemies(User).Exists((PPlayer _Player) => _Player.Money <= 1000) || User.Money > 15000) {
-                                    Another = PAiTargetChooser.InjureTarget(Game, Player, PTrigger.Except(Target), 1000);
+                                    Another = PMath.Min(Game.Enemies(User), (PPlayer _Player) => _Player.Money).Key;
                                 } else {
                                     Another = User;
                                 }

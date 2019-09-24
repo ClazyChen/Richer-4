@@ -7,7 +7,7 @@ public class P_ManTiienKuoHai: PSchemeCardModel {
 
     public List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
         int ExpectedMoney = 700;
-        PPlayer Target = PAiTargetChooser.InjureTarget(Game, Player, PTrigger.Except(Player), ExpectedMoney, true);
+        PPlayer Target = PAiTargetChooser.InjureTarget(Game, Player, Player, PTrigger.Except(Player), ExpectedMoney, Instantiate());
         return new List<PPlayer>() { Target };
     }
 

@@ -39,7 +39,8 @@ public class P_ShevngTungChiHsi: PSchemeCardModel {
                             UseCardTag.Card.Name.Equals(P_ChihSangMaHuai.CardName) ||
                             UseCardTag.Card.Name.Equals(P_FanChienChi.CardName) ||
                             UseCardTag.Card.Name.Equals(P_ChiehTaoShaJevn.CardName) ||
-                            UseCardTag.Card.Name.Equals(P_PaaoChuanYinYoo.CardName)) {
+                            UseCardTag.Card.Name.Equals(P_PaaoChuanYinYoo.CardName) ||
+                            UseCardTag.Card.Name.Equals(P_ChiaTaoFaKuo.CardName)) {
                             return UseCardTag.TargetList[0].TeamIndex == Player.TeamIndex && UseCardTag.User.TeamIndex != Player.TeamIndex;
                         } else if (UseCardTag.Card.Name.Equals(P_WuChungShevngYou.CardName) ||
                             UseCardTag.Card.Name.Equals(P_AnTuCheevnTsaang.CardName) ||
@@ -95,11 +96,12 @@ public class P_ShevngTungChiHsi: PSchemeCardModel {
                             Target = TargetList[PNetworkManager.NetworkServer.ChooseManager.Ask(Player, "选择一项", TargetNameList.ToArray())];
                         } else {
                             if (UseCardTag.Card.Name.Equals(P_ManTiienKuoHai.CardName)) {
-                                Target = PAiTargetChooser.InjureTarget(Game, Player, PTrigger.Except(Player), 700);
-                            } else if (UseCardTag.Card.Name.Equals(P_KuanMevnChoTsev.CardName)) {
-                                Target = PAiTargetChooser.InjureTarget(Game, Player, PTrigger.Except(Player), 1000);
+                                Target = PAiTargetChooser.InjureTarget(Game, Player, UseCardTag.User, PTrigger.Except(UseCardTag.TargetList[0]), 700, UseCardTag.Card, true);
+                            } else if (UseCardTag.Card.Name.Equals(P_KuanMevnChoTsev.CardName) ||
+                                       UseCardTag.Card.Name.Equals(P_ChiaTaoFaKuo.CardName)) {
+                                Target = PAiTargetChooser.InjureTarget(Game, Player, UseCardTag.User, PTrigger.Except(UseCardTag.TargetList[0]), 1000, UseCardTag.Card, true);
                             } else if (UseCardTag.Card.Name.Equals(P_ChihSangMaHuai.CardName)) {
-                                Target = PAiTargetChooser.InjureTarget(Game, Player, PTrigger.Except(Player), Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName).Injure);
+                                Target = PAiTargetChooser.InjureTarget(Game, Player, Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName).FromPlayer, null, Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName).Injure, Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName).InjureSource, true);
                             } else if (UseCardTag.Card.Name.Equals(P_ChiinTsevChiinWang.CardName)) {
                                 Target = PMath.Max(Game.PlayerList, (PPlayer _Player) => {
                                     if (Player.TeamIndex == _Player.TeamIndex) {

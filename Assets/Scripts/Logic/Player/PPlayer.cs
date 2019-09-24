@@ -146,6 +146,14 @@ public class PPlayer: PObject {
         return Area.EquipmentCardArea.CardList.Find((PCard Card) => Card.Type.Equals(EquipType));
     }
 
+    public bool HasEquipment<T>() where T: PEquipmentCardModel {
+        return Area.EquipmentCardArea.CardList.Exists((PCard Card) => Card.Model is T);
+    }
+
+    public bool HasInHand<T>() where T : PCardModel {
+        return Area.HandCardArea.CardList.Exists((PCard Card) => Card.Model is T);
+    }
+
     public PCard Weapon {
         get {
             return GetEquipment(PCardType.WeaponCard);

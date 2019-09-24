@@ -6,13 +6,8 @@ using System.Collections.Generic;
 public class P_MeiJevnChi : PSchemeCardModel {
 
     public List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
-        int ExpectedMoney = 1000;
-        PPlayer Target1 = PAiTargetChooser.InjureTarget(Game, Player, (PGame _Game, PPlayer _Player) => {
-            return  !(_Player.Defensor != null && _Player.Defensor.Model is P_YooHsi);
-        }, ExpectedMoney);
-        PPlayer Target2 = PAiTargetChooser.InjureTarget(Game, Player, (PGame _Game, PPlayer _Player) => {
-            return !_Player.Equals(Target1) && !(_Player.Defensor != null && _Player.Defensor.Model is P_YooHsi);
-        }, ExpectedMoney);
+        PPlayer Target1 = PMath.Min(Game.Enemies(Player), (PPlayer _Player) => _Player.Money).Key;
+        PPlayer Target2 = PMath.Min(Game.Enemies(Player).FindAll((PPlayer _Player) => !_Player.Equals(Target1)), (PPlayer _Player) => _Player.Money).Key;
         return new List<PPlayer>() { Target1, Target2 };
     }
 

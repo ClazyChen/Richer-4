@@ -47,10 +47,10 @@ public class PChiaTaoFaKuoTriggerInstaller : PSystemTriggerInstaller {
 
 public class P_ChiaTaoFaKuo : PSchemeCardModel {
     private List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
-        return new List<PPlayer> { PAiTargetChooser.InjureTarget(Game, Player, (PGame _Game, PPlayer _Player) => {
+        return new List<PPlayer> { PAiTargetChooser.InjureTarget(Game, Player, Player, (PGame _Game, PPlayer _Player) => {
             PChiaTaoFaKuoTag ChiaTaoFaKuoTag = _Game.TagManager.FindPeekTag<PChiaTaoFaKuoTag>(PChiaTaoFaKuoTag.TagName);
             return ChiaTaoFaKuoTag.LordList.Contains(_Player) && Player.TeamIndex != _Player.TeamIndex;
-        }, 1000, true)};
+        }, 1000, Instantiate())};
     }
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {

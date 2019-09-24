@@ -10,6 +10,16 @@ public class P_ZhaoYun : PGeneral {
         }
     }
 
+    public static bool LongDanICondition(PPlayer Player, PPlayer Target, int BaseInjure) {
+        return BaseInjure >= Math.Min(3000, Target.Money) &&
+               (Target.TeamIndex != Player.TeamIndex);
+    }
+
+    public static bool LongDanIICondition(PPlayer Player, PPlayer Source, int BaseInjure) {
+        return BaseInjure >= Math.Min(Math.Min(Player.Money, PMath.Percent(Player.Money, 50)), 2000) &&
+               (Source == null || Source.TeamIndex != Player.TeamIndex);
+    }
+
     public P_ZhaoYun() : base("赵云") {
         Sex = PSex.Male;
         Age = PAge.Medieval;
@@ -53,7 +63,7 @@ public class P_ZhaoYun : PGeneral {
             })
             .AddTrigger(
             (PPlayer Player, PSkill Skill) => {
-                return new PTrigger(LongDan.Name + "I") {
+                return new PTrigger(LongDan.Name) {
                     IsLocked = false,
                     Player = Player,
                     Time = PTime.Injure.EmitInjure,
@@ -64,8 +74,7 @@ public class P_ZhaoYun : PGeneral {
                     },
                     AICondition = (PGame Game) => {
                         PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
-                        return InjureTag.Injure >= Math.Min(3000, InjureTag.ToPlayer.Money) &&
-                               (InjureTag.ToPlayer.TeamIndex != Player.TeamIndex);
+                        return LongDanICondition(Player, InjureTag.ToPlayer, InjureTag.Injure);
                     },
                     Effect = (PGame Game) => {
                         LongDan.AnnouceUseSkill(Player);
@@ -87,8 +96,7 @@ public class P_ZhaoYun : PGeneral {
                     },
                     AICondition = (PGame Game) => {
                         PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
-                        return InjureTag.Injure >= Math.Min(Math.Min(Player.Money, PMath.Percent(Player.Money, 50)), 2000) &&
-                               (InjureTag.FromPlayer == null || InjureTag.FromPlayer.TeamIndex != Player.TeamIndex);
+                        return LongDanIICondition(Player, InjureTag.FromPlayer, InjureTag.Injure);
                     },
                     Effect = (PGame Game) => {
                         LongDan.AnnouceUseSkill(Player);

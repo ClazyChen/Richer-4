@@ -2,7 +2,88 @@
 using System.Collections.Generic;
 
 public class PAiTargetChooser {
-    
+
+
+    /// <summary>
+    /// 伤害预测收益，无修正情形为基本伤害的2倍or0
+    /// </summary>
+    /// <param name="Game"></param>
+    /// <param name="Player">视点玩家</param>
+    /// <param name="FromPlayer">造成伤害的玩家</param>
+    /// <param name="Target"></param>
+    /// <param name="BaseInjure">基本伤害量</param>
+    /// <param name="Source">伤害方式</param>
+    /// <returns></returns>
+    public static int InjureExpect(PGame Game, PPlayer Player, PPlayer FromPlayer, PPlayer Target, int BaseInjure, PObject Source) {
+        #region 防止伤害的情况
+        if (Player.OutOfGame || 
+            !Target.CanBeInjured ||
+            (FromPlayer == null && Target.HasEquipment<P_YinYangChing>()) ||
+            (BaseInjure <= 1000 && Target.HasEquipment<P_NanManHsiang>())) {
+            return 0;
+        }
+        #endregion
+        int FromCof = FromPlayer == null ? 0 : (Player.TeamIndex == FromPlayer.TeamIndex ? 1 : -1);
+        int ToCof = (Player.TeamIndex != Target.TeamIndex ? 1 : -1);
+        int Sum = PMath.RandInt(0,10);
+        #region 造成伤害时发动的技能：古锭刀，龙胆，太极，苍狼，趁火打劫
+        if (FromPlayer != null) {
+            if (Target.Area.HandCardArea.CardNumber == 0 && FromPlayer.HasEquipment<P_KuTingTao>()) {
+                BaseInjure *= 2;
+            }
+            if (FromPlayer.General is P_ZhaoYun && FromPlayer.Tags.ExistTag(P_ZhaoYun.PDanTag.TagName)) {
+                if (P_ZhaoYun.LongDanICondition(FromPlayer, Target, BaseInjure)) {
+                    BaseInjure = PMath.Percent(BaseInjure, 150);
+                }
+            }
+            if (FromPlayer.General is P_ZhangSanFeng && Player.Tags.ExistTag(P_ZhangSanFeng.PYinTag.Name)) {
+                BaseInjure += PMath.Percent(BaseInjure, 20);
+            }
+        }
+        if (Target.Area.OwnerCardNumber > 0) {
+            if (FromPlayer != null && FromPlayer.HasEquipment<P_TsaangLang>() && Source != null && Source is PCard && ((PCard)Source).Model is PSchemeCardModel) {
+                Sum += 2000 * FromCof + 2000 * ToCof;
+            }
+            if (Player.HasInHand<P_CheevnHuoTaChieh>()) {
+                Sum += 2000 + 2000 * ToCof;
+            }
+        }
+        #endregion
+        #region 受到伤害时发动的技能：八卦阵，百花裙，龙胆，太极
+        if (Target.HasEquipment<P_PaKuaChevn>()) {
+            BaseInjure = (BaseInjure + PMath.Percent(BaseInjure, 50)) / 2;
+        }
+        if (Target.HasEquipment<P_PaiHuaChooon>() && FromPlayer != null && !Target.Sex.Equals(FromPlayer.Sex)) {
+            BaseInjure = PMath.Percent(BaseInjure, 50);
+        }
+        if (Target.General is P_ZhaoYun && Target.Tags.ExistTag(P_ZhaoYun.PDanTag.TagName)) {
+            if (P_ZhaoYun.LongDanIICondition(Target, FromPlayer, BaseInjure)) {
+                BaseInjure = PMath.Percent(BaseInjure, 50);
+            }
+        }
+        if (Target.General is P_ZhangSanFeng && Target.Tags.ExistTag(P_ZhangSanFeng.PYangTag.Name)) {
+            BaseInjure -= PMath.Percent(BaseInjure, 20);
+        }
+        #endregion
+
+        int ExpectTargetMoney = Target.Money - BaseInjure;
+        if (ExpectTargetMoney <= 0) {
+            Sum += 30000 * ToCof;
+        }
+        Sum += BaseInjure * ToCof;
+        Sum += BaseInjure * FromCof;
+
+        #region 伤害结束后：风云
+        if (FromPlayer != null && FromPlayer.General is P_ChenYuanYuan) {
+            Sum += 200 * FromCof;
+        }
+        if (Target.General is P_ChenYuanYuan) {
+            Sum -= 200 * ToCof;
+        }
+        #endregion
+        return Sum;
+    }
+
     /// <summary>
     /// 
     /// </summary>
@@ -10,72 +91,12 @@ public class PAiTargetChooser {
     /// <param name="Player"></param>
     /// <param name="Condition"></param>
     /// <param name="ExpectedMoney"></param>
-    /// <param name="TagTsaangLang">是否会触发苍狼，即额外考虑获得一张牌的收益</param>
     /// <returns></returns>
-    public static PPlayer InjureTarget(PGame Game, PPlayer Player, PTrigger.PlayerCondition Condition =null, int ExpectedMoney=0, bool TagTsaangLang = false) {
+    public static PPlayer InjureTarget(PGame Game, PPlayer FromPlayer, PPlayer Player, PTrigger.PlayerCondition Condition =null, int ExpectedMoney=0, PObject Source = null, bool AllowNegative = false) {
 
         return PMath.Max(Game.PlayerList.FindAll((PPlayer Target) => Target.IsAlive && (Condition == null || Condition(Game, Target))), (PPlayer Target) => {
 
-            if (!Target.CanBeInjured || Player.OutOfGame) {
-                return 0;
-            }
-            if (ExpectedMoney <= 1000 && Target.Traffic != null && Target.Traffic.Model is P_NanManHsiang) {
-                return 0;
-            }
-
-            if (Target.Area.HandCardArea.CardNumber == 0 && Player.Weapon != null && Player.Weapon.Model is P_KuTingTao) {
-                ExpectedMoney *= 2;
-            }
-            if (Target.Defensor != null && Target.Defensor.Model is P_PaKuaChevn) {
-                ExpectedMoney = (PMath.Percent(ExpectedMoney, 50) + ExpectedMoney) / 2;
-            }
-
-            if (Target.Defensor != null && Target.Defensor.Model is P_PaiHuaChooon && !Player.Sex.Equals(Target.Sex)) {
-                ExpectedMoney = PMath.Percent(ExpectedMoney, 50);
-            }
-            if (Player.General is P_ZhaoYun && Player.Tags.ExistTag(P_ZhaoYun.PDanTag.TagName) && (ExpectedMoney >= 3000 || ExpectedMoney >= Target.Money)) {
-                ExpectedMoney = PMath.Percent(ExpectedMoney, 150);
-            }
-            if (Target.General is P_ZhaoYun && Target.Tags.ExistTag(P_ZhaoYun.PDanTag.TagName) && (ExpectedMoney >= 2000 || ExpectedMoney >= Target.Money)) {
-                ExpectedMoney = PMath.Percent(ExpectedMoney, 50);
-            }
-
-            if (Player.General is P_ZhangSanFeng && Player.Tags.ExistTag(P_ZhangSanFeng.PYinTag.Name)) {
-                ExpectedMoney += PMath.Percent(ExpectedMoney, 20);
-            }
-            if (Target.General is P_ZhangSanFeng && Target.Tags.ExistTag(P_ZhangSanFeng.PYangTag.Name)) {
-                ExpectedMoney -= PMath.Percent(ExpectedMoney, 20);
-            }
-
-            int Profit = ExpectedMoney *2 + Math.Max(0, (20000 - Target.Money)/1000) + PMath.RandInt(0,9);
-            bool SameTeam = (Target.TeamIndex == Player.TeamIndex);
-            int Cof = (SameTeam ? -1 : 1);
-            if (SameTeam) {
-                Profit  = 0;
-            }
-            if (Target.Money <= 10000) {
-                Profit += ExpectedMoney * Cof;
-            }
-            if (Target.Money <= 3000) {
-                Profit += ExpectedMoney * Cof;
-            }
-            if (Target.Money <= ExpectedMoney) {
-                Profit += 30000 * Cof;
-            }
-
-            if (TagTsaangLang || Player.Area.HandCardArea.CardList.Exists((PCard Card) => Card.Model is P_CheevnHuoTaChieh)) {
-                Profit += Math.Max(0, PAiCardExpectation.FindMostValuableToGet(Game, Player, Target).Value);
-            }
-
-            if (Player.General is P_ChenYuanYuan) {
-                Profit += 200;
-            }
-            if (Target.General is P_ChenYuanYuan) {
-                Profit -= 200 * Cof;
-            }
-
-            // 加上受到、造成伤害触发技能的增益
-            return Profit;
-        }, true).Key;
+            return InjureExpect(Game, Player, FromPlayer, Target, ExpectedMoney, Source);
+        }, !AllowNegative).Key;
     }
 }
