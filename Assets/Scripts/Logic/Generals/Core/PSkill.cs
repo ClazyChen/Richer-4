@@ -45,7 +45,7 @@ public class PSkill: PObject {
         TriggerList.Add((PPlayer Player, PSkill Skill) => {
             return new PTrigger(Skill.Name + "[初始化使用次数]") {
                 IsLocked = true,
-                Player = Player,
+                Player = null,
                 Time = PPeriod.StartTurn.Start,
                 Condition = (PGame Game) => {
                     return Player.Equals(Game.NowPlayer);

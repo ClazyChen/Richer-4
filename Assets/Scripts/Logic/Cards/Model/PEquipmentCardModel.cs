@@ -21,7 +21,7 @@ public abstract class PEquipmentCardModel : PCardModel {
         MoveInEquipTriggerList.Add((PPlayer Player, PCard Card) => {
             return new PTrigger(CardName) {
                 IsLocked = true,
-                Player = Player,
+                Player = null,
                 Time = PPeriod.StartTurn.Start,
                 Condition = (PGame Game) => {
                     return Player.Equals(Game.NowPlayer);

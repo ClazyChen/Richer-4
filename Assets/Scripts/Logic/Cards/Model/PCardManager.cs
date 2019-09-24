@@ -61,7 +61,9 @@ public class PCardManager {
                     MoveCard(CurrentCard, MoveCardTag.Destination, ThrownCardHeap);
                 }
             }
-            Card.Model = PObject.ListSubTypeInstances<PCardModel>().Find((PCardModel Model) => Model.Name.Equals(Card.Name));
+            if (!MoveCardTag.Destination.Equals(SettlingArea)) {
+                Card.Model = PObject.ListSubTypeInstances<PCardModel>().Find((PCardModel Model) => Model.Name.Equals(Card.Name));
+            }
             Game.Monitor.CallTime(PTime.Card.EnterAreaTime, MoveCardTag);
             MoveCardTag.Destination.CardList.Add(Card);
             if (MoveCardTag.Destination.Owner != null) {
