@@ -37,6 +37,7 @@ public class PAiMapAnalyzer {
             return 0;
         }
         int Sum = 0;
+        // 一轮其他角色可能造成的过路费收益总和的相反数
         if (!IncludingOnly) {
             PPlayer _Player = Game.NowPlayer;
             if (Player.Equals(Game.NowPlayer)) {
@@ -46,63 +47,25 @@ public class PAiMapAnalyzer {
                 if (_Player.Equals(Game.NowPlayer) && Game.NowPeriod.IsAfter(PPeriod.WalkingStage)) {
                     continue;
                 }
-                PBlock Block = _Player.Position;
-                if (!_Player.NoLadder) {
-                    Block = Block.NextBlock;
-                }
-                if (_Player.Traffic != null && _Player.Traffic.Model is P_ChiihTuu) {
-                    Block = Block.NextBlock;
-                }
-
-                if (_Player.NoLadder) {
-                    
-                    if (Player.Equals(Block.Lord) && Player.TeamIndex != _Player.TeamIndex) {
-                        Sum -= 12 * Block.Toll;
-                        if (Player.Weapon != null && Player.Weapon.Model is P_KuTingTao && _Player.Area.HandCardArea.CardNumber == 0) {
-                            Sum -= 12 * Block.Toll;
-                        }
-                    }
-                } else {
-                    for (int i = 0; i < 6; ++i, Block = Block.NextBlock) {
-                        if (Player.Equals(Block.Lord) && Player.TeamIndex != _Player.TeamIndex) {
-                            Sum -= 2 * Block.Toll;
-                            if (Player.Weapon != null && Player.Weapon.Model is P_KuTingTao && _Player.Area.HandCardArea.CardNumber == 0) {
-                                Sum -= 2 * Block.Toll;
-                            }
-                        }
-                    }
-                }
-
+                int Temp = 0;
+                List<PBlock> Blocks = NextBlocks(Game, _Player);
+                Blocks.ForEach((PBlock Block) => {
+                    Temp -= Math.Max(0, PAiTargetChooser.InjureExpect(Game, Player, Player, _Player, Block.Toll, Block));
+                });
+                Sum += Temp / Math.Max(1, Blocks.Count);
             }
         }
+        int SumSelf = 0;
         if (Including) {
-            PBlock Block = Player.Position;
-            if (!Player.NoLadder) {
-                Block = Block.NextBlock;
-            }
-            if (Player.Traffic != null && Player.Traffic.Model is P_ChiihTuu) {
-                Block = Block.NextBlock;
-            }
-
-            if (Player.NoLadder) {
+            List<PBlock> Blocks = NextBlocks(Game, Player);
+            Blocks.ForEach((PBlock Block) => {
                 if (Block.Lord != null && Player.TeamIndex != Block.Lord.TeamIndex) {
-                    Sum += 12 * Block.Toll;
-                    if (Block.Lord.Weapon != null && Block.Lord.Weapon.Model is P_KuTingTao && Player.Area.HandCardArea.CardNumber == 0) {
-                        Sum += 12 * Block.Toll;
-                    }
+                    SumSelf += Math.Max(0, PAiTargetChooser.InjureExpect(Game, Player, Block.Lord, Player, Block.Toll, Block));
                 }
-            } else {
-                for (int i = 0; i < 6; ++i, Block = Block.NextBlock) {
-                    if (Block.Lord != null && Player.TeamIndex != Block.Lord.TeamIndex) {
-                        Sum += 2 * Block.Toll;
-                        if (Block.Lord.Weapon != null && Block.Lord.Weapon.Model is P_KuTingTao && Player.Area.HandCardArea.CardNumber == 0) {
-                            Sum += 2 * Block.Toll;
-                        }
-                    }
-                }
-            }
+            });
+            SumSelf /= Math.Max(1, Blocks.Count);
         }
-        return Sum / 6;
+        return Sum + SumSelf;
     }
 
     public static int ChangeFaceExpect(PGame Game, PPlayer Player, PBlock Start = null) {
@@ -132,9 +95,9 @@ public class PAiMapAnalyzer {
         });
     }
 
-    public static KeyValuePair<PBlock, int> MinValueHouse(PGame Game, PPlayer Player, bool Concentrate = false) {
+    public static KeyValuePair<PBlock, int> MinValueHouse(PGame Game, PPlayer Player, bool StartFromZero = false, bool Concentrate = false) {
         int EnemyCount = Game.Enemies(Player).Count;
-        KeyValuePair<PBlock, int> Test = PMath.Min(Game.Map.BlockList.FindAll((PBlock Block) => Player.Equals(Block.Lord) && Block.HouseNumber > 0), (PBlock Block) => {
+        KeyValuePair<PBlock, int> Test = PMath.Min(Game.Map.BlockList.FindAll((PBlock Block) => Player.Equals(Block.Lord) && (StartFromZero || Block.HouseNumber > 0)), (PBlock Block) => {
             return PMath.Percent(Block.Price, 50 + 20 * EnemyCount * (Block.BusinessType.Equals(PBusinessType.ShoppingCenter) ? 2 : 1)) * 1000 + 
             (Concentrate ? Block.HouseNumber : 0);
         });

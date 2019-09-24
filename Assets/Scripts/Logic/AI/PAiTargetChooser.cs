@@ -32,7 +32,7 @@ public class PAiTargetChooser {
                 BaseInjure *= 2;
             }
             if (FromPlayer.General is P_ZhaoYun && FromPlayer.Tags.ExistTag(P_ZhaoYun.PDanTag.TagName)) {
-                if (P_ZhaoYun.LongDanICondition(FromPlayer, Target, BaseInjure)) {
+                if (P_ZhaoYun.LongDanICondition(Game, FromPlayer, Target, BaseInjure)) {
                     BaseInjure = PMath.Percent(BaseInjure, 150);
                 }
             }
@@ -57,7 +57,7 @@ public class PAiTargetChooser {
             BaseInjure = PMath.Percent(BaseInjure, 50);
         }
         if (Target.General is P_ZhaoYun && Target.Tags.ExistTag(P_ZhaoYun.PDanTag.TagName)) {
-            if (P_ZhaoYun.LongDanIICondition(Target, FromPlayer, BaseInjure)) {
+            if (P_ZhaoYun.LongDanIICondition(Game, Target, FromPlayer, BaseInjure)) {
                 BaseInjure = PMath.Percent(BaseInjure, 50);
             }
         }

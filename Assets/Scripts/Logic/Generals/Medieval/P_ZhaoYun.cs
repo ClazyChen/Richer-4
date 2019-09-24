@@ -10,13 +10,14 @@ public class P_ZhaoYun : PGeneral {
         }
     }
 
-    public static bool LongDanICondition(PPlayer Player, PPlayer Target, int BaseInjure) {
-        return BaseInjure >= Math.Min(3000, Target.Money) &&
+    public static bool LongDanICondition(PGame Game, PPlayer Player, PPlayer Target, int BaseInjure) {
+        return (PMath.Percent(BaseInjure, 150) - BaseInjure) * 2 > PAiMapAnalyzer.MinValueHouse(Game, Player, true).Value + 2000 &&
                (Target.TeamIndex != Player.TeamIndex);
     }
 
-    public static bool LongDanIICondition(PPlayer Player, PPlayer Source, int BaseInjure) {
-        return BaseInjure >= Math.Min(Math.Min(Player.Money, PMath.Percent(Player.Money, 50)), 2000) &&
+    public static bool LongDanIICondition(PGame Game, PPlayer Player, PPlayer Source, int BaseInjure) {
+        return (BaseInjure >= Player.Money ||
+            (BaseInjure - PMath.Percent(BaseInjure, 50)) * (Source == null ? 1 : 2) > PAiMapAnalyzer.MinValueHouse(Game, Player, true).Value + 2000) &&
                (Source == null || Source.TeamIndex != Player.TeamIndex);
     }
 
@@ -45,14 +46,13 @@ public class P_ZhaoYun : PGeneral {
                         return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime()) && Player.RemainLimit(LongDan.Name) && Player.HasHouse;
                     },
                     AICondition = (PGame Game) => {
-                        PBlock Block = PAiMapAnalyzer.MinValueHouse(Game, Player, true).Key;
+                        PBlock Block = PAiMapAnalyzer.MinValueHouse(Game, Player, false, true).Key;
                         if (Block == null) {
                             return false;
                         } else if (!Player.Tags.ExistTag(PDanTag.TagName)) {
-                            return  Block.Price < 3000;
+                            return  Block.Price <= 2000;
                         }
-                        int Dan = Player.Tags.FindPeekTag<PDanTag>(PDanTag.TagName).Value;
-                        return (Dan < 4 && Block.Price < 3000) || Block.Price < 2000;
+                        return Block.Price <= 1000;
                     },
                     Effect = (PGame Game) => {
                         LongDan.AnnouceUseSkill(Player);
@@ -74,7 +74,7 @@ public class P_ZhaoYun : PGeneral {
                     },
                     AICondition = (PGame Game) => {
                         PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
-                        return LongDanICondition(Player, InjureTag.ToPlayer, InjureTag.Injure);
+                        return LongDanICondition(Game, Player, InjureTag.ToPlayer, InjureTag.Injure);
                     },
                     Effect = (PGame Game) => {
                         LongDan.AnnouceUseSkill(Player);
@@ -96,7 +96,7 @@ public class P_ZhaoYun : PGeneral {
                     },
                     AICondition = (PGame Game) => {
                         PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
-                        return LongDanIICondition(Player, InjureTag.FromPlayer, InjureTag.Injure);
+                        return LongDanIICondition(Game, Player, InjureTag.FromPlayer, InjureTag.Injure);
                     },
                     Effect = (PGame Game) => {
                         LongDan.AnnouceUseSkill(Player);
