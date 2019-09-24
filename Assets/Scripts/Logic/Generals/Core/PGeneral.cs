@@ -10,9 +10,15 @@ public abstract class PGeneral: PObject {
     public int Index = 0;
     public List<PSkill> SkillList;
 
+    /// <summary>
+    /// 客户端专用
+    /// </summary>
+    public List<PSkillInfo> SkillInfoList;
+
     public PGeneral(string _Name) {
         Name = _Name;
         SkillList = new List<PSkill>();
+        SkillInfoList = new List<PSkillInfo>();
     }
 
 }

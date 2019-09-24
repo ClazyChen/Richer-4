@@ -13,21 +13,22 @@ public class PRefreshGeneralOrder : POrder {
             List<PSkillInfo> SkillInfoList = new List<PSkillInfo>();
             int PlayerIndex = Convert.ToInt32(args[1]);
             string GeneralName = args[2];
-            if (PlayerIndex == PSystem.PlayerIndex) {
-                int SkillCount = Convert.ToInt32(args[3]);
-                for (int i = 4; i + 1 < args.Length; i += 2) {
-                    PSkillInfo SkillInfo = FindInstance<PSkillInfo>(args[i])?.Copy();
-                    if (SkillInfo != null) {
-                        SkillInfo.Type = FindInstance<PSkillType>(args[i + 1]);
-                        SkillInfoList.Add(SkillInfo);
-                    }
+            int SkillCount = Convert.ToInt32(args[3]);
+            for (int i = 4; i + 1 < args.Length; i += 2) {
+                PSkillInfo SkillInfo = FindInstance<PSkillInfo>(args[i])?.Copy();
+                if (SkillInfo != null) {
+                    SkillInfo.Type = FindInstance<PSkillType>(args[i + 1]);
+                    SkillInfoList.Add(SkillInfo);
                 }
+            }
+            if (PlayerIndex == PSystem.PlayerIndex) {
                 PUIManager.AddNewUIAction("更新技能栏", () => {
                     PUIManager.GetUI<PMapUI>().InitializeSkillButton(SkillInfoList);
                 });
             }
             PUIManager.AddNewUIAction("更新武将头像", () => {
-                PNetworkManager.NetworkClient.GameStatus.PlayerList[PlayerIndex].General.Name = GeneralName;
+                PNetworkManager.NetworkClient.GameStatus.PlayerList[PlayerIndex].General = ListSubTypeInstances<PGeneral>().Find((PGeneral General) => General.Name.Equals(GeneralName));
+                PNetworkManager.NetworkClient.GameStatus.PlayerList[PlayerIndex].General.SkillInfoList = SkillInfoList;
                 PUIManager.GetUI<PMapUI>().PlayerInformationGroup.GroupUIList[PlayerIndex].UpdateInformation();
             });
         }) {

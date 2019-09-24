@@ -30,6 +30,11 @@ public class PPlayerInformationBox : PAbstractUI {
     public void UpdateInformation() {
         NameText.color = PPlayerScene.Config.PlayerColors[AttachedPlayer.TeamIndex];
         GeneralImageBackground.color = PPlayerScene.Config.PlayerColors[AttachedPlayer.Index];
+        GeneralImage.GetComponent<PToolTipedButton>().ToolTip = "玩家：" + AttachedPlayer.Name + "\n" +
+                                                                "武将：" + AttachedPlayer.General.Name + "\n" +
+                                                                "性别：" + AttachedPlayer.General.Sex + "\n" +
+                                                                "时代：" + AttachedPlayer.General.Age + "\n" +
+                             string.Join("\n", AttachedPlayer.General.SkillInfoList.ConvertAll((PSkillInfo SkillInfo) => SkillInfo.Name + "：" + SkillInfo.ToolTip).ToArray());
         Sprite Image = Resources.Load<Sprite>("Images/Generals/Avatar/" + AttachedPlayer.General.Name);
         if (Image != null) {
             GeneralImage.sprite = Image;

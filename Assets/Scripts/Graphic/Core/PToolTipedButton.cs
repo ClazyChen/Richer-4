@@ -13,10 +13,18 @@ public class PToolTipedButton : Button {
         }
         PUIManager.AddNewUIAction(string.Empty, () => {
             float Th = 200 * PUIManager.GetUI<PMapUI>().ToolTip.UIBackgroundImage.GetComponent<RectTransform>().lossyScale.x;
+            float PosX = 0.0f;
             if (Input.mousePosition.x > Screen.width - Th) {
-                PUIManager.GetUI<PMapUI>().ToolTip.Show(ToolTip, new Vector3(Input.mousePosition.x - Th - 10, Input.mousePosition.y - 10, 0));
+                PosX = Input.mousePosition.x - Th - 10;
             } else {
-                PUIManager.GetUI<PMapUI>().ToolTip.Show(ToolTip, new Vector3(Input.mousePosition.x + 10, Input.mousePosition.y - 10, 0));
+                PosX = Input.mousePosition.x + 10;
+            }
+            PUIManager.GetUI<PMapUI>().ToolTip.Show(ToolTip, new Vector3(PosX, Input.mousePosition.y - 10, 0));
+            float HhtTh = PUIManager.GetUI<PMapUI>().ToolTip.UIBackgroundImage.GetComponent<RectTransform>().rect.height * PUIManager.GetUI<PMapUI>().ToolTip.UIBackgroundImage.GetComponent<RectTransform>().lossyScale.y;
+            float PosY = PUIManager.GetUI<PMapUI>().ToolTip.UIBackgroundImage.GetComponent<RectTransform>().position.y;
+            if (Input.mousePosition.y > Screen.height - HhtTh - 10) {
+                PosY -= HhtTh + 10;
+                PUIManager.GetUI<PMapUI>().ToolTip.Show(ToolTip, new Vector3(PosX, PosY, 0));
             }
         });
     }
