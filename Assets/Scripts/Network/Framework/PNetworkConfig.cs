@@ -75,18 +75,7 @@ public class PNetworkConfig {
     /// </summary>
     public static string DefaultNickname {
         get {
-            string NicknameFile = PPath.GetPath("Data\\User\\Nickname.txt");
-            string Nickname = File.ReadAllText(NicknameFile, Encoding.UTF8);
-            if (Nickname.Equals(string.Empty) || Nickname.Length > MaxNicknameLength || Nickname.Contains(" ")) {
-                DefaultNickname = string.Empty;
-                return "聪明的傻子";
-            } else {
-                return Nickname;
-            }
-        }
-        set {
-            string NicknameFile = PPath.GetPath("Data\\User\\Nickname.txt");
-            File.WriteAllText(NicknameFile, value, Encoding.UTF8);
+            return PSystem.UserManager.Nickname;
         }
     }
 }

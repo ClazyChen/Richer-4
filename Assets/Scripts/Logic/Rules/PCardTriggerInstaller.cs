@@ -13,6 +13,12 @@ public class PCardTriggerInstaller : PSystemTriggerInstaller {
             Effect = (PGame Game) => {
                 Game.PlayerList.ForEach((PPlayer Player) => {
                     Game.GetCard(Player, Config.StartGameCardCount);
+                    int LuckyCardCount = 0;
+                    while (LuckyCardCount < 3 && Player.IsUser && PNetworkManager.NetworkServer.ChooseManager.AskYesOrNo(Player, "是否使用手气卡？剩余次数=" + (3 - LuckyCardCount))) {
+                        Game.CardManager.ThrowAll(Player.Area);
+                        LuckyCardCount++;
+                        Game.GetCard(Player, Config.StartGameCardCount);
+                    }
                 });
             }
         });

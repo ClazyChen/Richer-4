@@ -23,7 +23,20 @@ public class PMessageBox : PAbstractGroupUI<PMessage>{
         }
         Monitor = new Thread(() => {
             PMessage ChosenMessage = null;
-            PThread.WaitUntil(() => (ChosenMessage = GroupUIList.Find((PMessage Message) => Message.IsChosen)) != null);
+            PThread.WaitUntil(() => {
+                ChosenMessage = GroupUIList.Find((PMessage Message) => Message.IsChosen);
+                return (ChosenMessage != null && !(Title.Equals("选将") && ChosenMessage.MessageText.Contains("未获得"))) ;
+            });
+            #region 点将卡和手气卡的特殊判定
+            if (Title.Contains("点将卡") && ChosenMessage.Index == 0) {
+                // 使用了点将卡
+                PSystem.UserManager.ChooseGeneral--;
+            }
+            if (Title.Contains("手气卡") && ChosenMessage.Index == 0) {
+                // 使用了手气卡
+                PSystem.UserManager.Lucky--;
+            }
+            #endregion
             PThread.Async(() => {
                 PNetworkManager.NetworkClient.Send(new PChooseResultOrder(ChosenMessage.Index.ToString()));
                 PUIManager.AddNewUIAction("关闭选项框", () => {

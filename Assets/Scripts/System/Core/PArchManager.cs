@@ -41,6 +41,8 @@ public class PArchManager {
         lock (ArchList) {
             if (!ArchList.Exists((string x) => ArchInfo.Name.Equals(x))) {
                 ArchList.Add(ArchInfo.Name);
+                PSystem.UserManager.ArchPoint += ArchInfo.ArchPoint;
+                PSystem.UserManager.Write();
                 Refresh = true;
             }
         }
@@ -48,5 +50,8 @@ public class PArchManager {
             PThread.Async(() => Write());
         }
         return Refresh;
+    }
+    public int TotalArchPoint() {
+        return (int)PMath.Sum(ArchList.ConvertAll((string ArchName) => (double)PObject.ListInstance<PArchInfo>().Find((PArchInfo ArchInfo) => ArchInfo.Name.Equals(ArchName)).ArchPoint));
     }
 }

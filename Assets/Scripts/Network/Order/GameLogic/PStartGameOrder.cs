@@ -10,7 +10,9 @@ public class PStartGameOrder : POrder {
         (string[] args, string IPAddress) => {
             if (!PNetworkManager.NetworkServer.Game.StartGameFlag) {
                 if (PNetworkManager.NetworkServer.Game.Room.IsFull()) {
-                    PNetworkManager.NetworkServer.Game.StartGame();
+                    PThread.Async(() => {
+                        PNetworkManager.NetworkServer.Game.StartGame();
+                    });
                 }
             }
         },

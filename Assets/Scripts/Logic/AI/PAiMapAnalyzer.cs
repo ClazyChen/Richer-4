@@ -26,7 +26,7 @@ public class PAiMapAnalyzer {
     }
 
     /// <summary>
-    /// 将一个玩家移出游戏对其的收益
+    /// 将一个玩家移出游戏对其的收益，无卡牌收益嵌套
     /// </summary>
     /// <param name="Game"></param>
     /// <param name="Player"></param>

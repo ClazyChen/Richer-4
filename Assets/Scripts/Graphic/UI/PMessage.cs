@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 
 public class PMessage : PAbstractUI {
+    public string MessageText = string.Empty;
     public bool IsChosen = false;
     public int Index;
 
@@ -12,6 +13,7 @@ public class PMessage : PAbstractUI {
     public void Initialize(string Text, int _Index, int ButtonNumber, Vector3 CenterPoint, float Delta, string ToolTip) {
         Index = _Index;
         UIBackgroundImage.GetComponent<RectTransform>().position = CenterPoint + new Vector3(0, Delta * ButtonNumber /2 - Delta * (Index + 1));
+        MessageText = Text;
         UIBackgroundImage.GetComponentInChildren<Text>().text = Text;
         UIBackgroundImage.GetComponent<PToolTipedButton>().onClick.AddListener(() => {
             IsChosen = true;

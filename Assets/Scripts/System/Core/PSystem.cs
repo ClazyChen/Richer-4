@@ -14,6 +14,7 @@ public class PSystem: MonoBehaviour {
     public static PMode CurrentMode = null;
     public static int PlayerIndex = 0;
     public static PArchManager ArchManager = null;
+    public static PUserManager UserManager = null;
 
     public static Vector3 LastMousePosition;
     public static bool MouseRightButtonDown = false;
@@ -25,6 +26,8 @@ public class PSystem: MonoBehaviour {
         PLogger.StartLogging(true);
         ArchManager = new PArchManager();
         ArchManager.Read();
+        UserManager = new PUserManager();
+        UserManager.Read();
         #region ≥ı ºªØµÿÕºø‚
         string MapDirectory = PPath.GetPath("Data\\Maps");
         string[] MapFileNames = Directory.GetFiles(MapDirectory, "*.xml");

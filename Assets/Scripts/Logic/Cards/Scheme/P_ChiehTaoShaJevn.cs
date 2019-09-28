@@ -20,7 +20,10 @@ public class P_ChiehTaoShaJevn : PSchemeCardModel {
     }
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
-        return Math.Max(500, FindTarget(Game, Player).Value);
+        int Basic = PAiMapAnalyzer.MaxValueHouse(Game, Player).Value;
+        return Math.Max(1000, PMath.Max(Game.Enemies(Player), (PPlayer _Player) => {
+            return PAiMapAnalyzer.MaxValueHouse(Game, _Player).Value + Basic;
+        }, true).Value);
     }
 
     public readonly static string CardName = "借刀杀人";

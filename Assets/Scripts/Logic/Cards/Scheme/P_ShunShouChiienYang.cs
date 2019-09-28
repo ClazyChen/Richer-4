@@ -6,24 +6,8 @@ using System.Collections.Generic;
 public class P_ShunShouChiienYang: PSchemeCardModel {
 
     public static KeyValuePair<PPlayer, int> AIExpect(PGame Game, PPlayer Player, int BaseValue = 4000) {
-        return PMath.Max(Game.PlayerList.FindAll((PPlayer TargetPlayer) => TargetPlayer.IsAlive && !TargetPlayer.Equals(Player)), (PPlayer TargetPlayer) => {
-            if (TargetPlayer.TeamIndex == Player.TeamIndex) {
-                KeyValuePair<PCard, int> Test = PAiCardExpectation.FindLeastValuable(Game, TargetPlayer, TargetPlayer, true, true, true);
-                if (Test.Key == null) {
-                    return -BaseValue;
-                }
-                int Least = Test.Value;
-                int ForMe = Test.Key.Model.AIInHandExpectation(Game, Player);
-                return ForMe - Least - BaseValue;
-            } else {
-                KeyValuePair<PCard, int> Test = PAiCardExpectation.FindMostValuable(Game, TargetPlayer, TargetPlayer, true, true, true);
-                if (Test.Key == null) {
-                    return -BaseValue;
-                }
-                int Most = Test.Value;
-                int ForMe = Test.Key.Model.AIInHandExpectation(Game, Player);
-                return ForMe + Most - BaseValue;
-            }
+        return PMath.Max(Game.PlayerList.FindAll((PPlayer TargetPlayer) => TargetPlayer.IsAlive && !TargetPlayer.Equals(Player) && !(TargetPlayer.General is P_ShiQian)), (PPlayer TargetPlayer) => {
+            return PAiCardExpectation.FindMostValuableToGet(Game, Player, TargetPlayer, true, true, true).Value - BaseValue;
         }, true);
     }
 

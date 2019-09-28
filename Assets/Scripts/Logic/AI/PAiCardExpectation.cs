@@ -102,7 +102,7 @@ public class PAiCardExpectation {
             if (CanSee) {
                 return Card.Model.AIInHandExpectation(Game, Player) * YangToowCof + Cof * Card.Model.AIInHandExpectation(Game, TargetPlayer);
             } else {
-                return Cof < 0 ? 0 : 2000 * YangToowCof + 2000 * Cof + PMath.RandInt(-10, 10);
+                return Cof < 0 ? 0 : 2000 * YangToowCof + 2000 * Cof + PMath.RandInt(0, 10);
             }
         }) : new KeyValuePair<PCard, int>(null, int.MinValue);
         KeyValuePair<PCard, int> EquipResult = AllowEquipment ? PMath.Max(TargetPlayer.Area.EquipmentCardArea.CardList, (PCard Card) => {

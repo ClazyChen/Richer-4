@@ -26,6 +26,32 @@ public class PAskOrder : POrder {
                 }
                 
             }
+            #region 选将卡和手气卡
+            if (Title.Contains("选将卡")) {
+                // 选将卡特殊判定
+                // 必须要有选将卡才启用
+                // 否则返回1
+                if (PSystem.UserManager.ChooseGeneral == 0) {
+                    PNetworkManager.NetworkClient.Send(new PChooseResultOrder("1"));
+                    return;
+                } 
+            }
+            if (Title.Contains("手气卡")) {
+                if (PSystem.UserManager.Lucky == 0) {
+                    PNetworkManager.NetworkClient.Send(new PChooseResultOrder("1"));
+                    return;
+                }
+            }
+            if (Title.Equals("选将")) {
+                for (int i = 0; i < Options.Length; ++ i) {
+                    if (!PSystem.UserManager.GeneralList.Contains(Options[i])) {
+                        Options[i] += "[未获得]";
+                    }
+                }
+            }
+            #endregion
+
+
             PAnimation.AddAnimation("Ask-打开选择框", () => {
                 PUIManager.GetUI<PMapUI>().Ask(Title, Options, ToolTipEnabled ? ToolTips : null);
             });

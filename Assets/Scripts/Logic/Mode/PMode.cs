@@ -4,6 +4,7 @@ using System;
 public abstract class PMode : PObject {
 
     private const int UnknownParty = -1;
+    public int Bonus = 0;
 
     public class Seat {
         public PPlayerType DefaultType;

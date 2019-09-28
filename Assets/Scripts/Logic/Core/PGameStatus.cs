@@ -26,6 +26,10 @@ public class PGameStatus {
         return PlayerList.FindAll((PPlayer TestPlayer) => TestPlayer.TeamIndex != Player.TeamIndex && TestPlayer.IsAlive);
     }
 
+    public List<PPlayer> AlivePlayers() {
+        return PlayerList.FindAll((PPlayer _Player) => _Player.IsAlive);
+    }
+
     public List<PPlayer> PlayerList;
     public PPlayer NowPlayer;
     public PPeriod NowPeriod;

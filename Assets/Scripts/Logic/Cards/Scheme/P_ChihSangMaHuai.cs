@@ -7,7 +7,7 @@ public class P_ChihSangMaHuai: PSchemeCardModel {
 
     private List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
         PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
-        PPlayer Target = PAiTargetChooser.InjureTarget(Game, Player, InjureTag.FromPlayer, (PGame _Game, PPlayer _Player) => {
+        PPlayer Target = PAiTargetChooser.InjureTarget(Game, InjureTag.FromPlayer, Player, (PGame _Game, PPlayer _Player) => {
             return _Player.IsAlive && !_Player.Equals(Player) && !_Player.Equals(InjureTag.FromPlayer);
         }, InjureTag.Injure, InjureTag.InjureSource, true);
         return new List<PPlayer>() { Target };

@@ -30,5 +30,10 @@ public class PInitialUI : PAbstractUI {
             PUIManager.AddNewUIAction("成就：转到AUI", () => PUIManager.ChangeUI<PArchUI>());
         });
         #endregion
+        #region 用户按钮：跳转到UserUI
+        UserButton.onClick.AddListener(() => {
+            PUIManager.AddNewUIAction("成就：转到UUI", () => PUIManager.ChangeUI<PUserUI>());
+        });
+        #endregion
     }
 }

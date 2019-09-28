@@ -11,7 +11,6 @@ public class P_AnTuCheevnTsaang: PSchemeCardModel {
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
         int Basic = 2000;
-        Basic = Math.Max(Basic, PMath.Max(Game.Map.BlockList, (PBlock Block) => PAiMapAnalyzer.StartFromExpect(Game, Player, Block)).Value - PAiMapAnalyzer.StartFromExpect(Game, Player, Player.Position));
         return Basic;
     }
 
