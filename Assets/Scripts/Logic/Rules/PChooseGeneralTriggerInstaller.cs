@@ -39,7 +39,7 @@ public class PChooseGeneralTriggerInstaller : PSystemTriggerInstaller {
                     if (ChosenIndex.Count > 1) {
                         PMath.Wash(ChosenIndex);
                         for (int i = 1; i < ChosenIndex.Count; ++ i) {
-                            Generals[i] = new P_Soldier();
+                            Generals[ChosenIndex[i]] = new P_Soldier();
                         }
                     }
                 });
