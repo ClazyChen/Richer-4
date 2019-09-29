@@ -8,7 +8,7 @@ using System.Reflection;
 /// 负责UI控制的顶层类
 /// </summary>
 public class PUIManager: MonoBehaviour {
-    private class NamedAction {
+    public class NamedAction {
         public string Name;
         public int ID;
         public Action Action;
@@ -25,7 +25,7 @@ public class PUIManager: MonoBehaviour {
     /// <summary>
     /// 其他线程发送给主线程的UI操作等待队列
     /// </summary>
-    private static Queue<NamedAction> ActionWaitingList = new Queue<NamedAction>();
+    public static Queue<NamedAction> ActionWaitingList { get; private set; } = new Queue<NamedAction>();
 
     public static List<PAbstractUI> UIList;
     public static void ChangeUI<T>() where T : PAbstractUI {

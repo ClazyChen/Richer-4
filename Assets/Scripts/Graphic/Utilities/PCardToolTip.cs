@@ -65,7 +65,7 @@ public class PCardToolTip : PObject {
     public static PCardToolTip ChiihTuu = new PCardToolTip("赤兔", "【被】锁定技，你的行走步数+1。");
     public static PCardToolTip ChanYing = new PCardToolTip("战鹰", "【主】回合内限一次，你可观看一名其他角色的手牌。");
     public static PCardToolTip TsaangLang = new PCardToolTip("苍狼", "【被】当你通过单体普通计策牌造成伤害时，你可以获得目标的一张牌。");
-    public static PCardToolTip HsiYooYangToow = new PCardToolTip("西域羊驼", "【被】锁定技，与你时代不同的角色不能获得你的手牌。");
+    public static PCardToolTip HsiYooYangToow = new PCardToolTip("西域羊驼", "【被】锁定技，与你时代不同的角色不能获得你的牌。");
     public static PCardToolTip NanManHsiang = new PCardToolTip("南蛮象", "【被】锁定技，防止你受到的不大于1000点的伤害。");
     public static PCardToolTip MuNiuLiuMa = new PCardToolTip("木牛流马", "【主】回合内限一次，你可弃2000，令一名其他角色摸一张牌。");
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 using System;
 
 public class PAnimation {
-    private static int IDCount = 1;
+    public static int IDCount { get; private set; } = 1;
 
     public float TotalTime;
     public int FrameNumber;

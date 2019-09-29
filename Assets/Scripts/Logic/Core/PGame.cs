@@ -212,6 +212,7 @@ public class PGame : PGameStatus {
             PLogger.Log("因为当前玩家死亡，回合中止");
             TagManager.PopTag<PStepCountTag>(PStepCountTag.TagName);
             TagManager.PopTag<PDiceResultTag>(PDiceResultTag.TagName);
+            TagManager.PopTag<PTag>(PTag.FreeTimeOperationTag.Name);
             Monitor.EndTurnDirectly = true;
         }
     }
@@ -403,10 +404,10 @@ public class PGame : PGameStatus {
         }
         int Result = PMath.RandInt(1, 6);
         PJudgeTag JudgeTag = Monitor.CallTime(PTime.Judge.JudgeTime, new PJudgeTag(Player, Result, AdvisedNumber));
-        PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "的判定结果：" + Result));
-        PNetworkManager.NetworkServer.TellClients(new PPushTextOrder(Player.Index.ToString(), "判定结果：" + Result, PPushType.Information.Name));
+        PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "的判定结果：" + JudgeTag.Result));
+        PNetworkManager.NetworkServer.TellClients(new PPushTextOrder(Player.Index.ToString(), "判定结果：" + JudgeTag.Result, PPushType.Information.Name));
         Monitor.CallTime(PTime.Judge.AfterJudgeTime, JudgeTag);
-        return Result;
+        return JudgeTag.Result;
     }
 
     /// <summary>
@@ -473,7 +474,11 @@ public class PGame : PGameStatus {
             }
         } else {
             if (IsGet) {
-                TargetCard = PAiCardExpectation.FindMostValuableToGet(this, Player, TargetPlayer, AllowHandCards, AllowEquipment, AllowAmbush, Player.Equals(TargetPlayer)).Key;
+                if (!Player.Age.Equals(TargetPlayer.Age) && TargetPlayer.HasEquipment<P_HsiYooYangToow>()) {
+                    TargetCard = TargetPlayer.GetEquipment(PCardType.TrafficCard);
+                } else {
+                    TargetCard = PAiCardExpectation.FindMostValuableToGet(this, Player, TargetPlayer, AllowHandCards, AllowEquipment, AllowAmbush, Player.Equals(TargetPlayer)).Key;
+                }
             } else {
                 if (Player.TeamIndex == TargetPlayer.TeamIndex) {
                     TargetCard = PAiCardExpectation.FindLeastValuable(this, Player, TargetPlayer, AllowHandCards, AllowEquipment, AllowAmbush, Player.Equals(TargetPlayer)).Key;

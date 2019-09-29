@@ -10,10 +10,14 @@ public abstract class PEquipmentCardModel : PCardModel {
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
         PCard Current = Player.GetEquipment(Type);
         int Exp = AIInEquipExpectation(Game, Player);
+        int Base = 0;
+        if (Player.General is P_HuaXiong) {
+            Base += 1000;
+        }
         if (Current != null && Exp <= Current.Model.AIInEquipExpectation(Game, Player)) {
-            return 500;
+            return 500 + Base;
         } else {
-            return Exp;
+            return Exp + Base;
         }
     }
 
@@ -54,12 +58,13 @@ public abstract class PEquipmentCardModel : PCardModel {
                     },
                     AICondition = (PGame Game) => {
                         KeyValuePair<PCard, int> MaxCard = PMath.Max(Player.Area.HandCardArea.CardList, (PCard _Card) => _Card.Model.AIInEquipExpectation(Game, Player));
-                        KeyValuePair<PCard, int> MinCard = PMath.Min(Player.Area.HandCardArea.CardList, (PCard _Card) => _Card.Model.AIInEquipExpectation(Game, Player));
+                        KeyValuePair<PCard, int> MinCard = PMath.Min(Player.Area.HandCardArea.CardList.FindAll((PCard _Card) => _Card.Type.IsEquipment()),
+                            (PCard _Card) => _Card.Model.AIInEquipExpectation(Game, Player));
                         PCard CurrentCard = Player.GetEquipment(CardType);
                         if (Player.General is P_HuaXiong) {
                             return CurrentCard == null && Card.Equals(MinCard.Key);
                         }
-                        return Card.Equals(MaxCard.Key) && (CurrentCard == null || MaxCard.Value > CurrentCard.Model.AIInEquipExpectation(Game, Player));
+                        return Card.Equals(MaxCard.Key) && (CurrentCard == null || MaxCard.Value > CurrentCard.Model.AIInEquipExpectation(Game, Player)) && MaxCard.Value > 0;
                     },
                     Effect = (PGame Game) => {
                         List<PPlayer> Targets = new List<PPlayer> { Player };

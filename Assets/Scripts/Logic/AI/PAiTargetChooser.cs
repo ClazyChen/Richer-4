@@ -89,8 +89,10 @@ public class PAiTargetChooser {
 
         #region 队友间平衡：自身和目标的合理阈值为50%-200%
         if (FromPlayer.TeamIndex == Target.TeamIndex) {
-            if (FromPlayer.Money > Target.Money * 2) {
-                Sum -= 1000;
+            if (FromPlayer.Money > ExpectTargetMoney * 2) {
+                Sum -= 2000;
+            } else if (FromPlayer.Money >= Target.Money) {
+                Sum -= 100;
             } else if (FromPlayer.Money < Target.Money * 2) {
                 Sum += 1000;
             }

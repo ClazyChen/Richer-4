@@ -61,6 +61,12 @@ public class PPeriodTriggerInstaller : PSystemTriggerInstaller {
                     break;
                 }
             }
+
+            // 防卡死机制
+            PThread.WaitUntil(() => {
+                return PUIManager.IsAvailable(PAnimation.IDCount);
+            });
+
             PNetworkManager.NetworkServer.TellClients(new PStartPeriodOrder(Game.NowPlayerIndex.ToString(), Game.NowPeriod.Name));
             PLogger.Log(Game.NowPlayer.Name + "【手牌】" + string.Join(";",Game.NowPlayer.Area.HandCardArea.ToStringArray()));
             Game.Logic.ShutDown();

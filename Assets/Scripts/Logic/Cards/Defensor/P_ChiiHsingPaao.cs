@@ -6,6 +6,9 @@ using System.Collections.Generic;
 public class P_ChiiHsingPaao : PEquipmentCardModel {
 
     public override int AIInEquipExpectation(PGame Game, PPlayer Player) {
+        if (Player.General is P_LiuJi) {
+            return -1000;
+        }
         return 1000;
     }
 
