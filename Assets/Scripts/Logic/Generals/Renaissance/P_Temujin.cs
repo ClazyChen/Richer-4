@@ -40,7 +40,7 @@ public class P_Temujin: PGeneral {
                             PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
                             PCard Card = new P_CheevnHuoTaChieh().Instantiate();
                             Card.Point = 0;
-                            PTrigger Trigger = Card.Model.MoveInHandTriggerList.Find((Func<PPlayer, PCard, PTrigger> TriggerGenerator) => TriggerGenerator(Player, Card).Time.Equals(PTime.Injure.EmitInjure))?.Invoke(Player, Card);
+                            PTrigger Trigger = Card.Model.MoveInHandTriggerList.Find((Func<PPlayer, PCard, PTrigger> TriggerGenerator) => TriggerGenerator(Player, Card).Time.Equals(PTime.Injure.AcceptInjure))?.Invoke(Player, Card);
                             if (Trigger != null) {
                                 Game.Logic.StartSettle(new PSettle("抢掠[趁火打劫]", Trigger.Effect));
                             }

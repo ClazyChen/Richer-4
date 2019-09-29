@@ -25,7 +25,7 @@ public class PAiTargetChooser {
         #endregion
         int FromCof = FromPlayer == null ? 0 : (Player.TeamIndex == FromPlayer.TeamIndex ? 1 : -1);
         int ToCof = (Player.TeamIndex != Target.TeamIndex ? 1 : -1);
-        int Sum = PMath.RandInt(0,10);
+        int Sum = 0;
         #region 造成伤害时发动的技能：古锭刀，龙胆，太极，苍狼，趁火打劫
         if (FromPlayer != null) {
             if (Target.Area.HandCardArea.CardNumber == 0 && FromPlayer.HasEquipment<P_KuTingTao>() && Source is PBlock) {
@@ -86,6 +86,16 @@ public class PAiTargetChooser {
             Sum -= 200 * ToCof;
         }
         #endregion
+
+        #region 队友间平衡：自身和目标的合理阈值为50%-200%
+        if (FromPlayer.TeamIndex == Target.TeamIndex) {
+            if (FromPlayer.Money > Target.Money * 2) {
+                Sum -= 1000;
+            } else if (FromPlayer.Money < Target.Money * 2) {
+                Sum += 1000;
+            }
+        }
+        #endregion
         return Sum;
     }
 
@@ -101,7 +111,7 @@ public class PAiTargetChooser {
 
         return PMath.Max(Game.PlayerList.FindAll((PPlayer Target) => Target.IsAlive && (Condition == null || Condition(Game, Target))), (PPlayer Target) => {
 
-            return InjureExpect(Game, Player, FromPlayer, Target, ExpectedMoney, Source);
+            return InjureExpect(Game, Player, FromPlayer, Target, ExpectedMoney, Source) + PMath.RandInt(0,10);
         }, !AllowNegative).Key;
     }
 }
