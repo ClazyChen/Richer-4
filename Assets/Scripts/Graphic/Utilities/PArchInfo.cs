@@ -42,5 +42,5 @@ public class PArchInfo : PObject {
     //第3批成就
     public static PArchInfo 竹篮打水 = new PArchInfo("竹篮打水", "使用【打草惊蛇】弃置了0座房屋。", 20);
     public static PArchInfo 百足之虫 = new PArchInfo("百足之虫", "在一局游戏中，使用2次【借尸还魂】。", 30);
-    public static PArchInfo 护花使者 = new PArchInfo("名副其实", "使用【调虎离山】防止一次队友被伤害。", 10);
+    public static PArchInfo 护花使者 = new PArchInfo("护花使者", "使用【调虎离山】防止一次队友被伤害。", 10);
 }

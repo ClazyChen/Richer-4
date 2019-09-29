@@ -8,6 +8,11 @@ public class P_ShiQian: PGeneral {
         Sex = PSex.Male;
         Age = PAge.Renaissance;
         Index = 7;
+        Tips = "定位：控制\n" +
+            "难度：简单\n" +
+            "史实：《水浒传》中人物，地贼星，绰号“鼓上蚤”，擅长偷盗，多次利用专业技能为梁山立功。\n" +
+            "攻略：\n时迁的使用方法非常简单，只要使用【顺手牵羊】即可。【顺手牵羊】的时机把握是比较重要的问题，手中存留一张【顺手牵羊】，将其用于关键的【乐不思蜀】、【草木皆兵】或者装备上，会比使用【顺手牵羊】直到没有【顺手牵羊】为止效果更好。";
+
         PSkill FeiZei = new PSkill("飞贼") {
             Lock = true
         };

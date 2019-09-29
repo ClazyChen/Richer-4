@@ -7,12 +7,18 @@ public class P_ManTiienKuoHai: PSchemeCardModel {
 
     public List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
         int ExpectedMoney = 700;
+        if (Player.General is P_LiuJi) {
+            ExpectedMoney = 1200;
+        }
         PPlayer Target = PAiTargetChooser.InjureTarget(Game, Player, Player, PTrigger.Except(Player), ExpectedMoney, Instantiate());
         return new List<PPlayer>() { Target };
     }
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
         int Basic = 1400;
+        if (Player.General is P_LiuJi) {
+            Basic = 2400;
+        }
         int MinEnemyMoney = PMath.Min(Game.Enemies(Player), (PPlayer Test) =>  Test.Money).Value;
         if (MinEnemyMoney <= 1200 ) {
             Basic += 5000 * (7 - MinEnemyMoney / 200);
@@ -35,16 +41,14 @@ public class P_ManTiienKuoHai: PSchemeCardModel {
                     Player = Player,
                     Time = Time,
                     AIPriority = 170,
-                    Condition = (PGame Game) => {
-                        return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime());
-                    },
+                    Condition = PTrigger.Initiative(Player),
                     AICondition = (PGame Game) => {
                         return AIEmitTargets(Game, Player)[0] != null && !Player.OutOfGame && P_PanYue.XianJuTest(Game,Player);
                     },
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets,
                         PTrigger.Except(Player),
                         (PGame Game, PPlayer User, PPlayer Target) => {
-                            Game.Injure(User, Target, Game.Judge(User) * 200, Card);
+                            Game.Injure(User, Target, Game.Judge(User, 6) * 200, Card);
                         })
                 };
             });

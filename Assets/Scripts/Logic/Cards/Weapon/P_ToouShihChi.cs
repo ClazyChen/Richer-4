@@ -47,7 +47,7 @@ public class P_ToouShihChi : PEquipmentCardModel {
                             Game.LoseMoney(Player, 3000);
                             Game.LoseHouse(TargetBlock, 1);
                             if (TargetBlock.BusinessType.Equals(PBusinessType.Castle)) {
-                                Game.LoseHouse(TargetBlock, Game.Judge(Player));
+                                Game.LoseHouse(TargetBlock, Game.Judge(Player, 6));
                             }
                             Player.Tags.FindPeekTag<PUsedTag>(PUsedTag.TagNamePrefix + CardName).Count++;
                         }

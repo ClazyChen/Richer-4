@@ -6,6 +6,9 @@ using System.Collections.Generic;
 public class P_PaKuaChevn : PEquipmentCardModel {
 
     public override int AIInEquipExpectation(PGame Game, PPlayer Player) {
+        if (Player.General is P_LiuJi) {
+            return 7000;
+        }
         return 3000;
     }
 
@@ -33,7 +36,7 @@ public class P_PaKuaChevn : PEquipmentCardModel {
                     },
                     Effect = (PGame Game ) => {
                         AnnouceUseEquipmentSkill(Player);
-                        int Result = Game.Judge(Player);
+                        int Result = Game.Judge(Player, 5);
                         if (Result % 2 == 1) {
                             PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(CardName + "：成功"));
                             PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);

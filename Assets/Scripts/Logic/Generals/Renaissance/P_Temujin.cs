@@ -7,6 +7,12 @@ public class P_Temujin: PGeneral {
         Sex = PSex.Male;
         Age = PAge.Renaissance;
         Index = 11;
+        Cost = 20;
+        Tips = "定位：控制\n" +
+            "难度：简单\n" +
+            "史实：大蒙古国可汗，杰出的军事家、政治家，统一了蒙古诸部，开疆拓土，远至东欧，被尊为“成吉思汗”。\n" +
+            "攻略：\n铁木真是一个新手推荐武将，基本上使用没有任何难度。";
+
         PSkill QiangLve = new PSkill("抢掠") {
             SoftLockOpen = true
         };
@@ -29,7 +35,7 @@ public class P_Temujin: PGeneral {
                     },
                     Effect = (PGame Game) => {
                         QiangLve.AnnouceUseSkill(Player);
-                        int Result = Game.Judge(Player);
+                        int Result = Game.Judge(Player, 6);
                         if (Result %2 == 0) {
                             PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
                             PCard Card = new P_CheevnHuoTaChieh().Instantiate();

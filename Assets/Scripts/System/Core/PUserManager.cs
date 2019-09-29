@@ -42,6 +42,10 @@ public class PUserManager {
                     } else if (Key.Equals("General")) {
                         GeneralList.Add(LineData[1]);
                     } else if (Key.Equals("Record")) {
+                        /*
+                         * 记录格式：
+                         * Record <使用的武将> Win/Lose <模式> <从1号位起的每名武将>
+                         */ 
                         RecordList.Add(LineData[1]);
                     }
                 }

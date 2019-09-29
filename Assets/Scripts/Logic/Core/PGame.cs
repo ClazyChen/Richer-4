@@ -391,13 +391,21 @@ public class PGame : PGameStatus {
         Monitor.CallTime(PTime.MovePositionTime, new PTransportTag(Player, Source, Destination));
     }
 
-    public int Judge(PPlayer Player) {
+    /// <summary>
+    /// 进行一次判定
+    /// </summary>
+    /// <param name="Player"></param>
+    /// <param name="AdvisedNumber">建议的结果</param>
+    /// <returns></returns>
+    public int Judge(PPlayer Player, int AdvisedNumber) {
         if (!Player.IsAlive) {
             return 7;
         }
         int Result = PMath.RandInt(1, 6);
+        PJudgeTag JudgeTag = Monitor.CallTime(PTime.Judge.JudgeTime, new PJudgeTag(Player, Result, AdvisedNumber));
         PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "的判定结果：" + Result));
         PNetworkManager.NetworkServer.TellClients(new PPushTextOrder(Player.Index.ToString(), "判定结果：" + Result, PPushType.Information.Name));
+        Monitor.CallTime(PTime.Judge.AfterJudgeTime, JudgeTag);
         return Result;
     }
 
@@ -408,8 +416,8 @@ public class PGame : PGameStatus {
     /// <param name="ToPlayer">接受拼点的玩家</param>
     /// <returns>拼点获胜1，失败-1，平均0</returns>
     public int PkPoint(PPlayer FromPlayer, PPlayer ToPlayer) {
-        int FromPoint = Judge(FromPlayer);
-        int ToPoint = Judge(ToPlayer);
+        int FromPoint = Judge(FromPlayer, 6);
+        int ToPoint = Judge(ToPlayer, 6);
         int Result = 0;
         if (FromPoint > ToPoint) {
             Result = 1;

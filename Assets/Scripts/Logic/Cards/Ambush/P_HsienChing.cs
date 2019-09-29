@@ -9,8 +9,14 @@ public class P_HsienChing : PAmbushCardModel {
         int Sum = 0;
         double Rate = 5.0 / 6;
         Game.Traverse((PPlayer _Player) => {
-            Sum +=(int)( PAiCardExpectation.FindLeastValuable(Game, _Player, _Player, false, true, false, true).Value * Rate) * (Player.TeamIndex == _Player.TeamIndex ? -1 : 1);
-            Rate *= 5.0 / 6;
+            int Cof = (Player.TeamIndex == _Player.TeamIndex ? -1 : 1);
+            if (_Player.General is P_LiuJi) {
+                Sum -= 1200 * Cof;
+                Rate = 0;
+            } else {
+                Sum += (int)(PAiCardExpectation.FindLeastValuable(Game, _Player, _Player, false, true, false, true).Value * Rate) * Cof;
+                Rate *= 5.0 / 6;
+            }
         }, Player);
         return Sum;
     }
@@ -30,7 +36,13 @@ public class P_HsienChing : PAmbushCardModel {
 
     public override void AnnouceInvokeJudge(PGame Game, PPlayer Player, PCard Card) {
         base.AnnouceInvokeJudge(Game, Player, Card);
-        int Result = Game.Judge(Player);
+        int Result = Game.Judge(Player, new Func<int>(() => {
+            if (Player.Area.EquipmentCardArea.CardNumber > 0) {
+                return 6;
+            } else {
+                return 5;
+            }
+        })());
         if (Result != 6) {
             if (Player.Area.EquipmentCardArea.CardNumber > 0) {
                 Game.ThrowCard(Player, Player, false, true);

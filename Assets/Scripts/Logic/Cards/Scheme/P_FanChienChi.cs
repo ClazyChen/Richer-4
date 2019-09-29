@@ -16,10 +16,15 @@ public class P_FanChienChi : PSchemeCardModel {
         List<PPlayer> Targets = AIEmitTargets(Game, Player);
         Targets.ForEach((PPlayer _Player) => {
             if (!(_Player.Defensor != null && _Player.Defensor.Model is P_YooHsi && Targets.Count > 1)) {
-                int Choose1 = PAiMapAnalyzer.ChangeFaceExpect(Game, _Player);
-                int Choose2 = _Player.Money <= 1000 ? -30000 : -1000;
-                int Chosen = Math.Max(Choose1, Choose2);
-                Sum += Chosen * (_Player.TeamIndex == Player.TeamIndex ? 1 : -1);
+                int Cof = (_Player.TeamIndex == Player.TeamIndex ? 1 : -1);
+                if (_Player.General is P_LiuJi) {
+                    Sum += 1200 * 6 / 5 * Cof;
+                } else {
+                    int Choose1 = PAiMapAnalyzer.ChangeFaceExpect(Game, _Player);
+                    int Choose2 = _Player.Money <= 1000 ? -30000 : -1000;
+                    int Chosen = Math.Max(Choose1, Choose2);
+                    Sum += Chosen * Cof;
+                }
             }
         });
         Sum = Sum * 5 / 6;
@@ -41,9 +46,7 @@ public class P_FanChienChi : PSchemeCardModel {
                     Player = Player,
                     Time = Time,
                     AIPriority = 65,
-                    Condition = (PGame Game) => {
-                        return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime());
-                    },
+                    Condition = PTrigger.Initiative(Player),
                     AICondition = (PGame Game) => {
                         return AIInHandExpectation(Game, Player) > 1000 && P_PanYue.XianJuTest(Game, Player);
                     },
@@ -51,27 +54,36 @@ public class P_FanChienChi : PSchemeCardModel {
                         (PGame Game, PPlayer User, PPlayer Target) => {
                             int ChosenNumber = 1;
                             if (Target.IsAI) {
-                                ChosenNumber = PMath.RandInt(1, 6);
+                                if (Target.General is P_LiuJi) {
+                                    ChosenNumber = 6;
+                                } else {
+                                    ChosenNumber = PMath.RandInt(1, 6);
+                                }
                             } else {
-                                ChosenNumber = PNetworkManager.NetworkServer.ChooseManager.Ask1To6(Target, "反间计[选择1个数字]");
+                                ChosenNumber = PNetworkManager.NetworkServer.ChooseManager
+                                .Ask1To6(Target, "反间计[选择1个数字]");
                             }
-                            PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Target.Name + "选择了" + ChosenNumber));
-                            int JudgeResult = Game.Judge(Target);
+                            PNetworkManager.NetworkServer.TellClients(new 
+                                PShowInformationOrder(Target.Name + "选择了" + ChosenNumber));
+                            int JudgeResult = Game.Judge(Target, 6);
                             if (JudgeResult != ChosenNumber) {
                                 int Test = 0;
                                 if (Target.IsAI) {
                                     int Choose1 = PAiMapAnalyzer.ChangeFaceExpect(Game, Target);
                                     int Choose2 = Target.Money <= 1000 ? -30000 : -1000;
                                 } else {
-                                    Test = PNetworkManager.NetworkServer.ChooseManager.Ask(Target, "反间计[选择一项]", new string[] {
+                                    Test = PNetworkManager.NetworkServer.ChooseManager
+                                    .Ask(Target, "反间计[选择一项]", new string[] {
                                         "翻面", "弃1000"
                                     });
                                 }
                                 if (Test == 0) {
-                                    PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Target.Name + "选择了翻面"));
+                                    PNetworkManager.NetworkServer.TellClients(new 
+                                        PShowInformationOrder(Target.Name + "选择了翻面"));
                                     Game.ChangeFace(Target);
                                 } else {
-                                    PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Target.Name + "选择了弃1000"));
+                                    PNetworkManager.NetworkServer.TellClients(new 
+                                        PShowInformationOrder(Target.Name + "选择了弃1000"));
                                     Game.LoseMoney(Target, 1000);
                                 }
                             }

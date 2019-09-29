@@ -33,7 +33,17 @@ public class P_TsaaoMuChiehPing : PAmbushCardModel {
 
 
     public List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
-        PPlayer Target = PMath.Max(Game.PlayerList.FindAll((PPlayer _Player) => _Player.IsAlive && !_Player.Equals(Player) && (_Player.Defensor == null || !(_Player.Defensor.Model is P_ChiiHsingPaao)) && !_Player.Area.AmbushCardArea.CardList.Exists((PCard _Card) => _Card.Model.Name.Equals(CardName))), (PPlayer _Player) => AIExpect(Game, Player, _Player.Position) - 4000, true).Key;
+        PPlayer Target = PMath.Max(Game.PlayerList.FindAll((PPlayer _Player) => _Player.IsAlive && !_Player.Equals(Player) && (_Player.Defensor == null || !(_Player.Defensor.Model is P_ChiiHsingPaao)) && !_Player.Area.AmbushCardArea.CardList.Exists((PCard _Card) => _Card.Model.Name.Equals(CardName))), (PPlayer _Player) => {
+            int Base = AIExpect(Game, Player, _Player.Position);
+            if (_Player.General is P_LiuJi) {
+                if (Player.TeamIndex == _Player.TeamIndex) {
+                    Base += 1200;
+                } else {
+                    Base = 0;
+                }
+            }
+            return Base - 4000;
+            }, true).Key;
         return new List<PPlayer>() {  Target };
     }
 
@@ -42,12 +52,21 @@ public class P_TsaaoMuChiehPing : PAmbushCardModel {
     }
 
     public override int AIInAmbushExpectation(PGame Game, PPlayer Player) {
-        return AIExpect(Game, Player, Player.Position);
+        int Base = AIExpect(Game, Player, Player.Position);
+        if (Player.General is P_LiuJi) {
+            return Math.Max(200, Base + 1200);
+        }
+        return Base;
     }
 
     public override void AnnouceInvokeJudge(PGame Game, PPlayer Player, PCard Card) {
         base.AnnouceInvokeJudge(Game, Player, Card);
-        int Result = Game.Judge(Player);
+        int Result = Game.Judge(Player, new Func<int>(() => {
+            if (AIExpect(Game, Player, Player.Position) < -1000) {
+                return 1;
+            }
+            return 6;
+        })());
         if (Result != 1) {
             PBlock Block = Player.Position;
             int[] dx = { 1, -1, 0, 0 };

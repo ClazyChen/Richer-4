@@ -24,7 +24,7 @@ public class P_KuTingTao : PEquipmentCardModel {
                     Time = Time,
                     Condition = (PGame Game) => {
                         PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
-                        return Player.Equals(InjureTag.FromPlayer) && InjureTag.Injure > 0 && InjureTag.ToPlayer != null && InjureTag.ToPlayer.Area.HandCardArea.CardNumber == 0;
+                        return Player.Equals(InjureTag.FromPlayer) && InjureTag.Injure > 0 && InjureTag.ToPlayer != null && InjureTag.ToPlayer.Area.HandCardArea.CardNumber == 0 && InjureTag.InjureSource is PBlock;
                     },
                     Effect = (PGame Game ) => {
                         AnnouceUseEquipmentSkill(Player);

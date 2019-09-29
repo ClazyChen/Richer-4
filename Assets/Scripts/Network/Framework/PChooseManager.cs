@@ -25,6 +25,13 @@ public class PChooseManager {
         return ChosenAnswer == 0;
     }
 
+    public bool AskHaveGeneral(PPlayer Player, string GeneralName) {
+        ChosenAnswer = -1;
+        PNetworkManager.NetworkServer.TellClient(Player, new PTestGeneralOrder(Player.Index.ToString(), GeneralName));
+        PThread.WaitUntil(() => ChosenAnswer >= 0);
+        return ChosenAnswer == 0;
+    }
+
     public int Ask1To6(PPlayer Player, string Title) {
         return Ask(Player, Title, new string[] { "1", "2", "3", "4", "5", "6" }) + 1;
     }

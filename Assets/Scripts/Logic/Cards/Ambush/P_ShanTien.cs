@@ -34,8 +34,8 @@ public class P_ShanTien : PAmbushCardModel {
 
     public override void AnnouceInvokeJudge(PGame Game, PPlayer Player, PCard Card) {
         base.AnnouceInvokeJudge(Game, Player, Card);
-        int Result1 = Game.Judge(Player);
-        int Result2 = Game.Judge(Player);
+        int Result1 = Game.Judge(Player, 6);
+        int Result2 = Game.Judge(Player, 6);
         if (Result1+Result2 <= 5) {
             Game.Injure(null, Player, 6000, Card);
             Game.CardManager.MoveCard(Card, Player.Area.AmbushCardArea, Game.CardManager.ThrownCardHeap);

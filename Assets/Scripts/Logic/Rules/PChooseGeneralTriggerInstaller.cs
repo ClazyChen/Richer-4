@@ -45,11 +45,13 @@ public class PChooseGeneralTriggerInstaller : PSystemTriggerInstaller {
                 });
                 // 剩下的将随机
                 PMath.Wash(AvailableGenerals);
-                for (int i = 0; i < 8; ++ i) {
+                for (int i = 0; i < Game.PlayerNumber; ++ i) {
                     if (Generals[i] is P_Soldier) {
                         foreach (PGeneral General in AvailableGenerals) {
-                            if (!Generals.Contains(General)) {
+                            if (!Generals.Contains(General) && (Game.PlayerList[i].IsAI || 
+                            PNetworkManager.NetworkServer.ChooseManager.AskHaveGeneral(Game.PlayerList[i], General.Name))) {
                                 Generals[i] = General;
+                                break;
                             }
                         }
                     }

@@ -22,6 +22,11 @@ public class P_PanYue: PGeneral {
         Sex = PSex.Male;
         Age = PAge.Medieval;
         Index = 2;
+        Tips = "定位：辅助\n" +
+            "难度：简单\n" +
+            "史实：西晋文学家、政治家，著名美男子，“金谷二十四友”之一，代表作是《闲居赋》。\n" +
+            "攻略：\n潘岳是十分适合新手的一个武将，两个技能都非常简单。即使是新手使用，也可以在竞技模式中发挥出出色的实力。\n对于潘岳玩家而言，伤害类计策建议放到第二个空闲时间点使用，这样根据所在土地是否为队友的土地及是否受到伤害，可以判断是放出伤害计策，还是发动【闲居】。";
+
         PSkill YingZi = new PSkill("英姿") {
             SoftLockOpen = true
         };

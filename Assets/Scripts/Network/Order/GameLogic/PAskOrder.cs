@@ -26,8 +26,8 @@ public class PAskOrder : POrder {
                 }
                 
             }
-            #region 选将卡和手气卡
-            if (Title.Contains("选将卡")) {
+            #region 点将卡和手气卡
+            if (Title.Contains("点将卡")) {
                 // 选将卡特殊判定
                 // 必须要有选将卡才启用
                 // 否则返回1
@@ -42,7 +42,7 @@ public class PAskOrder : POrder {
                     return;
                 }
             }
-            if (Title.Equals("选将")) {
+            if (Title.Equals("点将")) {
                 for (int i = 0; i < Options.Length; ++ i) {
                     if (!PSystem.UserManager.GeneralList.Contains(Options[i])) {
                         Options[i] += "[未获得]";

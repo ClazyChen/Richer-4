@@ -61,7 +61,13 @@ public class PTrigger : PObject{
 
 
     public static readonly Converter<PPlayer, PlayerCondition> Except = (PPlayer Player) => {
-        return (PGame _Game, PPlayer _Player) => !Player.Equals(_Player);
+        return (PGame _Game, PPlayer _Player) => !Player.Equals(_Player) && Player.IsAlive;
+    };
+
+    public static readonly Converter<PPlayer, Predicate<PGame>> Initiative = (PPlayer Player) => {
+        return (PGame _Game) => {
+            return Player.Equals(_Game.NowPlayer) && (Player.IsAI || _Game.Logic.WaitingForEndFreeTime());
+        };
     };
 
     public static readonly PlayerCondition NoCondition = (PGame _Game, PPlayer _Player) => true;

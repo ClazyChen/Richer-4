@@ -6,7 +6,11 @@ using System.Collections.Generic;
 public class P_PingLiangTsuunTuan : PAmbushCardModel {
 
     public List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
-        PPlayer Target = PMath.Max(Game.Enemies(Player).FindAll((PPlayer _Player) => _Player.HasHouse && (_Player.Defensor == null || !(_Player.Defensor.Model is P_ChiiHsingPaao)) && !_Player.Area.AmbushCardArea.CardList.Exists((PCard _Card) => _Card.Model.Name.Equals(CardName))), (PPlayer _Player) => PAiMapAnalyzer.MinValueHouse(Game, _Player).Value + PMath.RandInt(-10, 10)).Key;
+        PPlayer Target = PMath.Max(Game.Enemies(Player).FindAll((PPlayer _Player) => _Player.HasHouse && 
+        (_Player.Defensor == null || !(_Player.Defensor.Model is P_ChiiHsingPaao)) && 
+        !_Player.Area.AmbushCardArea.CardList.Exists((PCard _Card) => _Card.Model.Name.Equals(CardName)) &&
+        !(_Player.General is P_LiuJi)),
+        (PPlayer _Player) => PAiMapAnalyzer.MinValueHouse(Game, _Player).Value + PMath.RandInt(0, 10)).Key;
         return new List<PPlayer>() { Target};
     }
 
@@ -15,6 +19,13 @@ public class P_PingLiangTsuunTuan : PAmbushCardModel {
     }
 
     public override int AIInAmbushExpectation(PGame Game, PPlayer Player) {
+        if (Player.General is P_LiuJi) {
+            if (Player.HasHouse) {
+                return 800;
+            } else {
+                return 1200;
+            }
+        }
         if (Player.HasHouse) {
             return -PAiMapAnalyzer.MinValueHouse(Game, Player).Value * 5 / 6;
         } else {
@@ -24,7 +35,12 @@ public class P_PingLiangTsuunTuan : PAmbushCardModel {
 
     public override void AnnouceInvokeJudge(PGame Game, PPlayer Player, PCard Card) {
         base.AnnouceInvokeJudge(Game, Player, Card);
-        int Result = Game.Judge(Player);
+        int Result = Game.Judge(Player, new Func<int>(() => {
+            if (Player.HasHouse) {
+                return 4;
+            }
+            return 6;
+        })());
         if (Result != 4) {
             Game.ThrowHouse(Player, Player, CardName);
         }

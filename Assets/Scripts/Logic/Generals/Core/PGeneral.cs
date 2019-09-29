@@ -10,6 +10,9 @@ public abstract class PGeneral: PObject {
     public int Index = 0;
     public List<PSkill> SkillList;
 
+    public int Cost = 0;
+    public string Tips = string.Empty;
+
     /// <summary>
     /// 客户端专用
     /// </summary>

@@ -28,7 +28,7 @@ public class PAiTargetChooser {
         int Sum = PMath.RandInt(0,10);
         #region 造成伤害时发动的技能：古锭刀，龙胆，太极，苍狼，趁火打劫
         if (FromPlayer != null) {
-            if (Target.Area.HandCardArea.CardNumber == 0 && FromPlayer.HasEquipment<P_KuTingTao>()) {
+            if (Target.Area.HandCardArea.CardNumber == 0 && FromPlayer.HasEquipment<P_KuTingTao>() && Source is PBlock) {
                 BaseInjure *= 2;
             }
             if (FromPlayer.General is P_ZhaoYun && FromPlayer.Tags.ExistTag(P_ZhaoYun.PDanTag.TagName)) {
@@ -51,7 +51,12 @@ public class PAiTargetChooser {
         #endregion
         #region 受到伤害时发动的技能：八卦阵，百花裙，龙胆，太极
         if (Target.HasEquipment<P_PaKuaChevn>()) {
-            BaseInjure = (BaseInjure + PMath.Percent(BaseInjure, 50)) / 2;
+            if (Target.General is P_LiuJi) {
+                Sum -= 1000 * ToCof;
+                BaseInjure = PMath.Percent(BaseInjure, 50);
+            } else {
+                BaseInjure = (BaseInjure + PMath.Percent(BaseInjure, 50)) / 2;
+            }
         }
         if (Target.HasEquipment<P_PaiHuaChooon>() && FromPlayer != null && !Target.Sex.Equals(FromPlayer.Sex)) {
             BaseInjure = PMath.Percent(BaseInjure, 50);

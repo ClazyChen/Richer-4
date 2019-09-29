@@ -191,7 +191,7 @@
                 return !Game.NowPlayer.Equals(Player) && Player.Equals(Game.NowPlayer.Position.Lord);
             },
             AICondition = (PGame Game) => {
-                return Game.NowPlayer.TeamIndex != Player.TeamIndex;
+                return PAiTargetChooser.InjureExpect(Game, Player, Player, Game.NowPlayer, Game.NowPlayer.Position.Toll, Game.NowPlayer.Position) > 0;
             },
             Effect = (PGame Game) => {
                 Game.Toll(Player, Game.NowPlayer, Game.NowPlayer.Position);

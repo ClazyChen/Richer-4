@@ -54,7 +54,11 @@ public abstract class PEquipmentCardModel : PCardModel {
                     },
                     AICondition = (PGame Game) => {
                         KeyValuePair<PCard, int> MaxCard = PMath.Max(Player.Area.HandCardArea.CardList, (PCard _Card) => _Card.Model.AIInEquipExpectation(Game, Player));
+                        KeyValuePair<PCard, int> MinCard = PMath.Min(Player.Area.HandCardArea.CardList, (PCard _Card) => _Card.Model.AIInEquipExpectation(Game, Player));
                         PCard CurrentCard = Player.GetEquipment(CardType);
+                        if (Player.General is P_HuaXiong) {
+                            return CurrentCard == null && Card.Equals(MinCard.Key);
+                        }
                         return Card.Equals(MaxCard.Key) && (CurrentCard == null || MaxCard.Value > CurrentCard.Model.AIInEquipExpectation(Game, Player));
                     },
                     Effect = (PGame Game) => {

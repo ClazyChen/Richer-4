@@ -35,5 +35,10 @@ public class PInitialUI : PAbstractUI {
             PUIManager.AddNewUIAction("成就：转到UUI", () => PUIManager.ChangeUI<PUserUI>());
         });
         #endregion
+        #region 武将按钮：跳转到GeneralUI
+        GeneralButton.onClick.AddListener(() => {
+            PUIManager.AddNewUIAction("武将：转到GUI", () => PUIManager.ChangeUI<PGeneralUI>());
+        });
+        #endregion
     }
 }

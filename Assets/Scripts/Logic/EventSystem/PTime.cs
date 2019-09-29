@@ -33,6 +33,14 @@ public class PTime : PObject {
     public static PTime DieTime = new PTime("死亡时");
     public static PTime AfterDieTime = new PTime("死亡后");
 
+    public class Judge {
+        /// <summary>
+        /// 此时判定结果已经生成
+        /// </summary>
+        public static PTime JudgeTime = new PTime("判定时");
+        public static PTime AfterJudgeTime = new PTime("判定后");
+    }
+
     public static PTime ChangeFaceTime = new PTime("翻面时");
 
     public class Card {

@@ -25,16 +25,25 @@ public class PMessageBox : PAbstractGroupUI<PMessage>{
             PMessage ChosenMessage = null;
             PThread.WaitUntil(() => {
                 ChosenMessage = GroupUIList.Find((PMessage Message) => Message.IsChosen);
-                return (ChosenMessage != null && !(Title.Equals("选将") && ChosenMessage.MessageText.Contains("未获得"))) ;
+                if (ChosenMessage != null && !(Title.Equals("点将") && ChosenMessage.MessageText.Contains("未获得"))) {
+                    return true;
+                } else {
+                    if (ChosenMessage != null) {
+                        ChosenMessage.IsChosen = false;
+                    }
+                    return false;
+                }
             });
             #region 点将卡和手气卡的特殊判定
             if (Title.Contains("点将卡") && ChosenMessage.Index == 0) {
                 // 使用了点将卡
                 PSystem.UserManager.ChooseGeneral--;
+                PSystem.UserManager.Write();
             }
             if (Title.Contains("手气卡") && ChosenMessage.Index == 0) {
                 // 使用了手气卡
                 PSystem.UserManager.Lucky--;
+                PSystem.UserManager.Write();
             }
             #endregion
             PThread.Async(() => {

@@ -10,6 +10,11 @@ public class P_ZhangSanFeng : PGeneral {
         Sex = PSex.Male;
         Age = PAge.Industrial;
         Index = 8;
+        Tips = "定位：攻防兼备\n" +
+            "难度：中等\n" +
+            "史实：宋末元初武术家，道家内丹祖师，武当派、太极拳的开创者，被封为“通微显化天尊”。\n" +
+            "攻略：\n张三丰的技能需要预判下一回合的走向，玩家如果能对场上的局势有一定的预判能力，就能最大化地发挥张三丰两个状态的加成。\n因为张三丰的技能没有消耗，所以也可以走纯阳或者纯阴，做一个简单的防御（或攻击）将使用。";
+
         PSkill TaiJi = new PSkill("太极") {
             Lock = true
         };

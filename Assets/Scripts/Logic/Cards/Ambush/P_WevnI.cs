@@ -10,9 +10,14 @@ public class P_WevnI : PAmbushCardModel {
         double Rate = 5.0 / 6;
         Game.Traverse((PPlayer _Player) => {
             int Base = _Player.Money <= 1000 ? 30000 : 1000;
+            if (_Player.General is P_LiuJi) {
+                Base = -200;
+            }
             Base *= _Player.TeamIndex == Player.TeamIndex ? -1 : 1;
             Sum += (int)(Base * Rate);
-            Rate *= 5.0 / 6;
+            if (!(_Player.General is P_LiuJi)) {
+                Rate *= 5.0 / 6;
+            }
         }, Player);
         return Sum ;
     }
@@ -32,7 +37,12 @@ public class P_WevnI : PAmbushCardModel {
 
     public override void AnnouceInvokeJudge(PGame Game, PPlayer Player, PCard Card) {
         base.AnnouceInvokeJudge(Game, Player, Card);
-        int Result = Game.Judge(Player);
+        int Result = Game.Judge(Player, new Func<int>(()=> {
+            if (Game.Enemies(Player).Count > Game.Teammates(Player,false).Count && !(Game.Teammates(Player, false).Exists((PPlayer _Player) => _Player.Money <= 1000))) {
+                return 6;
+            }
+            return 2;
+        })());
         if (Result != 2) {
             Game.LoseMoney(Player, 1000);
             if (Game.GetNextPlayer(Player).Area.AmbushCardArea.CardList.Exists((PCard _Card) => _Card.Model is P_WevnI)) {
