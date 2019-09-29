@@ -21,6 +21,12 @@ public class PSkillInfo : PObject {
     public static PSkillInfo 飞贼 = new PSkillInfo("飞贼", "【被】锁定技，【顺手牵羊】对你无效。", PSkillType.Lock);
     public static PSkillInfo 轻敏 = new PSkillInfo("轻敏", "【主】你可以将一张点数为1的手牌当做【顺手牵羊】使用。", PSkillType.Initiative);
     public static PSkillInfo 太极 = new PSkillInfo("太极", "【被】锁定技，回合开始时，你须选择“阴”或“阳”。锁定技，当你处在“阴”状态时，造成的伤害+20%；当你处在“阳”状态时，受到的伤害-20%。", PSkillType.Lock);
+    public static PSkillInfo 残杀 = new PSkillInfo("残杀", "【被】当你通过过路费造成伤害时，你可以令收费地的地价-1000，令目标弃置伤害量*100%的现金。", PSkillType.Passive);
+    public static PSkillInfo 耀武 = new PSkillInfo("耀武", "【被】锁定技，你的起始资金*150%。", PSkillType.Lock);
+    public static PSkillInfo 叫阵 = new PSkillInfo("叫阵", "【主】空闲时间点，若你有装备，你可以与一名其他角色拼点，若你赢，你对其造成1000点伤害；若你没赢，你弃置一张装备。", PSkillType.Initiative);
+    public static PSkillInfo 抢掠 = new PSkillInfo("抢掠", "【被】当你通过过路费造成伤害时，你可以进行一次判定，若X为偶数，视为你使用了一张【趁火打劫】。", PSkillType.SoftLock);
+    public static PSkillInfo 妙算 = new PSkillInfo("妙算", "【被】当你需要判定时，你可以从1到6中选择一个数字作为结果。", PSkillType.SoftLock);
+    public static PSkillInfo 天妒 = new PSkillInfo("天妒", "【被】当你的判定生效后，你可以摸200X。", PSkillType.SoftLock);
 
     public PSkillInfo Copy() {
         return new PSkillInfo(Name, ToolTip, Type);
