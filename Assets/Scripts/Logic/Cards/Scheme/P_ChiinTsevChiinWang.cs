@@ -48,6 +48,11 @@ public class P_ChiinTsevChiinWang : PSchemeCardModel {
                         },
                         (PGame Game, PPlayer User, PPlayer Target) => {
                             Game.ChangeFace(Target);
+                            #region 成就：草头天子
+                            if (User.Equals(Target)) {
+                                PArch.Announce(Game, User, "草头天子");
+                            }
+                            #endregion
                         })
                 };
             });

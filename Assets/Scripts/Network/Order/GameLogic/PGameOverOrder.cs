@@ -15,9 +15,9 @@ public class PGameOverOrder : POrder {
                 Win = true;
             }
             PSystem.UserManager.Money += GetMoney;
-            PSystem.UserManager.RecordList.Add(PNetworkManager.Game.PlayerList[PSystem.PlayerIndex].General.Name + " " +
-                (Win ? "Win" : "Lose") + " " + string.Join(" ", PNetworkManager.Game.PlayerList
-                .ConvertAll((PPlayer _Player) => _Player.General.Name).ToArray()));
+            //PSystem.UserManager.RecordList.Add(PNetworkManager.Game.PlayerList[PSystem.PlayerIndex].General.Name + " " +
+            //    (Win ? "Win" : "Lose") + " " + string.Join(" ", PNetworkManager.Game.PlayerList
+            //    .ConvertAll((PPlayer _Player) => _Player.General.Name).ToArray()));
             PSystem.UserManager.Write();
             PAnimation.AddAnimation("游戏结束", () => {
                 PUIManager.GetUI<PMapUI>().Ask("游戏结束，银两+" + GetMoney, new string[] {

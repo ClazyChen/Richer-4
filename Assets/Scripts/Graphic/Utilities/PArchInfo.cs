@@ -43,4 +43,20 @@ public class PArchInfo : PObject {
     public static PArchInfo 竹篮打水 = new PArchInfo("竹篮打水", "使用【打草惊蛇】弃置了0座房屋。", 20);
     public static PArchInfo 百足之虫 = new PArchInfo("百足之虫", "在一局游戏中，使用2次【借尸还魂】。", 30);
     public static PArchInfo 护花使者 = new PArchInfo("护花使者", "使用【调虎离山】防止一次队友被伤害。", 10);
+    public static PArchInfo 七擒七纵 = new PArchInfo("七擒七纵", "使用【欲擒故纵】获得【南蛮象】。", 40);
+    public static PArchInfo 搬石砸脚 = new PArchInfo("搬石砸脚", "使用【抛砖引玉】的有效目标均为队友。", 15);
+    public static PArchInfo 草头天子 = new PArchInfo("草头天子", "使用【擒贼擒王】使自己翻面。", 5);
+    public static PArchInfo 绝处逢生 = new PArchInfo("绝处逢生", "4v4模式下，在经历过1v4局面之后获胜。", 60);
+    public static PArchInfo 破釜沉舟 = new PArchInfo("破釜沉舟", "使用【釜底抽薪】一次弃置至少10座房屋。", 30);
+    public static PArchInfo 水至清则无鱼 = new PArchInfo("水至清则无鱼", "使用【浑水摸鱼】造成至少3500点伤害。", 10);
+    public static PArchInfo 逃出生天 = new PArchInfo("逃出生天", "使用【金蝉脱壳】走到奖励处。", 10);
+    public static PArchInfo 无处可逃 = new PArchInfo("无处可逃", "使用【关门捉贼】造成至少7000点伤害。", 15);
+    public static PArchInfo 翻云覆雨 = new PArchInfo("翻云覆雨", "使用【远交近攻】使一名角色弃1000而死亡。", 20);
+    public static PArchInfo 不安好心 = new PArchInfo("不安好心", "使用【假道伐虢】杀死一名角色。", 20);
+    public static PArchInfo 偷天换日 = new PArchInfo("偷天换日", "使用【偷梁换柱】交换两片房屋数量相差至少5的土地。", 30);
+    public static PArchInfo 弹弹弹 = new PArchInfo("弹弹弹", "使用【指桑骂槐】转移给足以造成致命伤害的一名角色。", 20);
+    public static PArchInfo 装疯卖傻 = new PArchInfo("装疯卖傻", "使用【假痴不癫】防止一次致命伤害。", 15);
+    public static PArchInfo 留客 = new PArchInfo("留客", "对一名在自己的购物中心上的其他角色使用【上屋抽梯】。", 15);
+    public static PArchInfo 花开富贵 = new PArchInfo("花开富贵", "使用【树上开花】令公园增加1座房屋。", 10);
+    public static PArchInfo 我的地盘我做主 = new PArchInfo("我的地盘我做主", "使用【反客为主】获得一处城堡。", 40);
 }

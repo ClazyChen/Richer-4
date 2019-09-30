@@ -57,6 +57,11 @@ public class P_YooenChiaoChinKung: PSchemeCardModel {
                                     Game.GetMoney(Another, 1000);
                                 } else {
                                     Game.LoseMoney(Another, 1000);
+                                    #region 成就：翻云覆雨
+                                    if (!Another.IsAlive) {
+                                        PArch.Announce(Game, User, "翻云覆雨");
+                                    }
+                                    #endregion
                                 }
                             }
                         })

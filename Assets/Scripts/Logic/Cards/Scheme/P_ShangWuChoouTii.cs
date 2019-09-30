@@ -65,6 +65,11 @@ public class P_ShangWuChoouTii: PSchemeCardModel {
                                 }
                             };
                             Game.Monitor.AddTrigger(StepZero);
+                            #region 成就：留客
+                            if (User.Equals(Target.Position.Lord) && Target.Position.BusinessType.Equals(PBusinessType.ShoppingCenter)) {
+                                PArch.Announce(Game, User, "留客");
+                            }
+                            #endregion
                         })
                 };
             });

@@ -57,7 +57,7 @@ public class P_HuaXiong : PGeneral {
                         if (PAiTargetChooser.InjureTarget(Game, Player, Player, PTrigger.Except(Player), 1000, JiaoZhen) == null) {
                             return false;
                         }
-                        if (Game.Enemies(Player).Exists((PPlayer _Player) => _Player.Money <= 1000)) {
+                        if (Game.Enemies(Player).Exists((PPlayer _Player) => _Player.Money <= 2000)) {
                             return true;
                         }
                         foreach (PCardType CardType in new PCardType[] {
@@ -65,8 +65,14 @@ public class P_HuaXiong : PGeneral {
                         }) {
                             KeyValuePair<PCard, int> MaxCard = PMath.Max(Player.Area.HandCardArea.CardList, (PCard _Card) => _Card.Model.AIInEquipExpectation(Game, Player));
                             PCard CurrentCard = Player.GetEquipment(CardType);
-                            if (CurrentCard != null && MaxCard.Value > CurrentCard.Model.AIInEquipExpectation(Game, Player)) {
-                                return true;
+                            if (CurrentCard != null) {
+                                int Expect = CurrentCard.Model.AIInEquipExpectation(Game, Player);
+                                if (MaxCard.Value > Expect) {
+                                    return true;
+                                }
+                                if (Expect <= 1000) {
+                                    return true;
+                                }
                             }
                         }
                         return false;

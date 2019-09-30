@@ -51,7 +51,13 @@ public class P_ChihSangMaHuai: PSchemeCardModel {
                     },
                         (PGame Game, PPlayer User, PPlayer Target) => {
                             PNetworkManager.NetworkServer.TellClients(new PPushTextOrder(User.Index.ToString(), "转移伤害给" + Target.Name, PPushType.Information.Name));
-                            Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName).ToPlayer = Target;
+                            PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
+                            InjureTag.ToPlayer = Target;
+                            #region 成就：弹弹弹
+                            if (Target.Money <= InjureTag.Injure) {
+                                PArch.Announce(Game, User, "弹弹弹");
+                            }
+                            #endregion
                         })
                 };
             });

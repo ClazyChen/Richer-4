@@ -55,6 +55,12 @@ public class P_FanKeevWeiChu : PSchemeCardModel {
                         PNetworkManager.NetworkServer.TellClients(new PHighlightBlockOrder(Block.Index.ToString()));
                         PNetworkManager.NetworkServer.TellClients(new PRefreshBlockBasicOrder(Block));
 
+                        #region 成就：我的地盘我做主
+                        if (Block.BusinessType.Equals(PBusinessType.Castle)) {
+                            PArch.Announce(Game, Player, "我的地盘我做主");
+                        }
+                        #endregion
+
                         Game.CardManager.MoveCard(Card, Game.CardManager.SettlingArea, Game.CardManager.ThrownCardHeap);
                         Game.Monitor.CallTime(PTime.Card.EndSettleTime, new PUseCardTag(Card, Player, Targets));
                     }

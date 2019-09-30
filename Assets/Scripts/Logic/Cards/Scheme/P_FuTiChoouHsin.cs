@@ -40,6 +40,11 @@ public class P_FuTiChoouHsin : PSchemeCardModel {
                         Game.Monitor.CallTime(PTime.Card.AfterBecomeTargetTime, new PUseCardTag(Card, Player, Targets));
                         PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
                         PBlock Block = (PBlock)InjureTag.InjureSource;
+                        #region 成就：破釜沉舟
+                        if (Block.HouseNumber >= 10) {
+                            PArch.Announce(Game, Player, "破釜沉舟");
+                        }
+                        #endregion
                         Game.LoseHouse(Block, Block.HouseNumber);
                         Game.CardManager.MoveCard(Card, Game.CardManager.SettlingArea, Game.CardManager.ThrownCardHeap);
                         Game.Monitor.CallTime(PTime.Card.EndSettleTime, new PUseCardTag(Card, Player, Targets));

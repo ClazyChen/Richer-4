@@ -205,6 +205,7 @@ public class PGame : PGameStatus {
         CardManager.ThrowAll(Player.Area);
         Player.IsAlive = false;
         PNetworkManager.NetworkServer.TellClients(new PDieOrder(Player.Index.ToString()));
+        Monitor.CallTime(PTime.AfterDieTime, new PDyingTag(Player));
         if (GameOver()) {
             PLogger.Log("游戏结束");
             EndGame();
@@ -474,7 +475,7 @@ public class PGame : PGameStatus {
             }
         } else {
             if (IsGet) {
-                if (!Player.Age.Equals(TargetPlayer.Age) && TargetPlayer.HasEquipment<P_HsiYooYangToow>()) {
+                if (!Player.Age.Equals(TargetPlayer.Age) && TargetPlayer.HasEquipment<P_HsiYooYangToow>() && AllowEquipment) {
                     TargetCard = TargetPlayer.GetEquipment(PCardType.TrafficCard);
                 } else {
                     TargetCard = PAiCardExpectation.FindMostValuableToGet(this, Player, TargetPlayer, AllowHandCards, AllowEquipment, AllowAmbush, Player.Equals(TargetPlayer)).Key;

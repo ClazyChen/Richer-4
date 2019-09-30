@@ -53,6 +53,11 @@ public class P_ShuShangKaaiHua : PSchemeCardModel {
                         if (Target != null) {
                             PNetworkManager.NetworkServer.TellClients(new PHighlightBlockOrder(Target.Index.ToString()));
                             Game.GetHouse(Target, 1);
+                            #region 成就：花开富贵
+                            if (Target.BusinessType.Equals(PBusinessType.Park)) {
+                                PArch.Announce(Game, Player, "花开富贵");
+                            }
+                            #endregion
                         }
 
                         Game.CardManager.MoveCard(Card, Game.CardManager.SettlingArea, Game.CardManager.ThrownCardHeap);

@@ -51,7 +51,17 @@ public class P_TaTsaaoChingShev: PSchemeCardModel {
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets, AIEmitTargets,
                         (PGame Game, PPlayer User, PPlayer Target) => {
                             Game.ThrowHouse(Target, Target, CardName);
+                            Game.TagManager.PopTag<PTag>("竹篮打水");
+                        },
+                        #region 成就：竹篮打水
+                        (PGame Game, PPlayer User, List<PPlayer> Target) => {
+                            Game.TagManager.CreateTag(new PTag("竹篮打水"));
+                        }, (PGame Game, PPlayer User, List<PPlayer> Target) => {
+                            if (Game.TagManager.PopTag<PTag>("竹篮打水") != null) {
+                                PArch.Announce(Game, User, "竹篮打水");
+                            }
                         })
+                        #endregion
                 };
             });
         }

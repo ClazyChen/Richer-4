@@ -39,7 +39,7 @@ public class PPeriodTriggerInstaller : PSystemTriggerInstaller {
                                     ChosenTarget = Game.NowPlayer.Position.PortalBlockList[PNetworkManager.NetworkServer.ChooseManager.Ask(Game.NowPlayer, "选择传送门目标", Game.NowPlayer.Position.PortalBlockList.ConvertAll((PBlock Block) => Block.Name).ToArray())];
                                 } else {
                                     ChosenTarget = PMath.Max(Game.NowPlayer.Position.PortalBlockList, (PBlock Block) => {
-                                        return PAiMapAnalyzer.StartFromExpect(Game, Game.NowPlayer, Block);
+                                        return PAiMapAnalyzer.StartFromExpect(Game, Game.NowPlayer, Block) + PAiMapAnalyzer.Expect(Game, Game.NowPlayer, Block, true);
                                     }).Key;
                                 }
                             }

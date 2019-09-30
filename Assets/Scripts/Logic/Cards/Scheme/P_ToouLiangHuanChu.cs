@@ -13,14 +13,12 @@ public class P_ToouLiangHuanChu : PSchemeCardModel {
         foreach (PBlock Land1 in LandList) {
             foreach (PBlock Land2 in LandList) {
                 if (Land1.Index < Land2.Index) {
-                    int ValueBefore = PAiMapAnalyzer.HouseValue(Game, Player, Land1) + PAiMapAnalyzer.HouseValue(Game, Player, Land2);
                     int HouseCount1 = Land1.HouseNumber;
                     int HouseCount2 = Land2.HouseNumber;
-                    Land1.HouseNumber = HouseCount2;
-                    Land2.HouseNumber = HouseCount1;
-                    int ValueAfter = PAiMapAnalyzer.HouseValue(Game, Player, Land1) + PAiMapAnalyzer.HouseValue(Game, Player, Land2);
-                    Land1.HouseNumber = HouseCount1;
-                    Land2.HouseNumber = HouseCount2;
+                    int ValueBefore = PAiMapAnalyzer.HouseValue(Game, Player, Land1) * HouseCount1 +
+                        PAiMapAnalyzer.HouseValue(Game, Player, Land2) * HouseCount2;
+                    int ValueAfter = PAiMapAnalyzer.HouseValue(Game, Player, Land1) * HouseCount2 +
+                        PAiMapAnalyzer.HouseValue(Game, Player, Land2) * HouseCount1;
                     if (ValueAfter - ValueBefore > Test) {
                         Test = ValueAfter - ValueBefore;
                         Ans1 = Land1;
@@ -82,6 +80,11 @@ public class P_ToouLiangHuanChu : PSchemeCardModel {
                         if (Land1 != null && Land2 != null) {
                             int House1 = Land1.HouseNumber;
                             int House2 = Land2.HouseNumber;
+                            #region 成就：偷天换日
+                            if (Math.Abs(House1-House2) >= 5) {
+                                PArch.Announce(Game, Player, "偷天换日");
+                            }
+                            #endregion
                             Game.LoseHouse(Land1, Land1.HouseNumber);
                             Game.LoseHouse(Land2, Land2.HouseNumber);
                             Game.GetHouse(Land1, House2);

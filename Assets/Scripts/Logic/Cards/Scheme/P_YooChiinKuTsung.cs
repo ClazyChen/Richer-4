@@ -48,7 +48,12 @@ public class P_YooChiinKuTsung: PSchemeCardModel {
                             InjureTag.Injure = 0;
                             for (int i = 0; i < 2; ++ i) {
                                 if (Target.Area.HandCardArea.CardNumber > 0) {
-                                    Game.GetCardFrom(User, Target, true, false);
+                                    PCard Got = Game.GetCardFrom(User, Target, true, false);
+                                    #region 成就：七擒七纵
+                                    if (Got.Model is P_NanManHsiang && User.Area.HandCardArea.CardList.Contains(Got)) {
+                                        PArch.Announce(Game, User, "七擒七纵");
+                                    }
+                                    #endregion
                                 }
                             }
                         })
