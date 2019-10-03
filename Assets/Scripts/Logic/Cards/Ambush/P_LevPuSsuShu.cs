@@ -24,7 +24,8 @@ public class P_LevPuSsuShu : PAmbushCardModel {
             return _Player.Area.HandCardArea.CardNumber / 2 * 2000 * 5 / 6;
         }).Value;
         int Base = 3500;
-        return Math.Max(Base, Test);
+        int Basic = Math.Max(Base, Test);
+        return Math.Max(Basic, base.AIInHandExpectation(Game, Player));
     }
 
     public override int AIInAmbushExpectation(PGame Game, PPlayer Player) {

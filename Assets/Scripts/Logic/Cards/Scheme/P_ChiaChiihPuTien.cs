@@ -10,9 +10,8 @@ public class P_ChiaChiihPuTien : PSchemeCardModel {
     }
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
-        int Basic = 0;
-        int Test = PAiMapAnalyzer.OutOfGameExpect(Game, Player, true);
-        return Math.Max(Basic, Test);
+        int Basic = PAiMapAnalyzer.OutOfGameExpect(Game, Player, true);
+        return Math.Max(Basic, base.AIInHandExpectation(Game, Player));
     }
 
     public readonly static string CardName = "假痴不癫";

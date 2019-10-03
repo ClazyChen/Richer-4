@@ -1,4 +1,4 @@
-﻿
+﻿using System;
 using System.Collections.Generic;
 /// <summary>
 /// 远交近攻
@@ -15,7 +15,7 @@ public class P_YooenChiaoChinKung: PSchemeCardModel {
         if (Game.Teammates(Player).Count == 1) {
             return 0;
         }
-        return Basic;
+        return Math.Max(Basic, base.AIInHandExpectation(Game, Player));
     }
 
     public readonly static string CardName = "远交近攻";

@@ -24,7 +24,8 @@ public class P_TaTsaaoChingShev: PSchemeCardModel {
                 Basic += Test.Value;
             }
         });
-        return Math.Max(Basic, 500);
+        Basic = Math.Max(Basic, 500);
+        return Math.Max(Basic, base.AIInHandExpectation(Game, Player));
     }
 
     public readonly static string CardName = "打草惊蛇";

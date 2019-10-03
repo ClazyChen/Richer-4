@@ -1,11 +1,12 @@
-﻿
+﻿using System;
 using System.Collections.Generic;
 /// <summary>
 /// 隔岸观火
 /// </summary>
 public class P_KevAnKuanHuo: PSchemeCardModel {
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
-        return 1000;
+        int Basic = 1000;
+        return Math.Max(Basic, base.AIInHandExpectation(Game, Player));
     }
 
     public readonly static string CardName = "隔岸观火";

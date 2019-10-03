@@ -1,4 +1,4 @@
-﻿
+﻿using System;
 using System.Collections.Generic;
 /// <summary>
 /// 围魏救赵
@@ -19,7 +19,7 @@ public class P_WeiWeiChiuChao: PSchemeCardModel {
                 Basic += 500;
             }
         }
-        return Basic;
+        return Math.Max(Basic, base.AIInHandExpectation(Game, Player));
     }
 
     public readonly static string CardName = "围魏救赵";

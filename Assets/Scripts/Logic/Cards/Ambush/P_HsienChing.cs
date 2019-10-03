@@ -27,7 +27,8 @@ public class P_HsienChing : PAmbushCardModel {
     }
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
-        return Math.Max(1000, RoundExpect(Game, Player));
+        int Basic = Math.Max(1000, RoundExpect(Game, Player));
+        return Math.Max(Basic, base.AIInHandExpectation(Game, Player));
     }
 
     public override int AIInAmbushExpectation(PGame Game, PPlayer Player) {

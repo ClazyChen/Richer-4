@@ -11,7 +11,7 @@ public class P_AnTuCheevnTsaang: PSchemeCardModel {
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
         int Basic = 2000;
-        return Basic;
+        return Math.Max(Basic, base.AIInHandExpectation(Game,Player));
     }
 
     public readonly static string CardName = "暗度陈仓";

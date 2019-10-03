@@ -11,11 +11,6 @@ public class PAiCardExpectation {
     public static int Expect(PGame Game, PPlayer Player) {
         double SingleExpect(PCard Card) {
             int Base = Card.Model.AIInHandExpectation(Game, Player);
-            if (Player.General is P_ShiQian && Card.Point == 1) {
-                Base = Math.Max(Base, new P_ShunShouChiienYang().Instantiate().AIInHandExpectation(Game, Player));
-            } else if (Player.General is P_WangXu && Card.Point % 3 == 0) {
-                Base = Math.Max(Base, new P_YooenChiaoChinKung().Instantiate().AIInHandExpectation(Game, Player));
-            }
             return Base;
         }
 

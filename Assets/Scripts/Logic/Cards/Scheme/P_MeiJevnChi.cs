@@ -1,4 +1,4 @@
-﻿
+﻿using System;
 using System.Collections.Generic;
 /// <summary>
 /// 美人计
@@ -16,7 +16,7 @@ public class P_MeiJevnChi : PSchemeCardModel {
         if (Game.Enemies(Player).Count < 2) {
             return 0;
         }
-        return Basic;
+        return Math.Max(Basic, base.AIInHandExpectation(Game, Player));
     }
 
     public readonly static string CardName = "美人计";

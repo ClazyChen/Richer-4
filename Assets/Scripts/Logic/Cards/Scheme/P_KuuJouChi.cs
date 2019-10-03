@@ -12,7 +12,7 @@ public class P_KuuJouChi : PSchemeCardModel {
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
         int Basic = 1000;
-        return Basic;
+        return Math.Max(Basic, base.AIInHandExpectation(Game, Player));
     }
 
     public readonly static string CardName = "苦肉计";

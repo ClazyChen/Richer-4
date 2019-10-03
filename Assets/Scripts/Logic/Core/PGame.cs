@@ -499,7 +499,7 @@ public class PGame : PGameStatus {
     /// </summary>
     /// <param name="Player">发起弃牌方</param>
     /// <param name="TargetPlayer">被弃牌方</param>
-    public void ThrowCard(PPlayer Player, PPlayer TargetPlayer, bool AllowHandCards = true, bool AllowEquipment = true, bool AllowJudge = false) {
+    public PCard ThrowCard(PPlayer Player, PPlayer TargetPlayer, bool AllowHandCards = true, bool AllowEquipment = true, bool AllowJudge = false) {
         string Title = "请选择弃置一张" + (AllowHandCards ? "[手牌]" : string.Empty) + (AllowEquipment ? "[装备]" : string.Empty) + (AllowJudge ? "[伏兵]" : string.Empty);
         PCard TargetCard = ChooseCard(Player, TargetPlayer, Title, AllowHandCards, AllowEquipment, AllowJudge);
         if (TargetCard != null) {
@@ -510,6 +510,7 @@ public class PGame : PGameStatus {
                 CardManager.MoveCard(TargetCard, TargetPlayer.Area.EquipmentCardArea, CardManager.ThrownCardHeap);
             }
         }
+        return TargetCard;
     }
 
     /// <summary>

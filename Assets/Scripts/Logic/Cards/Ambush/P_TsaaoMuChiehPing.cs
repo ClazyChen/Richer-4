@@ -48,7 +48,8 @@ public class P_TsaaoMuChiehPing : PAmbushCardModel {
     }
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
-        return 3500;
+        int Basic = 3500;
+        return Math.Max(Basic, base.AIInHandExpectation(Game, Player));
     }
 
     public override int AIInAmbushExpectation(PGame Game, PPlayer Player) {

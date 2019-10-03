@@ -10,7 +10,8 @@ public class P_ShuShangKaaiHua : PSchemeCardModel {
         int Test = PMath.Max(Game.Map.BlockList.FindAll((PBlock Block) => Block.Lord != null && Block.Lord.TeamIndex == Player.TeamIndex), (PBlock Block) => {
             return PAiMapAnalyzer.HouseValue(Game, Block.Lord, Block);
         }).Value;
-        return Math.Max(Basic, Test);
+        Basic = Math.Max(Basic, Test);
+        return Math.Max(Basic, base.AIInHandExpectation(Game, Player));
     }
 
     public readonly static string CardName = "树上开花";

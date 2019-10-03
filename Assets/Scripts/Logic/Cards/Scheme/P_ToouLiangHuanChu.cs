@@ -33,7 +33,8 @@ public class P_ToouLiangHuanChu : PSchemeCardModel {
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
         int Basic = 5400;
         int Test = MaxLandPair(Game, Player).Value;
-        return Math.Max(Basic, Test);
+        Basic = Math.Max(Basic, Test);
+        return Math.Max(Basic, base.AIInHandExpectation(Game, Player));
     }
 
     public readonly static string CardName = "偷梁换柱";

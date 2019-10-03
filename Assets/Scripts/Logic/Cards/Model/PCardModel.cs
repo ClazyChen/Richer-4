@@ -38,7 +38,19 @@ public abstract class PCardModel: PObject {
     }
 
     public virtual int AIInHandExpectation(PGame Game, PPlayer Player) {
-        return 0;
+        int Basic = 0;
+        if (Player.General is P_YuJi) {
+            Basic += 600 * Point;
+        }
+        if (Player.General is P_WangXu && Point %3 == 0) {
+            if (Game.Teammates(Player, false).Count > 0) {
+                Basic += 2900;
+            }
+        }
+        if (Player.General is P_ShiQian && Point == 1) {
+            Basic += 3900;
+        }
+        return Basic;
     }
 
     public PCardModel(string _Name) {

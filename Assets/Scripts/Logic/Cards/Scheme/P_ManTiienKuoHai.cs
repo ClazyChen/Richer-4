@@ -1,4 +1,4 @@
-﻿
+﻿using System;
 using System.Collections.Generic;
 /// <summary>
 /// 瞒天过海
@@ -23,7 +23,7 @@ public class P_ManTiienKuoHai: PSchemeCardModel {
         if (MinEnemyMoney <= 1200 ) {
             Basic += 5000 * (7 - MinEnemyMoney / 200);
         }
-        return Basic;
+        return Math.Max(Basic, base.AIInHandExpectation(Game, Player));
     }
 
     public readonly static string CardName = "瞒天过海";

@@ -6,7 +6,8 @@ using System.Collections.Generic;
 public class P_ShevngTungChiHsi: PSchemeCardModel {
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
-        return 3000;
+        int Basic = 3000;
+        return Math.Max(Basic, base.AIInHandExpectation(Game, Player));
     }
 
     public readonly static string CardName = "声东击西";

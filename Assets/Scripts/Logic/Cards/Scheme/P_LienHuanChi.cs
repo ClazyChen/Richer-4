@@ -60,7 +60,7 @@ public class P_LienHuanChi : PSchemeCardModel {
                 return 1500;
             }
         }
-        return Basic;
+        return Math.Max(Basic, base.AIInHandExpectation(Game, Player));
     }
 
     public readonly static string CardName = "连环计";

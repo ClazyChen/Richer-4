@@ -1,4 +1,4 @@
-﻿
+﻿using System;
 using System.Collections.Generic;
 /// <summary>
 /// 顺手牵羊
@@ -25,7 +25,7 @@ public class P_ShunShouChiienYang: PSchemeCardModel {
         int ShiQian = Game.Enemies(Player).FindAll((PPlayer _Player) => _Player.General is P_ShiQian).Count;
         Basic *= Game.Enemies(Player).Count - ShiQian;
         Basic /= Game.Enemies(Player).Count;
-        return Basic;
+        return Math.Max(Basic, base.AIInHandExpectation(Game, Player));
     }
 
     public readonly static string CardName = "顺手牵羊";

@@ -19,7 +19,8 @@ public class P_KuungCheevngChi : PSchemeCardModel {
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
         int Basic = 0;
-        return Math.Max(Basic, PAiMapAnalyzer.OutOfGameExpect(Game, Player, true, true) - 2000 * (Player.Area.HandCardArea.CardNumber - 1));
+        Basic = Math.Max(Basic, PAiMapAnalyzer.OutOfGameExpect(Game, Player, true, true) - 2000 * (Player.Area.HandCardArea.CardNumber - 1));
+        return Math.Max(Basic, base.AIInHandExpectation(Game, Player));
     }
 
     public readonly static string CardName = "空城计";

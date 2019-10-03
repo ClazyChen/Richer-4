@@ -1,4 +1,4 @@
-﻿
+﻿using System;
 using System.Collections.Generic;
 /// <summary>
 /// 以逸待劳
@@ -10,7 +10,8 @@ public class P_IITaiLao: PSchemeCardModel {
     }
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
-        return 0;
+        int Basic = 0;
+        return Math.Max(Basic, base.AIInHandExpectation(Game, Player));
     }
 
     public readonly static string CardName = "以逸待劳";

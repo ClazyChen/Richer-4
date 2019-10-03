@@ -16,7 +16,8 @@ public class P_TiaoHuLiShan: PSchemeCardModel {
         int OutOfGameExpect = PMath.Max(Game.Enemies(Player), (PPlayer _Player) => {
             return -PAiMapAnalyzer.OutOfGameExpect(Game, _Player);
         }, true).Value;
-        return Math.Max(Basic, OutOfGameExpect);
+        Basic = Math.Max(Basic, OutOfGameExpect);
+        return Math.Max(Basic, base.AIInHandExpectation(Game, Player));
     }
 
     public readonly static string CardName = "调虎离山";

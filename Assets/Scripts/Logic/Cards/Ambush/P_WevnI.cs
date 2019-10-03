@@ -28,7 +28,8 @@ public class P_WevnI : PAmbushCardModel {
     }
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
-        return RoundExpect(Game, Player);
+        int Basic = RoundExpect(Game, Player);
+        return Math.Max(Basic, base.AIInHandExpectation(Game, Player));
     }
 
     public override int AIInAmbushExpectation(PGame Game, PPlayer Player) {

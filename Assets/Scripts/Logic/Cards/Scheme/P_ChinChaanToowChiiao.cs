@@ -22,7 +22,8 @@ public class P_ChinChaanToowChiiao : PSchemeCardModel {
             }
             MaxValue = Math.Max(Value, MaxValue);
         }
-        return Math.Max(Basic, (MaxValue-MinValue)/2 + PAiMapAnalyzer.ChangeFaceExpect(Game, Player, Target));
+        Basic = Math.Max(Basic, (MaxValue-MinValue)/2 + PAiMapAnalyzer.ChangeFaceExpect(Game, Player, Target));
+        return Math.Max(Basic, base.AIInHandExpectation(Game, Player));
     }
 
     public readonly static string CardName = "金蝉脱壳";

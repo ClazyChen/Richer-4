@@ -7,10 +7,6 @@ using System.Collections.Generic;
 /// </summary>
 public abstract class PAmbushCardModel : PCardModel {
 
-    public override int AIInHandExpectation(PGame Game, PPlayer Player) {
-        return 0;
-    }
-
     public virtual void AnnouceInvokeJudge(PGame Game, PPlayer Player, PCard Card) {
         PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder("伏兵[" + Card.Name + "]生效"));
     }

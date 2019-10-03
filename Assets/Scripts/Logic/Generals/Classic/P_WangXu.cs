@@ -37,7 +37,7 @@ public class P_WangXu : PGeneral {
                     },
                     AICondition = (PGame Game) => {
                         return Player.Area.HandCardArea.CardList.Exists((PCard Card) => {
-                            return Card.Point %3 == 0 &&  Card.Model.AIInHandExpectation(Game, Player) < 2500;
+                            return Card.Point %3 == 0 &&  Card.Model.AIInHandExpectation(Game, Player) < 3000;
                         }) && P_YooenChiaoChinKung.AIEmitTargets(Game, Player)[0] != null;
                     },
                     Effect = (PGame Game) => {

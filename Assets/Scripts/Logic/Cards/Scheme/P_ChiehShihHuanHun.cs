@@ -22,7 +22,8 @@ public class P_ChiehShihHuanHun: PSchemeCardModel {
         }
         Delta -= 2000 * Player.Area.HandCardArea.CardNumber;
         Delta -= (int)PMath.Sum(Player.Area.EquipmentCardArea.CardList.ConvertAll((PCard _Card) => (double)_Card.Model.AIInEquipExpectation(Game, Player)));
-        return Math.Max(Delta, Basic);
+        Basic = Math.Max(Delta, Basic);
+        return Math.Max(Basic, base.AIInHandExpectation(Game, Player));
     }
 
     public readonly static string CardName = "借尸还魂";

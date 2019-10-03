@@ -19,7 +19,8 @@ public class P_LiTaiTaaoChiang: PSchemeCardModel {
                 Basic += 1000;
             }
         }
-        return Math.Max(Basic, 2000);
+        Basic = Math.Max(Basic, 2000);
+        return Math.Max(Basic, base.AIInHandExpectation(Game, Player));
     }
 
     public readonly static string CardName = "李代桃僵";

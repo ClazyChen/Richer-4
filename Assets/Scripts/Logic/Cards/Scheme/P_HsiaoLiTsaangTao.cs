@@ -47,7 +47,8 @@ public class P_HsiaoLiTsaangTao : PSchemeCardModel {
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
         int Basic = Player.Area.HandCardArea.CardList.Exists((PCard Card) => Card.Type.IsEquipment()) ? 2000 : 0;
         int Test = 1000 * PMath.Max(Game.Enemies(Player), (PPlayer _Player) => _Player.Area.EquipmentCardArea.CardNumber).Value;
-        return Math.Max(Basic, Test);
+        Basic = Math.Max(Basic, Test);
+        return Math.Max(Basic, base.AIInHandExpectation(Game, Player));
     }
 
     public readonly static string CardName = "笑里藏刀";

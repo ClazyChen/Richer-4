@@ -1,4 +1,4 @@
-﻿
+﻿using System;
 using System.Collections.Generic;
 /// <summary>
 /// 反客为主
@@ -12,7 +12,7 @@ public class P_FanKeevWeiChu : PSchemeCardModel {
         })) {
             Basic = 0;
         }
-        return Basic;
+        return Math.Max(Basic, base.AIInHandExpectation(Game, Player));
     }
 
     public readonly static string CardName = "反客为主";

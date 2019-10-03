@@ -11,14 +11,16 @@ public abstract class PEquipmentCardModel : PCardModel {
         PCard Current = Player.GetEquipment(Type);
         int Exp = AIInEquipExpectation(Game, Player);
         int Base = 0;
+        int Basic = 0;
         if (Player.General is P_HuaXiong) {
             Base += 1000;
         }
         if (Current != null && Exp <= Current.Model.AIInEquipExpectation(Game, Player)) {
-            return 500 + Base;
+            Basic = 500 + Base;
         } else {
-            return Exp + Base;
+            Basic = Exp + Base;
         }
+        return Math.Max(Basic, base.AIInHandExpectation(Game, Player));
     }
 
     protected void AnnouceOnce(string CardName) {

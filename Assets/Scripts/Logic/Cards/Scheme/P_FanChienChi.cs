@@ -28,7 +28,8 @@ public class P_FanChienChi : PSchemeCardModel {
             }
         });
         Sum = Sum * 5 / 6;
-        return Math.Max(Basic, Sum);
+        Basic = Math.Max(Basic, Sum);
+        return Math.Max(Basic, base.AIInHandExpectation(Game, Player));
     }
 
     public readonly static string CardName = "反间计";

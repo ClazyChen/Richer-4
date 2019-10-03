@@ -18,7 +18,8 @@ public class P_ChiinTsevChiinWang : PSchemeCardModel {
     }
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
-        return 500;
+        int Basic = 500;
+        return Math.Max(Basic, base.AIInHandExpectation(Game, Player));
     }
 
     public readonly static string CardName = "擒贼擒王";

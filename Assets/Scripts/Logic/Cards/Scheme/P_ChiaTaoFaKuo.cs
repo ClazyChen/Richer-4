@@ -58,7 +58,7 @@ public class P_ChiaTaoFaKuo : PSchemeCardModel {
         if (Game.PlayerList.FindAll((PPlayer _Player) => _Player.IsAlive).Count <= 2) {
             return 0;
         } 
-        return Basic;
+        return Math.Max(Basic, base.AIInHandExpectation(Game, Player));
     }
 
     public readonly static string CardName = "假道伐虢";

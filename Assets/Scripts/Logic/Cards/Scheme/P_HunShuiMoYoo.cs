@@ -1,4 +1,4 @@
-﻿
+﻿using System;
 using System.Collections.Generic;
 /// <summary>
 /// 浑水摸鱼
@@ -15,7 +15,7 @@ public class P_HunShuiMoYoo: PSchemeCardModel {
         if (Game.AlivePlayerNumber <= 2) {
             return 0;
         }
-        return Basic;
+        return Math.Max(Basic, base.AIInHandExpectation(Game, Player));
     }
 
     public readonly static string CardName = "浑水摸鱼";

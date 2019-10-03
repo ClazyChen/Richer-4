@@ -14,13 +14,15 @@ public class P_ChihSangMaHuai: PSchemeCardModel {
     }
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
+        int Basic = 0;
         if (Game.Enemies(Player).Count < 2) {
             if (Game.Teammates(Player).Count < 2) {
-                return 0;
+                Basic = 0;
             }
-            return 1000;
+            Basic = 1000;
         }
-        return 6000;
+        Basic = 6000;
+        return Math.Max(Basic, base.AIInHandExpectation(Game, Player));
     }
 
     public readonly static string CardName = "指桑骂槐";

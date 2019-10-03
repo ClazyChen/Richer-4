@@ -19,7 +19,8 @@ public class P_PaaoChuanYinYoo : PSchemeCardModel {
             return (double)PAiMapAnalyzer.MaxValueHouse(Game, Player, true).Value + PAiMapAnalyzer.MinValueHouse(Game, _Player).Value * (_Player.TeamIndex == Player.TeamIndex ? -1 : 1);
         }));
         
-        return Math.Max(Basic,Test);
+        Basic = Math.Max(Basic,Test);
+        return Math.Max(Basic, base.AIInHandExpectation(Game, Player));
     }
 
     public readonly static string CardName = "抛砖引玉";
