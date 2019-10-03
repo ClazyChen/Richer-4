@@ -32,7 +32,7 @@ public class P_PaKuaChevn : PEquipmentCardModel {
                     },
                     AICondition = (PGame Game) => {
                         PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
-                        return InjureTag.Injure > 500;
+                        return InjureTag.Injure > 500 || Player.General is P_LiuJi;
                     },
                     Effect = (PGame Game ) => {
                         AnnouceUseEquipmentSkill(Player);

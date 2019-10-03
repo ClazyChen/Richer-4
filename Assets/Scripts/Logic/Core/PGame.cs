@@ -8,6 +8,7 @@ using System;
 /// </summary>
 public class PGame : PGameStatus {
     public PRoom Room;
+    private readonly PMap _Map;
     public PGameLogic Logic { get; private set; }
     public PMonitor Monitor { get; private set; }
     public readonly PTagManager TagManager;
@@ -27,6 +28,7 @@ public class PGame : PGameStatus {
     public PGame(PMap _Map, PMode _GameMode) : base(_Map, _GameMode) {
         Room = new PRoom(GameMode);
         PLogger.Log("新建游戏，模式：" + GameMode.Name);
+        this._Map = _Map;
         GameMode.Open(this);
         Logic = new PGameLogic(this);
         Monitor = new PMonitor(this);
@@ -73,6 +75,7 @@ public class PGame : PGameStatus {
             StartGameFlag = true;
             EndGameFlag = false;
             ReadyToStartGameFlag = false;
+            Map = (PMap)_Map.Clone();
             CardManager.InitializeCardHeap();
             PLogger.Log("开始进行规则装载");
             PObject.ListSubTypeInstances<PSystemTriggerInstaller>().ForEach((PSystemTriggerInstaller Installer) => {
@@ -550,6 +553,8 @@ public class PGame : PGameStatus {
                 CardManager.MoveCard(TargetCard, TargetPlayer.Area.HandCardArea, Player.Area.HandCardArea);
             } else if (TargetPlayer.Area.EquipmentCardArea.CardList.Contains(TargetCard)) {
                 CardManager.MoveCard(TargetCard, TargetPlayer.Area.EquipmentCardArea, Player.Area.HandCardArea);
+            } else if (TargetPlayer.Area.AmbushCardArea.CardList.Contains(TargetCard)) {
+                CardManager.MoveCard(TargetCard, TargetPlayer.Area.AmbushCardArea, Player.Area.HandCardArea);
             }
         }
         return TargetCard;
