@@ -62,7 +62,7 @@ public class PAiMapAnalyzer {
             List<PBlock> Blocks = NextBlocks(Game, Player);
             Blocks.ForEach((PBlock Block) => {
                 if (Block.Lord != null && Player.TeamIndex != Block.Lord.TeamIndex) {
-                    SumSelf += Math.Max(0, PAiTargetChooser.InjureExpect(Game, Player, Block.Lord, Player, Block.Toll, Block));
+                    SumSelf += Math.Max(0, -PAiTargetChooser.InjureExpect(Game, Player, Block.Lord, Player, Block.Toll, Block));
                 }
             });
             SumSelf /= Math.Max(1, Blocks.Count);

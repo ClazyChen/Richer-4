@@ -36,7 +36,7 @@ public class P_ZhangSanFeng : PGeneral {
                         int ChooseResult = 0;
                         if (Player.IsAI) {
                             int Yin = -PAiMapAnalyzer.OutOfGameExpect(Game, Player, false);
-                            int Yang = PAiMapAnalyzer.OutOfGameExpect(Game, Player, true);
+                            int Yang = PAiMapAnalyzer.OutOfGameExpect(Game, Player, true, true);
                             ChooseResult = (Yin >= Yang ? 0 : 1);
                         } else {
                             ChooseResult = PNetworkManager.NetworkServer.ChooseManager.Ask(Player, TaiJi.Name, new string[] { "阴", "阳" },
