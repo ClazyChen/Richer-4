@@ -13,7 +13,7 @@ public class P_ChiinTsevChiinWang : PSchemeCardModel {
             } else {
                 return -PAiMapAnalyzer.ChangeFaceExpect(Game, _Player) - 500;
             }
-        }).Key;
+        }, true).Key;
         return new List<PPlayer>() { Target };
     }
 

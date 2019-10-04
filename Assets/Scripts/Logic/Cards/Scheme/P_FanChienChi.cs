@@ -72,6 +72,7 @@ public class P_FanChienChi : PSchemeCardModel {
                                 if (Target.IsAI) {
                                     int Choose1 = PAiMapAnalyzer.ChangeFaceExpect(Game, Target);
                                     int Choose2 = Target.Money <= 1000 ? -30000 : -1000;
+                                    Test = (Choose1 > Choose2 ? 0 : 1);
                                 } else {
                                     Test = PNetworkManager.NetworkServer.ChooseManager
                                     .Ask(Target, "反间计[选择一项]", new string[] {
