@@ -92,7 +92,7 @@ public class PChooseManager {
             Answer = Game.TagManager.FindPeekTag<PChooseBlockTag>(PChooseBlockTag.TagName).Block;
             if (Condition != null && !Condition(Answer)) {
                 Answer = null;
-                Game.TagManager.FindPeekTag<PChooseBlockTag>(PChooseBlockTag.TagName).Block = null;
+                PThread.Delay(0.2f);
             }
         }
         return Game.TagManager.PopTag<PChooseBlockTag>(PChooseBlockTag.TagName).Block;
