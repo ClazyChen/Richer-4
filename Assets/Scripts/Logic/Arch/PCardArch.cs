@@ -4,6 +4,7 @@
         public static string UserFieldName = "调虎离山的使用者";
         public PHuszTag(PPlayer User) : base(TagName) {
             AppendField(UserFieldName, User);
+            Visible = false;
         }
         public PPlayer User {
             get {
@@ -16,6 +17,7 @@
         public static string UserFieldName = "假痴不癫的使用者";
         public PZhuangfmsTag(PPlayer User) : base(TagName) {
             AppendField(UserFieldName, User);
+            Visible = false;
         }
         public PPlayer User {
             get {
@@ -30,6 +32,7 @@
         public PCardInjureTag(PCard Card, int TotalInjure) : base(TagName + Card.Name) {
             AppendField(CardFieldName, Card);
             AppendField(TotalInjureFieldName, TotalInjure);
+            Visible = false;
         }
         public PCard Card {
             get {

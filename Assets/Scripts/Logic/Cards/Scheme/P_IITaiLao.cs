@@ -6,6 +6,9 @@ using System.Collections.Generic;
 public class P_IITaiLao: PSchemeCardModel {
 
     private List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
+        if (Player.Tags.ExistTag(P_WuZhao.NvQuanTag.Name) && Player.HasInHand<P_HunShuiMoYoo>()) {
+            return Game.Enemies(Player);
+        }
         return Game.Teammates(Player);
     }
 
@@ -33,6 +36,9 @@ public class P_IITaiLao: PSchemeCardModel {
                         return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime());
                     },
                     AICondition = (PGame Game) => {
+                        if (Player.General is P_WuZhao && Player.RemainLimit(PSkillInfo.女权.Name)) {
+                            return false;
+                        }
                         return PMath.Min(Player.Area.HandCardArea.CardList.FindAll((PCard _Card) => !_Card.Equals(Card)).ConvertAll((PCard _Card) => _Card.AIInHandExpectation(Game, Player))) <= 1000;
                     },
                     Effect = MakeMultiTargetNormalEffect(Player, Card, AIEmitTargets,

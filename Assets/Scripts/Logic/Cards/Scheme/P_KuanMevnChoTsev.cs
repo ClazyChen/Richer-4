@@ -33,6 +33,9 @@ public class P_KuanMevnChoTsev: PSchemeCardModel {
                         return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime()) && AIEmitTargets(Game, Player).Count > 0;
                     },
                     AICondition = (PGame Game) => {
+                        if (Player.General is P_WuZhao && Player.RemainLimit(PSkillInfo.女权.Name)) {
+                            return false;
+                        }
                         List<PPlayer> Targets = AIEmitTargets(Game, Player);
                         bool MultiTarget = Targets.Count > 1;
                         Targets = Targets.FindAll((PPlayer _Player) => !(_Player.HasEquipment<P_YooHsi>() && MultiTarget));

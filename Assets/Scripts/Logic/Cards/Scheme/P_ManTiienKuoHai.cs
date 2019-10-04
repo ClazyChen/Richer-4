@@ -43,6 +43,9 @@ public class P_ManTiienKuoHai: PSchemeCardModel {
                     AIPriority = 170,
                     Condition = PTrigger.Initiative(Player),
                     AICondition = (PGame Game) => {
+                        if (Player.General is P_WuZhao && Player.RemainLimit(PSkillInfo.女权.Name)) {
+                            return false;
+                        }
                         return AIEmitTargets(Game, Player)[0] != null && !Player.OutOfGame && P_PanYue.XianJuTest(Game,Player);
                     },
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets,

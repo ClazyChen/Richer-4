@@ -37,15 +37,14 @@ public class P_HunShuiMoYoo: PSchemeCardModel {
                         return UseCardTag.TargetList.Count >= 2;
                     },
                     AICondition = (PGame Game) => {
+                        if (Player.General is P_WuZhao && Player.RemainLimit(PSkillInfo.女权.Name)) {
+                            return false;
+                        }
                         int Value = 0;
                         PUseCardTag UseCardTag = Game.TagManager.FindPeekTag<PUseCardTag>(PUseCardTag.TagName);
                         UseCardTag.TargetList.ForEach((PPlayer _Player) => {
                             if (_Player.CanBeInjured && !(_Player.Defensor != null && _Player.Defensor.Model is P_YooHsi)) {
-                                if (_Player.Money <= 500) {
-                                    Value += 30000 * (Player.TeamIndex == _Player.TeamIndex ? -1 : 1);
-                                } else {
-                                    Value += 1000 * (Player.TeamIndex == _Player.TeamIndex ? 0 : 1);
-                                }
+                                Value += PAiTargetChooser.InjureExpect(Game, Player, Player, _Player, 500, Card);
                             }
                         });
                         return Value >= 1000 && !Player.OutOfGame && P_PanYue.XianJuTest(Game, Player);

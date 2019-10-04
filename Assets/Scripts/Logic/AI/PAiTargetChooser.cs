@@ -26,8 +26,11 @@ public class PAiTargetChooser {
         int FromCof = FromPlayer == null ? 0 : (Player.TeamIndex == FromPlayer.TeamIndex ? 1 : -1);
         int ToCof = (Player.TeamIndex != Target.TeamIndex ? 1 : -1);
         int Sum = 0;
-        #region 造成伤害时发动的技能：古锭刀，龙胆，太极，苍狼，趁火打劫
+        #region 造成伤害时发动的技能：古锭刀，龙胆，太极，苍狼，趁火打劫，女权
         if (FromPlayer != null) {
+            if (FromPlayer.Tags.ExistTag(P_WuZhao.NvQuanTag.Name)) {
+                BaseInjure += 2000;
+            }
             if (Target.Area.HandCardArea.CardNumber == 0 && FromPlayer.HasEquipment<P_KuTingTao>() && Source is PBlock) {
                 BaseInjure *= 2;
             }

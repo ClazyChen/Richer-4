@@ -63,6 +63,7 @@ public class P_ZhaoYun : PGeneral {
                         LongDan.AnnouceUseSkill(Player);
                         Game.ThrowHouse(Player, Player, LongDan.Name);
                         Player.Tags.CreateTag(new PDanTag());
+                        Player.Tags.FindPeekTag<PUsedTag>(PUsedTag.TagNamePrefix + LongDan.Name).Count++;
                     }
                 };
             })

@@ -42,6 +42,9 @@ public class P_PaaoChuanYinYoo : PSchemeCardModel {
                         return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime()) && Game.Map.BlockList.Exists((PBlock Block) => Player.Equals(Block.Lord)) && (Player.Area.EquipmentCardArea.CardNumber > 0 || Player.Area.HandCardArea.CardList.Exists((PCard _Card) => Card.Type.IsEquipment())) && AIEmitTargets(Game,Player).Count > 0;
                     },
                     AICondition = (PGame Game) => {
+                        if (Player.General is P_WuZhao && Player.RemainLimit(PSkillInfo.女权.Name)) {
+                            return false;
+                        }
                         return Player.Area.HandCardArea.CardList.Exists((PCard _Card) => Card.Type.IsEquipment()) && AIInHandExpectation(Game, Player) > 2000;
                     },
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets, AIEmitTargets,

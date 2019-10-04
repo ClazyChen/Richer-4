@@ -49,6 +49,9 @@ public class P_FanChienChi : PSchemeCardModel {
                     AIPriority = 65,
                     Condition = PTrigger.Initiative(Player),
                     AICondition = (PGame Game) => {
+                        if (Player.General is P_WuZhao && Player.RemainLimit(PSkillInfo.女权.Name)) {
+                            return false;
+                        }
                         return AIInHandExpectation(Game, Player) > 1000 && P_PanYue.XianJuTest(Game, Player);
                     },
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets, AIEmitTargets,

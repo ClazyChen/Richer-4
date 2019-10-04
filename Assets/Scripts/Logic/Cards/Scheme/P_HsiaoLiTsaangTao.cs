@@ -11,7 +11,8 @@ public class P_HsiaoLiTsaangTao : PSchemeCardModel {
             PCard CurrentEquip = _Player.GetEquipment(Card.Type);
             int Current = CurrentEquip == null ? 0 : CurrentEquip.Model.AIInEquipExpectation(Game, _Player);
             int Delta = (_Player.Area.EquipmentCardArea.CardNumber + (CurrentEquip == null ? 1 : 0)) * 500;
-            return New - Current - (Delta >= _Player.Money ? 30000 : 0) + Math.Max(0, PAiCardExpectation.FindMostValuableToGet(Game, Player, _Player).Value);
+            return New - Current + PAiTargetChooser.InjureExpect(Game, Player, Player, _Player, Delta, Instantiate())
+            + Math.Max(0, PAiCardExpectation.FindMostValuableToGet(Game, Player, _Player).Value);
         });
     }
 
@@ -21,7 +22,8 @@ public class P_HsiaoLiTsaangTao : PSchemeCardModel {
             PCard CurrentEquip = _Player.GetEquipment(Card.Type);
             int Current = CurrentEquip == null ? 0 : CurrentEquip.Model.AIInEquipExpectation(Game, _Player);
             int Delta = (_Player.Area.EquipmentCardArea.CardNumber + (CurrentEquip == null ? 1 : 0)) * 500;
-            return (Delta >= _Player.Money ? 30000 : 0) + 2 * Delta - (New - Current) + Math.Max(0, PAiCardExpectation.FindMostValuableToGet(Game, Player, _Player).Value);
+            return PAiTargetChooser.InjureExpect(Game, Player, Player, _Player, Delta, Instantiate())
+            - (New - Current) + Math.Max(0, PAiCardExpectation.FindMostValuableToGet(Game, Player, _Player).Value);
         });
     }
 
@@ -70,6 +72,9 @@ public class P_HsiaoLiTsaangTao : PSchemeCardModel {
                         return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime()) && Player.Area.HandCardArea.CardList.Exists((PCard _Card) => _Card.Type.IsEquipment());
                     },
                     AICondition = (PGame Game) => {
+                        if (Player.General is P_WuZhao && Player.RemainLimit(PSkillInfo.女权.Name)) {
+                            return false;
+                        }
                         return AIEmitTargets(Game, Player)[0] != null && P_PanYue.XianJuTest(Game, Player);
                     },
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets, PTrigger.Except(Player),
