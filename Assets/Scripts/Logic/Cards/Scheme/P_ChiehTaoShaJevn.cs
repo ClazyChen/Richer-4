@@ -53,7 +53,7 @@ public class P_ChiehTaoShaJevn : PSchemeCardModel {
                     },
                         (PGame Game, PPlayer User, PPlayer Target) => {
                             int ChosenResult = -1;
-                            if (!Target.HasHouse) {
+                            if (!Target.HasHouse || User.LandNumber == 0) {
                                 if (Target.Area.EquipmentCardArea.CardNumber > 0) {
                                     ChosenResult = 1;
                                 }
