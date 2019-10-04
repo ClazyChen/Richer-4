@@ -75,7 +75,6 @@ public class PGame : PGameStatus {
             StartGameFlag = true;
             EndGameFlag = false;
             ReadyToStartGameFlag = false;
-            Map = (PMap)_Map.Clone();
             CardManager.InitializeCardHeap();
             PLogger.Log("开始进行规则装载");
             PObject.ListSubTypeInstances<PSystemTriggerInstaller>().ForEach((PSystemTriggerInstaller Installer) => {
