@@ -5,19 +5,23 @@ using System.Collections.Generic;
 /// </summary>
 public class P_ShangWuChoouTii: PSchemeCardModel {
 
-    public List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
-        return new List<PPlayer>() { PMath.Max(Game.PlayerList.FindAll((PPlayer _Player) => _Player.IsAlive && !_Player.Equals(Player) && _Player.Distance(Player) <= 3 && !_Player.NoLadder), (PPlayer _Player) => {
+    public static KeyValuePair<PPlayer, int> Target(PGame Game, PPlayer Player, int Base = 0) {
+        return PMath.Max(Game.PlayerList.FindAll((PPlayer _Player) => _Player.IsAlive && !_Player.Equals(Player) && _Player.Distance(Player) <= 3 && !_Player.NoLadder), (PPlayer _Player) => {
             PBlock ExpectBlock = _Player.Position;
             if (_Player.Traffic != null && _Player.Traffic.Model is P_ChiihTuu) {
                 ExpectBlock = ExpectBlock.NextBlock;
             }
             int Value = PAiMapAnalyzer.Expect(Game, _Player, ExpectBlock);
             if (_Player.TeamIndex == Player.TeamIndex) {
-                return Value;
+                return Value - Base;
             } else {
-                return -Value;
+                return -Value - Base;
             }
-        }, true).Key };
+        }, true);
+    }
+
+    public List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
+        return new List<PPlayer>() { Target(Game, Player).Key };
     }
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {

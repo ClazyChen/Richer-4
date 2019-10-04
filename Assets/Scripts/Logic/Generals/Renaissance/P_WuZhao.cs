@@ -74,7 +74,7 @@ public class P_WuZhao: PGeneral {
                             ExpectSum += 4000 * Game.Enemies(Player).Count *
                                          Player.Area.HandCardArea.CardList.FindAll((PCard Card) => Card.Model is P_HunShuiMoYoo).Count;
                         }
-                        return ExpectSum > 12000 || (ExpectSum > 6000 && Player.Money <= 2000);
+                        return ExpectSum > 8000;
                     },
                     Effect = (PGame Game) => {
                         NvQuan.AnnouceUseSkill(Player);

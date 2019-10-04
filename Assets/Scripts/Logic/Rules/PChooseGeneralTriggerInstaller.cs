@@ -45,13 +45,37 @@ public class PChooseGeneralTriggerInstaller : PSystemTriggerInstaller {
                 });
                 // 剩下的将随机
                 PMath.Wash(AvailableGenerals);
+                // 每个人有一个免费将和一个收费将可选
+                List<PGeneral> Selected = new List<PGeneral>();
                 for (int i = 0; i < Game.PlayerNumber; ++ i) {
                     if (Generals[i] is P_Soldier) {
+                        List<PGeneral> PossibleGenerals = new List<PGeneral>();
                         foreach (PGeneral General in AvailableGenerals) {
-                            if (!Generals.Contains(General) && (Game.PlayerList[i].IsAI || 
-                            PNetworkManager.NetworkServer.ChooseManager.AskHaveGeneral(Game.PlayerList[i], General.Name))) {
-                                Generals[i] = General;
+                            if (!Generals.Contains(General) && !Selected.Contains(General) && General.Cost == 0) {
+                                PossibleGenerals.Add(General);
+                                Selected.Add(General);
                                 break;
+                            }
+                        }
+                        foreach (PGeneral General in AvailableGenerals) {
+                            if (!Generals.Contains(General) && !Selected.Contains(General) && General.Cost != 0) {
+                                if (Game.PlayerList[i].IsAI || 
+                                    PNetworkManager.NetworkServer.ChooseManager.AskHaveGeneral(Game.PlayerList[i], General.Name)) {
+                                    Selected.Add(General);
+                                    PossibleGenerals.Add(General);
+                                }
+                                break;
+                            }
+                        }
+                        if (PossibleGenerals.Count == 1) {
+                            Generals[i] = PossibleGenerals[0];
+                        } else {
+                            if (Game.PlayerList[i].IsAI) {
+                                PMath.Wash(PossibleGenerals);
+                                Generals[i] = PossibleGenerals[0];
+                            } else {
+                                Generals[i] = PossibleGenerals[PNetworkManager.NetworkServer.ChooseManager.Ask(Game.PlayerList[i], "点将",
+                                    PossibleGenerals.ConvertAll((PGeneral General) => General.Name).ToArray())];
                             }
                         }
                     }

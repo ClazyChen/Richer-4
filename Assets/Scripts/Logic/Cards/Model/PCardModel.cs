@@ -50,6 +50,9 @@ public abstract class PCardModel: PObject {
         if (Player.General is P_ShiQian && Point == 1) {
             Basic += 3900;
         }
+        if (Player.General is P_Faraday && Point == 3) {
+            Basic += 3000;
+        }
         return Basic;
     }
 
