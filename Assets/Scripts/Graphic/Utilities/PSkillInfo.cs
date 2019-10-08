@@ -23,7 +23,7 @@ public class PSkillInfo : PObject {
     public static PSkillInfo 太极 = new PSkillInfo("太极", "【被】锁定技，回合开始时，你须选择“阴”或“阳”。锁定技，当你处在“阴”状态时，造成的伤害+20%；当你处在“阳”状态时，受到的伤害-20%。", PSkillType.Lock);
     public static PSkillInfo 残杀 = new PSkillInfo("残杀", "【被】当你通过过路费造成伤害时，你可以令收费地的地价-1000，令目标弃置伤害量*100%的现金。", PSkillType.Passive);
     public static PSkillInfo 耀武 = new PSkillInfo("耀武", "【被】锁定技，你的起始资金*150%。", PSkillType.Lock);
-    public static PSkillInfo 叫阵 = new PSkillInfo("叫阵", "【主】空闲时间点，若你有装备，你可以与一名其他角色拼点，若你赢，你对其造成1000点伤害；若你没赢，你弃置一张装备。", PSkillType.Initiative);
+    public static PSkillInfo 叫阵 = new PSkillInfo("叫阵", "【主】空闲时间点，若你有装备，你可以与一名其他角色拼点，若你赢，你对其造成1000点伤害；若你没赢，你弃置一张装备并弃1000现金。", PSkillType.Initiative);
     public static PSkillInfo 抢掠 = new PSkillInfo("抢掠", "【被】当你通过过路费造成伤害时，你可以进行一次判定，若X为偶数，视为你使用了一张【趁火打劫】。", PSkillType.SoftLock);
     public static PSkillInfo 妙算 = new PSkillInfo("妙算", "【被】当你需要判定时，你可以从1到6中选择一个数字作为结果。", PSkillType.SoftLock);
     public static PSkillInfo 天妒 = new PSkillInfo("天妒", "【被】当你的判定生效后，你可以摸200X。", PSkillType.SoftLock);
@@ -33,7 +33,7 @@ public class PSkillInfo : PObject {
     public static PSkillInfo 武圣 = new PSkillInfo("武圣", "【主】你可以将一张点数为偶数的牌当做【树上开花】使用。", PSkillType.Initiative);
     public static PSkillInfo 怒斩 = new PSkillInfo("怒斩", "【被】锁定技，若你的装备数多于目标，你造成的过路费伤害+600。", PSkillType.Lock);
     public static PSkillInfo 咆哮 = new PSkillInfo("咆哮", "【被】锁定技，你于每个结算阶段购买土地或房屋次数上限+3。", PSkillType.Lock);
-    public static PSkillInfo 女权 = new PSkillInfo("女权", "【主】限定技，空闲时间点，你可以令至你的下回合开始，所有女性角色造成的伤害+2000。", PSkillType.Initiative);
+    public static PSkillInfo 女权 = new PSkillInfo("女权", "【主】限定技，空闲时间点，你可以令至你的下回合开始，所有女性角色以过路费或卡牌方式造成的伤害+2000。", PSkillType.Initiative);
     public static PSkillInfo 迁都 = new PSkillInfo("迁都", "【主】限定技，空闲时间点，你可以移动到一个你的领地，将其改建为城堡，并获得城堡赠送房屋和额外的X座房屋[X=此时你的商业用地数量]。", PSkillType.Initiative);
     public static PSkillInfo 惯性 = new PSkillInfo("惯性", "【被】行走阶段开始时，若你所在的格子没有房屋，你可以弃500，前进直到一个有房屋或有其他玩家的格子为止。此法至多前进12步。", PSkillType.SoftLock);
     public static PSkillInfo 浪子 = new PSkillInfo("浪子", "【被】掷骰阶段开始时，你可以弃一张装备牌并选择1至6的一个数字，本次掷骰不会掷出你选择的数字。", PSkillType.Passive);

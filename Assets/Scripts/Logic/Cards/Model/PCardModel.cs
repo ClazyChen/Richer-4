@@ -40,7 +40,7 @@ public abstract class PCardModel: PObject {
     public virtual int AIInHandExpectation(PGame Game, PPlayer Player) {
         int Basic = 0;
         if (Player.General is P_YuJi) {
-            Basic += 600 * Point;
+            Basic += 400 * Point;
         }
         if (Player.General is P_WangXu && Point %3 == 0) {
             if (Game.Teammates(Player, false).Count > 0) {

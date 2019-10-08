@@ -54,7 +54,9 @@ public class P_HuaXiong : PGeneral {
                         return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime()) && Player.Area.EquipmentCardArea.CardNumber > 0;
                     },
                     AICondition = (PGame Game) => {
-                        if (PAiTargetChooser.InjureTarget(Game, Player, Player, PTrigger.Except(Player), 1000, JiaoZhen) == null) {
+                        if (PAiTargetChooser.InjureTarget(Game, Player, Player, (PGame _Game, PPlayer _Player) => {
+                            return _Player.IsAlive && !_Player.Equals(Player) && !(_Player.General is P_LiuJi);
+                        }, 1000, JiaoZhen) == null || Player.Money <= 2000) {
                             return false;
                         }
                         if (Game.Enemies(Player).Exists((PPlayer _Player) => _Player.Money <= 2000)) {
@@ -81,7 +83,9 @@ public class P_HuaXiong : PGeneral {
                         JiaoZhen.AnnouceUseSkill(Player);
                         PPlayer Target = null;
                         if (Player.IsAI) {
-                            Target = PAiTargetChooser.InjureTarget(Game, Player, Player, PTrigger.Except(Player), 1000, JiaoZhen);
+                            Target = PAiTargetChooser.InjureTarget(Game, Player, Player, (PGame _Game, PPlayer _Player) => {
+                                return _Player.IsAlive && !_Player.Equals(Player) && !(_Player.General is P_LiuJi);
+                            }, 1000, JiaoZhen);
                         } else {
                             Target = PNetworkManager.NetworkServer.ChooseManager.AskForTargetPlayer(Player, PTrigger.Except(Player), JiaoZhen.Name, true);
                         }
@@ -90,6 +94,7 @@ public class P_HuaXiong : PGeneral {
                                 Game.Injure(Player, Target, 1000, JiaoZhen);
                             } else {
                                 Game.ThrowCard(Player, Player, false);
+                                Game.LoseMoney(Player, 1000);
                             }
                         }
                     }

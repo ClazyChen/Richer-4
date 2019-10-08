@@ -62,8 +62,8 @@ public class P_HsienChing : PAmbushCardModel {
     public readonly static string CardName = "陷阱";
 
     public P_HsienChing():base(CardName) {
-        Point = 5;
-        Index = 41;
+        Point = 6;
+        Index = 42;
         BuildAmbush(AIEmitTargets, true, 10);
     }
 }

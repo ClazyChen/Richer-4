@@ -83,6 +83,9 @@ public class P_WangXu : PGeneral {
                         return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime()) && Player.RemainLimit(YinJu.Name) && Player.HasHouse;
                     },
                     AICondition = (PGame Game) => {
+                        if (!Player.CanBeInjured) {
+                            return false;
+                        }
                         if (Game.NowPeriod.Equals(PPeriod.FirstFreeTime)) {
                             bool CanGo = false;
                             PAiMapAnalyzer.NextBlocks(Game, Player).ForEach((PBlock Block) => {

@@ -56,7 +56,7 @@ public class P_Faraday: PGeneral {
                         }
                         if (TargetCard != null) {
                             TargetCard.Model = new P_ShangWuChoouTii();
-                            PTrigger Trigger = TargetCard.Model.MoveInHandTriggerList.Find((Func<PPlayer, PCard, PTrigger> TriggerGenerator) => TriggerGenerator(Player, TargetCard).Time.Equals(Game.NowPeriod))?.Invoke(Player, TargetCard);
+                            PTrigger Trigger = TargetCard.Model.MoveInHandTriggerList.Find((Func<PPlayer, PCard, PTrigger> TriggerGenerator) => TriggerGenerator(Player, TargetCard).Time.Equals(PPeriod.FirstFreeTime.During))?.Invoke(Player, TargetCard);
                             if (Trigger != null) {
                                 Game.Logic.StartSettle(new PSettle("电击[上屋抽梯]", Trigger.Effect));
                             }

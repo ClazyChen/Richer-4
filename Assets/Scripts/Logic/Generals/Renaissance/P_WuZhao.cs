@@ -74,7 +74,7 @@ public class P_WuZhao: PGeneral {
                             ExpectSum += 4000 * Game.Enemies(Player).Count *
                                          Player.Area.HandCardArea.CardList.FindAll((PCard Card) => Card.Model is P_HunShuiMoYoo).Count;
                         }
-                        return ExpectSum > 8000;
+                        return ExpectSum > 6000;
                     },
                     Effect = (PGame Game) => {
                         NvQuan.AnnouceUseSkill(Player);
@@ -94,7 +94,7 @@ public class P_WuZhao: PGeneral {
                     Time = PTime.Injure.EmitInjure,
                     Condition = (PGame Game) => {
                         PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
-                        return (InjureTag.FromPlayer != null && InjureTag.FromPlayer.Tags.ExistTag(NvQuanTag.Name)) ;
+                        return (InjureTag.FromPlayer != null && InjureTag.FromPlayer.Tags.ExistTag(NvQuanTag.Name) )&&(InjureTag.InjureSource is PCard || InjureTag.InjureSource is PBlock) ;
                     },
                     Effect = (PGame Game) => {
                         PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);

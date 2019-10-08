@@ -45,7 +45,7 @@ public class P_YuJi : PGeneral {
                     IsLocked = false,
                     Player = Player,
                     Time = Time,
-                    AIPriority = 100,
+                    AIPriority = 190,
                     CanRepeat = true,
                     Condition = (PGame Game) => {
                         return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime()) && Player.Area.HandCardArea.CardNumber > 0 ;

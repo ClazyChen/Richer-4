@@ -28,7 +28,7 @@ public class P_TsaangLang : PEquipmentCardModel {
                     AIPriority = 50,
                     Condition = (PGame Game) => {
                         PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
-                        bool CardSource = InjureTag.InjureSource != null && InjureTag.InjureSource is PCard;
+                        bool CardSource = InjureTag.InjureSource != null && InjureTag.InjureSource is PCard && ((PCard)InjureTag.InjureSource).Model is PSchemeCardModel;
                         if (CardSource) {
                             PUseCardTag UseCardTag = Game.TagManager.FindPeekTag<PUseCardTag>(PUseCardTag.TagName);
                             if (UseCardTag != null && UseCardTag.TargetList.Count == 1 && UseCardTag.Card.Type.Equals(PCardType.SchemeCard)) {
