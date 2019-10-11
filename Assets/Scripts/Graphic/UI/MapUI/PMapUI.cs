@@ -27,7 +27,7 @@ public class PMapUI : PAbstractUI {
     public readonly PToolTip ToolTip;
     public readonly Text InformationText;
     public readonly Text PushText;
-
+    public readonly ScrollRect InfoScrollView;
     private readonly Sprite[] DiceSpriteList;
 
     public PMapUI(Transform _Background) : base(_Background) {
@@ -35,6 +35,7 @@ public class PMapUI : PAbstractUI {
         InitializeControls<PToolTipedButton>();
         InitializeControls<Image>();
         InitializeControls<Text>();
+        InitializeControls<ScrollRect>();
         InformationList = new List<string>();
         Scene = new PMapScene(GameObject.Find("Map").transform);
         MessageBox = new PMessageBox(UIBackgroundImage.Find("MessageBox"));
@@ -135,6 +136,7 @@ public class PMapUI : PAbstractUI {
 
     public void AddNewInformation(string Information) {
         InformationList.Add(Information);
+        InfoScrollView.transform.Find("Viewport").GetComponentInChildren<Text>().text += Information + "\n";
         InformationPointer = InformationList.Count - 1;
         RefreshInformation();
     }

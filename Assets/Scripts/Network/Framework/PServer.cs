@@ -168,7 +168,9 @@ public class PServer {
         foreach (PClientCommander commander in CommanderList) {
             commander.Send(order);
         }
-        PThread.Delay(Config.SendDelay);
+        if (CommanderList.Count > 0) {
+            PThread.Delay(Config.SendDelay);
+        }
     }
     /// <summary>
     /// 向客户端发送命令

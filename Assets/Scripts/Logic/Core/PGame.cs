@@ -287,7 +287,11 @@ public class PGame : PGameStatus {
             Logic.ShutDown();
             Monitor.RemoveAll();
             TagManager.RemoveAll();
-            PNetworkManager.NetworkServer.TellClients(new PGameOverOrder(Winners()));
+            List<PPlayer> WinnerList = GetWinner();
+            PlayerList.ForEach((PPlayer Player) => {
+                PNetworkManager.NetworkServer.TellClients(new PGameOverOrder(Winners(), WinnerList.Contains(Player)));
+            });
+            
             ReadyToStartGameFlag = true;
         });
     }
