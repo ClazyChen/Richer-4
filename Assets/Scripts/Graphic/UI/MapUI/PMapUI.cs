@@ -136,7 +136,12 @@ public class PMapUI : PAbstractUI {
 
     public void AddNewInformation(string Information) {
         InformationList.Add(Information);
-        InfoScrollView.transform.Find("Viewport").GetComponentInChildren<Text>().text += Information + "\n";
+        string ViewportText = InfoScrollView.transform.Find("Viewport").GetComponentInChildren<Text>().text;
+        ViewportText += Information + "\n";
+        if (ViewportText.Length > 10000) {
+            ViewportText = ViewportText.Substring(1000);
+        }
+        InfoScrollView.transform.Find("Viewport").GetComponentInChildren<Text>().text = ViewportText;
         InformationPointer = InformationList.Count - 1;
         RefreshInformation();
     }
