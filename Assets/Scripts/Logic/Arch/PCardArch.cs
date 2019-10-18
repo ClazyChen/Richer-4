@@ -360,5 +360,60 @@
             }
         });
         #endregion
+        #region 同病相怜
+        TriggerList.Add(new PTrigger("同病相怜") {
+            IsLocked = true,
+            Time = PTime.Injure.AcceptInjure,
+            Condition = (PGame Game) => {
+                PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
+                return InjureTag.ToPlayer != null && InjureTag.Injure > 0 && InjureTag.ToPlayer.Tags.ExistTag(PTag.LockedTag.Name) &&
+                    InjureTag.InjureSource is PCard && ((PCard)InjureTag.InjureSource).Model is P_ShanTien;
+            },
+            Effect = (PGame Game) => {
+                PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
+                Announce(Game, InjureTag.ToPlayer, "同病相怜");
+            }
+        });
+        #endregion
+        #region 谁是赢家
+        string Uzuyj = "谁是赢家";
+        MultiPlayerTriggerList.Add((PPlayer Player) =>
+        new PTrigger("谁是赢家[初始化]") {
+            IsLocked = true,
+            Time = PPeriod.StartTurn.Start,
+            Effect = (PGame Game) => {
+                Player.Tags.PopTag<PTag>(Uzuyj);
+            }
+        });
+        TriggerList.Add(new PTrigger("谁是赢家[使用走为上计]") {
+            IsLocked = true,
+            Time = PTime.Card.EndSettleTime,
+            Condition = (PGame Game) => {
+                PUseCardTag UseCardTag = Game.TagManager.FindPeekTag<PUseCardTag>(PUseCardTag.TagName);
+                return UseCardTag.Card.Model is P_TsouWeiShangChi;
+            },
+            Effect = (PGame Game) => {
+                PUseCardTag UseCardTag = Game.TagManager.FindPeekTag<PUseCardTag>(PUseCardTag.TagName);
+                UseCardTag.TargetList.ForEach((PPlayer Player) => {
+                    if (!Player.Tags.ExistTag(Uzuyj)) {
+                        Player.Tags.CreateTag(new PTag(Uzuyj) {
+                            Visible = false
+                        });
+                    }
+                });
+            }
+        });
+        TriggerList.Add(new PTrigger("谁是赢家") {
+            IsLocked = true,
+            Time = PTime.EndGameTime,
+            Effect = (PGame Game) => {
+                Game.GetWinner().ForEach((PPlayer Player) => {
+                    if (Player.Tags.ExistTag(Uzuyj)) {
+                        Announce(Game, Player, Uzuyj);
+                    }
+                });
+            }
+        });
+        #endregion
     }
 }

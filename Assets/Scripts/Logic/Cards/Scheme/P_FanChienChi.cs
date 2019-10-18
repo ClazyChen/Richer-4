@@ -33,6 +33,7 @@ public class P_FanChienChi : PSchemeCardModel {
     }
 
     public readonly static string CardName = "反间计";
+    private readonly static string Gunxx = "故弄玄虚";
 
     public P_FanChienChi():base(CardName) {
         Point = 6;
@@ -71,6 +72,8 @@ public class P_FanChienChi : PSchemeCardModel {
                                 PShowInformationOrder(Target.Name + "选择了" + ChosenNumber));
                             int JudgeResult = Game.Judge(Target, 6);
                             if (JudgeResult != ChosenNumber) {
+                                // 故弄玄虚失效
+                                User.Tags.PopTag<PTag>(Gunxx);
                                 int Test = 0;
                                 if (Target.IsAI) {
                                     int Choose1 = PAiMapAnalyzer.ChangeFaceExpect(Game, Target);
@@ -91,6 +94,18 @@ public class P_FanChienChi : PSchemeCardModel {
                                         PShowInformationOrder(Target.Name + "选择了弃1000"));
                                     Game.LoseMoney(Target, 1000);
                                 }
+                            }
+                        }, (PGame Game, PPlayer User, List<PPlayer> Targets) => {
+                            // 为了故弄玄虚成就做的初始化
+                            if (Targets.Count > 0) {
+                                User.Tags.CreateTag(new PTag(Gunxx) {
+                                    Visible = false
+                                });
+                            }
+                        }, (PGame Game, PPlayer User, List<PPlayer> Targets) => {
+                            // 判定故弄玄虚
+                            if (User.Tags.PopTag<PTag>(Gunxx) != null) {
+                                PArch.Announce(Game, User, Gunxx);
                             }
                         })
                 };

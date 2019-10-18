@@ -53,6 +53,11 @@ public class P_KuungCheevngChi : PSchemeCardModel {
                                 Target.Tags.PopTag<PKuungCheevngChiTag>(PKuungCheevngChiTag.TagName);
                             }
                             Target.Tags.CreateTag(new PKuungCheevngChiTag());
+                            #region 成就：挥泪斩马谡
+                            if (!Target.Equals(User)) {
+                                PArch.Announce(Game, User, "挥泪斩马谡");
+                            }
+                            #endregion
                             PTrigger KuungCheevngChiTrigger = null;
                             Game.Monitor.AddTrigger(KuungCheevngChiTrigger = new PTrigger("空城状态更新") {
                                 IsLocked = true,

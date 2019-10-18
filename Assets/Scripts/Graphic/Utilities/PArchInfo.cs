@@ -63,9 +63,9 @@ public class PArchInfo : PObject {
     // 第4批成就
     public static PArchInfo 请尊重女性 = new PArchInfo("请尊重女性", "使用【美人计】同时令两名目标死亡。", 100);
     public static PArchInfo 挥泪斩马谡 = new PArchInfo("挥泪斩马谡", "使用【空城计】对一名其他角色生效。", 25);
-    public static PArchInfo 故弄玄虚 = new PArchInfo("故弄玄虚", "使用【反间计】结算过程中所有目标都猜对。", 20);
+    public static PArchInfo 故弄玄虚 = new PArchInfo("故弄玄虚", "使用【反间计】结算过程中所有目标（至少一个）都猜对。", 20);
     public static PArchInfo 最后一滴血 = new PArchInfo("最后一滴血", "使用【苦肉计】杀死自己。", 20);
-    public static PArchInfo 同病相怜 = new PArchInfo("同病相怜", "处于连环状态下，受到闪电造成的伤害。", 30);
+    public static PArchInfo 同病相怜 = new PArchInfo("同病相怜", "处于连环状态下，受到【闪电】造成的伤害。", 30);
     public static PArchInfo 谁是赢家 = new PArchInfo("谁是赢家", "使用【走为上计】在移出游戏状态下获胜。", 50);
 
 }

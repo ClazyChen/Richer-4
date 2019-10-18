@@ -39,6 +39,11 @@ public class P_KuuJouChi : PSchemeCardModel {
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets, AIEmitTargets,
                         (PGame Game, PPlayer User, PPlayer Target) => {
                             Game.LoseMoney(Target, 1000);
+                            #region 成就：最后一滴血
+                            if (User.Equals(Target) && !User.IsAlive) {
+                                PArch.Announce(Game, User, "最后一滴血");
+                            }
+                            #endregion
                             Game.GetCard(Target);
                         })
                 };

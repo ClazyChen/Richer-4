@@ -19,7 +19,9 @@
                 if (Game.GameMode is PMode4v4) {
                     Game.AlivePlayers().ForEach((PPlayer Player) => {
                         if (Game.Teammates(Player).Count == 1 && Game.Enemies(Player).Count == 4) {
-                            Player.Tags.CreateTag(new PTag(Juecfs));
+                            Player.Tags.CreateTag(new PTag(Juecfs) {
+                                Visible = false
+                            });
                         }
                     });
                 }

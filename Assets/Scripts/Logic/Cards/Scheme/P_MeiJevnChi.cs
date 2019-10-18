@@ -69,6 +69,11 @@ public class P_MeiJevnChi : PSchemeCardModel {
                             } else {
                                 Game.LoseMoney(Targets[1], 1000);
                             }
+                            #region 成就：请尊重女性
+                            if (!Targets[0].IsAlive && !Targets[1].IsAlive) {
+                                PArch.Announce(Game, Player, "请尊重女性");
+                            }
+                            #endregion
                         }
                         Game.CardManager.MoveCard(Card, Game.CardManager.SettlingArea, Game.CardManager.ThrownCardHeap);
                         Game.Monitor.CallTime(PTime.Card.EndSettleTime, new PUseCardTag(Card, Player, Targets));
