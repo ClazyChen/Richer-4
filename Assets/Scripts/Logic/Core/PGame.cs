@@ -289,7 +289,7 @@ public class PGame : PGameStatus {
             TagManager.RemoveAll();
             List<PPlayer> WinnerList = GetWinner();
             PlayerList.ForEach((PPlayer Player) => {
-                PNetworkManager.NetworkServer.TellClients(new PGameOverOrder(Winners(), WinnerList.Contains(Player)));
+                PNetworkManager.NetworkServer.TellClient(Player, new PGameOverOrder(Winners(), WinnerList.Contains(Player)));
             });
             
             ReadyToStartGameFlag = true;
