@@ -36,10 +36,10 @@ public class P_PaKuaChevn : PEquipmentCardModel {
                     },
                     Effect = (PGame Game ) => {
                         AnnouceUseEquipmentSkill(Player);
-                        int Result = Game.Judge(Player, 5);
+                        PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
+                        int Result = Game.Judge(Player, InjureTag.Injure > 500 ? 5 : 6);
                         if (Result % 2 == 1) {
                             PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(CardName + "：成功"));
-                            PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
                             InjureTag.Injure = PMath.Percent(InjureTag.Injure, 50);
                         } else {
                             PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(CardName + "：失败"));
