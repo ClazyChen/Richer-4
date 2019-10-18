@@ -52,7 +52,7 @@ public class PAiTargetChooser {
             }
         }
         #endregion
-        #region 受到伤害时发动的技能：八卦阵，百花裙，龙胆，太极
+        #region 受到伤害时发动的技能：八卦阵，百花裙，龙胆，太极，霸王
         if (Target.HasEquipment<P_PaKuaChevn>()) {
             if (Target.General is P_LiuJi) {
                 Sum -= 1000 * ToCof;
@@ -71,6 +71,11 @@ public class PAiTargetChooser {
         }
         if (Target.General is P_ZhangSanFeng && Target.Tags.ExistTag(P_ZhangSanFeng.PYangTag.Name)) {
             BaseInjure -= PMath.Percent(BaseInjure, 20);
+        }
+        if (Game.AlivePlayers().Exists((PPlayer _Player) => {
+            return !_Player.Equals(Target) && _Player.TeamIndex != Target.TeamIndex && _Player.Distance(Target) <= 1 && _Player.General is P_XdYu;
+        })) {
+            BaseInjure += 800;
         }
         #endregion
 
