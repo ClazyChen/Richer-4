@@ -50,9 +50,19 @@ public class PAiMapAnalyzer {
                 int Temp = 0;
                 List<PBlock> Blocks = NextBlocks(Game, _Player);
                 Blocks.ForEach((PBlock Block) => {
+                    int BlockTemp = 0;
                     if (Block.Lord != null && Player.Equals(Block.Lord)) {
-                        Temp -= Math.Max(0, PAiTargetChooser.InjureExpect(Game, Player, Player, _Player, Block.Toll, Block));
+                        BlockTemp = Math.Max(0, PAiTargetChooser.InjureExpect(Game, Player, Player, _Player, Block.Toll, Block));
                     }
+                    if (_Player.General is P_Newton) {
+                        PBlock PossibleBlock = Game.Map.NextStepBlock(Block, P_Newton.Grx_Next(Game, _Player.Position).Value);
+                        if (PossibleBlock.Lord != null && Player.Equals(PossibleBlock.Lord)) {
+                            BlockTemp = Math.Min(BlockTemp, Math.Max(0, PAiTargetChooser.InjureExpect(Game, Player, Player, _Player, Block.Toll, Block)));
+                        } else {
+                            BlockTemp = 0;
+                        }
+                    }
+                    Temp -= BlockTemp;
                 });
                 Sum += Temp / Math.Max(1, Blocks.Count);
             }
@@ -61,9 +71,19 @@ public class PAiMapAnalyzer {
         if (Including) {
             List<PBlock> Blocks = NextBlocks(Game, Player);
             Blocks.ForEach((PBlock Block) => {
+                int BlockTemp = 0;
                 if (Block.Lord != null && Player.TeamIndex != Block.Lord.TeamIndex) {
-                    SumSelf += Math.Max(0, -PAiTargetChooser.InjureExpect(Game, Player, Block.Lord, Player, Block.Toll, Block));
+                    BlockTemp = Math.Max(0, -PAiTargetChooser.InjureExpect(Game, Player, Block.Lord, Player, Block.Toll, Block));
                 }
+                if (Player.General is P_Newton) {
+                    PBlock PossibleBlock = Game.Map.NextStepBlock(Block, P_Newton.Grx_Next(Game, Player.Position).Value);
+                    if (PossibleBlock.Lord != null && Player.TeamIndex != PossibleBlock.Lord.TeamIndex) {
+                        BlockTemp = Math.Max(BlockTemp, Math.Max(0, -PAiTargetChooser.InjureExpect(Game, Player, Block.Lord, Player, Block.Toll, Block)));
+                    } else {
+                        BlockTemp = 0;
+                    }
+                }
+                SumSelf += BlockTemp;
             });
             SumSelf /= Math.Max(1, Blocks.Count);
         }
@@ -118,8 +138,13 @@ public class PAiMapAnalyzer {
             return Expect(Game, Player, CurrentBlock);
         }
         int Expectation = 0;
+        int NewtonTargetStep = (Player.General is P_Newton ? P_Newton.Grx_Next(Game, Block).Value : 0);
         for (int i = 6; i >= 1; -- i) {
-            Expectation += Expect(Game, Player, CurrentBlock);
+            int SingleExpect = Expect(Game, Player, CurrentBlock);
+            if (NewtonTargetStep > 0) {
+                SingleExpect = Math.Max(SingleExpect, Expect(Game, Player, Game.Map.NextStepBlock(CurrentBlock, NewtonTargetStep)));
+            }
+            Expectation += SingleExpect;
             if (CurrentBlock.GetMoneyPassSolid != 0) {
                 int Disaster = Block.GetMoneyPassSolid;
                 if (Disaster < 0 && -Disaster <= 1000 && Player.Traffic != null && Player.Traffic.Model is P_NanManHsiang) {

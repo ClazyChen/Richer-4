@@ -227,4 +227,12 @@ public class PMap : PObject, ICloneable {
         #endregion
         return Copy;
     }
+
+    public PBlock NextStepBlock(PBlock StartPoint, int StepCount) {
+        PBlock Answer = StartPoint;
+        for (int i =0; i < StepCount; ++ i) {
+            Answer = Answer.NextBlock;
+        }
+        return Answer;
+    }
 }
