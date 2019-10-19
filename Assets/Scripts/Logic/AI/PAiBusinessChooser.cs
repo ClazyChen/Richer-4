@@ -12,6 +12,9 @@ public class PAiBusinessChooser {
          * 公园收益    ：（max（1，20*建房次数上限/环长）*60%+50%）*地价
          * 城堡收益    ：（50%+敌方人数*20%）*赠送房屋数量*地价
          * 当铺收益    ：2000*己方人数
+         * 
+         * 特殊计算：
+         * 杨玉环：研究所+4000
          */
         int RingLength = PAiMapAnalyzer.GetRingLength(Game, Block);
         int MaxOperationCount = Player.PurchaseLimit;
@@ -24,6 +27,9 @@ public class PAiBusinessChooser {
 
         if (Player.General is P_YangYuHuan) {
             InsituteExpectation += 4000;
+        }
+        if (Player.General is P_Xdyu || Player.General is P_Gryu) {
+            ShoppingCenterExpectation += 4000;
         }
 
         List<int> ExpectationList = new List<int>() {

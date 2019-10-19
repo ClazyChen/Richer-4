@@ -53,6 +53,9 @@ public abstract class PCardModel: PObject {
         if (Player.General is P_Faraday && Point == 3) {
             Basic += 3000;
         }
+        if (Player.General is P_Gryu && Point %2 == 0) {
+            Basic += 2500;
+        }
         return Basic;
     }
 

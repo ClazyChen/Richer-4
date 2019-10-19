@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class P_XdYu : PGeneral {
+public class P_Xdyu : PGeneral {
 
-    public P_XdYu() : base("项羽") {
+    public P_Xdyu() : base("项羽") {
         Sex = PSex.Male;
         Age = PAge.Classic;
         Index = 17;
         Cost = 30;
         Tips = "定位：攻击\n" +
-            "难度：简单\n" +
+            "难度：中等\n" +
             "史实：秦末西楚霸王。曾在巨鹿之战中破釜沉舟，大破秦军。\n" +
-            "攻略：--\n";
+            "攻略：\n项羽是一个十分考验玩家判断力的武将，【霸王】在小图的发挥显著强于大图，能够配合虞姬的【剑舞】，也可以增加天灾对敌人的伤害，还可以在一定程度上辅助队友的输出，范围为1限制了项羽的跨队列输出，但敌人越多就越强，颇有乌江快战之风范。\n"+
+            "【沉舟】是一个爆发力极强的技能，相应地也要付出较大的代价。要想达到正收益，技能发动往往是在中后期，而购物中心往往是项羽的不二选择，当现金小于18000时【沉舟】已经是正收益，而对于领地来说只需花费小于正常花费即可一试。当然，在现金较低的情况下，项羽甚至可以连续【沉舟】，在高风险的同时可能获得极高的回报，或可重振西楚霸业。\n";
 
         PSkill Bawh = new PSkill("霸王");
         SkillList.Add(Bawh

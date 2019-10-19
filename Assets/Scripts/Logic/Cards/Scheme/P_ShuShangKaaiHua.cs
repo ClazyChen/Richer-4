@@ -5,6 +5,12 @@ using System.Collections.Generic;
 /// </summary>
 public class P_ShuShangKaaiHua : PSchemeCardModel {
 
+    public static PBlock AIEmitTarget(PGame Game, PPlayer Player) {
+        return PMath.Max(Game.Map.BlockList.FindAll((PBlock Block) => Block.Lord != null && Block.Lord.TeamIndex == Player.TeamIndex), (PBlock Block) => {
+            return PAiMapAnalyzer.HouseValue(Game, Block.Lord, Block);
+        }).Key;
+    }
+
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
         int Basic = 2500;
         int Test = PMath.Max(Game.Map.BlockList.FindAll((PBlock Block) => Block.Lord != null && Block.Lord.TeamIndex == Player.TeamIndex), (PBlock Block) => {
@@ -45,9 +51,7 @@ public class P_ShuShangKaaiHua : PSchemeCardModel {
 
                         PBlock Target = null;
                         if (Player.IsAI) {
-                            Target = PMath.Max(Game.Map.BlockList.FindAll((PBlock Block) => Block.Lord != null && Block.Lord.TeamIndex == Player.TeamIndex), (PBlock Block) => {
-                                return PAiMapAnalyzer.HouseValue(Game, Block.Lord, Block);
-                            }).Key;
+                            Target = AIEmitTarget(Game, Player);
                         } else {
                             Target = PNetworkManager.NetworkServer.ChooseManager.AskToChooseBlock(Player, "树上开花[选择有主土地]", (PBlock Block) => Block.Lord != null);
                         }

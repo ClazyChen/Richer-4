@@ -73,7 +73,7 @@ public class PAiTargetChooser {
             BaseInjure -= PMath.Percent(BaseInjure, 20);
         }
         if (Game.AlivePlayers().Exists((PPlayer _Player) => {
-            return !_Player.Equals(Target) && _Player.TeamIndex != Target.TeamIndex && _Player.Distance(Target) <= 1 && _Player.General is P_XdYu;
+            return !_Player.Equals(Target) && _Player.TeamIndex != Target.TeamIndex && _Player.Distance(Target) <= 1 && _Player.General is P_Xdyu;
         })) {
             BaseInjure += 800;
         }
