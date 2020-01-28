@@ -126,7 +126,15 @@ public class PAiMapAnalyzer {
         return new KeyValuePair<PBlock, int>(Test.Key, Test.Value / 1000);
     }
 
-    public static int StartFromExpect(PGame Game, PPlayer Player, PBlock Block) {
+    /// <summary>
+    /// AI计算从一个点开始走的期望
+    /// </summary>
+    /// <param name="Game">游戏句柄</param>
+    /// <param name="Player">玩家句柄</param>
+    /// <param name="Block">起点的格子</param>
+    /// <param name="Banned">被禁止投出的骰子点数（用于唐寅的技能【浪子】）</param>
+    /// <returns></returns>
+    public static int StartFromExpect(PGame Game, PPlayer Player, PBlock Block, int Banned = 0) {
         PBlock CurrentBlock = Block;
         if (!Player.NoLadder) {
             CurrentBlock = CurrentBlock.NextBlock;
@@ -140,6 +148,9 @@ public class PAiMapAnalyzer {
         int Expectation = 0;
         int NewtonTargetStep = (Player.General is P_Newton ? P_Newton.Grx_Next(Game, Block).Value : 0);
         for (int i = 6; i >= 1; -- i) {
+            if (Banned == i) {
+                continue;
+            }
             int SingleExpect = Expect(Game, Player, CurrentBlock);
             if (NewtonTargetStep > 0) {
                 SingleExpect = Math.Max(SingleExpect, Expect(Game, Player, Game.Map.NextStepBlock(CurrentBlock, NewtonTargetStep)));
@@ -173,7 +184,7 @@ public class PAiMapAnalyzer {
                 Expectation += ((P_TsaaoMuChiehPing)Card.Model).AIExpect(Game, Player, Block);
             }
         });
-        return Expectation / 6;
+        return Expectation / (Banned > 0 ? 5 : 6);
     }
 
     public static int Expect(PGame Game, PPlayer Player, PBlock Block, bool InPortal = false) {

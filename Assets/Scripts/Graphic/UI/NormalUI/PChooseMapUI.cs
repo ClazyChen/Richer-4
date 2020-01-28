@@ -8,10 +8,12 @@ public class PChooseMapUI : PAbstractUI {
     public readonly Button EnterButton;
     public readonly Button ReturnButton;
     public readonly Button TestButton;
+    public readonly InputField IPAddressInputField;
 
     public PChooseMapUI(Transform _Background) : base(_Background) {
         InitializeControls<Button>();
         InitializeControls<Dropdown>();
+        InitializeControls<InputField>();
         Close();
     }
 

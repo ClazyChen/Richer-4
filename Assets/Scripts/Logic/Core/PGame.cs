@@ -547,8 +547,9 @@ public class PGame : PGameStatus {
     /// </summary>
     /// <param name="Player">获得牌的玩家</param>
     /// <param name="TargetPlayer">被获得牌的玩家</param>
+    /// <param name="Directly">是否直接转移装备</param>
     /// <returns>获得的牌</returns>
-    public PCard GetCardFrom(PPlayer Player, PPlayer TargetPlayer, bool AllowHandCards = true, bool AllowEquipment = true, bool AllowJudge = false) {
+    public PCard GetCardFrom(PPlayer Player, PPlayer TargetPlayer, bool AllowHandCards = true, bool AllowEquipment = true, bool AllowJudge = false, bool Directly = false) {
         string Title = "请选择获得一张" + (AllowHandCards ? "[手牌]" : string.Empty) + (AllowEquipment ? "[装备]" : string.Empty) + (AllowJudge ? "[伏兵]" : string.Empty);
         PCard TargetCard = ChooseCard(Player, TargetPlayer, Title, AllowHandCards, AllowEquipment, AllowJudge, true);
         if (TargetCard != null) {
@@ -556,7 +557,11 @@ public class PGame : PGameStatus {
             if (TargetPlayer.Area.HandCardArea.CardList.Contains(TargetCard)) {
                 CardManager.MoveCard(TargetCard, TargetPlayer.Area.HandCardArea, Player.Area.HandCardArea);
             } else if (TargetPlayer.Area.EquipmentCardArea.CardList.Contains(TargetCard)) {
-                CardManager.MoveCard(TargetCard, TargetPlayer.Area.EquipmentCardArea, Player.Area.HandCardArea);
+                if (Directly) {
+                    CardManager.MoveCard(TargetCard, TargetPlayer.Area.EquipmentCardArea, Player.Area.EquipmentCardArea);
+                } else {
+                    CardManager.MoveCard(TargetCard, TargetPlayer.Area.EquipmentCardArea, Player.Area.HandCardArea);
+                }
             } else if (TargetPlayer.Area.AmbushCardArea.CardList.Contains(TargetCard)) {
                 CardManager.MoveCard(TargetCard, TargetPlayer.Area.AmbushCardArea, Player.Area.HandCardArea);
             }
@@ -564,7 +569,7 @@ public class PGame : PGameStatus {
         return TargetCard;
     }
 
-    public void GiveCardTo(PPlayer Player, PPlayer TargetPlayer, bool AllowHandCards = true, bool AllowEquipment = true, bool AllowJudge = false) {
+    public void GiveCardTo(PPlayer Player, PPlayer TargetPlayer, bool AllowHandCards = true, bool AllowEquipment = true, bool AllowJudge = false, bool Directly = false) {
         string Title = "请选择给出一张" + (AllowHandCards ? "[手牌]" : string.Empty) + (AllowEquipment ? "[装备]" : string.Empty) + (AllowJudge ? "[伏兵]" : string.Empty);
         PCard Card = null;
         if (Player.IsAI) {
@@ -578,12 +583,17 @@ public class PGame : PGameStatus {
         }
         if (Card != null) {
             PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "交给了" + TargetPlayer.Name + (Player.Area.HandCardArea.CardList.Contains(Card) ? "1张手牌" : Card.Name)));
-            if (TargetPlayer.Area.HandCardArea.CardList.Contains(Card)) {
+            if (Player.Area.HandCardArea.CardList.Contains(Card)) {
                 CardManager.MoveCard(Card, Player.Area.HandCardArea, TargetPlayer.Area.HandCardArea);
-            } else if (TargetPlayer.Area.EquipmentCardArea.CardList.Contains(Card)) {
-                CardManager.MoveCard(Card, Player.Area.EquipmentCardArea, TargetPlayer.Area.HandCardArea);
+            } else if (Player.Area.EquipmentCardArea.CardList.Contains(Card)) {
+                if (Directly) {
+                    CardManager.MoveCard(Card, Player.Area.EquipmentCardArea, TargetPlayer.Area.EquipmentCardArea);
+                } else {
+                    CardManager.MoveCard(Card, Player.Area.EquipmentCardArea, TargetPlayer.Area.HandCardArea);
+                }
+            } else if (Player.Area.AmbushCardArea.CardList.Contains(Card)) {
+                CardManager.MoveCard(Card, Player.Area.AmbushCardArea, TargetPlayer.Area.HandCardArea);
             }
-            CardManager.MoveCard(Card, Player.Area.HandCardArea, TargetPlayer.Area.HandCardArea);
         }
     }
 

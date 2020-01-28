@@ -37,7 +37,7 @@ public class PSkillInfo : PObject {
     public static PSkillInfo 迁都 = new PSkillInfo("迁都", "【主】限定技，空闲时间点，你可以移动到一个你的领地，将其改建为城堡，并获得城堡赠送房屋和额外的X座房屋[X=此时你的商业用地数量]。", PSkillType.Initiative);
     public static PSkillInfo 惯性 = new PSkillInfo("惯性", "【被】行走阶段开始时，若你所在的格子没有房屋，你可以弃500，移动到前方最近的一个有房屋或有其他玩家的格子。此法至多向前移动6格。", PSkillType.Passive);
     public static PSkillInfo 浪子 = new PSkillInfo("浪子", "【被】掷骰阶段开始时，你可以弃一张装备牌并选择1至6的一个数字，本次掷骰不会掷出你选择的数字。", PSkillType.Passive);
-    public static PSkillInfo 风流 = new PSkillInfo("风流", "【被】当你对一名女性角色造成伤害时，你可令其选择一项：1. 交给你一件装备。2.令此伤害+1000。", PSkillType.Passive);
+    public static PSkillInfo 风流 = new PSkillInfo("风流", "【被】当你对一名其他角色造成伤害时，你可令其选择一项：1.交给你一件装备。2.令此伤害+800。", PSkillType.Passive);
     public static PSkillInfo 电击 = new PSkillInfo("电击", "【主】你可以将一张点数为3或6的手牌当做【上屋抽梯】使用。", PSkillType.Initiative);
 
     public PSkillInfo Copy() {

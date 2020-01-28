@@ -154,6 +154,10 @@ public class PPlayer: PObject {
         return Area.HandCardArea.CardList.Exists((PCard Card) => Card.Model is T);
     }
 
+    public bool HasEquipInArea() {
+        return Area.HandCardArea.CardList.Exists((PCard Card) => Card.Type.IsEquipment()) || Area.EquipmentCardArea.CardNumber > 0;
+    }
+
     public PCard Weapon {
         get {
             return GetEquipment(PCardType.WeaponCard);

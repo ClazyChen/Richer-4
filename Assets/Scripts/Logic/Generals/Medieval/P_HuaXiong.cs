@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 public class P_HuaXiong : PGeneral {
 
-
     public P_HuaXiong() : base("华雄") {
         Sex = PSex.Male;
         Age = PAge.Medieval;
@@ -65,7 +64,10 @@ public class P_HuaXiong : PGeneral {
                         foreach (PCardType CardType in new PCardType[] {
                             PCardType.WeaponCard, PCardType.DefensorCard, PCardType.TrafficCard
                         }) {
-                            KeyValuePair<PCard, int> MaxCard = PMath.Max(Player.Area.HandCardArea.CardList, (PCard _Card) => _Card.Model.AIInEquipExpectation(Game, Player));
+                            KeyValuePair<PCard, int> MaxCard = PMath.Max(
+                                Player.Area.HandCardArea.CardList.FindAll((PCard _Card) =>
+                                _Card.Type.Equals(CardType)),
+                                (PCard _Card) => _Card.Model.AIInEquipExpectation(Game, Player));
                             PCard CurrentCard = Player.GetEquipment(CardType);
                             if (CurrentCard != null) {
                                 int Expect = CurrentCard.Model.AIInEquipExpectation(Game, Player);

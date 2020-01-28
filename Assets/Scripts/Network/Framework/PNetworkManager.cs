@@ -1,3 +1,4 @@
+using System;
 using System.Net.Sockets;
 using System.Threading;
 
@@ -91,8 +92,10 @@ public class PNetworkManager {
             Thread.Sleep(PNetworkConfig.ListenerInterval);
             try {
                 _NetworkClient = new PClient(new TcpClient(PNetworkConfig.IP.ToString(), PNetworkConfig.ServerPort));
-            } catch {
+            } catch (Exception e) {
                 PLogger.Log("服务器客户端创建错误");
+                PLogger.Log(PNetworkConfig.IP.ToString());
+                PLogger.Log(e.ToString());
             }
             CurrentNickname = PNetworkConfig.DefaultNickname;
         });

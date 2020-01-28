@@ -13,6 +13,7 @@ public abstract class PGeneral: PObject {
     public int Cost = 0;
     public string Tips = string.Empty;
 
+
     /// <summary>
     /// 客户端专用
     /// </summary>

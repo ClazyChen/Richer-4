@@ -61,6 +61,14 @@ public class PNetworkConfig {
     /// </summary>
     public static IPAddress IP {
         get {
+            if (PUIManager.GetUI<PChooseMapUI>().IPAddressInputField.text.Length > 0) {
+                try {
+                    IPAddress Ans = IPAddress.Parse(PUIManager.GetUI<PChooseMapUI>().IPAddressInputField.text);
+                    return Ans;
+                } catch (Exception) {
+                    // 输入不符合规定，改为自动填入
+                }
+            }
             string addressList = GetIPAddressList();
             if (addressList.Contains(";")) {
                 string[] addresses = addressList.Split(';');
