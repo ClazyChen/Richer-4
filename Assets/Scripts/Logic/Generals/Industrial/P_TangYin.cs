@@ -79,7 +79,7 @@ public class P_TangYin: PGeneral {
                     AICondition = (PGame Game) => {
                         KeyValuePair<PCard, int> CardValue = LangZiValue(Game, Player);
                         KeyValuePair<int, int> SkillValue = LangZiBannedNumber(Game, Player);
-                        return CardValue.Key != null && SkillValue.Key > 0 && SkillValue.Value > 300 && SkillValue.Value + CardValue.Value >= 1000;
+                        return CardValue.Key != null && SkillValue.Key > 0 && SkillValue.Value >= 100 && SkillValue.Value + CardValue.Value >= 300;
                     },
                     Effect = (PGame Game) => {
                         LangZi.AnnouceUseSkill(Player);
