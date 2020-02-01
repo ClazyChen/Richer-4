@@ -191,8 +191,8 @@
                 return !Game.NowPlayer.Equals(Player) && Player.Equals(Game.NowPlayer.Position.Lord);
             },
             AICondition = (PGame Game) => {
-                if (Game.NowPlayer.General is P_PanYue && Game.NowPlayer.TeamIndex == Player.TeamIndex) {
-                    // 给闲居让路
+                if ((Game.NowPlayer.General is P_PanYue || Game.NowPlayer.General is P_ChenSheng) && Game.NowPlayer.TeamIndex == Player.TeamIndex) {
+                    // 给闲居和起义让路
                     return false;
                 }
                 return PAiTargetChooser.InjureExpect(Game, Player, Player, Game.NowPlayer, Game.NowPlayer.Position.Toll, Game.NowPlayer.Position) > 0;

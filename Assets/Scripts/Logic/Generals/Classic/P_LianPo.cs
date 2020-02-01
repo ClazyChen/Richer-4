@@ -36,7 +36,7 @@ public class P_LianPo: PGeneral {
                         return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime()) && Player.RemainLimit(FuJing.Name) ;
                     },
                     AICondition = (PGame Game) => {
-                        if (Game.Teammates(Player, false).Count == 0) {
+                        if (Game.Teammates(Player, false).Count == 0 || Player.Money < 6000) {
                             return false;
                         }
                         if (Player.Money >= 15000 || !Player.CanBeInjured) {
