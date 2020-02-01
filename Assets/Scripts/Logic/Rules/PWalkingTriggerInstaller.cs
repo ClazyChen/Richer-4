@@ -8,12 +8,7 @@ public class PWalkingTriggerInstaller : PSystemTriggerInstaller {
             Effect = (PGame Game) => {
                 PStepCountTag Tag = Game.TagManager.PopTag<PStepCountTag>(PStepCountTag.TagName);
                 int RemainStepCount = (Tag != null ? Tag.StepCount : 0);
-                while (RemainStepCount-- > 0) {
-                    Game.MovePosition(Game.NowPlayer, Game.NowPlayer.Position, Game.NowPlayer.Position.NextBlock);
-                    if (RemainStepCount > 0) {
-                        Game.Monitor.CallTime(PTime.PassBlockTime, new PPassBlockTag(Game.NowPlayer, Game.NowPlayer.Position));
-                    }
-                }
+                Game.MoveForward(Game.NowPlayer, RemainStepCount);
                 PNetworkManager.NetworkServer.TellClients(new PCloseDiceOrder());
             }
         });

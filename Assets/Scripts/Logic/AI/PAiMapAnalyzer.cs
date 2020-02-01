@@ -94,7 +94,57 @@ public class PAiMapAnalyzer {
         if (Start == null) {
             Start = Player.Position;
         }
-        return StartFromExpect(Game, Player, Start) * (Player.BackFace ? 1 : -1) / 3;
+        int Value = 0;
+        List<PBlock> Blocks = NextBlocks(Game, Player);
+        foreach (PBlock Block in Blocks) {
+            int DeltaMoney = 0;
+            int Disaster = Block.GetMoneyStopSolid;
+            if (Disaster < 0 && -Disaster <= 1000 && Player.Traffic != null && Player.Traffic.Model is P_NanManHsiang) {
+                Disaster = 0;
+            } else if (Disaster < 0 && Player.Defensor != null && Player.Defensor.Model is P_YinYangChing) {
+                Disaster = 0;
+            }
+            DeltaMoney += Disaster;
+            Disaster = PMath.Percent(Player.Money, Block.GetMoneyStopPercent);
+            if (Disaster < 0 && -Disaster <= 1000 && Player.Traffic != null && Player.Traffic.Model is P_NanManHsiang) {
+                Disaster = 0;
+            } else if (Disaster < 0 && Player.Defensor != null && Player.Defensor.Model is P_YinYangChing) {
+                Disaster = 0;
+            }
+            DeltaMoney += Disaster;
+            if (Block.Lord != null && Block.Lord.TeamIndex != Player.TeamIndex) {
+                int Toll = Block.Toll;
+                if (Block.BusinessType.Equals(PBusinessType.ShoppingCenter)) {
+                    Toll *= 2;
+                }
+                if (Block.Lord.Weapon != null && Block.Lord.Weapon.Model is P_KuTingTao && Player.Area.HandCardArea.CardNumber == 0) {
+                    Toll *= 2;
+                }
+                if (Toll <= 1000 && Player.Traffic != null && Player.Traffic.Model is P_NanManHsiang) {
+                    Toll = 0;
+                }
+                DeltaMoney -= Toll;
+            }
+            if (-DeltaMoney >= Player.Money) {
+                Value = 1000 * Blocks.Count;
+                break;
+            } else if (Block.Lord == null && Block.Price < Player.Money) {
+                int LandValue = PMath.Percent(Block.Price, 10) * Game.Enemies(Player).Count;
+                if (Block.IsBusinessLand) {
+                    LandValue += PMath.Max(PAiBusinessChooser.DirectionExpectations(Game, Player, Block));
+                }
+                Value -= LandValue;
+            }
+        }
+        Value /= Blocks.Count;
+        Value *= (Player.BackFace ? -1 : 1);
+        // 陈胜特殊处理
+        if (Player.General is P_ChenSheng) {
+            int CurrentValue = StartFromExpect(Game, Player, Player.Position, 0, false);
+            int MaxValue = PMath.Max(new List<int> { 1, 2, 3, 4, 5, 6 }, (int ChenShengStep) => StartFromExpect(Game, Player, Game.Map.NextStepBlock(Player.Position, ChenShengStep), 0, false)).Value - CurrentValue;
+            Value += 2000 + MaxValue;
+        }
+        return Value;
     }
 
     public static int HouseValue(PGame Game, PPlayer Player, PBlock Block) {
@@ -133,8 +183,9 @@ public class PAiMapAnalyzer {
     /// <param name="Player">玩家句柄</param>
     /// <param name="Block">起点的格子</param>
     /// <param name="Banned">被禁止投出的骰子点数（用于唐寅的技能【浪子】）</param>
+    /// <param name="IncludePassMoney">计算是否包括经过奖励（用于计算前进收益）</param>
     /// <returns></returns>
-    public static int StartFromExpect(PGame Game, PPlayer Player, PBlock Block, int Banned = 0) {
+    public static int StartFromExpect(PGame Game, PPlayer Player, PBlock Block, int Banned = 0, bool IncludePassMoney = true) {
         PBlock CurrentBlock = Block;
         if (!Player.NoLadder) {
             CurrentBlock = CurrentBlock.NextBlock;
@@ -156,26 +207,28 @@ public class PAiMapAnalyzer {
                 SingleExpect = Math.Max(SingleExpect, Expect(Game, Player, Game.Map.NextStepBlock(CurrentBlock, NewtonTargetStep)));
             }
             Expectation += SingleExpect;
-            if (CurrentBlock.GetMoneyPassSolid != 0) {
-                int Disaster = Block.GetMoneyPassSolid;
-                if (Disaster < 0 && -Disaster <= 1000 && Player.Traffic != null && Player.Traffic.Model is P_NanManHsiang) {
-                    Disaster = 0;
-                } else if (Disaster < 0 && Player.Defensor != null && Player.Defensor.Model is P_YinYangChing) {
-                    Disaster = 0;
+            if (IncludePassMoney) {
+                if (CurrentBlock.GetMoneyPassSolid != 0) {
+                    int Disaster = Block.GetMoneyPassSolid;
+                    if (Disaster < 0 && -Disaster <= 1000 && Player.Traffic != null && Player.Traffic.Model is P_NanManHsiang) {
+                        Disaster = 0;
+                    } else if (Disaster < 0 && Player.Defensor != null && Player.Defensor.Model is P_YinYangChing) {
+                        Disaster = 0;
+                    }
+                    Expectation += i * Disaster;
                 }
-                Expectation += i * Disaster;
-            }
-            if (CurrentBlock.GetMoneyPassPercent != 0) {
-                int Disaster = PMath.Percent(Player.Money, CurrentBlock.GetMoneyPassPercent);
-                if (Disaster < 0 && -Disaster <= 1000 && Player.Traffic != null && Player.Traffic.Model is P_NanManHsiang) {
-                    Disaster = 0;
-                } else if (Disaster < 0 && Player.Defensor != null && Player.Defensor.Model is P_YinYangChing) {
-                    Disaster = 0;
+                if (CurrentBlock.GetMoneyPassPercent != 0) {
+                    int Disaster = PMath.Percent(Player.Money, CurrentBlock.GetMoneyPassPercent);
+                    if (Disaster < 0 && -Disaster <= 1000 && Player.Traffic != null && Player.Traffic.Model is P_NanManHsiang) {
+                        Disaster = 0;
+                    } else if (Disaster < 0 && Player.Defensor != null && Player.Defensor.Model is P_YinYangChing) {
+                        Disaster = 0;
+                    }
+                    Expectation += i * Disaster;
                 }
-                Expectation += i * Disaster;
-            }
-            if (CurrentBlock.GetCardPass != 0) {
-                Expectation += i * 2000 * CurrentBlock.GetCardPass;
+                if (CurrentBlock.GetCardPass != 0) {
+                    Expectation += i * 2000 * CurrentBlock.GetCardPass;
+                }
             }
             CurrentBlock = Block.NextBlock;
         }

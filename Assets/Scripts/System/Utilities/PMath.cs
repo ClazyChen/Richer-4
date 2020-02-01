@@ -30,6 +30,21 @@ public class PMath {
         }
         return new KeyValuePair<T, int>(MaxSample, Max);
     }
+    public static KeyValuePair<int, int> Max(List<int> Samples, Converter<int, int> Measure, bool MustPositive = false)  {
+        int Max = int.MinValue;
+        int MaxSample = 0;
+        Samples.ForEach((int Sample) => {
+            int Test = Measure(Sample);
+            if (Test >= Max) {
+                Max = Test;
+                MaxSample = Sample;
+            }
+        });
+        if (MustPositive && Max <= 0) {
+            return new KeyValuePair<int, int>(0, Max);
+        }
+        return new KeyValuePair<int, int>(MaxSample, Max);
+    }
     public static int Min(List<int> Samples) {
         int Min = int.MaxValue;
         Samples.ForEach((int Sample) => Min = Math.Min(Min, Sample));

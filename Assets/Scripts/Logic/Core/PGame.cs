@@ -399,6 +399,15 @@ public class PGame : PGameStatus {
         Monitor.CallTime(PTime.MovePositionTime, new PTransportTag(Player, Source, Destination));
     }
 
+    public void MoveForward(PPlayer Player, int StepCount) {
+        while (StepCount-- > 0) {
+            MovePosition(Player, Player.Position, Player.Position.NextBlock);
+            if (StepCount > 0) {
+                Monitor.CallTime(PTime.PassBlockTime, new PPassBlockTag(Player, Player.Position));
+            }
+        }
+    }
+
     /// <summary>
     /// 进行一次判定
     /// </summary>

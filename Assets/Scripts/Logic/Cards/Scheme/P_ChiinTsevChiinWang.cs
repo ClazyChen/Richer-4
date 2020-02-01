@@ -5,16 +5,20 @@ using System.Collections.Generic;
 /// </summary>
 public class P_ChiinTsevChiinWang : PSchemeCardModel {
 
-    public List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
+    static public List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player, int BaseValue) {
         int MaxMoney = PMath.Max(Game.PlayerList, (PPlayer _Player) => _Player.Money).Value;
         PPlayer Target =  PMath.Max(Game.PlayerList.FindAll((PPlayer _Player) => _Player.Money == MaxMoney), (PPlayer _Player) => {
             if (Player.TeamIndex == _Player.TeamIndex) {
-                return PAiMapAnalyzer.ChangeFaceExpect(Game, _Player) - 500;
+                return PAiMapAnalyzer.ChangeFaceExpect(Game, _Player) - BaseValue;
             } else {
-                return -PAiMapAnalyzer.ChangeFaceExpect(Game, _Player) - 500;
+                return -PAiMapAnalyzer.ChangeFaceExpect(Game, _Player) - BaseValue;
             }
         }, true).Key;
         return new List<PPlayer>() { Target };
+    }
+
+    public List<PPlayer> AIEmitTargets(PGame Game, PPlayer Player) {
+        return AIEmitTargets(Game, Player, 500);
     }
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
@@ -45,7 +49,8 @@ public class P_ChiinTsevChiinWang : PSchemeCardModel {
                     },
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets,
                         (PGame Game, PPlayer _Player) => {
-                            return _Player.Money == PMath.Max(Game.PlayerList, (PPlayer __Player) => __Player.Money).Value;
+                            int MaxMoney = PMath.Max(Game.PlayerList, (PPlayer __Player) => __Player.Money).Value;
+                            return _Player.Money == MaxMoney;
                         },
                         (PGame Game, PPlayer User, PPlayer Target) => {
                             Game.ChangeFace(Target);
