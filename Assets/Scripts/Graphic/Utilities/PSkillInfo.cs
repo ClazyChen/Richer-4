@@ -46,8 +46,8 @@ public class PSkillInfo : PObject {
     public static PSkillInfo 纵火 = new PSkillInfo("纵火", "【主】回合内限一次，你可以就地拆除1座房屋，然后令此处地价+10%。", PSkillType.Initiative);
     public static PSkillInfo 枭姬 = new PSkillInfo("枭姬", "【被】当你失去一张装备时，可以摸一张牌。", PSkillType.SoftLock);
     public static PSkillInfo 易装 = new PSkillInfo("易装", "【主】限定技，你可以与一名其他角色交换装备，然后你将性别修改为男。", PSkillType.Initiative);
-    public static PSkillInfo 贪污 = new PSkillInfo("贪污", "【被】锁定技，你购买土地和建造房屋的费用-10%。", PSkillType.Lock);
-    public static PSkillInfo 受贿 = new PSkillInfo("受贿", "【被】当你通过过路费造成伤害后，你可以将目标移出游戏。", PSkillType.Passive);
+    public static PSkillInfo 贪污 = new PSkillInfo("贪污", "【被】锁定技，你购买土地和建造房屋的费用*50%。", PSkillType.Lock);
+    public static PSkillInfo 受贿 = new PSkillInfo("受贿", "【主】每名角色限一次，你可以对一名角色造成1000点伤害，令其下一次购买土地和建造房屋的费用*50%。", PSkillType.Initiative);
 
     public PSkillInfo Copy() {
         return new PSkillInfo(Name, ToolTip, Type);

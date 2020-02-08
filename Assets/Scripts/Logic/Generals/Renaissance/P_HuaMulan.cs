@@ -112,7 +112,7 @@ public class P_HuaMulan: PGeneral {
                             }
                             Player.Sex = PSex.Male;
                             Player.Tags.CreateTag(new PTag(YiZhuang.Name));
-                            Player.Tags.FindPeekTag<PUsedTag>(PUsedTag.TagNamePrefix + YiZhuang.Name).Count++;
+                            YiZhuang.DeclareUse(Player);
                         }
                     }
                 };

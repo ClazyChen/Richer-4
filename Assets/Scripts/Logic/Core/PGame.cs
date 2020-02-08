@@ -349,11 +349,12 @@ public class PGame : PGameStatus {
         PPurchaseHouseTag PurchaseHouseTag = Monitor.CallTime(PTime.PurchaseHouseTime, new PPurchaseHouseTag(Player, Block));
         Player = PurchaseHouseTag.Player;
         Block = PurchaseHouseTag.Block;
+        int HousePrice = PurchaseHouseTag.HousePrice;
         if (Player != null && Block != null && Player.IsAlive) {
             PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "购买了1座房屋"));
             PNetworkManager.NetworkServer.TellClients(new PHighlightBlockOrder(Block.Index.ToString()));
             if (Block.HousePrice > 0) {
-                LoseMoney(Player, Block.HousePrice);
+                LoseMoney(Player, HousePrice);
             }
             GetHouse(Block, 1);
             PNetworkManager.NetworkServer.TellClients(new PRefreshBlockBasicOrder(Block));
@@ -364,8 +365,9 @@ public class PGame : PGameStatus {
         PPurchaseLandTag PurchaseLandTag = Monitor.CallTime(PTime.PurchaseLandTime, new PPurchaseLandTag(Player, Block));
         Player = PurchaseLandTag.Player;
         Block = PurchaseLandTag.Block;
+        int LandPrice = PurchaseLandTag.LandPrice;
         if (Player != null && Block != null && Player.IsAlive) {
-            LoseMoney(Player, Block.Price);
+            LoseMoney(Player, LandPrice);
             Block.Lord = Player;
             GetHouse(Block, 1);
             PNetworkManager.NetworkServer.TellClients(new PRefreshBlockBasicOrder(Block));

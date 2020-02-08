@@ -55,6 +55,22 @@ public class PSkill: PObject {
         return this;
     }
 
+    public PSkill AnnouceEachPlayerOnce() {
+        TriggerList.Add((PPlayer Player, PSkill Skill) => {
+            return new PTrigger(Skill.Name + "[初始化使用次数]") {
+                IsLocked = true,
+                Player = null,
+                Time = PTime.StartGameTime,
+                Effect = (PGame Game) => {
+                    foreach (PPlayer _Player in Game.PlayerList) {
+                        Player.Tags.CreateTag(new PUsedTag(Skill.Name + _Player.Name, 1));
+                    }
+                }
+            };
+        });
+        return this;
+    }
+
     public PSkill AnnouceTurnOnce() {
         TriggerList.Add((PPlayer Player, PSkill Skill) => {
             return new PTrigger(Skill.Name + "[初始化使用次数]") {
@@ -70,6 +86,13 @@ public class PSkill: PObject {
             };
         });
         return this;
+    }
+
+    public void DeclareUse(PPlayer Player) {
+        Player.Tags.FindPeekTag<PUsedTag>(PUsedTag.TagNamePrefix + Name).Count++;
+    }
+    public void DeclareUseFor(PPlayer Player, PPlayer Target) {
+        Player.Tags.FindPeekTag<PUsedTag>(PUsedTag.TagNamePrefix + Name + Target.Name).Count++;
     }
 
 }

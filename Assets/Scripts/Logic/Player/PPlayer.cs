@@ -242,4 +242,12 @@ public class PPlayer: PObject {
         return  UsedTag != null && UsedTag.Count < UsedTag.Limit ;
     }
 
+    public bool RemainLimit(string UsedName, PPlayer Target) {
+        PUsedTag UsedTag = Tags.FindPeekTag<PUsedTag>(PUsedTag.TagNamePrefix + UsedName + Target.Name);
+        if (UsedTag == null) {
+            Tags.CreateTag(UsedTag = new PUsedTag(UsedName, 1));
+        }
+        return UsedTag != null && UsedTag.Count < UsedTag.Limit;
+    }
+
 }
