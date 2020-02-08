@@ -57,14 +57,16 @@ public class PChooseGeneralTriggerInstaller : PSystemTriggerInstaller {
                                 break;
                             }
                         }
-                        foreach (PGeneral General in AvailableGenerals) {
-                            if (!Generals.Contains(General) && !Selected.Contains(General) && General.Cost != 0) {
-                                if (Game.PlayerList[i].IsAI || 
-                                    PNetworkManager.NetworkServer.ChooseManager.AskHaveGeneral(Game.PlayerList[i], General.Name)) {
-                                    Selected.Add(General);
-                                    PossibleGenerals.Add(General);
+                        for (int xx = 0; xx < 2; ++ xx) {
+                            foreach (PGeneral General in AvailableGenerals) {
+                                if (!Generals.Contains(General) && !Selected.Contains(General) && General.Cost != 0) {
+                                    if (Game.PlayerList[i].IsAI ||
+                                        PNetworkManager.NetworkServer.ChooseManager.AskHaveGeneral(Game.PlayerList[i], General.Name)) {
+                                        Selected.Add(General);
+                                        PossibleGenerals.Add(General);
+                                    }
+                                    break;
                                 }
-                                break;
                             }
                         }
                         if (PossibleGenerals.Count == 1) {
@@ -72,7 +74,10 @@ public class PChooseGeneralTriggerInstaller : PSystemTriggerInstaller {
                         } else {
                             if (Game.PlayerList[i].IsAI) {
                                 PMath.Wash(PossibleGenerals);
-                                Generals[i] = PossibleGenerals[0];
+                                Generals[i] = PossibleGenerals.Find((PGeneral _General) => _General.NewGeneral);
+                                if (Generals[i] == null) {
+                                    Generals[i] = PossibleGenerals[0];
+                                }
                             } else {
                                 Generals[i] = PossibleGenerals[PNetworkManager.NetworkServer.ChooseManager.Ask(Game.PlayerList[i], "点将",
                                     PossibleGenerals.ConvertAll((PGeneral General) => General.Name).ToArray())];

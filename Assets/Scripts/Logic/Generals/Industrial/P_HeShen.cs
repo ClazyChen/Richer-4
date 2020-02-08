@@ -13,6 +13,7 @@ public class P_HeShen: PGeneral {
         Age = PAge.Industrial;
         Index = 24;
         Cost = 30;
+        NewGeneral = true;
         Tips = "定位：防御\n" +
             "难度：待定\n" +
             "史实：清朝中期权臣，中国历史上有名的巨贪，聚敛了约十亿两白银的巨大财富。\n" +
@@ -79,18 +80,20 @@ public class P_HeShen: PGeneral {
         }
         PPlayer ShouHuiTarget(PGame Game, PPlayer Player) {
             foreach (PPlayer Target in Game.Teammates(Player)) {
-                if (ShouHuiExpect(Game, Target) >= 1500 && Target.Money >= 2000) {
+                if (ShouHuiExpect(Game, Target) >= 1500 && Target.Money >= 2000 && Player.RemainLimit(ShouHui.Name, Target)) {
                     return Target;
                 }
             }
             foreach (PPlayer Target in Game.Enemies(Player)) {
-                int Expect = ShouHuiExpect(Game, Target);
-                if (Expect < 0) {
-                    Expect = 3000;
-                }
-                Expect -= PAiTargetChooser.InjureExpect(Game, Player, Player, Target, 1000, ShouHui);
-                if (Expect <= -1000) {
-                    return Target;
+                if (Player.RemainLimit(ShouHui.Name, Target)) {
+                    int Expect = ShouHuiExpect(Game, Target);
+                    if (Expect < 0) {
+                        Expect = 3000;
+                    }
+                    Expect -= PAiTargetChooser.InjureExpect(Game, Player, Player, Target, 1000, ShouHui);
+                    if (Expect <= -1000) {
+                        return Target;
+                    }
                 }
             }
             return null;
@@ -137,14 +140,14 @@ public class P_HeShen: PGeneral {
                     Player = null,
                     Time = PTime.PurchaseLandTime,
                     Condition = (PGame Game) => {
-                        PPurchaseLandTag PurchaseLandTime = Game.TagManager.FindPeekTag<PPurchaseLandTag>(PPurchaseLandTag.TagName);
-                        return PurchaseLandTime.Player.Tags.ExistTag(PShouHuiTag.TagName);
+                        PPurchaseLandTag PurchaseLandTag = Game.TagManager.FindPeekTag<PPurchaseLandTag>(PPurchaseLandTag.TagName);
+                        return PurchaseLandTag.Player.Tags.ExistTag(PShouHuiTag.TagName);
                     },
                     Effect = (PGame Game) => {
-                        PPurchaseLandTag PurchaseLandTime = Game.TagManager.FindPeekTag<PPurchaseLandTag>(PPurchaseLandTag.TagName);
-                        PurchaseLandTime.LandPrice = 0;
-                        ShouHui.AnnouceUseSkill(PurchaseLandTime.Player);
-                        Player.Tags.PopTag<PShouHuiTag>(PShouHuiTag.TagName);
+                        PPurchaseLandTag PurchaseLandTag = Game.TagManager.FindPeekTag<PPurchaseLandTag>(PPurchaseLandTag.TagName);
+                        PurchaseLandTag.LandPrice = 0;
+                        ShouHui.AnnouceUseSkill(PurchaseLandTag.Player);
+                        PurchaseLandTag.Player.Tags.PopTag<PShouHuiTag>(PShouHuiTag.TagName);
                     }
                 };
             })
@@ -162,7 +165,7 @@ public class P_HeShen: PGeneral {
                         PPurchaseHouseTag PurchaseHouseTag = Game.TagManager.FindPeekTag<PPurchaseHouseTag>(PPurchaseHouseTag.TagName);
                         PurchaseHouseTag.HousePrice = 0;
                         ShouHui.AnnouceUseSkill(PurchaseHouseTag.Player);
-                        Player.Tags.PopTag<PShouHuiTag>(PShouHuiTag.TagName);
+                        PurchaseHouseTag.Player.Tags.PopTag<PShouHuiTag>(PShouHuiTag.TagName);
                     }
                 };
             }));
