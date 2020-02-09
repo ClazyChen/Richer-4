@@ -15,9 +15,12 @@ public abstract class PEquipmentCardModel : PCardModel {
         if (Player.General is P_HuaXiong) {
             Base += 1000;
         }
-        //if (Player.General is P_Thyn) {
-        //    Base += 2000;
-        //}
+        if (Player.General is P_TangYin) {
+            Base += 500;
+        }
+        if (Player.General is P_HuaMulan) {
+            Base += 2000;
+        }
         if (Current != null && Exp <= Current.Model.AIInEquipExpectation(Game, Player)) {
             Basic = 500 + Base;
         } else {

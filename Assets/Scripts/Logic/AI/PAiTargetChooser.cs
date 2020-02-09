@@ -89,6 +89,12 @@ public class PAiTargetChooser {
         Sum += BaseInjure * ToCof;
         Sum += BaseInjure * FromCof;
 
+
+        #region 受到伤害后：离骚
+        if (Target.General is P_QuYuan) {
+            Sum -= 900 * ToCof;
+        }
+        #endregion
         #region 伤害结束后：风云
         if (FromPlayer != null && FromPlayer.General is P_ChenYuanYuan) {
             Sum += 200 * FromCof;

@@ -56,7 +56,7 @@ public class P_HuaMulan: PGeneral {
                     }
                 }
                 Player.Sex = OriginalSex;
-                return Profit - 6000;
+                return Profit - 6500;
             }, true).Key;
         }
         PSkill YiZhuang = new PSkill("易装") {
