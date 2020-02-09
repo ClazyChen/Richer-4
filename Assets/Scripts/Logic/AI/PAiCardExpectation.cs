@@ -29,7 +29,18 @@ public class PAiCardExpectation {
         }
     }
 
-
+    /// <summary>
+    /// 这个函数用来弃牌/转化牌，因此花木兰的装备value会被-2000计算
+    /// </summary>
+    /// <param name="Game"></param>
+    /// <param name="Player">用来衡量价值的主视角</param>
+    /// <param name="TargetPlayer">衡量对象区域的所有者</param>
+    /// <param name="AllowHandCards"></param>
+    /// <param name="AllowEquipment"></param>
+    /// <param name="AllowAmbush"></param>
+    /// <param name="CanSee"></param>
+    /// <param name="Condition"></param>
+    /// <returns></returns>
     public static KeyValuePair< PCard, int> FindLeastValuable(PGame Game, PPlayer Player, PPlayer TargetPlayer, bool AllowHandCards = true, bool AllowEquipment = true, bool AllowAmbush = false, bool CanSee = false, Predicate<PCard> Condition = null) {
         KeyValuePair<PCard, int> HandCardResult = AllowHandCards ?  PMath.Min(TargetPlayer.Area.HandCardArea.CardList.FindAll((PCard Card) => {
             return Condition == null || Condition(Card);
@@ -43,16 +54,17 @@ public class PAiCardExpectation {
         KeyValuePair<PCard, int> EquipResult = AllowEquipment ? PMath.Min(TargetPlayer.Area.EquipmentCardArea.CardList.FindAll((PCard Card) => {
             return Condition == null || Condition(Card);
         }), (PCard Card) => {
+            int MulanCof = (TargetPlayer.General is P_HuaMulan ? 2000 : 0);
             if (CanSee) {
                 int Current = Card.Model.AIInEquipExpectation(Game, TargetPlayer);
                 int MaxEquip = PMath.Max(Player.Area.HandCardArea.CardList, (PCard _Card) => _Card.Model.AIInEquipExpectation(Game, Player)).Value;
                 if (Current <= MaxEquip) {
-                    return 500;
+                    return 500 - MulanCof;
                 } else {
-                    return Current - Math.Max(0, MaxEquip);
+                    return Current - Math.Max(0, MaxEquip) - MulanCof;
                 }
             } else {
-                return Card.Model.AIInEquipExpectation(Game, Player);
+                return Card.Model.AIInEquipExpectation(Game, Player) - MulanCof;
             }
         }) : new KeyValuePair<PCard, int>(null, int.MaxValue);
         KeyValuePair<PCard, int> AmbushResult = AllowAmbush ? PMath.Min(TargetPlayer.Area.AmbushCardArea.CardList.FindAll((PCard Card) => {
@@ -68,7 +80,19 @@ public class PAiCardExpectation {
         return Temp;
     }
 
+    /// <summary>
+    /// 用于交给队友有价值的牌和弃置敌人的高价值牌
+    /// </summary>
+    /// <param name="Game"></param>
+    /// <param name="Player"></param>
+    /// <param name="TargetPlayer"></param>
+    /// <param name="AllowHandCards"></param>
+    /// <param name="AllowEquipment"></param>
+    /// <param name="AllowAmbush"></param>
+    /// <param name="CanSee"></param>
+    /// <returns></returns>
     public static KeyValuePair<PCard, int> FindMostValuable(PGame Game, PPlayer Player, PPlayer TargetPlayer, bool AllowHandCards = true, bool AllowEquipment = true, bool AllowAmbush = false, bool CanSee = false) {
+        int Cof = Player.TeamIndex == TargetPlayer.TeamIndex ? 1 : -1;
         KeyValuePair<PCard, int> HandCardResult = AllowHandCards ? PMath.Max(TargetPlayer.Area.HandCardArea.CardList, (PCard Card) => {
             if (CanSee) {
                 return Card.Model.AIInHandExpectation(Game, Player);
@@ -77,7 +101,7 @@ public class PAiCardExpectation {
             }
         }) : new KeyValuePair<PCard, int>(null, int.MinValue);
         KeyValuePair<PCard, int> EquipResult = AllowEquipment ? PMath.Max(TargetPlayer.Area.EquipmentCardArea.CardList, (PCard Card) => {
-            return Card.Model.AIInEquipExpectation(Game, TargetPlayer);
+            return Card.Model.AIInEquipExpectation(Game, TargetPlayer) + (TargetPlayer.General is P_HuaMulan ? 2000 * Cof : 0);
         }) : new KeyValuePair<PCard, int>(null,int.MinValue);
         KeyValuePair<PCard, int> AmbushResult = AllowAmbush ? PMath.Max(TargetPlayer.Area.AmbushCardArea.CardList, (PCard Card) => {
             return Card.Model.AIInAmbushExpectation(Game, TargetPlayer);
@@ -101,7 +125,7 @@ public class PAiCardExpectation {
             }
         }) : new KeyValuePair<PCard, int>(null, int.MinValue);
         KeyValuePair<PCard, int> EquipResult = AllowEquipment ? PMath.Max(TargetPlayer.Area.EquipmentCardArea.CardList, (PCard Card) => {
-            return Card.Model.AIInHandExpectation(Game, Player)+ Cof* Card.Model.AIInEquipExpectation(Game, TargetPlayer);
+            return Card.Model.AIInHandExpectation(Game, Player)+ Cof* Card.Model.AIInEquipExpectation(Game, TargetPlayer) - (TargetPlayer.General is P_HuaMulan ? 2000 * Cof : 0);
         }) : new KeyValuePair<PCard, int>(null, int.MinValue);
         KeyValuePair<PCard, int> AmbushResult = AllowAmbush ? PMath.Max(TargetPlayer.Area.AmbushCardArea.CardList, (PCard Card) => {
             return Card.Model.AIInHandExpectation(Game, Player) + Cof * Card.Model.AIInAmbushExpectation(Game, TargetPlayer);

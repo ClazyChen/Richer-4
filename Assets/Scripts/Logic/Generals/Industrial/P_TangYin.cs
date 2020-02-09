@@ -187,16 +187,8 @@ public class P_TangYin: PGeneral {
                                 if (ToPlayer.TeamIndex == Player.TeamIndex) {
                                     if (ToPlayer.Money <= InjureTag.Injure) {
                                         Answer = 1;
-                                    } else {
-                                        foreach (PCard TestCard in ToPlayer.Area.EquipmentCardArea.CardList) {
-                                            if (Player.GetEquipment(TestCard.Type) == null && TestCard.AIInEquipExpectation(Game, Player) > TestCard.AIInEquipExpectation(Game, ToPlayer)) {
-                                                TargetCard = TestCard;
-                                                break;
-                                            }
-                                        }
-                                        if (TargetCard == null && ToPlayer.Money > InjureTag.Injure + 1000) {
-                                            Answer = 1;
-                                        }
+                                    } else if (PAiCardExpectation.FindMostValuable(Game, Player, ToPlayer, false, true, false, true).Value > 0) {
+                                        Answer = 1;
                                     }
                                 } else {
                                     int Value = FengLiuInjure * 2;
@@ -205,6 +197,7 @@ public class P_TangYin: PGeneral {
                                     } else if (ToPlayer.Money <= InjureTag.Injure + FengLiuInjure) {
                                         Value += 30000;
                                     }
+                                    
                                     foreach (PCard TestCard in ToPlayer.Area.EquipmentCardArea.CardList) {
                                         int NowValue = TestCard.AIInEquipExpectation(Game, ToPlayer);
                                         int GiveValue = TestCard.AIInEquipExpectation(Game, Player);
@@ -212,8 +205,9 @@ public class P_TangYin: PGeneral {
                                         if (Player.GetEquipment(TestCard.Type) != null) {
                                             OverrideValue = Player.GetEquipment(TestCard.Type).AIInEquipExpectation(Game, Player);
                                         }
-                                        if (Value > NowValue + GiveValue - OverrideValue) {
-                                            Value = NowValue + GiveValue - OverrideValue;
+                                        int ExtraValue = ToPlayer.General is P_HuaMulan ? 2000 : 0;
+                                        if (Value > NowValue + GiveValue - OverrideValue - ExtraValue) {
+                                            Value = NowValue + GiveValue - OverrideValue - ExtraValue;
                                             TargetCard = TestCard;
                                         }
                                     }

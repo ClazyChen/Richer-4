@@ -72,7 +72,8 @@ public abstract class PEquipmentCardModel : PCardModel {
                         if (Player.General is P_TangYin) {
                             return CurrentCard == null;
                         }
-                        return Card.Equals(MaxCard.Key) && (CurrentCard == null || MaxCard.Value > CurrentCard.Model.AIInEquipExpectation(Game, Player)) && MaxCard.Value > 0;
+                        int HuaMulanCof = Player.General is P_HuaMulan ? 2000 : 0;
+                        return Card.Equals(MaxCard.Key) && (CurrentCard == null || MaxCard.Value + HuaMulanCof > CurrentCard.Model.AIInEquipExpectation(Game, Player)) && MaxCard.Value > 0;
                     },
                     Effect = (PGame Game) => {
                         List<PPlayer> Targets = new List<PPlayer> { Player };
