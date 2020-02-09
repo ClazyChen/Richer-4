@@ -127,6 +127,7 @@ public class P_HeShen: PGeneral {
                             Target = PNetworkManager.NetworkServer.ChooseManager.AskForTargetPlayer(Player, (PGame _Game, PPlayer _Player) => Player.RemainLimit(ShouHui.Name, _Player), ShouHui.Name, true);
                         }
                         if (Target != null) {
+                            Game.Injure(Player, Target, 1000, ShouHui);
                             Target.Tags.CreateTag(new PShouHuiTag());
                             ShouHui.DeclareUseFor(Player, Target);
                         }

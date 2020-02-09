@@ -48,6 +48,12 @@ public class PSkillInfo : PObject {
     public static PSkillInfo 易装 = new PSkillInfo("易装", "【主】限定技，你可以与一名其他角色交换装备，然后你将性别修改为男。", PSkillType.Initiative);
     public static PSkillInfo 贪污 = new PSkillInfo("贪污", "【被】锁定技，你购买土地和建造房屋的费用*50%。", PSkillType.Lock);
     public static PSkillInfo 受贿 = new PSkillInfo("受贿", "【主】每名角色限一次，你可以对一名角色造成1000点伤害，令其下一次购买土地和建造房屋的费用*50%。", PSkillType.Initiative);
+    public static PSkillInfo 离骚 = new PSkillInfo("离骚", "【被】当你受到一次伤害后，你可以进行若干次判定直到判定结果数列不单调为止。然后你弃300X并摸一张牌[X=判定次数]。", PSkillType.SoftLock);
+    public static PSkillInfo 勤学 = new PSkillInfo("勤学", "【主】回合内限一次，你可以弃置一座房屋，翻开牌堆顶的三张牌，获得其中的装备牌。", PSkillType.Initiative);
+    public static PSkillInfo 白衣 = new PSkillInfo("白衣", "【被】当你受到过路费造成的伤害时，你可以弃一张装备牌，令其*50%。", PSkillType.Passive);
+    public static PSkillInfo 民主 = new PSkillInfo("民主", "【主】每局游戏限两次，空闲时间点，你可以令所有其他角色选择一项：1.受到你造成的1000点伤害；2.交给你一张手牌并翻面。使用后四回合才能再次使用此技能。", PSkillType.Initiative);
+    public static PSkillInfo 安魂 = new PSkillInfo("安魂", "【被】限定技，当你濒死时，可以令所有男性角色依次选择是否弃一张牌令你回复5000。", PSkillType.Passive);
+    public static PSkillInfo 夺魄 = new PSkillInfo("夺魄", "【被】当你通过过路费造成伤害时，你可以防止此伤害并进行一次判定，目标在X个回合结束前不能对你收取过路费。", PSkillType.Passive);
 
     public PSkillInfo Copy() {
         return new PSkillInfo(Name, ToolTip, Type);

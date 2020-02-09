@@ -10,7 +10,6 @@ public class P_ChenSheng : PGeneral {
         Age = PAge.Classic;
         Index = 21;
         Cost = 20;
-        NewGeneral = true;
         Tips = "定位：防御\n" +
             "难度：中等\n" +
             "史实：秦朝末年农民起义的领袖，建立了张楚政权。其名言“王侯将相宁有种乎”、“燕雀安知鸿鹄之志”等广为人知。\n" +

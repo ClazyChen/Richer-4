@@ -61,11 +61,7 @@ public class P_ZhouYu: PGeneral {
                         int CurrentToll = Player.Position.Toll;
                         int NewToll = PMath.Percent(Player.Position.Price + PMath.Percent(Player.Position.Price, 10), 20 + 40 * (Player.Position.HouseNumber - 1)) * (Player.Position.BusinessType.Equals(PBusinessType.ShoppingCenter) ? 2 : 1);
                         int Value = NewToll - CurrentToll;
-                        if (Player.TeamIndex == Player.Position.Lord.TeamIndex) {
-                            return Player.Position.Price == PMath.Percent(Player.Position.Price, 100) && -Value <= Player.Position.Lord.Money / 10;
-                        } else {
-                            return Value < 0;
-                        }
+                        return Value * (Player.TeamIndex == Player.Position.Lord.TeamIndex ? 1 : -1) > 0;
                     },
                     Effect = (PGame Game) => {
                         ZongHuo.AnnouceUseSkill(Player);

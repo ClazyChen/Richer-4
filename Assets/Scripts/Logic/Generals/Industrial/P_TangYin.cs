@@ -165,10 +165,10 @@ public class P_TangYin: PGeneral {
                             PCard CurrentCard = Player.GetEquipment(CardType);
                             PCard TestCard = ToPlayer.GetEquipment(CardType);
                             if (ToPlayer.TeamIndex == Player.TeamIndex) {
-                                if (CurrentCard == null && TestCard != null && TestCard.AIInEquipExpectation(Game, Player) > TestCard.AIInEquipExpectation(Game, ToPlayer)) {
+                                if (CurrentCard == null && TestCard != null && TestCard.Model.AIInEquipExpectation(Game, Player) > TestCard.Model.AIInEquipExpectation(Game, ToPlayer)) {
                                     return true;
                                 }
-                            } else if (CurrentCard != null && TestCard != null && CurrentCard.AIInEquipExpectation(Game, Player) >= TestCard.AIInEquipExpectation(Game, Player) + TestCard.AIInEquipExpectation(Game, ToPlayer)) {
+                            } else if (CurrentCard != null && TestCard != null && CurrentCard.Model.AIInEquipExpectation(Game, Player) >= TestCard.Model.AIInEquipExpectation(Game, Player) + TestCard.Model.AIInEquipExpectation(Game, ToPlayer)) {
                                 return false;
                             }
                         }
@@ -199,11 +199,11 @@ public class P_TangYin: PGeneral {
                                     }
                                     
                                     foreach (PCard TestCard in ToPlayer.Area.EquipmentCardArea.CardList) {
-                                        int NowValue = TestCard.AIInEquipExpectation(Game, ToPlayer);
-                                        int GiveValue = TestCard.AIInEquipExpectation(Game, Player);
+                                        int NowValue = TestCard.Model.AIInEquipExpectation(Game, ToPlayer);
+                                        int GiveValue = TestCard.Model.AIInEquipExpectation(Game, Player);
                                         int OverrideValue = 0;
                                         if (Player.GetEquipment(TestCard.Type) != null) {
-                                            OverrideValue = Player.GetEquipment(TestCard.Type).AIInEquipExpectation(Game, Player);
+                                            OverrideValue = Player.GetEquipment(TestCard.Type).Model.AIInEquipExpectation(Game, Player);
                                         }
                                         int ExtraValue = ToPlayer.General is P_HuaMulan ? 2000 : 0;
                                         if (Value > NowValue + GiveValue - OverrideValue - ExtraValue) {

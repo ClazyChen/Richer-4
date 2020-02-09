@@ -83,7 +83,7 @@ public class P_WuZhao: PGeneral {
                                 _Player.Tags.CreateTag(NvQuanTag);
                             }
                         });
-                        Player.Tags.FindPeekTag<PUsedTag>(PUsedTag.TagNamePrefix + NvQuan.Name).Count++;
+                        NvQuan.DeclareUse(Player);
                     }
                 };
             })

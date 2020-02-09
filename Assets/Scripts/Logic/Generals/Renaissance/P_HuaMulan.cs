@@ -47,16 +47,16 @@ public class P_HuaMulan: PGeneral {
                     PCard TargetCard = TargetPlayer.GetEquipment(CardType);
                     if (Card != null) {
                         Profit += 2000;
-                        Profit -= Card.AIInEquipExpectation(Game, Player);
-                        Profit += Card.AIInEquipExpectation(Game, TargetPlayer) * (Player.TeamIndex == TargetPlayer.TeamIndex ? 1 : -1);
+                        Profit -= Card.Model.AIInEquipExpectation(Game, Player);
+                        Profit += Card.Model.AIInEquipExpectation(Game, TargetPlayer) * (Player.TeamIndex == TargetPlayer.TeamIndex ? 1 : -1);
                     }
                     if (TargetCard != null) {
-                        Profit += TargetCard.AIInEquipExpectation(Game, Player);
-                        Profit -= TargetCard.AIInEquipExpectation(Game, TargetPlayer) * (Player.TeamIndex == TargetPlayer.TeamIndex ? 1 : -1);
+                        Profit += TargetCard.Model.AIInEquipExpectation(Game, Player);
+                        Profit -= TargetCard.Model.AIInEquipExpectation(Game, TargetPlayer) * (Player.TeamIndex == TargetPlayer.TeamIndex ? 1 : -1);
                     }
                 }
                 Player.Sex = OriginalSex;
-                return Profit - 5000;
+                return Profit - 6000;
             }, true).Key;
         }
         PSkill YiZhuang = new PSkill("易装") {
@@ -80,6 +80,14 @@ public class P_HuaMulan: PGeneral {
                         return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime()) && Player.RemainLimit(YiZhuang.Name);
                     },
                     AICondition = (PGame Game) => {
+                        if (Game.Teammates(Player).Exists((PPlayer _Player) => _Player.General is P_WuZhao)) {
+                            PPlayer _Player = Game.PlayerList.Find((PPlayer __Player) => __Player.General is P_WuZhao);
+                            if (_Player.RemainLimit("女权")) {
+                                return false;
+                            } else if (Player.Tags.ExistTag(P_WuZhao.NvQuanTag.Name)) {
+                                return false;
+                            }
+                        }
                         return YiZhuangTarget(Game, Player) != null;
                     },
                     Effect = (PGame Game) => {
