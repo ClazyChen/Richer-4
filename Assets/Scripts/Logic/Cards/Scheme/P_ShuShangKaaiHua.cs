@@ -46,7 +46,11 @@ public class P_ShuShangKaaiHua : PSchemeCardModel {
                     Effect = (PGame Game) => {
                         List<PPlayer> Targets = new List<PPlayer>();
                         Game.Monitor.CallTime(PTime.Card.AfterEmitTargetTime, new PUseCardTag(Card, Player, Targets));
-                        Game.CardManager.MoveCard(Card, Player.Area.HandCardArea, Game.CardManager.SettlingArea);
+                        if (Player.Area.EquipmentCardArea.CardList.Contains(Card)) {
+                            Game.CardManager.MoveCard(Card, Player.Area.EquipmentCardArea, Game.CardManager.SettlingArea);
+                        } else {
+                            Game.CardManager.MoveCard(Card, Player.Area.HandCardArea, Game.CardManager.SettlingArea);
+                        }
                         Game.Monitor.CallTime(PTime.Card.AfterBecomeTargetTime, new PUseCardTag(Card, Player, Targets));
 
                         PBlock Target = null;

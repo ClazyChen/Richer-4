@@ -99,7 +99,7 @@ public class P_TangYin: PGeneral {
             })
         );
         PSkill FengLiu = new PSkill("风流");
-        const int FengLiuInjure = 800;
+        const int FengLiuInjure = 600;
         SkillList.Add(FengLiu
             .AddTimeTrigger(
             new PTime[] {
@@ -173,7 +173,7 @@ public class P_TangYin: PGeneral {
                                         if (Player.GetEquipment(TestCard.Type) != null) {
                                             OverrideValue = Player.GetEquipment(TestCard.Type).Model.AIInEquipExpectation(Game, Player);
                                         }
-                                        int ExtraValue = ToPlayer.General is P_HuaMulan ? 2000 : 0;
+                                        int ExtraValue = ToPlayer.General is P_HuaMulan ? 3500 : 0;
                                         if (Value > NowValue + GiveValue - OverrideValue - ExtraValue) {
                                             Value = NowValue + GiveValue - OverrideValue - ExtraValue;
                                             TargetCard = TestCard;

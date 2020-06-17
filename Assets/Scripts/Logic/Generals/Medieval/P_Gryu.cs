@@ -14,44 +14,43 @@ public class P_Gryu : PGeneral {
             "攻略：\n关羽是一个较为稳定的武将，操作较为简单，【武圣】提供了一种类似诸葛连弩的输出方式，偶数牌的数量保证了技能的发动频率，因而购物中心和研究所是关羽优先选择的方向。即使没有高地价土地，关羽也可以利用废牌增加输出能力。\n" +
             "【怒斩】是一个稳定的输出技能，在破坏装备卡牌缺乏的环境中容易建立起持久的优势，并可在一定程度上威慑华雄【叫阵】及其他消耗装备牌技能的发动，同时给关羽一个较强的续航能力。";
 
-        PSkill Wuug = new PSkill("武圣") {
+        PSkill WuSheng = new PSkill("武圣") {
             Initiative = true
         };
-        SkillList.Add(Wuug
+        SkillList.Add(WuSheng
             .AddTimeTrigger(
             new PTime[] {
                 PPeriod.FirstFreeTime.During,
                 PPeriod.SecondFreeTime.During
             },
             (PTime Time, PPlayer Player, PSkill Skill) => {
-                return new PTrigger(Wuug.Name) {
+                return new PTrigger(WuSheng.Name) {
                     IsLocked = false,
                     Player = Player,
                     Time = Time,
-                    AIPriority = 100,
+                    AIPriority = 190,
                     CanRepeat = true,
                     Condition = (PGame Game) => {
                         return Player.Equals(Game.NowPlayer) &&
                         (Player.IsAI || Game.Logic.WaitingForEndFreeTime()) &&
-                        Player.Area.HandCardArea.CardList.Exists((PCard Card) => Card.Point % 2 == 0);
+                        (Player.Area.HandCardArea.CardList.Exists((PCard Card) => Card.Point % 2 == 0) ||
+                        Player.Area.EquipmentCardArea.CardList.Exists((PCard Card) => Card.Point % 2 == 0));
                     },
                     AICondition = (PGame Game) => {
                         int MaxHouseValue = PMath.Max(Game.Teammates(Player), (PPlayer _Player) => {
                             return PAiMapAnalyzer.MaxValueHouse(Game, _Player, true).Value;
                         }).Value;
-                        return Player.Area.HandCardArea.CardList.Exists((PCard Card) => {
-                            return Card.Point % 2 == 0 && Card.Model.AIInHandExpectation(Game, Player) < 
-                            MaxHouseValue - 500;
-                        }) && P_ShuShangKaaiHua.AIEmitTarget(Game, Player) != null;
+                        return PAiCardExpectation.FindLeastValuable(Game, Player, Player, true, true, false, true, (PCard Card) => Card.Point % 2 == 0).Value < MaxHouseValue - 500 && P_ShuShangKaaiHua.AIEmitTarget(Game, Player) != null;
                     },
                     Effect = (PGame Game) => {
-                        Wuug.AnnouceUseSkill(Player);
+                        WuSheng.AnnouceUseSkill(Player);
                         PCard TargetCard = null;
                         if (Player.IsAI) {
-                            TargetCard = PAiCardExpectation.FindLeastValuable(Game, Player, Player, true, false, false, true, (PCard Card) => Card.Point % 2 == 0).Key;
+                            TargetCard = PAiCardExpectation.FindLeastValuable(Game, Player, Player, true, true, false, true, (PCard Card) => Card.Point % 2 == 0).Key;
                         } else {
                             List<PCard> Waiting = Player.Area.HandCardArea.CardList.FindAll((PCard Card) => Card.Point % 2 == 0);
-                            int Result = PNetworkManager.NetworkServer.ChooseManager.Ask(Player, Wuug.Name, Waiting.ConvertAll((PCard Card) => Card.Name).Concat(new List<string> { "取消" }).ToArray());
+                            List<PCard> WaitingEquipments = Player.Area.EquipmentCardArea.CardList.FindAll((PCard Card) => Card.Point % 2 == 0);
+                            int Result = PNetworkManager.NetworkServer.ChooseManager.Ask(Player, WuSheng.Name, Waiting.ConvertAll((PCard Card) => Card.Name).Concat(WaitingEquipments.ConvertAll((PCard Card) => Card.Name + "(已装备)")).Concat(new List<string> { "取消" }).ToArray());
                             if (Result >= 0 && Result < Waiting.Count) {
                                 TargetCard = Waiting[Result];
                             }

@@ -82,6 +82,7 @@ public class P_ShiQian: PGeneral {
                             if (Trigger != null) {
                                 Game.Logic.StartSettle(new PSettle("轻敏[顺手牵羊]", Trigger.Effect));
                             }
+                            Game.GetCard(Player);
                         }
                     }
                 };

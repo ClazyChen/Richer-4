@@ -60,7 +60,7 @@ public class P_HeShen: PGeneral {
         PSkill ShouHui = new PSkill("受贿") {
             Initiative = true
         };
-        int ShouHuiExpect(PGame Game, PPlayer Player) {
+        static int ShouHuiExpect(PGame Game, PPlayer Player) {
             int Sum = 0;
             int Cnt = 0;
             foreach (PBlock Block in PAiMapAnalyzer.NextBlocks(Game, Player)) {
@@ -88,7 +88,7 @@ public class P_HeShen: PGeneral {
                 if (Player.RemainLimit(ShouHui.Name, Target)) {
                     int Expect = ShouHuiExpect(Game, Target);
                     if (Expect < 0) {
-                        Expect = 3000;
+                        Expect = 3000; // 无法判断下次购买土地或房屋的收益
                     }
                     Expect -= PAiTargetChooser.InjureExpect(Game, Player, Player, Target, 1000, ShouHui);
                     if (Expect <= -1000) {

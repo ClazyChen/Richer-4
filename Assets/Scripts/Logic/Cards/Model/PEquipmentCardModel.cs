@@ -19,7 +19,7 @@ public abstract class PEquipmentCardModel : PCardModel {
             Base += 500;
         }
         if (Player.General is P_HuaMulan) {
-            Base += 2000;
+            Base += 3500;
         }
         if (Current != null && Exp <= Current.Model.AIInEquipExpectation(Game, Player)) {
             Basic = 500 + Base;
@@ -75,7 +75,10 @@ public abstract class PEquipmentCardModel : PCardModel {
                         if (Player.General is P_TangYin) {
                             return CurrentCard == null;
                         }
-                        int HuaMulanCof = Player.General is P_HuaMulan ? 2000 : 0;
+                        if (Player.General is P_Gryu && CurrentCard != null && CurrentCard.Point %2 == 0) {
+                            return false;
+                        }
+                        int HuaMulanCof = Player.General is P_HuaMulan ? 3500 : 0;
                         return Card.Equals(MaxCard.Key) && (CurrentCard == null || MaxCard.Value + HuaMulanCof > CurrentCard.Model.AIInEquipExpectation(Game, Player)) && MaxCard.Value > 0;
                     },
                     Effect = (PGame Game) => {

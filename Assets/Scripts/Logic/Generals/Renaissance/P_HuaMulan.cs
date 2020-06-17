@@ -30,6 +30,7 @@ public class P_HuaMulan: PGeneral {
                     Effect = (PGame Game) => {
                         XiaoJi.AnnouceUseSkill(Player);
                         Game.GetCard(Player);
+                        Game.GetMoney(Player, 1500);
                     }
                 };
             }));

@@ -19,7 +19,7 @@ public class PSkillInfo : PObject {
     public static PSkillInfo 隐居 = new PSkillInfo("隐居", "【主】回合内限一次，你可以移动到一片你的有房屋的土地上，就地拆除一座房屋，将自己移出游戏。", PSkillType.Initiative);
     public static PSkillInfo 龙胆 = new PSkillInfo("龙胆", "【主】回合内限一次，你可弃置你的一座房屋，获得1个胆 ；当你造成伤害时，你可消耗1个胆使伤害*150%；当你受到伤害时，你可消耗1个胆使伤害*50%。", PSkillType.Initiative);
     public static PSkillInfo 飞贼 = new PSkillInfo("飞贼", "【被】锁定技，【顺手牵羊】对你无效。", PSkillType.Lock);
-    public static PSkillInfo 轻敏 = new PSkillInfo("轻敏", "【主】你可以将一张点数为1的手牌当做【顺手牵羊】使用。", PSkillType.Initiative);
+    public static PSkillInfo 轻敏 = new PSkillInfo("轻敏", "【主】你可以将一张点数为1的手牌当做【顺手牵羊】使用，然后摸一张牌。", PSkillType.Initiative);
     public static PSkillInfo 太极 = new PSkillInfo("太极", "【被】锁定技，回合开始时，你须选择“阴”或“阳”。锁定技，当你处在“阴”状态时，造成的伤害+20%；当你处在“阳”状态时，受到的伤害-20%。", PSkillType.Lock);
     public static PSkillInfo 残杀 = new PSkillInfo("残杀", "【被】当你通过过路费造成伤害时，你可以令收费地的地价-1000，令目标弃置伤害量*100%的现金。", PSkillType.Passive);
     public static PSkillInfo 耀武 = new PSkillInfo("耀武", "【被】锁定技，你的起始资金*150%。", PSkillType.Lock);
@@ -37,14 +37,14 @@ public class PSkillInfo : PObject {
     public static PSkillInfo 迁都 = new PSkillInfo("迁都", "【主】限定技，你可以移动到一个你的领地，将其改建为城堡，并获得城堡赠送房屋和额外的X座房屋[X=此时你的商业用地数量]。", PSkillType.Initiative);
     public static PSkillInfo 惯性 = new PSkillInfo("惯性", "【被】行走阶段开始时，若你所在的格子没有房屋，你可以弃500，移动到前方最近的一个有房屋或有其他玩家的格子。此法至多向前移动6格。", PSkillType.Passive);
     public static PSkillInfo 浪子 = new PSkillInfo("浪子", "【被】掷骰阶段开始时，你可以弃一张装备牌并选择1至6的一个数字，本次掷骰不会掷出你选择的数字。", PSkillType.Passive);
-    public static PSkillInfo 风流 = new PSkillInfo("风流", "【被】当你对一名其他角色造成伤害时，你可令其选择一项：1.将一张装备移动到你的装备区。2.令此伤害+800。", PSkillType.Passive);
+    public static PSkillInfo 风流 = new PSkillInfo("风流", "【被】当你对一名其他角色造成伤害时，你可令其选择一项：1.将一张装备移动到你的装备区。2.令此伤害+600。", PSkillType.Passive);
     public static PSkillInfo 电击 = new PSkillInfo("电击", "【主】你可以将一张点数为3或6的手牌当做【上屋抽梯】使用。", PSkillType.Initiative);
 
     // 第二个包
     public static PSkillInfo 起义 = new PSkillInfo("起义", "【主】你可以将一张点数为奇数的手牌当做【擒贼擒王】使用。", PSkillType.Initiative);
     public static PSkillInfo 鸿鹄 = new PSkillInfo("鸿鹄", "【被】当你翻面时，你可以摸2000，然后选择前进1至6步。", PSkillType.SoftLock);
     public static PSkillInfo 纵火 = new PSkillInfo("纵火", "【主】回合内限一次，你可以就地拆除1座房屋，然后令此处地价+10%。", PSkillType.Initiative);
-    public static PSkillInfo 枭姬 = new PSkillInfo("枭姬", "【被】当你失去一张装备时，可以摸一张牌。", PSkillType.SoftLock);
+    public static PSkillInfo 枭姬 = new PSkillInfo("枭姬", "【被】当你失去一张装备时，可以摸一张牌，并摸1500。", PSkillType.SoftLock);
     public static PSkillInfo 易装 = new PSkillInfo("易装", "【主】限定技，你可以与一名其他角色交换装备，然后你将性别修改为男。", PSkillType.Initiative);
     public static PSkillInfo 贪污 = new PSkillInfo("贪污", "【被】锁定技，你购买土地和建造房屋的费用*50%。", PSkillType.Lock);
     public static PSkillInfo 受贿 = new PSkillInfo("受贿", "【主】每名角色限一次，你可以对一名角色造成1000点伤害，令其下一次购买土地和建造房屋的费用*50%。", PSkillType.Initiative);

@@ -457,6 +457,11 @@ public class PGame : PGameStatus {
         return Ans;
     }
 
+    /// <summary>
+    /// 摸一张牌，返回摸到的牌
+    /// </summary>
+    /// <param name="Player"></param>
+    /// <returns></returns>
     public PCard GetCard(PPlayer Player) {
         if (Player == null || !Player.IsAlive) {
             return null;
