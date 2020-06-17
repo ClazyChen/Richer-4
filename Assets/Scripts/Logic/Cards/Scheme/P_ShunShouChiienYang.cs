@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class P_ShunShouChiienYang: PSchemeCardModel {
 
     public static KeyValuePair<PPlayer, int> AIExpect(PGame Game, PPlayer Player, int BaseValue = 4000) {
-        return PMath.Max(Game.PlayerList.FindAll((PPlayer TargetPlayer) => TargetPlayer.IsAlive && !TargetPlayer.Equals(Player) && !(TargetPlayer.General is P_ShiQian)), (PPlayer TargetPlayer) => {
+        return PMath.Max(Game.PlayerList.FindAll((PPlayer TargetPlayer) => TargetPlayer.IsAlive && !TargetPlayer.Equals(Player)/* && !(TargetPlayer.General is P_ShiQian)*/), (PPlayer TargetPlayer) => {
             return PAiCardExpectation.FindMostValuableToGet(Game, Player, TargetPlayer, true, true, true).Value - BaseValue;
         }, true);
     }
@@ -22,7 +22,7 @@ public class P_ShunShouChiienYang: PSchemeCardModel {
 
     public override int AIInHandExpectation(PGame Game, PPlayer Player) {
         int Basic = 4000;
-        int ShiQian = Game.Enemies(Player).FindAll((PPlayer _Player) => _Player.General is P_ShiQian).Count;
+        int ShiQian = 0;// Game.Enemies(Player).FindAll((PPlayer _Player) => _Player.General is P_ShiQian).Count;
         Basic *= Game.Enemies(Player).Count - ShiQian;
         Basic /= Game.Enemies(Player).Count;
         return Math.Max(Basic, base.AIInHandExpectation(Game, Player));

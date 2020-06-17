@@ -17,6 +17,7 @@ public class P_LvMeng : PGeneral {
         PSkill QinXue = new PSkill("勤学") {
             Initiative = true
         };
+        const int QinXueParameter = 4;
         SkillList.Add(QinXue
             .AnnouceTurnOnce()
             .AddTimeTrigger(
@@ -45,9 +46,9 @@ public class P_LvMeng : PGeneral {
                         int AllCardCount = Game.CardManager.CardHeap.CardNumber;
                         double Rate = (double)PossibleEquipmentCount / AllCardCount;
                         if (Block.Price <= 1000) {
-                            return Rate > 0.8 / 3 || Player.Area.EquipmentCardArea.CardNumber < 3;
+                            return Rate > 0.8 / QinXueParameter || Player.Area.EquipmentCardArea.CardNumber < 3;
                         } else if (Block.Price <= 2000) {
-                            return Rate > 1.6 / 3;
+                            return Rate > 1.6 / QinXueParameter;
                         } else {
                             return false;
                         }
@@ -56,7 +57,7 @@ public class P_LvMeng : PGeneral {
                         QinXue.AnnouceUseSkill(Player);
                         Game.ThrowHouse(Player, Player, QinXue.Name);
                         List<PCard> QinXueCardList = new List<PCard>();
-                        for (int i = 0; i < 3; ++ i) {
+                        for (int i = 0; i < QinXueParameter; ++ i) {
                             PCard Card = Game.CardManager.CardHeap.TopCard;
                             PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "展示了" + Card.Name));
                             QinXueCardList.Add(Card);
@@ -75,7 +76,7 @@ public class P_LvMeng : PGeneral {
             }));
 
         bool BaiYiCondition(PGame Game, PPlayer Player, PPlayer Source, int BaseInjure) {
-            return BaseInjure >= Player.Money || ((BaseInjure - PMath.Percent(BaseInjure, 50)) * (Source == null ? 1 : 2) > (1000 + PAiCardExpectation.EquipToThrow(Game, Player).Value) && (Source == null || Source.TeamIndex != Player.TeamIndex));
+            return BaseInjure >= Player.Money || ((BaseInjure - PMath.Percent(BaseInjure, 50)) * (Source == null ? 1 : 2) > (1000 + PAiCardExpectation.FindLeastValuable(Game, Player, Player, false, true, false, true).Value) && (Source == null || Source.TeamIndex != Player.TeamIndex));
         }
         PSkill BaiYi = new PSkill("白衣");
         SkillList.Add(BaiYi
@@ -98,7 +99,7 @@ public class P_LvMeng : PGeneral {
                         BaiYi.AnnouceUseSkill(Player);
                         PCard TargetCard = null;
                         if (Player.IsAI) {
-                            TargetCard = PAiCardExpectation.EquipToThrow(Game, Player).Key;
+                            TargetCard = PAiCardExpectation.FindLeastValuable(Game, Player, Player, false, true, false, true).Key;
                         } else {
                             do {
                                 TargetCard = PNetworkManager.NetworkServer.ChooseManager.AskToChooseOwnCard(Player, BaiYi.Name + "[选择一张装备牌]", true, true);

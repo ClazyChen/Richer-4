@@ -60,7 +60,7 @@ public class P_HeShen: PGeneral {
         PSkill ShouHui = new PSkill("受贿") {
             Initiative = true
         };
-        static int ShouHuiExpect(PGame Game, PPlayer Player) {
+        int ShouHuiExpect(PGame Game, PPlayer Player) {
             int Sum = 0;
             int Cnt = 0;
             foreach (PBlock Block in PAiMapAnalyzer.NextBlocks(Game, Player)) {

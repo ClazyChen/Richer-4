@@ -21,6 +21,9 @@ public abstract class PEquipmentCardModel : PCardModel {
         if (Player.General is P_HuaMulan) {
             Base += 3500;
         }
+        if (Player.General is P_LvMeng) {
+            Base += 1000;
+        }
         if (Current != null && Exp <= Current.Model.AIInEquipExpectation(Game, Player)) {
             Basic = 500 + Base;
         } else {
@@ -73,6 +76,9 @@ public abstract class PEquipmentCardModel : PCardModel {
                             return CurrentCard == null && Card.Equals(MinCard.Key);
                         }
                         if (Player.General is P_TangYin) {
+                            return CurrentCard == null;
+                        }
+                        if (Player.General is P_LvMeng) {
                             return CurrentCard == null;
                         }
                         if (Player.General is P_Gryu && CurrentCard != null && CurrentCard.Point %2 == 0) {
