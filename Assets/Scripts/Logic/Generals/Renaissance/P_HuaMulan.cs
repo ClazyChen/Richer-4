@@ -8,7 +8,6 @@ public class P_HuaMulan: PGeneral {
         Age = PAge.Renaissance;
         Index = 23;
         Cost = 20;
-        NewGeneral = true;
         Tips = "定位：控制\n" +
             "难度：待定\n" +
             "史实：出自经典诗歌《木兰辞》。中国古代替父从军的女英雄。\n" +
@@ -56,7 +55,7 @@ public class P_HuaMulan: PGeneral {
                     }
                 }
                 Player.Sex = OriginalSex;
-                return Profit - 6500;
+                return Profit - 7500;
             }, true).Key;
         }
         PSkill YiZhuang = new PSkill("易装") {

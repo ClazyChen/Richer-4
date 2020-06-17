@@ -4,38 +4,6 @@ using System.Collections.Generic;
 
 public class P_TangYin: PGeneral {
 
-    public static KeyValuePair<PCard, int> LangZiValue(PGame Game, PPlayer Player) {
-        Dictionary<PCard, int> Dict = new Dictionary<PCard, int>();
-        PCard Answer = null;
-        int AnswerValue = -1;
-        foreach (PCardType CardType in new PCardType[] {
-                PCardType.WeaponCard, PCardType.DefensorCard, PCardType.TrafficCard
-            }) {
-            PCard CurrentCard = Player.GetEquipment(CardType);
-            if (CurrentCard != null) {
-                List<PCard> AvailableCardList = Player.Area.HandCardArea.CardList.FindAll((PCard _Card) => _Card.Type.Equals(CardType));
-                if (AvailableCardList.Count > 0) {
-                    KeyValuePair<PCard, int> MinCard = PMath.Min(AvailableCardList, (PCard _Card) => _Card.Model.AIInEquipExpectation(Game, Player));
-                    KeyValuePair<PCard, int> MaxCard = PMath.Max(AvailableCardList, (PCard _Card) => _Card.Model.AIInEquipExpectation(Game, Player));
-                    int CurrentValue = CurrentCard.Model.AIInEquipExpectation(Game, Player);
-                    if (CurrentValue > MinCard.Value) {
-                        Dict.Add(MinCard.Key, 0);
-                    }
-                    if (CurrentValue < MaxCard.Value) {
-                        Dict.Add(CurrentCard, MaxCard.Value - CurrentValue);
-                    }
-                }
-            }
-        }
-        foreach (KeyValuePair<PCard, int> Record in Dict) {
-            if (Record.Value > AnswerValue) {
-                AnswerValue = Record.Value;
-                Answer = Record.Key;
-            }
-        }
-        return new KeyValuePair<PCard, int>(Answer, AnswerValue);
-    }
-
     public static KeyValuePair<int, int> LangZiBannedNumber(PGame Game, PPlayer Player) {
         int Original = PAiMapAnalyzer.StartFromExpect(Game, Player, Player.Position);
         int Answer = 0;
@@ -77,7 +45,7 @@ public class P_TangYin: PGeneral {
                         Player.HasEquipInArea();
                     },
                     AICondition = (PGame Game) => {
-                        KeyValuePair<PCard, int> CardValue = LangZiValue(Game, Player);
+                        KeyValuePair<PCard, int> CardValue = PAiCardExpectation.EquipToThrow(Game, Player);
                         KeyValuePair<int, int> SkillValue = LangZiBannedNumber(Game, Player);
                         return CardValue.Key != null && SkillValue.Key > 0 && SkillValue.Value >= 100 && SkillValue.Value + CardValue.Value >= 300;
                     },
@@ -85,7 +53,7 @@ public class P_TangYin: PGeneral {
                         LangZi.AnnouceUseSkill(Player);
                         PCard TargetCard = null;
                         if (Player.IsAI) {
-                            TargetCard = LangZiValue(Game, Player).Key;
+                            TargetCard = PAiCardExpectation.EquipToThrow(Game, Player).Key;
                         } else {
                             do {
                                 TargetCard = PNetworkManager.NetworkServer.ChooseManager.AskToChooseOwnCard(Player, LangZi.Name + "[选择一张装备牌]", true, true);

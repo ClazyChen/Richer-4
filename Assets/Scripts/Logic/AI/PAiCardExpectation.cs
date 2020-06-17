@@ -141,4 +141,36 @@ public class PAiCardExpectation {
     public static PPlayer MostValuableCardUser(PGame Game, List<PPlayer> PlayerList) {
         return PMath.Max(PlayerList, (PPlayer Player) => Expect(Game, Player) + PMath.RandInt(-10,10)).Key;
     }
+
+    public static KeyValuePair<PCard, int> EquipToThrow(PGame Game, PPlayer Player) {
+        Dictionary<PCard, int> Dict = new Dictionary<PCard, int>();
+        PCard Answer = null;
+        int AnswerValue = -1;
+        foreach (PCardType CardType in new PCardType[] {
+                PCardType.WeaponCard, PCardType.DefensorCard, PCardType.TrafficCard
+            }) {
+            PCard CurrentCard = Player.GetEquipment(CardType);
+            if (CurrentCard != null) {
+                List<PCard> AvailableCardList = Player.Area.HandCardArea.CardList.FindAll((PCard _Card) => _Card.Type.Equals(CardType));
+                if (AvailableCardList.Count > 0) {
+                    KeyValuePair<PCard, int> MinCard = PMath.Min(AvailableCardList, (PCard _Card) => _Card.Model.AIInEquipExpectation(Game, Player));
+                    KeyValuePair<PCard, int> MaxCard = PMath.Max(AvailableCardList, (PCard _Card) => _Card.Model.AIInEquipExpectation(Game, Player));
+                    int CurrentValue = CurrentCard.Model.AIInEquipExpectation(Game, Player);
+                    if (CurrentValue > MinCard.Value) {
+                        Dict.Add(MinCard.Key, 0);
+                    }
+                    if (CurrentValue < MaxCard.Value) {
+                        Dict.Add(CurrentCard, MaxCard.Value - CurrentValue);
+                    }
+                }
+            }
+        }
+        foreach (KeyValuePair<PCard, int> Record in Dict) {
+            if (Record.Value > AnswerValue) {
+                AnswerValue = Record.Value;
+                Answer = Record.Key;
+            }
+        }
+        return new KeyValuePair<PCard, int>(Answer, AnswerValue);
+    }
 }

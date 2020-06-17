@@ -8,7 +8,6 @@ public class P_ZhouYu: PGeneral {
         Age = PAge.Medieval;
         Index = 22;
         Cost = 25;
-        NewGeneral = true;
         Tips = "定位：全能\n" +
             "难度：困难\n" +
             "史实：东汉末期东吴名将，“东吴四都督”之一。在赤壁之战中以少胜多，大破曹军，奠定了“三分天下”的基础。\n" +
