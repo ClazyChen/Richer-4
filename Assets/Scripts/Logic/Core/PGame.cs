@@ -448,10 +448,10 @@ public class PGame : PGameStatus {
         return Result;
     }
 
-    public List<PCard> GetCard(PPlayer Player, int Count) {
+    public List<PCard> GetCard(PPlayer Player, int Count, bool OnlyShow = false) {
         List<PCard> Ans = new List<PCard>();
         for (int i = 0; i < Count;++i) {
-            Ans.Add(GetCard(Player));
+            Ans.Add(GetCard(Player, OnlyShow));
         }
         Ans.RemoveAll((PCard Card) => Card == null);
         return Ans;
@@ -461,8 +461,9 @@ public class PGame : PGameStatus {
     /// 摸一张牌，返回摸到的牌
     /// </summary>
     /// <param name="Player"></param>
+    /// <param name="OnlyShow">是否是展示卡牌（摸到结算区）</param>
     /// <returns></returns>
-    public PCard GetCard(PPlayer Player) {
+    public PCard GetCard(PPlayer Player, bool OnlyShow = false) {
         if (Player == null || !Player.IsAlive) {
             return null;
         }
@@ -473,10 +474,14 @@ public class PGame : PGameStatus {
         }
         PCard Got = null;
         if (CardManager.CardHeap.CardNumber > 0) {
-            CardManager.MoveCard(Got = CardManager.CardHeap.TopCard, CardManager.CardHeap, Player.Area.HandCardArea);
+            CardManager.MoveCard(Got = CardManager.CardHeap.TopCard, CardManager.CardHeap, OnlyShow ? CardManager.SettlingArea : Player.Area.HandCardArea);
         }
         if (NowPeriod != null) {
-            PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "摸了1张牌"));
+            if (OnlyShow) {
+                PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "展示了" + Got.Name));
+            } else {
+                PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "摸了1张牌"));
+            }
         }
         return Got;
     }

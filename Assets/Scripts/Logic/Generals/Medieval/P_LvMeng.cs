@@ -44,7 +44,10 @@ public class P_LvMeng : PGeneral {
                         }
                         int PossibleEquipmentCount = Game.CardManager.CardHeap.CardList.FindAll((PCard _Card) => _Card.Type.IsEquipment()).Count;
                         int AllCardCount = Game.CardManager.CardHeap.CardNumber;
-                        int CardCountExpectation = PossibleEquipmentCount * QinXueParameter / AllCardCount;
+                        int CardCountExpectation = 0;
+                        if (AllCardCount >= QinXueParameter) {
+                            CardCountExpectation = PossibleEquipmentCount * QinXueParameter / AllCardCount;
+                        }
                         if (Player.Area.EquipmentCardArea.CardNumber < 3) {
                             return CardCountExpectation * 2000 > MinBlock.Value;
                         } else {
@@ -54,13 +57,7 @@ public class P_LvMeng : PGeneral {
                     Effect = (PGame Game) => {
                         QinXue.AnnouceUseSkill(Player);
                         Game.ThrowHouse(Player, Player, QinXue.Name);
-                        List<PCard> QinXueCardList = new List<PCard>();
-                        for (int i = 0; i < QinXueParameter; ++ i) {
-                            PCard Card = Game.CardManager.CardHeap.TopCard;
-                            PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "展示了" + Card.Name));
-                            QinXueCardList.Add(Card);
-                            Game.CardManager.MoveCard(Card, Game.CardManager.CardHeap, Game.CardManager.SettlingArea);
-                        }
+                        List<PCard> QinXueCardList = Game.GetCard(Player, QinXueParameter, true);
                         foreach (PCard Card in QinXueCardList) {
                             if (Card.Type.IsEquipment()) {
                                 Game.CardManager.MoveCard(Card, Game.CardManager.SettlingArea, Player.Area.HandCardArea);
@@ -111,6 +108,7 @@ public class P_LvMeng : PGeneral {
                         }
                         if (TargetCard != null) {
                             Game.CardManager.MoveCard(TargetCard, Player.Area.HandCardArea.CardList.Contains(TargetCard) ? Player.Area.HandCardArea : Player.Area.EquipmentCardArea, Game.CardManager.ThrownCardHeap);
+                            PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "弃置了" + TargetCard.Name));
                             PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
                             InjureTag.Injure = PMath.Percent(InjureTag.Injure, 50);
                         }
