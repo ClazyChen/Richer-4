@@ -13,7 +13,6 @@ public class P_HeShen: PGeneral {
         Age = PAge.Industrial;
         Index = 24;
         Cost = 30;
-        NewGeneral = true;
         Tips = "定位：防御\n" +
             "难度：待定\n" +
             "史实：清朝中期权臣，中国历史上有名的巨贪，聚敛了约十亿两白银的巨大财富。\n" +

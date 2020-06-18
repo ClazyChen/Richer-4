@@ -38,19 +38,17 @@ public class P_LvMeng : PGeneral {
                         Player.HasHouse && Player.RemainLimit(QinXue.Name);
                     },
                     AICondition = (PGame Game) => {
-                        PBlock Block = PAiMapAnalyzer.MinValueHouse(Game, Player, false, true).Key;
-                        if (Block == null) {
+                        KeyValuePair<PBlock, int> MinBlock = PAiMapAnalyzer.MinValueHouse(Game, Player, false, true);
+                        if (MinBlock.Key == null) {
                             return false;
                         }
                         int PossibleEquipmentCount = Game.CardManager.CardHeap.CardList.FindAll((PCard _Card) => _Card.Type.IsEquipment()).Count;
                         int AllCardCount = Game.CardManager.CardHeap.CardNumber;
-                        double Rate = (double)PossibleEquipmentCount / AllCardCount;
-                        if (Block.Price <= 1000) {
-                            return Rate > 0.8 / QinXueParameter || Player.Area.EquipmentCardArea.CardNumber < 3;
-                        } else if (Block.Price <= 2000) {
-                            return Rate > 1.6 / QinXueParameter;
+                        int CardCountExpectation = PossibleEquipmentCount * QinXueParameter / AllCardCount;
+                        if (Player.Area.EquipmentCardArea.CardNumber < 3) {
+                            return CardCountExpectation * 2000 > MinBlock.Value;
                         } else {
-                            return false;
+                            return CardCountExpectation * 1500 > MinBlock.Value;
                         }
                     },
                     Effect = (PGame Game) => {
@@ -76,7 +74,13 @@ public class P_LvMeng : PGeneral {
             }));
 
         bool BaiYiCondition(PGame Game, PPlayer Player, PPlayer Source, int BaseInjure) {
-            return BaseInjure >= Player.Money || ((BaseInjure - PMath.Percent(BaseInjure, 50)) * (Source == null ? 1 : 2) > (1000 + PAiCardExpectation.FindLeastValuable(Game, Player, Player, false, true, false, true).Value) && (Source == null || Source.TeamIndex != Player.TeamIndex));
+            if (BaseInjure >= Player.Money && PMath.Percent(BaseInjure, 50) < Player.Money) {
+                return true;
+            } else {
+                int Profit = (BaseInjure - PMath.Percent(BaseInjure, 50)) * (Source == null ? 1 : (Source.TeamIndex == Player.TeamIndex ? 0 : 2));
+                int Value = PAiCardExpectation.FindLeastValuable(Game, Player, Player, true, true, false, true, (PCard Card) => Card.Type.IsEquipment()).Value;
+                return Profit > Value + 1000;
+            }
         }
         PSkill BaiYi = new PSkill("白衣");
         SkillList.Add(BaiYi
@@ -99,7 +103,7 @@ public class P_LvMeng : PGeneral {
                         BaiYi.AnnouceUseSkill(Player);
                         PCard TargetCard = null;
                         if (Player.IsAI) {
-                            TargetCard = PAiCardExpectation.FindLeastValuable(Game, Player, Player, false, true, false, true).Key;
+                            TargetCard = PAiCardExpectation.FindLeastValuable(Game, Player, Player, true, true, false, true, (PCard Card) => Card.Type.IsEquipment()).Key;
                         } else {
                             do {
                                 TargetCard = PNetworkManager.NetworkServer.ChooseManager.AskToChooseOwnCard(Player, BaiYi.Name + "[选择一张装备牌]", true, true);

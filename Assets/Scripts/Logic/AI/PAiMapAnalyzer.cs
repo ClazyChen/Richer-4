@@ -167,6 +167,14 @@ public class PAiMapAnalyzer {
         });
     }
 
+    /// <summary>
+    /// 返回最低价值的房屋
+    /// </summary>
+    /// <param name="Game"></param>
+    /// <param name="Player">房屋所有者</param>
+    /// <param name="StartFromZero">是否允许土地上实际没有房屋</param>
+    /// <param name="Concentrate">是否优先选取房屋数量少的土地的房屋</param>
+    /// <returns></returns>
     public static KeyValuePair<PBlock, int> MinValueHouse(PGame Game, PPlayer Player, bool StartFromZero = false, bool Concentrate = false) {
         int EnemyCount = Game.Enemies(Player).Count;
         KeyValuePair<PBlock, int> Test = PMath.Min(Game.Map.BlockList.FindAll((PBlock Block) => Player.Equals(Block.Lord) && (StartFromZero || Block.HouseNumber > 0)), (PBlock Block) => {

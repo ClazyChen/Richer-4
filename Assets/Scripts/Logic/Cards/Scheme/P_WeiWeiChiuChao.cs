@@ -42,6 +42,13 @@ public class P_WeiWeiChiuChao: PSchemeCardModel {
                     },
                     AICondition = (PGame Game) => {
                         PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
+                        if (InjureTag.FromPlayer.General is P_LiuJi) {
+                            if (InjureTag.FromPlayer.TeamIndex == Player.TeamIndex) {
+                                return InjureTag.FromPlayer.Money <= 3600;
+                            } else {
+                                return false;
+                            }
+                        }
                         return Player.Money <= InjureTag.Injure || (InjureTag.Injure >= 3000 && InjureTag.FromPlayer.TeamIndex != Player.TeamIndex);
                     },
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets, AIEmitTargets,

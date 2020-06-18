@@ -55,7 +55,7 @@ public class PAiTargetChooser {
             }
         }
         #endregion
-        #region 受到伤害时发动的技能：八卦阵，百花裙，龙胆，太极，霸王
+        #region 受到伤害时发动的技能：八卦阵，百花裙，龙胆，太极，霸王，白衣
         if (Target.HasEquipment<P_PaKuaChevn>()) {
             if (Target.General is P_LiuJi) {
                 Sum -= 1000 * ToCof;
@@ -79,6 +79,9 @@ public class PAiTargetChooser {
             return !_Player.Equals(Target) && _Player.TeamIndex != Target.TeamIndex && _Player.Distance(Target) <= 1 && _Player.General is P_Xdyu;
         })) {
             BaseInjure += 800;
+        }
+        if (Target.General is P_LvMeng && Target.Area.EquipmentCardArea.CardNumber > 0) {
+            BaseInjure = Math.Min(PMath.Percent(BaseInjure, 50) + PAiCardExpectation.FindLeastValuable(Game, Player, Player, false, true, false, true).Value, BaseInjure);
         }
         #endregion
 
