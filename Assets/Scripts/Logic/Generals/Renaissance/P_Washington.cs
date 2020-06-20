@@ -64,7 +64,13 @@ public class P_Washington: PGeneral {
                             int MaxExpect = Cof == 1 ? Math.Max(Expect1, Expect2) : Math.Min(Expect1, Expect2);
                             Sum += MaxExpect;
                         }
-                        return Sum >= 2000 * Game.Enemies(Player).Count;
+                        if (Game.Teammates(Player).Exists((PPlayer _Player) => _Player.General is P_ChenSheng)) {
+                            Sum -= 2000;
+                        }
+                        if (Game.Enemies(Player).Exists((PPlayer _Player) => _Player.General is P_ChenSheng)) {
+                            Sum += 2000;
+                        }
+                        return Sum > 2000 * Game.Enemies(Player).Count;
                     },
                     Effect = (PGame Game) => {
                         MinZhu.AnnouceUseSkill(Player);
