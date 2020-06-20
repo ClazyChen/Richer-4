@@ -22,9 +22,9 @@ public class PAnimation {
         PThread.Async(() => {
             int ID = IDCount++;
             PUIManager.RegisterAnimation(ID);
-            PLogger.Log("注册动画 " + Name + " #" + ID);
+            // PLogger.Log("注册动画 " + Name + " #" + ID);
             PThread.WaitUntil(() => PUIManager.IsAvailable(ID));
-            PLogger.Log("开始动画 " + Name + " #" + ID);
+            // PLogger.Log("开始动画 " + Name + " #" + ID);
             PUIManager.AddNewUIAction(string.Empty, () => {
                 Preparation?.Invoke();
             }, ID);
@@ -32,7 +32,7 @@ public class PAnimation {
                 PUIManager.AddNewUIAction(string.Empty, Animation, ID);
             }, FrameNumber, TotalTime);
             PUIManager.AddNewUIAction(string.Empty, () => { }, ID, true);
-            PLogger.Log("结束动画 " + Name + " #" + ID);
+            // PLogger.Log("结束动画 " + Name + " #" + ID);
             Callback?.Invoke();
         });
     }

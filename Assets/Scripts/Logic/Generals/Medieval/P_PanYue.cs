@@ -53,7 +53,7 @@ public class P_PanYue: PGeneral {
         PSkill XianJu = new PSkill("闲居");
         SkillList.Add(XianJu
             // 用每回合限一次这个模板控制条件
-            .AnnouceTurnOnce()
+            .AnnounceTurnOnce()
             // 回合结束时触发技能
             .AddTrigger(
             (PPlayer Player, PSkill Skill) => {

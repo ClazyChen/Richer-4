@@ -8,10 +8,10 @@ public class P_HuaMulan: PGeneral {
         Age = PAge.Renaissance;
         Index = 23;
         Cost = 20;
-        Tips = "定位：控制\n" +
-            "难度：待定\n" +
+        Tips = "定位：爆发\n" +
+            "难度：简单\n" +
             "史实：出自经典诗歌《木兰辞》。中国古代替父从军的女英雄。\n" +
-            "攻略：\n暂无";
+            "攻略：\n花木兰是一名拥有不俗爆发能力的武将。【枭姬】的存在使得花木兰极度依赖装备牌，因此能够与唐寅、时迁等武将配合，同时也能够对这些武将形成强大的威慑力。【枭姬】往往能够提供绝地反杀的能力，或能使花木兰东山再起，因此在针对花木兰时必须注意其队伍的研究所或给牌武将，同时慎用【落凤弓】、【借刀杀人】等牌，从一定程度上来说提供了花木兰一定的防御力。【易装】是一个强大的爆发技能，不仅能与队友交换装备达成爆发，还能抢夺敌方的大量装备，形成局势逆转，因此可在一定程度上克制关羽。【易装】还可用来转换性别，从而使敌方的【百花裙】等装备失效。针对花木兰必须阻止其装备成形，因此吕蒙是一个不错的选择。";
 
         PSkill XiaoJi = new PSkill("枭姬") {
             SoftLockOpen = true
@@ -63,7 +63,7 @@ public class P_HuaMulan: PGeneral {
             Initiative = true
         };
         SkillList.Add(YiZhuang
-            .AnnouceGameOnce()
+            .AnnounceGameOnce()
             .AddTimeTrigger(
             new PTime[] {
                 PPeriod.FirstFreeTime.During,

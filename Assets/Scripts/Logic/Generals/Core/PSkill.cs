@@ -41,21 +41,25 @@ public class PSkill: PObject {
         return this;
     }
 
-    public PSkill AnnouceGameOnce() {
+    public PSkill AnnounceGameTimes(int times) {
         TriggerList.Add((PPlayer Player, PSkill Skill) => {
             return new PTrigger(Skill.Name + "[初始化使用次数]") {
                 IsLocked = true,
                 Player = null,
                 Time = PTime.StartGameTime,
                 Effect = (PGame Game) => {
-                    Player.Tags.CreateTag(new PUsedTag(Skill.Name, 1));
+                    Player.Tags.CreateTag(new PUsedTag(Skill.Name, times));
                 }
             };
         });
         return this;
     }
 
-    public PSkill AnnouceEachPlayerOnce() {
+    public PSkill AnnounceGameOnce() {
+        return AnnounceGameTimes(1);
+    }
+
+    public PSkill AnnounceEachPlayerOnce() {
         TriggerList.Add((PPlayer Player, PSkill Skill) => {
             return new PTrigger(Skill.Name + "[初始化使用次数]") {
                 IsLocked = true,
@@ -71,7 +75,7 @@ public class PSkill: PObject {
         return this;
     }
 
-    public PSkill AnnouceTurnOnce() {
+    public PSkill AnnounceTurnOnce() {
         TriggerList.Add((PPlayer Player, PSkill Skill) => {
             return new PTrigger(Skill.Name + "[初始化使用次数]") {
                 IsLocked = true,
@@ -82,6 +86,7 @@ public class PSkill: PObject {
                 },
                 Effect = (PGame Game) => {
                     Player.Tags.CreateTag(new PUsedTag(Skill.Name, 1));
+                    PNetworkManager.NetworkServer.TellClient(Player, new PRefreshGeneralOrder(Player));
                 }
             };
         });
@@ -90,9 +95,11 @@ public class PSkill: PObject {
 
     public void DeclareUse(PPlayer Player) {
         Player.Tags.FindPeekTag<PUsedTag>(PUsedTag.TagNamePrefix + Name).Count++;
+        PNetworkManager.NetworkServer.TellClient(Player, new PRefreshGeneralOrder(Player));
     }
     public void DeclareUseFor(PPlayer Player, PPlayer Target) {
         Player.Tags.FindPeekTag<PUsedTag>(PUsedTag.TagNamePrefix + Name + Target.Name).Count++;
+        PNetworkManager.NetworkServer.TellClient(Player, new PRefreshGeneralOrder(Player));
     }
 
 }

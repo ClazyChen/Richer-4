@@ -51,7 +51,11 @@ public class PRefreshGeneralOrder : POrder {
                     Answer.Add(PSkillType.Lock.Name);
                 } else {
                     if (Skill.Initiative) {
-                        Answer.Add(PSkillType.Initiative.Name);
+                        if (Player.RemainLimitForAlivePlayers(Skill.Name, PNetworkManager.NetworkServer.Game) && Player.RemainLimit(Skill.Name, true)) {
+                            Answer.Add(PSkillType.Initiative.Name);
+                        } else {
+                            Answer.Add(PSkillType.InitiativeInactive.Name);
+                        }
                     } else {
                         Answer.Add(PSkillType.Passive.Name);
                     }

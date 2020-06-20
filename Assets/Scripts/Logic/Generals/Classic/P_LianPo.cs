@@ -19,7 +19,7 @@ public class P_LianPo: PGeneral {
             Initiative = true
         };
         SkillList.Add(FuJing
-            .AnnouceTurnOnce()
+            .AnnounceTurnOnce()
             .AddTimeTrigger(
             new PTime[] {
                 PPeriod.FirstFreeTime.During,
@@ -65,7 +65,7 @@ public class P_LianPo: PGeneral {
                         if (Target != null) {
                             Game.Injure(Target, Player, 3000, FuJing);
                             Game.GetCard(Target, 1);
-                            Player.Tags.FindPeekTag<PUsedTag>(PUsedTag.TagNamePrefix + FuJing.Name).Count++;
+                            FuJing.DeclareUse(Player);
                         }
                     }
                 };

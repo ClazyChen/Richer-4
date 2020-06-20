@@ -14,9 +14,9 @@ public class P_HeShen: PGeneral {
         Index = 24;
         Cost = 30;
         Tips = "定位：防御\n" +
-            "难度：待定\n" +
+            "难度：简单\n" +
             "史实：清朝中期权臣，中国历史上有名的巨贪，聚敛了约十亿两白银的巨大财富。\n" +
-            "攻略：\n暂无";
+            "攻略：\n和珅是一名拥有不错防御力的武将。【贪污】使和珅的起始资金变相增加，而【受贿】可用于关键击杀，但一般都用于辅助队友。和珅的技能使用基本没有任何难度，因此十分适合新手使用。";
 
         PSkill TanWu = new PSkill("贪污") {
             Lock = true
@@ -98,7 +98,7 @@ public class P_HeShen: PGeneral {
             return null;
         }
         SkillList.Add(ShouHui
-            .AnnouceEachPlayerOnce()
+            .AnnounceEachPlayerOnce()
             .AddTimeTrigger(
             new PTime[] {
                 PPeriod.FirstFreeTime.During,

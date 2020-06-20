@@ -17,19 +17,15 @@ public class PLockTriggerInstaller : PSystemTriggerInstaller {
             },
             Effect = (PGame Game) => {
                 PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
-                PPlayer FromPlayer = InjureTag.FromPlayer;
-                PPlayer StartPlayer = InjureTag.ToPlayer;
                 InjureTag.ToPlayer.Tags.PopTag<PTag>(PTag.LockedTag.Name);
-                PPlayer NextPlayer = Game.GetNextPlayer(StartPlayer);
-                for (; !NextPlayer.Equals(StartPlayer); NextPlayer = Game.GetNextPlayer(NextPlayer)) {
-                    if (NextPlayer.Tags.ExistTag(PTag.LockedTag.Name)) {
-                        break;
+                bool Invoke = false;
+                Game.Traverse((PPlayer _Player) => {
+                    if (!Invoke && _Player.Tags.ExistTag(PTag.LockedTag.Name)) {
+                        Invoke = true;
+                        PNetworkManager.NetworkServer.TellClients(new PPushTextOrder(_Player.Index.ToString(), "触发连锁伤害", PPushType.Injure.Name));
+                        Game.Injure(InjureTag.FromPlayer, _Player, InjureTag.Injure, InjureTag.InjureSource);
                     }
-                }
-                if (!NextPlayer.Equals(StartPlayer)) {
-                    PNetworkManager.NetworkServer.TellClients(new PPushTextOrder(NextPlayer.Index.ToString(), "触发连锁伤害", PPushType.Injure.Name));
-                    Game.Injure(FromPlayer, NextPlayer, InjureTag.Injure, InjureTag.InjureSource);
-                }
+                }, Game.GetNextPlayer(InjureTag.ToPlayer));
             }
         });
     }

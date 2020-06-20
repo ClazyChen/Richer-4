@@ -40,7 +40,7 @@ public class P_ZhouYu: PGeneral {
             Initiative = true
         };
         SkillList.Add(ZongHuo
-            .AnnouceTurnOnce()
+            .AnnounceTurnOnce()
             .AddTimeTrigger(
             new PTime[] {
                 PPeriod.FirstFreeTime.During,
@@ -67,7 +67,7 @@ public class P_ZhouYu: PGeneral {
                         Game.LoseHouse(Player.Position, 1);
                         Player.Position.Price += PMath.Percent(Player.Position.Price, 10);
                         PNetworkManager.NetworkServer.TellClients(new PRefreshBlockBasicOrder(Player.Position));
-                        Player.Tags.FindPeekTag<PUsedTag>(PUsedTag.TagNamePrefix + ZongHuo.Name).Count++;
+                        ZongHuo.DeclareUse(Player);
                     }
                 };
             }));

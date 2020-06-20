@@ -46,7 +46,7 @@ public class P_Xdyu : PGeneral {
             Initiative = true
         };
         SkillList.Add(Ifvb
-            .AnnouceTurnOnce()
+            .AnnounceTurnOnce()
             .AddTimeTrigger(
             new PTime[] {
                 PPeriod.FirstFreeTime.During,
@@ -74,7 +74,7 @@ public class P_Xdyu : PGeneral {
                         Ifvb.AnnouceUseSkill(Player);
                         Game.LoseMoney(Player, PMath.Percent(Player.Money, 50));
                         Game.GetHouse(Player.Position, 3);
-                        Player.Tags.FindPeekTag<PUsedTag>(PUsedTag.TagNamePrefix + Ifvb.Name).Count++;
+                        Ifvb.DeclareUse(Player);
                     }
                 };
             }));

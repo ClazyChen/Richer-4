@@ -19,7 +19,7 @@ public class P_WuZhao: PGeneral {
             Initiative = true
         };
         SkillList.Add(NvQuan
-            .AnnouceGameOnce()
+            .AnnounceGameOnce()
             .AddTimeTrigger(
             new PTime[] {
                 PPeriod.FirstFreeTime.During,
@@ -131,7 +131,7 @@ public class P_WuZhao: PGeneral {
             Initiative = true
         };
         SkillList.Add(QianDu
-            .AnnouceGameOnce()
+            .AnnounceGameOnce()
             .AddTimeTrigger(
             new PTime[] {
                 PPeriod.FirstFreeTime.During,
@@ -172,7 +172,7 @@ public class P_WuZhao: PGeneral {
                             TargetBlock.BusinessType = PBusinessType.Castle;
                             Game.GetHouse(TargetBlock, HouseNumber);
                         }
-                        Player.Tags.FindPeekTag<PUsedTag>(PUsedTag.TagNamePrefix + QianDu.Name).Count++;
+                        QianDu.DeclareUse(Player);
                     }
                 };
             }));

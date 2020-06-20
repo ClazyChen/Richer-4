@@ -64,11 +64,11 @@ public class P_YuJi : PGeneral {
                             TargetCard = Game.ThrowCard(Player, Player, true, false);
                         }
                         if (TargetCard != null) {
-                            Game.AlivePlayers().FindAll((PPlayer _Player) => {
-                                return !_Player.Equals(Player) && _Player.Distance(Player) <= TargetCard.Point;
-                            }).ForEach((PPlayer Target) => {
-                                Game.Injure(Player, Target, 800, JianWu);
-                            });
+                            Game.Traverse((PPlayer _Player) => {
+                                if (!_Player.Equals(Player) && _Player.Distance(Player) <= TargetCard.Point) {
+                                    Game.Injure(Player, _Player, 800, JianWu);
+                                }
+                            }, Player);
                         }
                     }
                 };

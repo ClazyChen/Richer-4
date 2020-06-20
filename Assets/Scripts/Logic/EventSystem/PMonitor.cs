@@ -62,10 +62,17 @@ public class PMonitor {
         List<PTrigger> AlreadyTriggerList = new List<PTrigger>();
         foreach (PPlayer Judger in Sequence) {
             AlreadyTriggerList.Clear();
+            PLogger.Log("开始启动" + (Judger == null ? "null" : Judger.Name) + "的响应");
             while ((ValidTriggerList = TriggerList.FindAll((PTrigger Trigger) => {
-                return Trigger.Time.Equals(Time) && Trigger.Player == Judger && !AlreadyTriggerList.Contains(Trigger) && Trigger.Condition(Game) && (Judger == null || Judger.IsAlive) && (Judger == null || Judger.IsUser || Trigger.AICondition(Game));
+                if (Trigger.Time.Equals(Time) && Trigger.Player == Judger && !AlreadyTriggerList.Contains(Trigger) && (Judger == null || Judger.IsAlive)) {
+                    PLogger.Log("    执行判定：" + Trigger.Name);
+                    bool Condition = Trigger.Condition(Game);
+                    bool AiCondition = Condition && (Judger == null || Judger.IsUser || Trigger.AICondition(Game));
+                    return AiCondition;
+                } else {
+                    return false;
+                }
             })).Count > 0) {
-                PLogger.Log("开始启动" + (Judger == null ? "null" : Judger.Name) + "的响应");
                 PTrigger ChosenTrigger = null;
                 if (Judger == null || Judger.IsAI) {
                     ChosenTrigger = PMath.Max(ValidTriggerList, (PTrigger Trigger) => Trigger.AIPriority).Key;

@@ -95,7 +95,9 @@ public class PAiTargetChooser {
 
         #region 受到伤害后：离骚
         if (Target.General is P_QuYuan) {
-            Sum -= 900 * ToCof;
+            // Sum -= 900 * ToCof;
+            // 因为离骚总是会发动，其他伤害也会触发，天灾也会触发
+            // 所以不应该将离骚计入伤害计算
         }
         #endregion
         #region 伤害结束后：风云

@@ -55,7 +55,7 @@ public class PUIManager: MonoBehaviour {
     public static void AddNewUIAction(string ActionName, Action UIAction, int AnimationID = 0, bool AnimationEnding = false) {
         lock (ActionWaitingList) {
             if (!ActionName.Equals(string.Empty)) {
-                PLogger.Log("创建操作 " + ActionName + " #" + ActionIDCount.ToString());
+                // PLogger.Log("创建操作 " + ActionName + " #" + ActionIDCount.ToString());
             }
             ActionWaitingList.Enqueue(new NamedAction() {
                 Name = ActionName,
@@ -133,7 +133,7 @@ public class PUIManager: MonoBehaviour {
                             //}
                         }
                         if (!CurrentAction.Name.Equals(string.Empty)) {
-                            PLogger.Log("执行操作 " + CurrentAction.ToString());
+                            // PLogger.Log("执行操作 " + CurrentAction.ToString());
                         }
                         bool ActionCompleted = false;
                         PThread.Async(() => {

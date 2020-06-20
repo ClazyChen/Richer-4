@@ -57,7 +57,7 @@ public class P_YangYuHuan: PGeneral {
                     },
                     Effect = (PGame Game) => {
                         XiuHua.AnnouceUseSkill(Player);
-                        List<PPlayer> AlivePlayers = Game.PlayerList.FindAll((PPlayer _Player) => _Player.IsAlive && !_Player.Equals(Player));
+                        List<PPlayer> AlivePlayers = Game.AlivePlayers(Player);
                         int X = new List<bool>() {
                             AlivePlayers.TrueForAll((PPlayer _Player) => _Player.Money > Player.Money),
                             AlivePlayers.TrueForAll((PPlayer _Player) => _Player.Area.HandCardArea.CardNumber > Player.Area.HandCardArea.CardNumber),

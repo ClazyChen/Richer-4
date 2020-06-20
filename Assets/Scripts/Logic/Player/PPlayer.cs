@@ -234,20 +234,29 @@ public class PPlayer: PObject {
         return Result;
     }
 
-    public bool RemainLimit(string UsedName) {
+    public bool RemainLimit(string UsedName, bool DefaultTrue = false) {
         PUsedTag UsedTag = Tags.FindPeekTag<PUsedTag>(PUsedTag.TagNamePrefix + UsedName);
         if (UsedTag == null) {
+            if (DefaultTrue) {
+                return true;
+            }
             Tags.CreateTag(UsedTag = new PUsedTag(UsedName, 1));
         }
         return  UsedTag != null && UsedTag.Count < UsedTag.Limit ;
     }
 
-    public bool RemainLimit(string UsedName, PPlayer Target) {
+    public bool RemainLimit(string UsedName, PPlayer Target, bool DefaultTrue = false) {
         PUsedTag UsedTag = Tags.FindPeekTag<PUsedTag>(PUsedTag.TagNamePrefix + UsedName + Target.Name);
         if (UsedTag == null) {
+            if (DefaultTrue) {
+                return true;
+            }
             Tags.CreateTag(UsedTag = new PUsedTag(UsedName, 1));
         }
         return UsedTag != null && UsedTag.Count < UsedTag.Limit;
     }
 
+    public bool RemainLimitForAlivePlayers(string UsedName, PGame _Game) {
+        return _Game.AlivePlayers().Exists((PPlayer _Player) => RemainLimit(UsedName, _Player, true));
+    }
 }

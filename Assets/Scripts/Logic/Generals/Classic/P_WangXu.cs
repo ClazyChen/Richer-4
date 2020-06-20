@@ -66,7 +66,7 @@ public class P_WangXu : PGeneral {
             Initiative = true
         };
         SkillList.Add(YinJu
-            .AnnouceTurnOnce()
+            .AnnounceTurnOnce()
             .AddTimeTrigger(
             new PTime[] {
                 PPeriod.FirstFreeTime.During,
@@ -119,7 +119,7 @@ public class P_WangXu : PGeneral {
                             PNetworkManager.NetworkServer.TellClients(new PHighlightBlockOrder(Block.Index.ToString()));
                             Game.LoseHouse(Block, 1);
                             Player.Tags.CreateTag(PTag.OutOfGameTag);
-                            Player.Tags.FindPeekTag<PUsedTag>(PUsedTag.TagNamePrefix + YinJu.Name).Count++;
+                            YinJu.DeclareUse(Player);
                         }
                     }
                 };
