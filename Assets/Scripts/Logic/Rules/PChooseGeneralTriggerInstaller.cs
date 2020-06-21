@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Text;
 using System.Collections.Generic;
 
 public class PChooseGeneralTriggerInstaller : PSystemTriggerInstaller { 
@@ -84,6 +86,29 @@ public class PChooseGeneralTriggerInstaller : PSystemTriggerInstaller {
                             }
                         }
                     }
+                }
+                #endregion
+
+                #region 全AI模式下指定武将
+                if (Game.PlayerList.TrueForAll((PPlayer _Player) => _Player.IsAI)) {
+                    string dataDirectory = PPath.GetPath("Data\\User\\special.txt");
+                    StreamReader ArcFileReader = new StreamReader(dataDirectory, Encoding.UTF8);
+                    string Line = string.Empty;
+                    while ((Line = ArcFileReader.ReadLine()) != null) {
+                        if (Line.Length > 0 && Line[0] != '#') {
+                            string[] LineData = Line.Split('|');
+                            if (LineData.Length == Game.PlayerNumber) {
+                                for (int i = 0; i < Game.PlayerNumber; ++ i) {
+                                    PGeneral General = AvailableGenerals.Find((PGeneral _General) => _General.Name.Equals(LineData[i]));
+                                    if (General != null) {
+                                        Generals[i] = General;
+                                    }
+                                }
+                            }
+                            break;
+                        }
+                    }
+                    ArcFileReader.Close();
                 }
                 #endregion
 

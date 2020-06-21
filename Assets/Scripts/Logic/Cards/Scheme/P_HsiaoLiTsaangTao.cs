@@ -33,7 +33,7 @@ public class P_HsiaoLiTsaangTao : PSchemeCardModel {
         //        A、当可以杀死敌人时
         //        B、当可以换上更差的装备时
 
-        KeyValuePair<PPlayer, int> TeammateTarget = PMath.Max(Game.Teammates(Player), (PPlayer _Player) => {
+        KeyValuePair<PPlayer, int> TeammateTarget = PMath.Max(Game.Teammates(Player, false), (PPlayer _Player) => {
             return TeammateValueCard(Game, Player, _Player).Value;
         }, true);
 
