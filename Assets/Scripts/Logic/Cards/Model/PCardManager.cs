@@ -26,16 +26,17 @@ public class PCardManager {
         SettlingArea.CardList.Clear();
     }
 
+    public void ThrowAll(PCardArea Area) {
+        List<PCard> CardsToThrow = new List<PCard>(Area.CardList);
+        CardsToThrow.ForEach((PCard Card) => {
+            MoveCard(Card, Area, ThrownCardHeap);
+        });
+    }
+
     public void ThrowAll(PPlayerCardArea Area) {
-        for (int i = Area.HandCardArea.CardNumber - 1; i >= 0; --i) {
-            MoveCard(Area.HandCardArea.CardList[i], Area.HandCardArea, ThrownCardHeap);
-        }
-        for (int i = Area.EquipmentCardArea.CardNumber - 1; i >= 0; --i) {
-            MoveCard(Area.EquipmentCardArea.CardList[i], Area.EquipmentCardArea, ThrownCardHeap);
-        }
-        for (int i = Area.AmbushCardArea.CardNumber - 1; i >= 0; --i) {
-            MoveCard(Area.AmbushCardArea.CardList[i], Area.AmbushCardArea, ThrownCardHeap);
-        }
+        ThrowAll(Area.HandCardArea);
+        ThrowAll(Area.EquipmentCardArea);
+        ThrowAll(Area.AmbushCardArea);
     }
 
     public void MoveCard(PCard Card, PCardArea Source, PCardArea Destination) {

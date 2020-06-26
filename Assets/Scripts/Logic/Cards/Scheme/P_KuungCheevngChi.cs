@@ -46,9 +46,7 @@ public class P_KuungCheevngChi : PSchemeCardModel {
                     },
                     Effect = MakeNormalEffect(Player, Card, AIEmitTargets, AIEmitTargets,
                         (PGame Game, PPlayer User, PPlayer Target) => {
-                            for (int i = Target.Area.HandCardArea.CardNumber-1; i>=0;--i) {
-                                Game.CardManager.MoveCard(Target.Area.HandCardArea.CardList[i], Target.Area.HandCardArea, Game.CardManager.ThrownCardHeap);
-                            }
+                            Game.CardManager.ThrowAll(Target.Area.HandCardArea);
                             if (Target.Tags.ExistTag(PKuungCheevngChiTag.TagName)) {
                                 Target.Tags.PopTag<PKuungCheevngChiTag>(PKuungCheevngChiTag.TagName);
                             }

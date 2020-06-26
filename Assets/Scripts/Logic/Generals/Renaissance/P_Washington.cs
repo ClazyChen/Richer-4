@@ -22,6 +22,7 @@ public class P_Washington: PGeneral {
         PSkill MinZhu = new PSkill("民主") {
             Initiative = true
         };
+        const int MinZhuCof = 800;
         SkillList.Add(MinZhu
             .AnnounceGameTimes(2)
             .AddTimeTrigger(
@@ -40,70 +41,50 @@ public class P_Washington: PGeneral {
                         return Player.Equals(Game.NowPlayer) && (Player.IsAI || Game.Logic.WaitingForEndFreeTime()) && Player.RemainLimit(MinZhu.Name) && !Player.Tags.ExistTag(PElectronTag.TagName);
                     },
                     AICondition = (PGame Game) => {
-                        /*
-                         * 民主的发动条件：
-                         * 收益大于2000*敌方人数，即敌方无法通过交给手牌降低亏损，且己方可以通过交给手牌收益（翻面正收益）
-                         */
                         int Sum = 0;
-                        foreach (PPlayer _Player in Game.AlivePlayers(Player)) {
+                        Game.AlivePlayers(Player).ForEach((PPlayer _Player) => {
                             int Cof = _Player.TeamIndex == Player.TeamIndex ? 1 : -1;
-                            int Expect1 = 1000 * (1 - Cof);
-                            int Expect2 = 0;
-                            if (_Player.HandCardNumber > 0) {
-                                Expect2 = PAiMapAnalyzer.ChangeFaceExpect(Game, _Player) * Cof;
-                                if (Cof == 1) {
-                                    PCard Test = PAiCardExpectation.FindMostValuable(Game, Player, _Player, true, false, false, true).Key;
-                                    Expect2 += Test.Model.AIInHandExpectation(Game, Player) - Test.Model.AIInHandExpectation(Game, _Player);
-                                } else {
-                                    PCard Test = PAiCardExpectation.FindLeastValuable(Game, Player, _Player, true, false, false, true).Key;
-                                    Expect2 += Test.Model.AIInHandExpectation(Game, Player) + Test.Model.AIInHandExpectation(Game, _Player);
-                                }
+                            int Expect1 = 2000 * Cof + PAiTargetChooser.InjureExpect(Game, Player, Player, _Player, MinZhuCof * _Player.Position.HouseNumber, MinZhu);
+                            int Expect2 = -2000 * _Player.Area.HandCardArea.CardNumber * Cof;
+                            if (_Player.Area.HandCardArea.CardNumber >=1 && (Expect2 < Expect1 ^ Cof == 1)) {
+                                Sum += Expect2;
                             } else {
-                                Expect2 = Expect1;
+                                Sum += Expect1;
                             }
-                            int MaxExpect = Cof == 1 ? Math.Max(Expect1, Expect2) : Math.Min(Expect1, Expect2);
-                            Sum += MaxExpect;
-                        }
-                        if (Game.Teammates(Player).Exists((PPlayer _Player) => _Player.General is P_ChenSheng)) {
-                            Sum -= 2000;
-                        }
-                        if (Game.Enemies(Player).Exists((PPlayer _Player) => _Player.General is P_ChenSheng)) {
-                            Sum += 2000;
-                        }
-                        return Sum > 2000 * Game.Enemies(Player).Count;
+                        });
+                        return Sum >= 1300 * (Game.AlivePlayerNumber-1);
                     },
                     Effect = (PGame Game) => {
                         MinZhu.AnnouceUseSkill(Player);
                         Game.Traverse((PPlayer _Player) => {
                             if (!_Player.Equals(Player)) {
                                 int ChosenResult = 0;
-                                if (_Player.HandCardNumber > 0) {
+                                if (_Player.Area.HandCardArea.CardNumber >= 1) {
                                     if (_Player.IsAI) {
-                                        int Cof = _Player.TeamIndex == Player.TeamIndex ? 1 : -1;
-                                        int Expect1 = 1000 * (1 - Cof);
-                                        int Expect2 = PAiMapAnalyzer.ChangeFaceExpect(Game, _Player) * Cof;
-                                        if (Cof == 1) {
-                                            PCard Test = PAiCardExpectation.FindMostValuable(Game, Player, _Player, true, false, false, true).Key;
-                                            Expect2 += Test.Model.AIInHandExpectation(Game, Player) - Test.Model.AIInHandExpectation(Game, _Player);
-                                        } else {
-                                            PCard Test = PAiCardExpectation.FindLeastValuable(Game, Player, _Player, true, false, false, true).Key;
-                                            Expect2 += Test.Model.AIInHandExpectation(Game, Player) + Test.Model.AIInHandExpectation(Game, _Player);
-                                        }
-                                        if ((Expect1 > Expect2) ^ (Cof == 1)) {
+                                        int Expect1 = 2000 + PAiTargetChooser.InjureExpect(Game, _Player, Player, _Player, MinZhuCof * _Player.Position.HouseNumber, MinZhu);
+                                        int Expect2 = 0;
+                                        _Player.Area.HandCardArea.CardList.ForEach((PCard Card) => {
+                                            Expect2 -= Card.Model.AIInHandExpectation(Game, _Player);
+                                        });
+                                        if (Expect2 >= Expect1) {
                                             ChosenResult = 1;
                                         }
                                     } else {
                                         ChosenResult = PNetworkManager.NetworkServer.ChooseManager.Ask(_Player, MinZhu.Name + "-选择一项", new string[] {
-                                            "令" + Player.Name + "对你造成1000点伤害",
-                                            "交给" + Player.Name + "1张手牌并翻面"
+                                            "令" + Player.Name + "对你造成" + (MinZhuCof * _Player.Position.HouseNumber).ToString() + "点伤害，摸一张牌",
+                                            "弃置所有手牌"
                                         });
                                     }
                                 }
                                 if (ChosenResult == 0) {
-                                    Game.Injure(Player, _Player, 1000, MinZhu);
+                                    Game.Injure(Player, _Player, MinZhuCof * _Player.Position.HouseNumber, MinZhu);
+                                    if (_Player.IsAlive) {
+                                        Game.GetCard(_Player);
+                                    }
                                 } else {
-                                    Game.GiveCardTo(_Player, Player, true, false);
-                                    Game.ChangeFace(_Player);
+                                    for (int i = _Player.Area.HandCardArea.CardNumber - 1; i >= 0; --i) {
+                                        Game.CardManager.MoveCard(_Player.Area.HandCardArea.CardList[i], _Player.Area.HandCardArea, Game.CardManager.ThrownCardHeap);
+                                    }
                                 }
                             }
                         }, Player);

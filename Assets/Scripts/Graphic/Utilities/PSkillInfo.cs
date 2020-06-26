@@ -51,7 +51,7 @@ public class PSkillInfo : PObject {
     public static PSkillInfo 离骚 = new PSkillInfo("离骚", "【被】当你受到一次伤害后，你可以进行若干次判定直到判定结果数列不单调为止。然后你弃300X并摸一张牌[X=判定次数]。", PSkillType.SoftLock);
     public static PSkillInfo 勤学 = new PSkillInfo("勤学", "【主】回合内限一次，你可以弃置1座房屋，翻开牌堆顶的4张牌，获得其中的装备牌。", PSkillType.Initiative);
     public static PSkillInfo 白衣 = new PSkillInfo("白衣", "【被】当你受到过路费造成的伤害时，你可以弃一张装备牌，令其*50%。", PSkillType.Passive);
-    public static PSkillInfo 民主 = new PSkillInfo("民主", "【主】每局游戏限两次，空闲时间点，你可以令所有其他角色选择一项：1.受到你造成的1000点伤害；2.交给你一张手牌并翻面。使用后四回合才能再次使用此技能。", PSkillType.Initiative);
+    public static PSkillInfo 民主 = new PSkillInfo("民主", "【主】每局游戏限两次，使用后四回合才能再次使用。你令其他所有角色选择一项：1.令你对其造成800X[X=其所在地房屋数]点伤害，然后摸一张牌；2.弃置所有手牌（至少一张）。", PSkillType.Initiative);
     public static PSkillInfo 安魂 = new PSkillInfo("安魂", "【被】限定技，当你濒死时，可以令所有男性角色依次选择是否弃一张牌令你回复5000。", PSkillType.Passive);
     public static PSkillInfo 夺魄 = new PSkillInfo("夺魄", "【被】当你通过过路费造成伤害时，你可以防止此伤害并进行一次判定，目标在X个回合结束前不能对你收取过路费。", PSkillType.Passive);
 
