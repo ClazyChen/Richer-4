@@ -54,6 +54,11 @@ public class PSkillInfo : PObject {
     public static PSkillInfo 民主 = new PSkillInfo("民主", "【主】每局游戏限两次，使用后四回合才能再次使用。你令其他所有角色选择一项：1.令你对其造成800X[X=其所在地房屋数]点伤害，然后摸一张牌；2.弃置所有手牌（至少一张）。", PSkillType.Initiative);
     public static PSkillInfo 安魂 = new PSkillInfo("安魂", "【被】限定技，当你濒死时，可以令所有男性角色依次选择是否弃一张牌令你回复5000。", PSkillType.Passive);
     public static PSkillInfo 夺魄 = new PSkillInfo("夺魄", "【被】当你通过过路费造成伤害时，你可以防止此伤害并进行一次判定，目标在X个回合结束前不能对你收取过路费。", PSkillType.Passive);
+    public static PSkillInfo 神兽 = new PSkillInfo("神兽", "【被】锁定技，游戏开始时你摸30000。锁定技，回合开始时，你摸500。", PSkillType.Lock);
+    public static PSkillInfo 青龙 = new PSkillInfo("青龙", "【被】锁定技，当你受到伤害时，你获得伤害来源的一张牌。", PSkillType.Lock);
+    public static PSkillInfo 白虎 = new PSkillInfo("白虎", "【被】锁定技，当你造成伤害时，你令第三人弃置等量现金。", PSkillType.Lock);
+    public static PSkillInfo 朱雀 = new PSkillInfo("朱雀", "【被】锁定技，回合开始时，你令所有其他角色弃置300。", PSkillType.Lock);
+    public static PSkillInfo 玄武 = new PSkillInfo("玄武", "【被】锁定技，回合结束时，若你现金为全场最少或之一，你摸1000并翻面。", PSkillType.Lock);
 
     public PSkillInfo Copy() {
         return new PSkillInfo(Name, ToolTip, Type);

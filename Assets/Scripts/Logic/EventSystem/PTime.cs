@@ -16,6 +16,7 @@ public class PTime : PObject {
         return false;
     }
 
+    public static PTime InstallModeTime = new PTime("装载模式时");
     public static PTime ChooseGeneralTime = new PTime("选将时");
     public static PTime StartGameTime = new PTime("游戏开始时");
     public static PTime EndGameTime = new PTime("游戏结束时");

@@ -5,6 +5,7 @@ public abstract class PMode : PObject {
 
     private const int UnknownParty = -1;
     public int Bonus = 0;
+    public List<PTrigger> Installer = new List<PTrigger>();
 
     public class Seat {
         public PPlayerType DefaultType;
@@ -41,6 +42,12 @@ public abstract class PMode : PObject {
     virtual public void Open(PGame Game) {
         // 游戏开始时执行的操作
         // 默认没有操作
+    }
+
+    public void Install(PGame Game) {
+        Installer.ForEach((PTrigger Trigger) => {
+            Game.Monitor.AddTrigger(Trigger);
+        });
     }
 
     public static List<PMode> ListModes() {

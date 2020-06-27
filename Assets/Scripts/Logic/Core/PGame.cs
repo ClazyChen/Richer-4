@@ -34,6 +34,7 @@ public class PGame : PGameStatus {
         Monitor = new PMonitor(this);
         TagManager = new PTagManager();
         CardManager = new PCardManager(this);
+        GameMode.Install(this);
         StartGameFlag = false;
         EndGameFlag = false;
         ReadyToStartGameFlag = true;
@@ -89,7 +90,8 @@ public class PGame : PGameStatus {
                 });
             }
             NowPlayer = PlayerList[0];
-            if (DefaultGenerals ==null) {
+            Monitor.CallTime(PTime.InstallModeTime);
+            if (DefaultGenerals == null) {
                 Monitor.CallTime(PTime.ChooseGeneralTime);
             }
             Monitor.CallTime(PTime.StartGameTime);

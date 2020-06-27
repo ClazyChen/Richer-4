@@ -13,11 +13,12 @@ public abstract class PGeneral: PObject {
     public int Cost = 0;
     public string Tips = string.Empty;
 
+    public bool CanBeChoose = true;
+
     /// <summary>
     /// 是否是新将；AI会倾向于选择新将
     /// </summary>
     public bool NewGeneral = false;
-
 
     /// <summary>
     /// 客户端专用

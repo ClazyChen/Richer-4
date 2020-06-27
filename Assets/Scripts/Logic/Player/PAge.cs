@@ -8,4 +8,7 @@ public class PAge: PObject {
     public static PAge Medieval = new PAge("中古时代");
     public static PAge Renaissance = new PAge("文艺复兴");
     public static PAge Industrial = new PAge("工业时代");
+
+    public static PAge Ancient = new PAge("远古神代");
+    public static PAge Future = new PAge("未来世界");
 }
