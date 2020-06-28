@@ -64,7 +64,6 @@ public class PChooseGeneralTriggerInstaller : PSystemTriggerInstaller {
                                         NoFreeGeneral = false;
                                     }
                                 }
-                                break;
                             }
                             if (PossibleGenerals.Count >= 4) {
                                 break;

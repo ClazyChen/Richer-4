@@ -86,7 +86,7 @@ public class PPlayer: PObject {
     public int LandNumber {
         get {
             if (PNetworkManager.CurrentHostType.Equals(PHostType.Server)) {
-                return (int)PMath.Sum(PNetworkManager.Game.Map.BlockList.FindAll((PBlock Block) => Equals(Block.Lord)).ConvertAll( (PBlock Block) => 1.0));
+                return PNetworkManager.Game.Map.BlockList.FindAll((PBlock Block) => Equals(Block.Lord)).Count;
             } else {
                 return 0;
             }

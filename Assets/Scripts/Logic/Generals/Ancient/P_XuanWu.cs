@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class P_XuanWu : PGeneral {
 
     public P_XuanWu() : base("玄武") {
-        Sex = PSex.NoSex;
+        Sex = PSex.Male;
         Age = PAge.Ancient;
         Index = 1004;
         Cost = 1;
@@ -54,16 +54,18 @@ public class P_XuanWu : PGeneral {
                 return new PTrigger(XuanWu.Name) {
                     IsLocked = true,
                     Player = Player,
-                    Time = PPeriod.EndTurn.During,
+                    Time = PTime.Injure.AcceptInjure,
                     AIPriority = 250,
                     Condition = (PGame Game) => {
-                        int MinMoney = PMath.Min(Game.PlayerList.FindAll((PPlayer _Player) => _Player.IsAlive), (PPlayer _Player) => _Player.Money).Value;
-                        return Player.Equals(Game.NowPlayer) && Player.Money == MinMoney;
+                        PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
+                        return InjureTag.Injure > 0 && Player.Equals(InjureTag.ToPlayer) && InjureTag.InjureSource is PBlock && Player.LandNumber > 0;
                     },
                     Effect = (PGame Game) => {
+                        PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
                         XuanWu.AnnouceUseSkill(Player);
-                        Game.GetMoney(Player, 1000);
-                        Game.ChangeFace(Player);
+                        int MinHouse = PMath.Min(Game.Map.FindBlock(Player), (PBlock Block) => Block.HouseNumber).Value;
+                        PBlock Target = PMath.Max(Game.Map.FindBlock(Player).FindAll((PBlock Block) => Block.HouseNumber == MinHouse), (PBlock Block) => PAiMapAnalyzer.HouseValue(Game, Player, Block)).Key;
+                        Game.GetHouse(Target, 1);
                     }
                 };
             }));

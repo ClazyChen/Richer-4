@@ -37,11 +37,7 @@ public class P_IzayoiMiku: PGeneral {
                     AICondition = (PGame Game) => {
                         PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
                         PPlayer ToPlayer = InjureTag.ToPlayer;
-                        if (InjureTag.Injure >= ToPlayer.Money) {
-                            return ToPlayer.TeamIndex != Player.TeamIndex;
-                        } else {
-                            return ToPlayer.TeamIndex != Player.TeamIndex ^ (ToPlayer.General is P_HuaMulan && ToPlayer.Area.EquipmentCardArea.CardNumber > 0);
-                        }
+                        return ToPlayer.TeamIndex != Player.TeamIndex;
                     },
                     Effect = (PGame Game) => {
                         PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);

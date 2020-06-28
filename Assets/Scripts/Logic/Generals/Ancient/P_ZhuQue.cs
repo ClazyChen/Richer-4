@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class P_ZhuQue : PGeneral {
 
     public P_ZhuQue() : base("朱雀") {
-        Sex = PSex.NoSex;
+        Sex = PSex.Male;
         Age = PAge.Ancient;
         Index = 1003;
         Cost = 1;

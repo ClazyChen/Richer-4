@@ -42,6 +42,7 @@ public class PMode3v1 : PMode {
                 };
                 PMath.Wash(PossibleBoss);
                 Game.PlayerList[PlayerNumber - 1].General = PossibleBoss[0];
+                PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder("BOSS：" + PossibleBoss[0].Name));
             }
         });
     }

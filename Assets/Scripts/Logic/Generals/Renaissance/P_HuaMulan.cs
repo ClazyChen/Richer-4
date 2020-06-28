@@ -25,7 +25,7 @@ public class P_HuaMulan: PGeneral {
                     AIPriority = 200,
                     Condition = (PGame Game) => {
                         PMoveCardTag MoveCardTag = Game.TagManager.FindPeekTag<PMoveCardTag>(PMoveCardTag.TagName);
-                        return Player.Area.EquipmentCardArea.Equals(MoveCardTag.Source);
+                        return Player.Area.EquipmentCardArea.Equals(MoveCardTag.Source) && !Player.Equals(MoveCardTag.Destination.Owner);
                     },
                     Effect = (PGame Game) => {
                         XiaoJi.AnnouceUseSkill(Player);

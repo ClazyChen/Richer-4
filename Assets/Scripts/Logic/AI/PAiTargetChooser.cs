@@ -34,7 +34,7 @@ public class PAiTargetChooser {
             if (FromPlayer.General is P_Gryu && Source is PBlock && FromPlayer.Area.EquipmentCardArea.CardNumber > Target.Area.EquipmentCardArea.CardNumber) {
                 BaseInjure += 600;
             }
-            if (Target.Area.HandCardArea.CardNumber == 0 && FromPlayer.HasEquipment<P_KuTingTao>() && Source is PBlock) {
+            if ((Target.Area.HandCardArea.CardNumber == 0 || (FromPlayer.General is P_IzayoiMiku && FromPlayer.TeamIndex != Target.TeamIndex)) && FromPlayer.HasEquipment<P_KuTingTao>() && Source is PBlock) {
                 BaseInjure *= 2;
             }
             if (FromPlayer.General is P_ZhaoYun && FromPlayer.Tags.ExistTag(P_ZhaoYun.PDanTag.TagName)) {
@@ -47,7 +47,7 @@ public class PAiTargetChooser {
             }
         }
         if (Target.Area.OwnerCardNumber > 0) {
-            if (FromPlayer != null && FromPlayer.HasEquipment<P_TsaangLang>() && Source != null && Source is PCard && ((PCard)Source).Model is PSchemeCardModel) {
+            if (FromPlayer != null && FromPlayer.HasEquipment<P_TsaangLang>() && Source != null && Source is PCard Card && Card.Model is PSchemeCardModel) {
                 Sum += 2000 * FromCof + 2000 * ToCof;
             }
             if (Player.HasInHand<P_CheevnHuoTaChieh>()) {
@@ -83,8 +83,8 @@ public class PAiTargetChooser {
         })) {
             BaseInjure += 800;
         }
-        if (Target.General is P_LvMeng && Target.Area.EquipmentCardArea.CardNumber > 0) {
-            BaseInjure = Math.Min(PMath.Percent(BaseInjure, 50) + PAiCardExpectation.FindLeastValuable(Game, Player, Player, false, true, false, true).Value, BaseInjure);
+        if (Target.General is P_LvMeng && Target.Area.EquipmentCardArea.CardNumber > 0 && !(FromPlayer.General is P_IzayoiMiku && FromPlayer.TeamIndex != Target.TeamIndex)) {
+            BaseInjure = Math.Min(PMath.Percent(BaseInjure, 50) + 2000, BaseInjure);
         }
         #endregion
 

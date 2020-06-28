@@ -172,6 +172,10 @@ public class PMap : PObject, ICloneable {
         }
     }
 
+    public List<PBlock> FindBlock(PPlayer Lord) {
+        return BlockList.FindAll((PBlock Block) => Lord.Equals(Block.Lord));
+    }
+
     public PBlock FindBlockByCoordinate(int x, int y) {
         return BlockList.Find((PBlock Block) => Block.X == x && Block.Y == y);
     }

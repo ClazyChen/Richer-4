@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class P_QingLong : PGeneral {
 
     public P_QingLong() : base("青龙") {
-        Sex = PSex.NoSex;
+        Sex = PSex.Male;
         Age = PAge.Ancient;
         Index = 1001;
         Cost = 1;

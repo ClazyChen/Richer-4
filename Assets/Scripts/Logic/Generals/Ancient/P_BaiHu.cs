@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class P_BaiHu : PGeneral {
 
     public P_BaiHu() : base("白虎") {
-        Sex = PSex.NoSex;
+        Sex = PSex.Male;
         Age = PAge.Ancient;
         Index = 1002;
         Cost = 1;
@@ -54,27 +54,21 @@ public class P_BaiHu : PGeneral {
                 return new PTrigger(BaiHu.Name) {
                     IsLocked = true,
                     Player = Player,
-                    Time = PTime.Injure.EmitInjure,
+                    Time = PPeriod.EndTurn.During,
                     AIPriority = 250,
                     Condition = (PGame Game) => {
-                        PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
-                        PPlayer ToPlayer = InjureTag.ToPlayer;
-                        return InjureTag.Injure > 0 && Player.Equals(InjureTag.FromPlayer) && Game.AlivePlayers(Player).Exists((PPlayer _Player) => !_Player.Equals(ToPlayer));
+                        PChiaTaoFaKuoTag ChiaTaoFaKuoTag = Game.TagManager.FindPeekTag<PChiaTaoFaKuoTag>(PChiaTaoFaKuoTag.TagName);
+                        return Player.Equals(Game.NowPlayer) && ChiaTaoFaKuoTag.LordList.Count >= 1;
                     },
                     Effect = (PGame Game) => {
-                        PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
-                        PPlayer ToPlayer = InjureTag.ToPlayer;
                         BaiHu.AnnouceUseSkill(Player);
-                        PPlayer Another = Player;
-                        if (Game.Enemies(Player).Exists((PPlayer _Player) => !_Player.Equals(ToPlayer))) {
-                            // another enemy
-                            Another = PMath.Min(Game.Enemies(Player).FindAll((PPlayer _Player) => !_Player.Equals(ToPlayer)), (PPlayer _Player) => _Player.Money).Key;
-                        } else {
-                            Another = PMath.Max(Game.Teammates(Player).FindAll((PPlayer _Player) => !_Player.Equals(ToPlayer) && !_Player.Equals(Player)), (PPlayer _Player) => _Player.Money).Key;
-                        }
-                        if (!Another.Equals(Player)) {
-                            Game.LoseMoney(Another, InjureTag.Injure);
-                        }
+                        PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
+                        PChiaTaoFaKuoTag ChiaTaoFaKuoTag = Game.TagManager.FindPeekTag<PChiaTaoFaKuoTag>(PChiaTaoFaKuoTag.TagName);
+                        ChiaTaoFaKuoTag.LordList.ForEach((PPlayer _Player) => {
+                            if (!_Player.Tags.ExistTag(PTag.LockedTag.Name)) {
+                                _Player.Tags.CreateTag(PTag.LockedTag);
+                            }
+                        });
                     }
                 };
             }));

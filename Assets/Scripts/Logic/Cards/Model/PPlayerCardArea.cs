@@ -15,7 +15,7 @@ public class PPlayerCardArea : PObject {
         Name = Owner.Name + "的区域";
         HandCardArea = new PCardArea(Owner.Name + "的手牌", Owner);
         EquipmentCardArea = new PCardArea(Owner.Name + "的装备区", Owner);
-        AmbushCardArea = new PCardArea(Owner.Name + "的判定区", Owner);
+        AmbushCardArea = new PCardArea(Owner.Name + "的伏兵区", Owner);
         OutOfGameArea = new PCardArea(Owner.Name + "的移出游戏区", Owner);
     }
 
