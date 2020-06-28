@@ -11,39 +11,39 @@ public class P_QingLong : PGeneral {
         Tips = string.Empty;
         CanBeChoose = false;
 
-        PSkill ShenShou = new PSkill("神兽") {
-            Lock = true
-        };
-        SkillList.Add(ShenShou
-            .AddTrigger(
-            (PPlayer Player, PSkill Skill) => {
-                return new PTrigger(ShenShou.Name) {
-                    IsLocked = true,
-                    Player = Player,
-                    Time = PTime.StartGameTime,
-                    AIPriority = 100,
-                    Effect = (PGame Game) => {
-                        ShenShou.AnnouceUseSkill(Player);
-                        Game.GetMoney(Player, 30000);
-                    }
-                };
-            })
-            .AddTrigger(
-            (PPlayer Player, PSkill Skill) => {
-                return new PTrigger(ShenShou.Name) {
-                    IsLocked = true,
-                    Player = Player,
-                    Time = PPeriod.StartTurn.During,
-                    AIPriority = 100,
-                    Condition = (PGame Game) => {
-                        return Player.Equals(Game.NowPlayer);
-                    },
-                    Effect = (PGame Game) => {
-                        ShenShou.AnnouceUseSkill(Player);
-                        Game.GetMoney(Player, 500);
-                    }
-                };
-            }));
+        //PSkill ShenShou = new PSkill("神兽") {
+        //    Lock = true
+        //};
+        //SkillList.Add(ShenShou
+        //    .AddTrigger(
+        //    (PPlayer Player, PSkill Skill) => {
+        //        return new PTrigger(ShenShou.Name) {
+        //            IsLocked = true,
+        //            Player = Player,
+        //            Time = PTime.StartGameTime,
+        //            AIPriority = 100,
+        //            Effect = (PGame Game) => {
+        //                ShenShou.AnnouceUseSkill(Player);
+        //                Game.GetMoney(Player, 30000);
+        //            }
+        //        };
+        //    })
+        //    .AddTrigger(
+        //    (PPlayer Player, PSkill Skill) => {
+        //        return new PTrigger(ShenShou.Name) {
+        //            IsLocked = true,
+        //            Player = Player,
+        //            Time = PPeriod.StartTurn.During,
+        //            AIPriority = 100,
+        //            Condition = (PGame Game) => {
+        //                return Player.Equals(Game.NowPlayer);
+        //            },
+        //            Effect = (PGame Game) => {
+        //                ShenShou.AnnouceUseSkill(Player);
+        //                Game.GetMoney(Player, 500);
+        //            }
+        //        };
+        //    }));
 
         PSkill QingLong = new PSkill("青龙") {
             Lock = true
