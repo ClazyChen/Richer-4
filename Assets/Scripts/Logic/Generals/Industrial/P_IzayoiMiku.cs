@@ -13,7 +13,7 @@ public class P_IzayoiMiku: PGeneral {
         Sex = PSex.Female;
         Age = PAge.Industrial;
         Index = 28;
-        Cost = 100;
+        Cost = 50;
         Tips = "定位：攻击\n" +
             "难度：简单\n" +
             "史实：轻小说《约会大作战》中女主角。龙胆寺女子学院学生，歌手，偶像。\n" +

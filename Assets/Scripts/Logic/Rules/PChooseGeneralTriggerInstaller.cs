@@ -54,19 +54,20 @@ public class PChooseGeneralTriggerInstaller : PSystemTriggerInstaller {
                         List<PGeneral> PossibleGenerals = new List<PGeneral>();
                         PMath.Wash(AvailableGenerals);
                         bool NoFreeGeneral = true;
-                        while (PossibleGenerals.Count < 4) {
-                            foreach (PGeneral General in AvailableGenerals) {
-                                if (!Generals.Contains(General) && !Selected.Contains(General) && (NoFreeGeneral || General.Cost != 0)) {
-                                    if (Game.PlayerList[i].IsAI ||
-                                        PNetworkManager.NetworkServer.ChooseManager.AskHaveGeneral(Game.PlayerList[i], General.Name)) {
-                                        Selected.Add(General);
-                                        PossibleGenerals.Add(General);
-                                        if (General.Cost == 0) {
-                                            NoFreeGeneral = false;
-                                        }
+                        foreach (PGeneral General in AvailableGenerals) {
+                            if (!Generals.Contains(General) && !Selected.Contains(General) && (NoFreeGeneral || General.Cost != 0)) {
+                                if (Game.PlayerList[i].IsAI ||
+                                    PNetworkManager.NetworkServer.ChooseManager.AskHaveGeneral(Game.PlayerList[i], General.Name)) {
+                                    Selected.Add(General);
+                                    PossibleGenerals.Add(General);
+                                    if (General.Cost == 0) {
+                                        NoFreeGeneral = false;
                                     }
-                                    break;
                                 }
+                                break;
+                            }
+                            if (PossibleGenerals.Count >= 4) {
+                                break;
                             }
                         }
                         if (PossibleGenerals.Count == 1) {
