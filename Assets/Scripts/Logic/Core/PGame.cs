@@ -119,6 +119,9 @@ public class PGame : PGameStatus {
             TollTag = Monitor.CallTime(PTime.Toll.AfterAcceptTarget, TollTag);
             if (TollTag.ToPlayer != null && TollTag.ToPlayer.IsAlive && TollTag.Toll > 0) {
                 Injure(TollTag.FromPlayer, TollTag.ToPlayer, TollTag.Toll, TollTag.Block);
+                if (Block.BusinessType.Equals(PBusinessType.Club)) {
+                    ChangeFace(ToPlayer);
+                }
             }
         }
     }

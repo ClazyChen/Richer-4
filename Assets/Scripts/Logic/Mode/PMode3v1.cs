@@ -24,7 +24,7 @@ public class PMode3v1 : PMode {
                     Block.Lord = Game.PlayerList[PlayerNumber - 1];
                     Block.HouseNumber = 1;
                     if (Block.IsBusinessLand) {
-                        Block.BusinessType = PBusinessType.ShoppingCenter;
+                        Block.BusinessType = PBusinessType.Institute;
                     }
                     PNetworkManager.NetworkServer.TellClients(new PRefreshBlockBasicOrder(Block));
                 });

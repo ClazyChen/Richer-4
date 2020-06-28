@@ -125,7 +125,7 @@
                 if (Player.Money >= 15000 && NowBlock.Price >= 3000) {
                     return true;
                 }
-                if (Player.Money >= 10000 && NowBlock.BusinessType.Equals(PBusinessType.ShoppingCenter)) {
+                if (Player.Money >= 10000 && (NowBlock.BusinessType.Equals(PBusinessType.ShoppingCenter) || NowBlock.BusinessType.Equals(PBusinessType.Club))) {
                     return true;
                 }
                 if (Player.General is P_ZhaoYun) {

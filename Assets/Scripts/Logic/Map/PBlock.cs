@@ -48,6 +48,9 @@ public class PBlock : PObject {
                 if (BusinessType.Equals(PBusinessType.ShoppingCenter)) {
                     TempToll *= 2;
                 }
+                if (BusinessType.Equals(PBusinessType.Club)) {
+                    TempToll += PMath.Percent(TempToll, 100);
+                }
                 return TempToll;
             } else {
                 return 0;

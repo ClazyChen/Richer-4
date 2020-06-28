@@ -67,6 +67,11 @@ public class PMath {
         Samples.ForEach((double Sample) =>Sum += Sample);
         return Sum;
     }
+    public static int Sum(List<int> Samples) {
+        int Sum = 0;
+        Samples.ForEach((int Sample) => Sum += Sample);
+        return Sum;
+    }
 
     /// <summary>
     /// 以一定概率返回true

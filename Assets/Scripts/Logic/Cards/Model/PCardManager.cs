@@ -26,11 +26,15 @@ public class PCardManager {
         SettlingArea.CardList.Clear();
     }
 
-    public void ThrowAll(PCardArea Area) {
-        List<PCard> CardsToThrow = new List<PCard>(Area.CardList);
+    public void MoveAll(PCardArea Source, PCardArea Destination) {
+        List<PCard> CardsToThrow = new List<PCard>(Source.CardList);
         CardsToThrow.ForEach((PCard Card) => {
-            MoveCard(Card, Area, ThrownCardHeap);
+            MoveCard(Card, Source, Destination);
         });
+    }
+
+    public void ThrowAll(PCardArea Area) {
+        MoveAll(Area, ThrownCardHeap);
     }
 
     public void ThrowAll(PPlayerCardArea Area) {

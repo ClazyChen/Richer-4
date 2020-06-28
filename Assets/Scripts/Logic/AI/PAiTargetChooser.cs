@@ -56,17 +56,20 @@ public class PAiTargetChooser {
         }
         #endregion
         #region 受到伤害时发动的技能：八卦阵，百花裙，龙胆，太极，霸王，白衣
-        if (Target.HasEquipment<P_PaKuaChevn>()) {
-            if (Target.General is P_LiuJi) {
-                Sum -= 1000 * ToCof;
-                BaseInjure = PMath.Percent(BaseInjure, 50);
-            } else {
-                BaseInjure = (BaseInjure + PMath.Percent(BaseInjure, 50)) / 2;
+        if (!(Target.TeamIndex != FromPlayer.TeamIndex && FromPlayer.General is P_IzayoiMiku)) {
+            // 美九无视八卦阵百花裙
+            if (Target.HasEquipment<P_PaKuaChevn>()) {
+                if (Target.General is P_LiuJi) {
+                    Sum -= 1000 * ToCof;
+                    BaseInjure = PMath.Percent(BaseInjure, 50);
+                } else {
+                    BaseInjure = (BaseInjure + PMath.Percent(BaseInjure, 50)) / 2;
+                }
             }
-        }
-        if (Target.HasEquipment<P_PaiHuaChooon>() && FromPlayer != null && !Target.Sex.Equals(FromPlayer.Sex)) {
-            BaseInjure = PMath.Percent(BaseInjure, 50);
-        }
+            if (Target.HasEquipment<P_PaiHuaChooon>() && FromPlayer != null && !Target.Sex.Equals(FromPlayer.Sex)) {
+                BaseInjure = PMath.Percent(BaseInjure, 50);
+            }
+        } 
         if (Target.General is P_ZhaoYun && Target.Tags.ExistTag(P_ZhaoYun.PDanTag.TagName)) {
             if (P_ZhaoYun.LongDanIICondition(Game, Target, FromPlayer, BaseInjure)) {
                 BaseInjure = PMath.Percent(BaseInjure, 50);
@@ -120,6 +123,13 @@ public class PAiTargetChooser {
             }
         }
         #endregion
+
+        #region 美九歌厅的翻面效果
+        if (Source is PBlock Block && Block.BusinessType.Equals(PBusinessType.Club)) {
+            Sum += PAiMapAnalyzer.ChangeFaceExpect(Game, Target) * (-ToCof);
+        }
+        #endregion
+
         return Sum;
     }
 

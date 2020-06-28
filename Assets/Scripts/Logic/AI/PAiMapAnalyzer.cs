@@ -117,6 +117,9 @@ public class PAiMapAnalyzer {
                 if (Block.BusinessType.Equals(PBusinessType.ShoppingCenter)) {
                     Toll *= 2;
                 }
+                if (Block.BusinessType.Equals(PBusinessType.Club)) {
+                    Toll += PMath.Percent(Toll, 100);
+                }
                 if (Block.Lord.Weapon != null && Block.Lord.Weapon.Model is P_KuTingTao && Player.Area.HandCardArea.CardNumber == 0) {
                     Toll *= 2;
                 }
@@ -152,7 +155,7 @@ public class PAiMapAnalyzer {
             return 0;
         }
         int EnemyCount = Game.Enemies(Block.Lord).Count;
-        int Value = PMath.Percent(Block.Price, 50 + 20 * EnemyCount * (Block.BusinessType.Equals(PBusinessType.ShoppingCenter) ? 2 : 1));
+        int Value = PMath.Percent(Block.Price, 50 + 20 * EnemyCount * (Block.BusinessType.Equals(PBusinessType.ShoppingCenter) ? 2 : 1) * (Block.BusinessType.Equals(PBusinessType.Club) ? 2 : 1));
         if (Player.TeamIndex == Block.Lord.TeamIndex) {
             return Value;
         } else {
@@ -161,9 +164,8 @@ public class PAiMapAnalyzer {
     }
 
     public static KeyValuePair< PBlock, int> MaxValueHouse(PGame Game, PPlayer Player, bool StartFromZero = false) {
-        int EnemyCount = Game.Enemies(Player).Count;
         return PMath.Max(Game.Map.BlockList.FindAll((PBlock Block) => Player.Equals(Block.Lord) && ( StartFromZero || Block.HouseNumber > 0)), (PBlock Block) => {
-            return PMath.Percent(Block.Price, 50 + 20 * EnemyCount * (Block.BusinessType.Equals(PBusinessType.ShoppingCenter) ? 2 : 1));
+            return HouseValue(Game, Player, Block);
         });
     }
 
@@ -176,9 +178,8 @@ public class PAiMapAnalyzer {
     /// <param name="Concentrate">是否优先选取房屋数量少的土地的房屋</param>
     /// <returns></returns>
     public static KeyValuePair<PBlock, int> MinValueHouse(PGame Game, PPlayer Player, bool StartFromZero = false, bool Concentrate = false) {
-        int EnemyCount = Game.Enemies(Player).Count;
         KeyValuePair<PBlock, int> Test = PMath.Min(Game.Map.BlockList.FindAll((PBlock Block) => Player.Equals(Block.Lord) && (StartFromZero || Block.HouseNumber > 0)), (PBlock Block) => {
-            return PMath.Percent(Block.Price, 50 + 20 * EnemyCount * (Block.BusinessType.Equals(PBusinessType.ShoppingCenter) ? 2 : 1)) * 1000 + 
+            return HouseValue(Game, Player, Block) * 1000 + 
             (Concentrate ? Block.HouseNumber : 0);
         });
         return new KeyValuePair<PBlock, int>(Test.Key, Test.Value / 1000);
@@ -269,6 +270,9 @@ public class PAiMapAnalyzer {
             if (Block.BusinessType.Equals(PBusinessType.ShoppingCenter)) {
                 Toll *= 2;
             }
+            if (Block.BusinessType.Equals(PBusinessType.Club)) {
+                Toll += PMath.Percent(Toll, 100);
+            }
             if (Block.Lord.Weapon != null && Block.Lord.Weapon.Model is P_KuTingTao && Player.Area.HandCardArea.CardNumber == 0) {
                 Toll *= 2;
             }
@@ -294,7 +298,7 @@ public class PAiMapAnalyzer {
             LandValue += PMath.Percent(Block.Price, 20) * Game.Enemies(Player).Count * PurchaseLimit;
             if (Block.BusinessType.Equals(PBusinessType.Park)) {
                 LandValue += PMath.Percent(Block.Price, 60) * PurchaseLimit;
-            } else if (Block.BusinessType.Equals(PBusinessType.ShoppingCenter)) {
+            } else if (Block.BusinessType.Equals(PBusinessType.ShoppingCenter) || Block.BusinessType.Equals(PBusinessType.Club)) {
                 LandValue += PMath.Percent(Block.Price, 20) * Game.Enemies(Player).Count * PurchaseLimit;
             }
             if (Player.General is P_YangYuHuan) {

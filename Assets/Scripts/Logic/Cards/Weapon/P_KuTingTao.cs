@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class P_KuTingTao : PEquipmentCardModel {
 
     public override int AIInEquipExpectation(PGame Game, PPlayer Player) {
-        return 500 + 4000 * Game.Enemies(Player).FindAll((PPlayer _Player) => _Player.Area.HandCardArea.CardNumber == 0).Count;
+        return 500 + 4000 * Game.Enemies(Player).FindAll((PPlayer _Player) => _Player.Area.HandCardArea.CardNumber == 0 || Player.General is P_IzayoiMiku).Count;
     }
 
     public readonly static string CardName = "古锭刀";

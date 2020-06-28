@@ -7,6 +7,7 @@ public class PPlayerCardArea : PObject {
     public PCardArea HandCardArea;
     public PCardArea EquipmentCardArea;
     public PCardArea AmbushCardArea;
+    public PCardArea OutOfGameArea;
     public PPlayer Owner;
 
     public PPlayerCardArea(PPlayer _Owner) {
@@ -15,6 +16,7 @@ public class PPlayerCardArea : PObject {
         HandCardArea = new PCardArea(Owner.Name + "的手牌", Owner);
         EquipmentCardArea = new PCardArea(Owner.Name + "的装备区", Owner);
         AmbushCardArea = new PCardArea(Owner.Name + "的判定区", Owner);
+        OutOfGameArea = new PCardArea(Owner.Name + "的移出游戏区", Owner);
     }
 
     public int CardNumber {
@@ -49,5 +51,6 @@ public class PPlayerCardArea : PObject {
         HandCardArea.CardList.Clear();
         EquipmentCardArea.CardList.Clear();
         AmbushCardArea.CardList.Clear();
+        OutOfGameArea.CardList.Clear();
     }
 }

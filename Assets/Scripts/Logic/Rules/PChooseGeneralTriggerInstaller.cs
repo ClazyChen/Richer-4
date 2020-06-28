@@ -46,26 +46,24 @@ public class PChooseGeneralTriggerInstaller : PSystemTriggerInstaller {
                     }
                 });
                 // 剩下的将随机
-                PMath.Wash(AvailableGenerals);
-                // 每个人有一个免费将和一个收费将可选
+                // 每个人有4个将可选
+                // 其中最多1个免费将
                 List<PGeneral> Selected = new List<PGeneral>();
                 for (int i = 0; i < Game.PlayerNumber; ++ i) {
                     if (Generals[i] is P_Soldier) {
                         List<PGeneral> PossibleGenerals = new List<PGeneral>();
-                        foreach (PGeneral General in AvailableGenerals) {
-                            if (!Generals.Contains(General) && !Selected.Contains(General) && General.Cost == 0) {
-                                PossibleGenerals.Add(General);
-                                Selected.Add(General);
-                                break;
-                            }
-                        }
-                        for (int xx = 0; xx < 2; ++ xx) {
+                        PMath.Wash(AvailableGenerals);
+                        bool NoFreeGeneral = true;
+                        while (PossibleGenerals.Count < 4) {
                             foreach (PGeneral General in AvailableGenerals) {
-                                if (!Generals.Contains(General) && !Selected.Contains(General) && General.Cost != 0) {
+                                if (!Generals.Contains(General) && !Selected.Contains(General) && (NoFreeGeneral || General.Cost != 0)) {
                                     if (Game.PlayerList[i].IsAI ||
                                         PNetworkManager.NetworkServer.ChooseManager.AskHaveGeneral(Game.PlayerList[i], General.Name)) {
                                         Selected.Add(General);
                                         PossibleGenerals.Add(General);
+                                        if (General.Cost == 0) {
+                                            NoFreeGeneral = false;
+                                        }
                                     }
                                     break;
                                 }

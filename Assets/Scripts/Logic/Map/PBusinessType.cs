@@ -12,4 +12,5 @@
     public static PBusinessType Pawnshop = new PBusinessType("当铺", "一名角色停留于此时，可交给领主1张手牌并摸2000。");
     public static PBusinessType Castle = new PBusinessType("城堡", "建造时，所在所有队列上每有1座其他角色的房屋，额外赠送1座房屋。");
     public static PBusinessType Park = new PBusinessType("公园", "建造后摸地价的50%。购买房屋免费，且可获得地价10%的政府补助。");
+    public static PBusinessType Club = new PBusinessType("舞厅", "过路费+100%，收取过路费时令目标翻面。");
 }
