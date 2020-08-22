@@ -15,7 +15,6 @@ public class P_QuYuan : PGeneral {
         Age = PAge.Classic;
         Index = 25;
         Cost = 25;
-        NewGeneral = true;
         Tips = "定位：全能\n" +
             "难度：简单\n" +
             "史实：战国时期楚国诗人、政治家。中国浪漫主义文学的奠基人，“楚辞”的代表作家。代表作《离骚》。\n" +

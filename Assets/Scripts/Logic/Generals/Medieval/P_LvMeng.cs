@@ -8,7 +8,6 @@ public class P_LvMeng : PGeneral {
         Age = PAge.Medieval;
         Index = 26;
         Cost = 25;
-        NewGeneral = true;
         Tips = "定位：控制\n" +
             "难度：困难\n" +
             "史实：东汉末期东吴名将，“东吴四都督”之一。早年武勇过人，后勤奋读书，渐有国士之风，留有“士别三日当刮目相待”的佳话。\n" +

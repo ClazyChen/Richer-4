@@ -64,9 +64,10 @@ public class PSkillInfo : PObject {
     public static PSkillInfo 精灵加护_美九 = new PSkillInfo("精灵加护·美九", "【被】锁定技，当你濒死时若美九存活，你摸至10000，然后获得1点精灵力量。", PSkillType.Lock);
     public static PSkillInfo 音之天使_觉醒 = new PSkillInfo("音之天使·觉醒", "【被】限定技，回合开始时，若你有至少3点精灵力量，你可令美九获得场上所有商业用地及其房屋并改建为歌厅。", PSkillType.Passive);
     public static PSkillInfo 镇魂曲 = new PSkillInfo("镇魂曲", "【被】锁定技，美九受到的伤害-20%。", PSkillType.Lock);
-    public static PSkillInfo 进行曲 = new PSkillInfo("进行曲", "【被】锁定技，美九的回合结束时，若其在自己的土地上，其就地建造X+1座房屋[X=精灵力量]，然后摸1张牌。", PSkillType.Passive);
+    public static PSkillInfo 进行曲 = new PSkillInfo("进行曲", "【被】锁定技，美九的回合结束时，若其在自己的土地上，其就地建造X+1座房屋[X=精灵力量]，然后摸1张牌。", PSkillType.Lock);
     public static PSkillInfo 鸩杀 = new PSkillInfo("鸩杀", "【主】回合内限一次，你可以将一张手牌交给一名其他角色[范围=1]，对其造成1500点伤害。", PSkillType.Initiative);
     public static PSkillInfo 蓄谋 = new PSkillInfo("蓄谋", "【被】锁定技，当其他角色受到你造成的伤害而濒死时，其无法脱离濒死状态。", PSkillType.Lock);
+    public static PSkillInfo 圣女 = new PSkillInfo("圣女", "【被】当一名角色处于濒死状态时，你可以弃置所有牌（至少1张），视为该角色使用了【借尸还魂】，该牌结算后，你弃5000。然后若该角色不为你，其摸1张牌。", PSkillType.Passive);
 
     public PSkillInfo Copy() {
         return new PSkillInfo(Name, ToolTip, Type);

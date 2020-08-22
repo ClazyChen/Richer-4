@@ -93,25 +93,36 @@ public class PAiTargetChooser {
 
         int ExpectTargetMoney = Target.Money - BaseInjure;
 
-        #region 濒死时发动的技能：精灵加护
+        #region 濒死时发动的技能：蓄谋，精灵加护，圣女
         if (ExpectTargetMoney <= 0) {
-            if (Target.General is P_Gabriel) {
-                // 破军歌姬的复活
-                if (FromPlayer.Equals(Target)) {
-                    // 对自己伤害，不触发复活
-                } else if (FromPlayer.TeamIndex == Target.TeamIndex) {
-                    // 美九自己的伤害，触发复活大利好
-                    Sum += 15000;
-                } else {
-                    // 对方的伤害
-                    if (Game.AlivePlayers().Exists((PPlayer _Player) => _Player.General is P_IzayoiMiku)) {
-                        // 美九未死，大不利
-                        Sum -= 15000;
+            bool flag = true;
+            if (!(FromPlayer.General is P_LvZhi)) {
+                if (Target.General is P_Gabriel) {
+                    flag = false;
+                    // 破军歌姬的复活
+                    if (FromPlayer.Equals(Target)) {
+                        // 对自己伤害，不触发复活
+                    } else if (FromPlayer.TeamIndex == Target.TeamIndex) {
+                        // 美九自己的伤害，触发复活大利好
+                        Sum += 15000;
                     } else {
-                        Sum += 30000;
+                        // 对方的伤害
+                        if (Game.AlivePlayersExist<P_IzayoiMiku>()) {
+                            // 美九未死，大不利
+                            Sum -= 15000;
+                        } else {
+                            flag = true;
+                        }
+                    }
+                } else if (Game.AlivePlayersExist<P_JeanneDarc>()) {
+                    PPlayer Jeanne = Game.AlivePlayers().Find((PPlayer _Player) => _Player.General is P_JeanneDarc);
+                    if (Jeanne.TeamIndex == Target.TeamIndex && Jeanne.Area.OwnerCardNumber > 0 && Jeanne.Money > 5000) {
+                        flag = false;
+                        Sum += 3000 + 2000 * Jeanne.Area.OwnerCardNumber;
                     }
                 }
-            } else {
+            }
+            if (flag) {
                 Sum += 30000 * ToCof;
             }
         }

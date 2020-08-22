@@ -147,7 +147,7 @@ public class PGame : PGameStatus {
                 } else if (InjureTime.Equals(PTime.Injure.AfterAcceptInjure)) {
                     if (InjureTag.ToPlayer.IsAlive) {
                         TagManager.CreateTag(InjureTag);
-                        LoseMoney(InjureTag.ToPlayer, InjureTag.Injure, true);
+                        LoseMoney(InjureTag.ToPlayer, InjureTag.Injure, true, FromPlayer);
                         InjureTag = TagManager.PopTag<PInjureTag>(PInjureTag.TagName);
                     }
                 }
@@ -173,7 +173,7 @@ public class PGame : PGameStatus {
         }
     }
 
-    public void LoseMoney(PPlayer Player, int Money, bool IsInjure = false) {
+    public void LoseMoney(PPlayer Player, int Money, bool IsInjure = false, PPlayer InjureSource = null) {
         PLoseMoneyTag LoseMoneyTag = Monitor.CallTime(PTime.LoseMoneyTime, new PLoseMoneyTag(Player, Money, IsInjure));
         PPlayer LoseMoneyPlayer = LoseMoneyTag.Player;
         int MoneyCount = LoseMoneyTag.Money;
@@ -183,24 +183,24 @@ public class PGame : PGameStatus {
             PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(LoseMoneyPlayer.Name + "失去金钱" + MoneyCount.ToString()));
             PNetworkManager.NetworkServer.TellClients(new PRefreshMoneyOrder(LoseMoneyPlayer));
             if (LoseMoneyPlayer.Money <= 0) {
-                Dying(LoseMoneyPlayer);
+                Dying(LoseMoneyPlayer, InjureSource);
             }
         }
     }
 
-    public void Dying(PPlayer Player) {
+    public void Dying(PPlayer Player, PPlayer Killer) {
         PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "进入濒死状态"));
-        Monitor.CallTime(PTime.EnterDyingTime, new PDyingTag(Player));
+        Monitor.CallTime(PTime.EnterDyingTime, new PDyingTag(Player, Killer));
         if (Player.Money <= 0) {
-            Die(Player);
+            Die(Player, Killer);
         } else {
-            Monitor.CallTime(PTime.LeaveDyingTime, new PDyingTag(Player));
+            Monitor.CallTime(PTime.LeaveDyingTime, new PDyingTag(Player, Killer));
         }
     }
 
-    public void Die(PPlayer Player) {
+    public void Die(PPlayer Player, PPlayer Killer) {
         PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "死亡！"));
-        Monitor.CallTime(PTime.DieTime, new PDyingTag(Player));
+        Monitor.CallTime(PTime.DieTime, new PDyingTag(Player, Killer));
         Map.BlockList.ForEach((PBlock Block) => {
             if (Player.Equals(Block.Lord)) {
                 Block.Lord = null;
@@ -212,7 +212,7 @@ public class PGame : PGameStatus {
         CardManager.ThrowAll(Player.Area);
         Player.IsAlive = false;
         PNetworkManager.NetworkServer.TellClients(new PDieOrder(Player.Index.ToString()));
-        Monitor.CallTime(PTime.AfterDieTime, new PDyingTag(Player));
+        Monitor.CallTime(PTime.AfterDieTime, new PDyingTag(Player, Killer));
         if (GameOver()) {
             PLogger.Log("游戏结束");
             EndGame();
