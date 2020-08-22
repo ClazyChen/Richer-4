@@ -17,8 +17,9 @@ public class PRoomDataOrder : POrder {
                     PPlayerType playerType = FindInstance<PPlayerType>(args[Index++]);
                     if (playerType != null) {
                         PSystem.CurrentRoom.PlayerList[i].PlayerType = playerType;
-                        if (playerType.Equals(PPlayerType.Player)) {
-                            PSystem.CurrentRoom.PlayerList[i].Nickname = args[Index++];
+                        PSystem.CurrentRoom.PlayerList[i].Nickname = args[Index++];
+                        if (PSystem.CurrentRoom.PlayerList[i].Nickname.Equals("&")) {
+                            PSystem.CurrentRoom.PlayerList[i].Nickname = string.Empty;
                         }
                     }
                 }

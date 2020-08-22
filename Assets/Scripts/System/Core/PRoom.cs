@@ -24,6 +24,7 @@ public class PRoom {
     public PRoom(PMode Mode) : this(Mode.PlayerNumber) {
         for (int i = 0; i < Mode.PlayerNumber; ++i) {
             PlayerList[i].PlayerType = Mode.Seats[i].DefaultType;
+            PLogger.Log((i + 1).ToString() + " NICKNAME=" + PlayerList[i].Nickname + " NAME=" + Mode.Seats[i].Name);
             if (PlayerList[i].Nickname.Equals(string.Empty)) {
                 PlayerList[i].Nickname = Mode.Seats[i].Name;
             }   
@@ -158,18 +159,17 @@ public class PRoom {
      * Capaity
      * Space between {
      *      PPlayerType[i] (string form)
-     *      <If PPlayerType[i] is Player> {
-     *          Space
-     *          Nickname[i]
-     *      }
+     *      Nickname[i] (if empty, give "&")
      * }
      */
     public override string ToString() {
         string[] tempRoomStringList = new string[Capacity];
         for (int i = 0; i < Capacity; ++i) {
             tempRoomStringList[i] = PlayerList[i].PlayerType.ToString();
-            if (PlayerList[i].PlayerType.Equals(PPlayerType.Player)) {
+            if (!PlayerList[i].Nickname.Equals(string.Empty)) {
                 tempRoomStringList[i] += " " + PlayerList[i].Nickname;
+            } else {
+                tempRoomStringList[i] += " " + "&";
             }
         }
         return Capacity + " " + string.Join(" ", tempRoomStringList);
