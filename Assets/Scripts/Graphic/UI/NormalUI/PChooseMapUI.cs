@@ -8,12 +8,14 @@ public class PChooseMapUI : PAbstractUI {
     public readonly Button EnterButton;
     public readonly Button ReturnButton;
     public readonly Button TestButton;
+    public readonly Toggle QuickModeToggle;
     public readonly InputField IPAddressInputField;
 
     public PChooseMapUI(Transform _Background) : base(_Background) {
         InitializeControls<Button>();
         InitializeControls<Dropdown>();
         InitializeControls<InputField>();
+        InitializeControls<Toggle>();
         Close();
     }
 
@@ -30,6 +32,7 @@ public class PChooseMapUI : PAbstractUI {
         });
         #endregion
         ResetDropdowns();
+        QuickModeToggle.isOn = PPlayer.Config.QuickMode;
         #region 返回按钮：回到InitialUI
         ReturnButton.onClick.AddListener(() => {
             PUIManager.AddNewUIAction("返回：转到IUI", () => PUIManager.ChangeUI<PInitialUI>());
@@ -68,5 +71,8 @@ public class PChooseMapUI : PAbstractUI {
             //PUIManager.AddNewUIAction("测试：转到TUI", () => PUIManager.ChangeUI<PTestUI>());
         });
         #endregion
+        QuickModeToggle.onValueChanged.AddListener((bool value) => {
+            PPlayer.Config.QuickMode = value;
+        });
     }
 }

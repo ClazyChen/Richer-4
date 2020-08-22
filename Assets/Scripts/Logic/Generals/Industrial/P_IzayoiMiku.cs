@@ -37,7 +37,7 @@ public class P_IzayoiMiku: PGeneral {
                     AICondition = (PGame Game) => {
                         PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
                         PPlayer ToPlayer = InjureTag.ToPlayer;
-                        return ToPlayer.TeamIndex != Player.TeamIndex;
+                        return ToPlayer.TeamIndex != Player.TeamIndex || (ToPlayer.General is P_Gabriel);
                     },
                     Effect = (PGame Game) => {
                         PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);

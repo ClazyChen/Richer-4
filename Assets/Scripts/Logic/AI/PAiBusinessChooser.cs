@@ -18,11 +18,16 @@ public class PAiBusinessChooser {
          */
         int RingLength = PAiMapAnalyzer.GetRingLength(Game, Block);
         int MaxOperationCount = Player.PurchaseLimit;
+        int MikuBias = (Player.General is P_IzayoiMiku && Player.RemainLimit("轮舞曲")) ? 1 : 0;
 
         int ShoppingCenterExpectation = 2 * PMath.Percent(Block.Price, 40 * Math.Max(1, 20 * MaxOperationCount / RingLength) + 20) * Game.Enemies(Player).Count;
         int InsituteExpectation = 2000 * 2 * Game.Teammates(Player).Count;
         int ParkExpectation = PMath.Percent(Block.Price, 60 * Math.Max(1, 20 * MaxOperationCount / RingLength) + 50);
-        int CastleExpectation = Game.Enemies(Player).Exists((PPlayer _Player) => _Player.Money > 3000 && _Player.Weapon != null && _Player.Weapon.Model is P_ToouShihChi) ? 0: PMath.Percent(Block.Price, 50 + 20 *Game.Enemies(Player).Count) * Game.GetBonusHouseNumberOfCastle(Player, Block);
+        int CastleExpectation = Game.Enemies(Player).Exists((PPlayer _Player) => _Player.Money > 3000 && _Player.Weapon != null && _Player.Weapon.Model is P_ToouShihChi) ? 0: PMath.Percent(Block.Price, 50 + 20 * Game.Enemies(Player).Count) * Game.GetBonusHouseNumberOfCastle(Player, Block);
+        if (MikuBias == 1 && Game.GetBonusHouseNumberOfCastle(Player, Block) >= PMath.Max(Game.Map.BlockList.FindAll((PBlock _Block) => _Block.IsBusinessLand && _Block.Lord != null && _Block.Lord.TeamIndex == Player.TeamIndex).ConvertAll((PBlock _Block) => _Block.HouseNumber))) {
+            CastleExpectation = PMath.Percent(Block.Price, 50 + 40 * Game.Enemies(Player).Count) * Game.GetBonusHouseNumberOfCastle(Player, Block);
+        }
+
         int PawnshopExpectation = 2000 * Game.Teammates(Player).Count;
 
         if (Player.General is P_YangYuHuan) {

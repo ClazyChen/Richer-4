@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class P_BaiHu : PGeneral {
+public class P_BaiHu : PGeneral
+{
 
     public P_BaiHu() : base("白虎") {
         Sex = PSex.Male;

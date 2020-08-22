@@ -10,6 +10,7 @@ public abstract class PMode : PObject {
     public class Seat {
         public PPlayerType DefaultType;
         public bool Locked;
+        public string Name = string.Empty;
         public int Party;
     }
 

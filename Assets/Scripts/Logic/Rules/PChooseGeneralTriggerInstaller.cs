@@ -14,6 +14,11 @@ public class PChooseGeneralTriggerInstaller : PSystemTriggerInstaller {
                 #region 选将卡的结算
                 List<PGeneral> AvailableGenerals = new List<PGeneral>();
                 AvailableGenerals = ListSubTypeInstances<PGeneral>().FindAll((PGeneral General) => !(General is P_Soldier) && General.CanBeChoose);
+                Game.Traverse((PPlayer Player) => {
+                    if (!(Player.General is P_Soldier)) {
+                        AvailableGenerals.RemoveAll((PGeneral General) => General.Name.Equals(Player.General.Name));
+                    }
+                });
                 List<PAge> Ages = new List<PAge>() {
                     PAge.Classic, PAge.Medieval, PAge.Renaissance, PAge.Industrial
                 };

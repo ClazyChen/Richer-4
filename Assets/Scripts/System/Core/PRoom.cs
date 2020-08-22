@@ -24,6 +24,9 @@ public class PRoom {
     public PRoom(PMode Mode) : this(Mode.PlayerNumber) {
         for (int i = 0; i < Mode.PlayerNumber; ++i) {
             PlayerList[i].PlayerType = Mode.Seats[i].DefaultType;
+            if (PlayerList[i].Nickname.Equals(string.Empty)) {
+                PlayerList[i].Nickname = Mode.Seats[i].Name;
+            }   
         }
     }
 

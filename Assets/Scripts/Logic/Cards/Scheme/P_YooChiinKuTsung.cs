@@ -36,7 +36,10 @@ public class P_YooChiinKuTsung: PSchemeCardModel {
                     AICondition = (PGame Game) => {
                         PInjureTag InjureTag = Game.TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
                         if ( Player.TeamIndex == InjureTag.ToPlayer.TeamIndex) {
-                            return InjureTag.Injure >= InjureTag.ToPlayer.Money || InjureTag.Injure >= 6000;
+                            if (Player.General is P_IzayoiMiku && InjureTag.ToPlayer.General is P_Gabriel) {
+                                return false;
+                            }
+                            return InjureTag.Injure >= InjureTag.ToPlayer.Money || (InjureTag.Injure >= 6000 && InjureTag.Injure + Player.Money >= 2* (InjureTag.ToPlayer.Money - InjureTag.Injure));
                         } else {
                             return InjureTag.Injure < InjureTag.ToPlayer.Money && InjureTag.Injure <= 1000 && InjureTag.ToPlayer.Area.HandCardArea.CardNumber >= 2 && PAiCardExpectation.FindMostValuableToGet(Game, Player, InjureTag.ToPlayer).Value > 3000;
                         }

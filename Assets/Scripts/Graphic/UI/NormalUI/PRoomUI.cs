@@ -51,7 +51,11 @@ public class PRoomUI : PAbstractUI {
                 if (playerType.Equals(PPlayerType.Waiting)) {
                     SetText("Waiting");
                 } else if (playerType.Equals(PPlayerType.AI)) {
-                    SetText("AI");
+                    if (Player.Nickname.Equals(string.Empty)) {
+                        SetText("AI");
+                    } else {
+                        SetText("AI\n" + Player.Nickname);
+                    }
                 } else if (playerType.Equals(PPlayerType.Player)) {
                     SetText(Player.Nickname);
                 } else {

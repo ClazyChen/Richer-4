@@ -30,6 +30,10 @@ public class PGameStatus {
         return PlayerList.FindAll((PPlayer _Player) => _Player.IsAlive && !_Player.Equals(Exception));
     }
 
+    public bool AlivePlayersExist<T>(PPlayer Exception = null) where T: PGeneral {
+        return AlivePlayers(Exception).Exists((PPlayer _Player) => _Player.General is T);
+    }
+
     public List<PPlayer> PlayerList;
     public PPlayer NowPlayer;
     public PPeriod NowPeriod;
@@ -84,7 +88,10 @@ public class PGameStatus {
         }
     }
 
-    public void Traverse(Action<PPlayer> Operation, PPlayer Starter) {
+    public void Traverse(Action<PPlayer> Operation, PPlayer Starter = null) {
+        if (Starter == null) {
+            Starter = PlayerList[0];
+        }
         PPlayer Player = Starter;
         do {
             if (Player.IsAlive) {

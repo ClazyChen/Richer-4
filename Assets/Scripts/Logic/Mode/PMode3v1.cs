@@ -5,6 +5,7 @@ public class PMode3v1 : PMode {
         base("神兽模式", 4, new int[] { 1, 1, 1, 2 }) {
         Bonus = 5;
         Seats[3].DefaultType = PPlayerType.AI;
+        Seats[3].Name = "青龙/白虎/朱雀/玄武";
         Installer.Add(new PTrigger("神兽提前获取土地和房屋") {
             IsLocked = true,
             Time = PTime.InstallModeTime,

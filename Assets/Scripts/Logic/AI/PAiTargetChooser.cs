@@ -55,7 +55,7 @@ public class PAiTargetChooser {
             }
         }
         #endregion
-        #region 受到伤害时发动的技能：八卦阵，百花裙，龙胆，太极，霸王，白衣
+        #region 受到伤害时发动的技能：八卦阵，百花裙，龙胆，太极，霸王，白衣，镇魂曲
         if (!(Target.TeamIndex != FromPlayer.TeamIndex && FromPlayer.General is P_IzayoiMiku)) {
             // 美九无视八卦阵百花裙
             if (Target.HasEquipment<P_PaKuaChevn>()) {
@@ -86,12 +86,36 @@ public class PAiTargetChooser {
         if (Target.General is P_LvMeng && Target.Area.EquipmentCardArea.CardNumber > 0 && !(FromPlayer.General is P_IzayoiMiku && FromPlayer.TeamIndex != Target.TeamIndex)) {
             BaseInjure = Math.Min(PMath.Percent(BaseInjure, 50) + 2000, BaseInjure);
         }
+        if (Target.General is P_IzayoiMiku && Game.AlivePlayersExist<P_Gabriel>()) {
+            BaseInjure -= PMath.Percent(BaseInjure, 20);
+        }
         #endregion
 
         int ExpectTargetMoney = Target.Money - BaseInjure;
+
+        #region 濒死时发动的技能：精灵加护
         if (ExpectTargetMoney <= 0) {
-            Sum += 30000 * ToCof;
+            if (Target.General is P_Gabriel) {
+                // 破军歌姬的复活
+                if (FromPlayer.Equals(Target)) {
+                    // 对自己伤害，不触发复活
+                } else if (FromPlayer.TeamIndex == Target.TeamIndex) {
+                    // 美九自己的伤害，触发复活大利好
+                    Sum += 15000;
+                } else {
+                    // 对方的伤害
+                    if (Game.AlivePlayers().Exists((PPlayer _Player) => _Player.General is P_IzayoiMiku)) {
+                        // 美九未死，大不利
+                        Sum -= 15000;
+                    } else {
+                        Sum += 30000;
+                    }
+                }
+            } else {
+                Sum += 30000 * ToCof;
+            }
         }
+        #endregion
         Sum += BaseInjure * ToCof;
         Sum += BaseInjure * FromCof;
 
@@ -114,12 +138,20 @@ public class PAiTargetChooser {
 
         #region 队友间平衡：自身和目标的合理阈值为50%-200%
         if (FromPlayer.TeamIndex == Target.TeamIndex) {
-            if (FromPlayer.Money > ExpectTargetMoney * 2) {
-                Sum -= 2000;
-            } else if (FromPlayer.Money >= Target.Money) {
-                Sum -= 100;
-            } else if (FromPlayer.Money < Target.Money * 2) {
-                Sum += 1000;
+            if (FromPlayer.General is P_IzayoiMiku && Target.General is P_Gabriel) {
+                // 美九对破军歌姬的伤害，积极性
+                Sum += 2000;
+            } else if (FromPlayer.General is P_Gabriel && Target.General is P_IzayoiMiku) {
+                // 破军歌姬对美九的伤害，消极性
+                Sum -= 20000;
+            } else {
+                if (FromPlayer.Money > ExpectTargetMoney * 2) {
+                    Sum -= 2000;
+                } else if (FromPlayer.Money >= Target.Money) {
+                    Sum -= 100;
+                } else if (FromPlayer.Money < Target.Money * 2) {
+                    Sum += 1000;
+                }
             }
         }
         #endregion

@@ -98,12 +98,15 @@
                  * 第2次：钱多于20000 or 钱多于10000且地价高于2000
                  * 以上：钱多于15000且地价多于3000 or 钱多于10000且为购物中心
                  * 
-                 * 必买：公园
+                 * 必买：公园 or 破军歌姬
                  * 必不买：廉颇 or 无房被兵
                  * 
                  * 赵云：2000次数上限为3,1000无限建
                  */
                 if (NowBlock.BusinessType.Equals(PBusinessType.Park)) {
+                    return true;
+                }
+                if (Player.General is P_Gabriel && Game.AlivePlayersExist<P_IzayoiMiku>()) {
                     return true;
                 }
                 if (Player.General is P_LianPo) {

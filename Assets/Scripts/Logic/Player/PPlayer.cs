@@ -1,7 +1,12 @@
 using System;
 public class PPlayer: PObject {
     public class Config {
-        public static int DefaultMoney = 30000;
+        public static bool QuickMode = false;
+        public static int DefaultMoney {
+            get {
+                return (QuickMode ? 20000 : 30000);
+            }
+        }
     }
 
     public int Index;
