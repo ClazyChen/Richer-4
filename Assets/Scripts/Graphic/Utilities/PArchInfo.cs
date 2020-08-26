@@ -17,7 +17,7 @@ public class PArchInfo : PObject {
     public static PArchInfo 化学爆炸 = new PArchInfo("化学爆炸", "被研究所所杀。", 10);
     public static PArchInfo 舍身饲虎 = new PArchInfo("舍身饲虎", "被公园所杀。", 15);
     public static PArchInfo 撞墙 = new PArchInfo("撞墙", "被城堡所杀。", 10);
-    public static PArchInfo 卖身 = new PArchInfo("卖身", "被当铺所杀。", 30);
+    public static PArchInfo 卖身 = new PArchInfo("卖身", "被当铺所杀。\n说明：在1.4.2.1版本更新之后，当铺被删除，此成就已绝版不可达成。", 30);
     public static PArchInfo 连锁商城 = new PArchInfo("连锁商城", "拥有至少3处购物中心赢得一场游戏。", 20);
     public static PArchInfo _5A级景区 = new PArchInfo("5A级景区", "在一片土地上拥有至少5座公园赢得一场游戏。", 20);
     public static PArchInfo 海天一色 = new PArchInfo("海天一色", "使用【瞒天过海】杀死一名角色。", 20);

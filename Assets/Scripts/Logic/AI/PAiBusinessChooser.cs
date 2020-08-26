@@ -29,6 +29,7 @@ public class PAiBusinessChooser {
         }
 
         int PawnshopExpectation = 2000 * Game.Teammates(Player).Count;
+        int AltarExpectation = 1000 * 20 * 6 / RingLength * Game.Enemies(Player).Count;
 
         if (Player.General is P_YangYuHuan) {
             InsituteExpectation += 4000;
@@ -42,7 +43,7 @@ public class PAiBusinessChooser {
             InsituteExpectation,
             ParkExpectation,
             CastleExpectation,
-            PawnshopExpectation
+            AltarExpectation
         };
 
         return ExpectationList;
@@ -56,7 +57,7 @@ public class PAiBusinessChooser {
             PBusinessType.Institute,
             PBusinessType.Park,
             PBusinessType.Castle,
-            PBusinessType.Pawnshop
+            PBusinessType.Altar
         }[PMath.RandomIndex(Weights)];
     }
 }

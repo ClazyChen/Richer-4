@@ -24,7 +24,8 @@ public class P_JeanneDarc : PGeneral {
                     Time = PTime.EnterDyingTime,
                     AIPriority = 5,
                     Condition = (PGame Game) => {
-                        return Player.Area.OwnerCardNumber > 0;
+                        PDyingTag DyingTag = Game.TagManager.FindPeekTag<PDyingTag>(PDyingTag.TagName);
+                        return Player.Area.OwnerCardNumber > 0 && DyingTag.Source != null && DyingTag.Source is PBlock;
                     },
                     AICondition = (PGame Game) => {
                         PDyingTag DyingTag = Game.TagManager.FindPeekTag<PDyingTag>(PDyingTag.TagName);

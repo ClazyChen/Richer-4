@@ -40,6 +40,22 @@
                 Game.Injure(null, Game.TagManager.FindPeekTag<PPassBlockTag>(PPassBlockTag.TagName).Player, PMath.Percent(Game.TagManager.FindPeekTag<PPassBlockTag>(PPassBlockTag.TagName).Player.Money, -Game.TagManager.FindPeekTag<PPassBlockTag>(PPassBlockTag.TagName).Block.GetMoneyPassPercent), null);
             }
         });
+        MultiPlayerTriggerList.Add((PPlayer Player) => new PTrigger("经过祭坛[献祭]") {
+            Player = Player,
+            Time = PTime.PassBlockTime,
+            Condition = (PGame Game) => {
+                PPassBlockTag PassBlockTag = Game.TagManager.FindPeekTag<PPassBlockTag>(PPassBlockTag.TagName);
+                return Player.Equals(PassBlockTag.Block.Lord) && PassBlockTag.Block.BusinessType.Equals(PBusinessType.Altar);
+            },
+            AICondition = (PGame Game) => {
+                PPassBlockTag PassBlockTag = Game.TagManager.FindPeekTag<PPassBlockTag>(PPassBlockTag.TagName);
+                return Player.TeamIndex != PassBlockTag.Player.TeamIndex;
+            },
+            Effect = (PGame Game) => {
+                PPassBlockTag PassBlockTag = Game.TagManager.FindPeekTag<PPassBlockTag>(PPassBlockTag.TagName);
+                Game.LoseMoney(PassBlockTag.Player, 1000);
+            }
+        });
         TriggerList.Add(new PTrigger("牌库") {
             IsLocked = true,
             Time = PTime.PassBlockTime,

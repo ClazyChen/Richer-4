@@ -147,7 +147,7 @@ public class PGame : PGameStatus {
                 } else if (InjureTime.Equals(PTime.Injure.AfterAcceptInjure)) {
                     if (InjureTag.ToPlayer.IsAlive) {
                         TagManager.CreateTag(InjureTag);
-                        LoseMoney(InjureTag.ToPlayer, InjureTag.Injure, true, FromPlayer);
+                        LoseMoney(InjureTag.ToPlayer, InjureTag.Injure, true);
                         InjureTag = TagManager.PopTag<PInjureTag>(PInjureTag.TagName);
                     }
                 }
@@ -173,7 +173,7 @@ public class PGame : PGameStatus {
         }
     }
 
-    public void LoseMoney(PPlayer Player, int Money, bool IsInjure = false, PPlayer InjureSource = null) {
+    public void LoseMoney(PPlayer Player, int Money, bool IsInjure = false) {
         PLoseMoneyTag LoseMoneyTag = Monitor.CallTime(PTime.LoseMoneyTime, new PLoseMoneyTag(Player, Money, IsInjure));
         PPlayer LoseMoneyPlayer = LoseMoneyTag.Player;
         int MoneyCount = LoseMoneyTag.Money;
@@ -183,18 +183,23 @@ public class PGame : PGameStatus {
             PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(LoseMoneyPlayer.Name + "失去金钱" + MoneyCount.ToString()));
             PNetworkManager.NetworkServer.TellClients(new PRefreshMoneyOrder(LoseMoneyPlayer));
             if (LoseMoneyPlayer.Money <= 0) {
-                Dying(LoseMoneyPlayer, InjureSource);
+                if (IsInjure) {
+                    PInjureTag InjureTag = TagManager.FindPeekTag<PInjureTag>(PInjureTag.TagName);
+                    Dying(LoseMoneyPlayer, InjureTag.FromPlayer, InjureTag.InjureSource);
+                } else {
+                    Dying(LoseMoneyPlayer, null, null);
+                }
             }
         }
     }
 
-    public void Dying(PPlayer Player, PPlayer Killer) {
+    public void Dying(PPlayer Player, PPlayer Killer, PObject Source) {
         PNetworkManager.NetworkServer.TellClients(new PShowInformationOrder(Player.Name + "进入濒死状态"));
-        Monitor.CallTime(PTime.EnterDyingTime, new PDyingTag(Player, Killer));
+        Monitor.CallTime(PTime.EnterDyingTime, new PDyingTag(Player, Killer, Source));
         if (Player.Money <= 0) {
             Die(Player, Killer);
         } else {
-            Monitor.CallTime(PTime.LeaveDyingTime, new PDyingTag(Player, Killer));
+            Monitor.CallTime(PTime.LeaveDyingTime, new PDyingTag(Player, Killer, Source));
         }
     }
 
@@ -379,7 +384,7 @@ public class PGame : PGameStatus {
             if (Block.IsBusinessLand && Block.BusinessType.Equals(PBusinessType.NoType)) {
                 PBusinessType ChosenType = PBusinessType.NoType;
                 List<PBusinessType> Types = new List<PBusinessType>() { PBusinessType.ShoppingCenter, PBusinessType.Institute,
-                            PBusinessType.Pawnshop, PBusinessType.Castle, PBusinessType.Park};
+                            PBusinessType.Altar, PBusinessType.Castle, PBusinessType.Park};
                 if (Player.IsUser) {
                     ChosenType = Types[PNetworkManager.NetworkServer.ChooseManager.Ask(Player, "选择商业用地的发展方向", Types.ConvertAll((PBusinessType BusinessType) => BusinessType.Name).ToArray(), Types.ConvertAll((PBusinessType BusinessType) => BusinessType.ToolTip).ToArray())];
                 } else {

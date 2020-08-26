@@ -54,7 +54,7 @@ public class PSkillInfo : PObject {
     public static PSkillInfo 民主 = new PSkillInfo("民主", "【主】每局游戏限两次，使用后四回合才能再次使用。你令其他所有角色选择一项：1.令你对其造成800X[X=其所在地房屋数]点伤害，然后摸一张牌；2.弃置所有手牌（至少一张）。", PSkillType.Initiative);
     public static PSkillInfo 安魂 = new PSkillInfo("安魂", "【被】限定技，当你濒死时，可以令所有男性角色依次选择是否弃一张牌令你回复5000。", PSkillType.Passive);
     public static PSkillInfo 夺魄 = new PSkillInfo("夺魄", "【被】当你通过过路费造成伤害时，你可以防止此伤害并进行一次判定，目标在X个回合结束前不能对你收取过路费。", PSkillType.Passive);
-    public static PSkillInfo 独奏 = new PSkillInfo("独奏", "【被】当你即将造成伤害时，你可以将目标的所有牌移入其额外区域。伤害结算后若目标存活，其获得这些牌；否则你获得这些牌。", PSkillType.Passive);
+    public static PSkillInfo 独奏 = new PSkillInfo("独奏", "【被】当你即将造成伤害时，你可以将目标的所有手牌移入其额外区域。伤害结算后若目标存活，其获得这些牌；否则你获得这些牌，并且可以对第三人造成50%的伤害。", PSkillType.Passive);
     public static PSkillInfo 轮舞曲 = new PSkillInfo("轮舞曲", "【主】限定技，你可以令其他所有角色弃两张手牌，然后将场上一处有主商业用地改建为歌厅（收取过路费时+100%，且令目标翻面）。", PSkillType.Initiative);
     public static PSkillInfo 神兽 = new PSkillInfo("神兽", "【被】锁定技，游戏开始时你摸30000。锁定技，回合开始时，你摸500。", PSkillType.Lock);
     public static PSkillInfo 青龙 = new PSkillInfo("青龙", "【被】锁定技，当你受到伤害时，你获得伤害来源的一张牌。", PSkillType.Lock);
@@ -67,7 +67,8 @@ public class PSkillInfo : PObject {
     public static PSkillInfo 进行曲 = new PSkillInfo("进行曲", "【被】锁定技，美九的回合结束时，若其在自己的土地上，其就地建造X+1座房屋[X=精灵力量]，然后摸1张牌。", PSkillType.Lock);
     public static PSkillInfo 鸩杀 = new PSkillInfo("鸩杀", "【主】回合内限一次，你可以将一张手牌交给一名其他角色[范围=1]，对其造成1500点伤害。", PSkillType.Initiative);
     public static PSkillInfo 蓄谋 = new PSkillInfo("蓄谋", "【被】锁定技，当其他角色受到你造成的伤害而濒死时，其无法脱离濒死状态。", PSkillType.Lock);
-    public static PSkillInfo 圣女 = new PSkillInfo("圣女", "【被】当一名角色处于濒死状态时，你可以弃置所有牌（至少1张），视为该角色使用了【借尸还魂】，该牌结算后，你弃5000。然后若该角色不为你，其摸1张牌。", PSkillType.Passive);
+    public static PSkillInfo 圣女 = new PSkillInfo("圣女", "【被】当一名角色受到过路费伤害而处于濒死状态时，你可以弃置所有牌（至少1张），视为该角色使用了【借尸还魂】，该牌结算后，你弃5000。然后若该角色不为你，其摸1张牌。", PSkillType.Passive);
+    public static PSkillInfo 航帆 = new PSkillInfo("航帆", "【被】回合开始时，你可以令你本回合内的行走步数变为掷骰点数*2，若如此做，你受到的伤害*150%，购买土地或房屋的价格*0直到回合结束。", PSkillType.Passive);
 
     public PSkillInfo Copy() {
         return new PSkillInfo(Name, ToolTip, Type);

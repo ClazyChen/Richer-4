@@ -238,12 +238,15 @@ public class PAiMapAnalyzer {
                 if (CurrentBlock.GetCardPass != 0) {
                     Expectation += i * 2000 * CurrentBlock.GetCardPass;
                 }
+                if (CurrentBlock.BusinessType.Equals(PBusinessType.Altar) && CurrentBlock.Lord != null && CurrentBlock.Lord.TeamIndex != Player.TeamIndex) {
+                    Expectation -= 1000;
+                }
             }
             CurrentBlock = Block.NextBlock;
         }
         Player.Area.AmbushCardArea.CardList.ForEach((PCard Card) => {
-            if (Card.Model is P_TsaaoMuChiehPing) {
-                Expectation += ((P_TsaaoMuChiehPing)Card.Model).AIExpect(Game, Player, Block);
+            if (Card.Model is P_TsaaoMuChiehPing Cao) {
+                Expectation += Cao.AIExpect(Game, Player, Block);
             }
         });
         return Expectation / (Banned > 0 ? 5 : 6);

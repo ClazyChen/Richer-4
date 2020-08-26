@@ -44,7 +44,7 @@ public class P_IzayoiMiku: PGeneral {
                         PPlayerCardArea ToPlayerArea = InjureTag.ToPlayer.Area;
                         Solo.AnnouceUseSkill(Player);
                         Game.CardManager.MoveAll(ToPlayerArea.HandCardArea, ToPlayerArea.OutOfGameArea);
-                        Game.CardManager.MoveAll(ToPlayerArea.EquipmentCardArea, ToPlayerArea.OutOfGameArea);
+                        // Game.CardManager.MoveAll(ToPlayerArea.EquipmentCardArea, ToPlayerArea.OutOfGameArea);
                         Player.Tags.CreateTag(new PSoloTag());
                     }
                 };
@@ -69,6 +69,16 @@ public class P_IzayoiMiku: PGeneral {
                             Game.CardManager.MoveAll(ToPlayer.Area.OutOfGameArea, ToPlayer.Area.HandCardArea);
                         } else {
                             Game.CardManager.MoveAll(ToPlayer.Area.OutOfGameArea, Player.Area.HandCardArea);
+                            PPlayer ExtraTarget = null;
+                            int ExtraInjure = PMath.Percent(InjureTag.Injure, 50);
+                            if (Player.IsAI) {
+                                ExtraTarget = PAiTargetChooser.InjureTarget(Game, Player, Player, PTrigger.Except(Player), ExtraInjure, Solo);
+                            } else {
+                                ExtraTarget = PNetworkManager.NetworkServer.ChooseManager.AskForTargetPlayer(Player, PTrigger.Except(Player), Solo.Name + "[造成" + ExtraInjure.ToString() + "点伤害]", true);
+                            }
+                            if (ExtraTarget != null) {
+                                Game.Injure(Player, ExtraTarget, ExtraInjure, Solo);
+                            }
                         }
                     }
                 };
